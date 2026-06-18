@@ -3,13 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Getting Started — Snowark</title>
+<title>Snowark — Client Onboarding</title>
 <link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+</script>
 <style>
 :root {
-  --teal: #174445; --teal-hover: #123636;
+  --teal: #174445; --teal-hover: #123636; --teal-glow: rgba(23,68,69,0.15);
   --green: #0d8f64; --green-soft: #e7f4ef;
   --warm-gray: #e9e7e3; --gray-50: #f7f6f4;
   --ink: #000; --body: #615c50; --muted: #7e7869;
@@ -19,96 +22,115 @@
   --radius: 8px; --radius-lg: 12px;
   --shadow: 0 2px 8px rgba(0,0,0,.06);
   --shadow-md: 0 8px 24px rgba(0,0,0,.08);
+  --shadow-card: 0 1px 3px rgba(0,0,0,.04), 0 8px 32px rgba(0,0,0,.06);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-family:var(--font-body);font-size:16px;line-height:1.6;color:var(--ink);background:var(--gray-50);scroll-behavior:smooth}
-body{max-width:720px;margin:0 auto;padding:0 24px}
 
-h1{font-family:var(--font-display);font-size:2.4rem;line-height:1.15;margin-bottom:8px;font-weight:400}
+/* Three.js canvas */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* Content sits above canvas */
+body{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:0 24px}
+
+h1{font-family:var(--font-display);font-size:clamp(1.8rem,6vw,2.8rem);line-height:1.1;margin-bottom:12px;font-weight:400}
 h2{font-family:var(--font-display);font-size:1.5rem;line-height:1.25;margin-bottom:16px;font-weight:400}
-h3{font-family:var(--font-body);font-size:1rem;font-weight:700;margin-bottom:8px;color:var(--teal)}
 p{color:var(--body);margin-bottom:16px;font-size:0.95rem}
 
-.kicker{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--teal);margin-bottom:8px}
-
-/* Hero */
-.hero{padding:80px 0 48px;text-align:center}
-.hero h1{margin-bottom:16px}
-.hero p{font-size:1.1rem;max-width:480px;margin:0 auto 32px}
+.kicker{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--teal);margin-bottom:12px}
 
 /* Progress */
-.progress-wrap{position:sticky;top:0;z-index:100;background:var(--gray-50);padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:0;backdrop-filter:blur(8px)}
-.progress-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
-.progress-fill{height:100%;background:var(--teal);width:0%;transition:width 0.5s ease;border-radius:2px}
-.progress-text{font-size:0.75rem;color:var(--muted);margin-top:6px;text-align:right}
+.progress-wrap{position:sticky;top:0;z-index:100;padding:16px 0 12px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:rgba(247,246,244,0.7);margin-bottom:0;border-bottom:1px solid transparent}
+.progress-wrap.scrolled{border-bottom-color:var(--border)}
+.progress-bar{height:2px;background:var(--border);border-radius:1px;overflow:hidden}
+.progress-fill{height:100%;background:var(--teal);width:0%;transition:width 0.5s ease;border-radius:1px}
+.progress-text{font-size:0.72rem;color:var(--muted);margin-top:6px;text-align:right}
+
+/* Hero */
+.hero{text-align:center;padding:120px 0 80px;position:relative}
+.hero-tag{display:inline-block;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--green);border:1px solid var(--green);padding:6px 16px;border-radius:100px;margin-bottom:24px}
+.hero h1{margin-bottom:20px}
+.hero p{font-size:1.05rem;max-width:440px;margin:0 auto 0;color:var(--body)}
+.hero-line{width:40px;height:2px;background:var(--teal);margin:32px auto 0}
 
 /* Section cards */
-.section{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px;margin-bottom:24px;box-shadow:var(--shadow);opacity:0;transform:translateY(20px)}
-.section.visible{opacity:1;transform:translateY(0);transition:opacity 0.6s ease,transform 0.6s ease}
+.section{background:rgba(255,255,255,0.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:var(--radius-lg);padding:36px;margin-bottom:24px;box-shadow:var(--shadow-card);opacity:0;transform:translateY(30px)}
+.section.visible{opacity:1;transform:translateY(0);transition:opacity 0.7s ease,transform 0.7s ease}
 .section-header{display:flex;align-items:baseline;gap:12px;margin-bottom:24px}
-.section-num{font-family:var(--font-display);font-size:1.8rem;color:var(--teal);line-height:1}
+.section-num{font-family:var(--font-display);font-size:2rem;color:var(--teal);line-height:1;min-width:36px}
 .section h2{margin-bottom:0}
 
-/* Form fields */
+/* Form */
 .field{margin-bottom:20px}
 .field:last-child{margin-bottom:0}
 label{display:block;font-size:0.82rem;font-weight:600;color:var(--ink);margin-bottom:6px}
-.hint{font-size:0.78rem;color:var(--muted);margin-bottom:6px;font-style:italic}
-input,textarea,select{width:100%;padding:12px 14px;font-family:var(--font-body);font-size:0.95rem;border:1px solid var(--border);border-radius:var(--radius);color:var(--ink);background:#fff;transition:border-color 0.2s;outline:none;-webkit-appearance:none}
-input:focus,textarea:focus,select:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(23,68,69,.15)}
+.hint{font-size:0.78rem;color:var(--muted);margin-bottom:8px;font-style:italic}
+input,textarea{width:100%;padding:14px 16px;font-family:var(--font-body);font-size:0.95rem;border:1px solid var(--border);border-radius:var(--radius);color:var(--ink);background:rgba(255,255,255,0.9);transition:all 0.2s;outline:none;-webkit-appearance:none}
+input:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-glow);background:#fff}
 textarea{resize:vertical;min-height:80px}
 .radio-group{display:flex;flex-wrap:wrap;gap:8px}
 .radio-option{flex:1;min-width:100px}
 .radio-option input{display:none}
-.radio-option label{display:block;text-align:center;padding:12px 8px;background:var(--gray-50);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;font-size:0.85rem;font-weight:400;transition:all 0.2s;margin:0}
+.radio-option label{display:block;text-align:center;padding:12px 8px;background:var(--gray-50);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;font-size:0.82rem;font-weight:400;transition:all 0.2s;margin:0}
 .radio-option input:checked+label{background:var(--green-soft);border-color:var(--green);color:var(--green);font-weight:600}
 
-/* Buttons */
+/* Divider */
+.divider{text-align:center;padding:16px 0 32px;color:var(--muted);font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;opacity:0}
+.divider.visible{opacity:1;transition:opacity 1s ease}
+
+/* Button */
 .btn{display:inline-block;font-family:var(--font-body);font-weight:600;font-size:0.9rem;padding:14px 32px;border-radius:var(--radius);cursor:pointer;border:0;transition:all 0.2s;text-decoration:none}
 .btn-primary{background:var(--teal);color:#fff}
-.btn-primary:hover{background:var(--teal-hover)}
-.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary:hover{background:var(--teal-hover);transform:translateY(-1px);box-shadow:0 4px 16px rgba(23,68,69,.25)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.submit-section{text-align:center;padding:16px 0 100px}
+.submit-section .btn{font-size:1rem;padding:18px 56px}
 
-.submit-section{text-align:center;padding:0 0 80px}
-.submit-section .btn{font-size:1rem;padding:16px 48px}
-
-/* Success state */
-.success{display:none;text-align:center;padding:80px 0}
+/* Success */
+.success{display:none;text-align:center;padding:120px 0}
+.success-icon{width:64px;height:64px;border-radius:50%;background:var(--green-soft);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:1.5rem;color:var(--green)}
 .success h2{color:var(--green);margin-bottom:8px}
-.success .check{font-size:3rem;margin-bottom:16px}
 
 /* Error */
-.error-msg{display:none;background:#f8e3de;border:1px solid #c23b22;color:#a91a0a;padding:12px 16px;border-radius:var(--radius);font-size:0.85rem;margin-bottom:20px}
+.error-msg{display:none;background:rgba(248,227,222,0.9);backdrop-filter:blur(4px);border:1px solid #c23b22;color:#a91a0a;padding:14px 18px;border-radius:var(--radius);font-size:0.85rem;margin-bottom:20px}
+
+/* Fog overlay at bottom */
+.fog{position:fixed;bottom:0;left:0;right:0;height:200px;background:linear-gradient(transparent,var(--gray-50));z-index:2;pointer-events:none}
 
 /* Footer */
-.foot{text-align:center;padding:32px 0;color:var(--muted);font-size:0.78rem;border-top:1px solid var(--border)}
+.foot{text-align:center;padding:40px 0;color:var(--muted);font-size:0.75rem;border-top:1px solid var(--border)}
 .foot span{color:var(--teal)}
+
+@media(prefers-reduced-motion){#bg-canvas{display:none}.section{opacity:1;transform:none}}
 </style>
 </head>
 <body>
 
+<canvas id="bg-canvas"></canvas>
+
 <div class="progress-wrap" id="progressWrap">
   <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
-  <div class="progress-text" id="progressText">Section 1 of 7</div>
+  <div class="progress-text" id="progressText">Getting started</div>
 </div>
 
 <section class="hero">
-  <div class="kicker">SNOWARK ONBOARDING</div>
-  <h1>Getting Your AI Team<br>Set Up</h1>
-  <p>A few questions so your AI team sounds like you, not like a robot. Takes about ten minutes. Short answers are fine.</p>
+  <div class="hero-tag">WELCOME</div>
+  <h1>We're building your AI<br>agent. A few questions<br>first.</h1>
+  <p>Takes about ten minutes. Your answers shape how your agent thinks, writes and sounds — so answer in your own voice.</p>
+  <div class="hero-line"></div>
 </section>
 
 <form id="onboardingForm">
 
-<!-- Section 1: Business -->
+<!-- 1: Business -->
 <div class="section" data-section="1">
-  <div class="section-header"><span class="section-num">1</span><h2>About Your Business</h2></div>
+  <div class="section-header"><span class="section-num">1</span><h2>Your Business</h2></div>
   <div class="field">
     <label for="client_name">Your name</label>
     <input type="text" id="client_name" name="client_name" required>
   </div>
   <div class="field">
-    <label for="business_description">What does your business do, in a sentence or two — as you'd explain it to a mate?</label>
+    <label for="business_description">What does your business do — as you'd explain it to a mate?</label>
     <textarea id="business_description" name="business_description" required></textarea>
   </div>
   <div class="field">
@@ -116,21 +138,21 @@ textarea{resize:vertical;min-height:80px}
     <input type="text" id="customers" name="customers">
   </div>
   <div class="field">
-    <label for="biggest_time_eater">What's the one thing that eats your time that you most want off your plate?</label>
+    <label for="biggest_time_eater">What's the one thing eating your time that you most want off your plate?</label>
     <textarea id="biggest_time_eater" name="biggest_time_eater"></textarea>
   </div>
 </div>
 
-<!-- Section 2: Agent Name -->
+<!-- 2: Name -->
 <div class="section" data-section="2">
-  <div class="section-header"><span class="section-num">2</span><h2>Name Your AI Team</h2></div>
+  <div class="section-header"><span class="section-num">2</span><h2>Name Your Agent</h2></div>
   <div class="field">
-    <label for="agent_name">What should your AI team be called? It'll sign every message it sends you.</label>
-    <input type="text" id="agent_name" name="agent_name" placeholder="e.g. Atlas, Mercury, The Crew" required>
+    <label for="agent_name">What should it be called? This name will appear in every message it sends you.</label>
+    <input type="text" id="agent_name" name="agent_name" placeholder="e.g. Winston, Atlas, Mercury" required>
   </div>
 </div>
 
-<!-- Section 3: Mission -->
+<!-- 3: Mission -->
 <div class="section" data-section="3">
   <div class="section-header"><span class="section-num">3</span><h2>Its Mission</h2></div>
   <div class="field">
@@ -139,15 +161,15 @@ textarea{resize:vertical;min-height:80px}
   </div>
 </div>
 
-<!-- Section 4: Voice -->
+<!-- 4: Voice -->
 <div class="section" data-section="4">
   <div class="section-header"><span class="section-num">4</span><h2>How It Should Sound</h2></div>
   <div class="field">
     <label>Formality</label>
     <div class="radio-group">
-      <div class="radio-option"><input type="radio" name="formality" value="Suit and tie" id="f1"><label for="f1">Suit and tie</label></div>
+      <div class="radio-option"><input type="radio" name="formality" value="Suit and tie" id="f1"><label for="f1">Suit &amp; tie</label></div>
       <div class="radio-option"><input type="radio" name="formality" value="Smart casual" id="f2"><label for="f2">Smart casual</label></div>
-      <div class="radio-option"><input type="radio" name="formality" value="High-vis and stubbies" id="f3"><label for="f3">High-vis &amp; stubbies</label></div>
+      <div class="radio-option"><input type="radio" name="formality" value="High-vis and stubbies" id="f3"><label for="f3">High-vis</label></div>
     </div>
   </div>
   <div class="field">
@@ -166,51 +188,51 @@ textarea{resize:vertical;min-height:80px}
     </div>
   </div>
   <div class="field">
-    <label for="loved_phrases">Any words or phrases you love and want it to use?</label>
+    <label for="loved_phrases">Words or phrases you love and want it to use?</label>
     <textarea id="loved_phrases" name="loved_phrases"></textarea>
   </div>
   <div class="field">
-    <label for="banned_phrases">Any words that would make you cringe if a customer read them? We'll ban these.</label>
+    <label for="banned_phrases">Words that would make you cringe if a customer read them? We'll ban these.</label>
     <textarea id="banned_phrases" name="banned_phrases"></textarea>
   </div>
 </div>
 
-<!-- Section 5: Signoff -->
+<!-- 5: Signoff -->
 <div class="section" data-section="5">
   <div class="section-header"><span class="section-num">5</span><h2>Signing Off</h2></div>
   <div class="field">
-    <label for="signoff">How should your team sign its messages?</label>
-    <input type="text" id="signoff" name="signoff" placeholder='e.g. "Atlas, Pat&apos;s offsider" or "The team at Pat&apos;s Plumbing"'>
+    <label for="signoff">How should your agent sign its messages?</label>
+    <input type="text" id="signoff" name="signoff" placeholder='e.g. "Winston (Josh&apos;s assistant)"'>
   </div>
 </div>
 
-<!-- Section 6: Brand -->
+<!-- 6: Brand -->
 <div class="section" data-section="6">
   <div class="section-header"><span class="section-num">6</span><h2>Visual Brand</h2></div>
-  <p class="hint">Your AI team can produce designs, pages, and decks in your brand. Share what you have — skip anything you don't.</p>
+  <p class="hint">Your agent can produce designs, pages, and decks in your brand. Share what you have — skip anything you don't have answers for.</p>
   <div class="field">
     <label for="brand_colors">Brand colours (hex codes or describe them)</label>
-    <textarea id="brand_colors" name="brand_colors" placeholder='e.g. "#174445 dark teal and #0d8f64 green" or "dark navy with warm orange accents"'></textarea>
+    <textarea id="brand_colors" name="brand_colors" placeholder='e.g. "#174445 dark teal and #0d8f64 green" or "dark navy with warm orange"'></textarea>
   </div>
   <div class="field">
     <label for="brand_fonts">Fonts you use, or the vibe you prefer</label>
-    <input type="text" id="brand_fonts" name="brand_fonts" placeholder='e.g. "Clean sans-serif" or "Editorial serif"'>
+    <input type="text" id="brand_fonts" name="brand_fonts" placeholder='e.g. "Clean sans-serif" or "Editorial with a serif headline"'>
   </div>
   <div class="field">
     <label for="brand_vibe">How should things look and feel?</label>
-    <input type="text" id="brand_vibe" name="brand_vibe" placeholder='e.g. "Clean and modern", "Warm and editorial", "Bold and energetic"'>
+    <input type="text" id="brand_vibe" name="brand_vibe" placeholder='e.g. "Clean and modern", "Warm and editorial"'>
   </div>
   <div class="field">
-    <label for="brand_notes">Any website, style guide, or brand assets we should reference? (URLs welcome)</label>
+    <label for="brand_notes">Website, style guide, or brand assets we should reference? (URLs welcome)</label>
     <textarea id="brand_notes" name="brand_notes"></textarea>
   </div>
 </div>
 
-<!-- Section 7: Anything Else -->
+<!-- 7: Anything Else -->
 <div class="section" data-section="7">
   <div class="section-header"><span class="section-num">7</span><h2>Anything Else?</h2></div>
   <div class="field">
-    <label for="other_notes">Anything about how you work, what you worry about, or what good service means in your business that your AI team should know from day one?</label>
+    <label for="other_notes">How you work, what you worry about, what good service means in your business — anything your agent should know from day one.</label>
     <textarea id="other_notes" name="other_notes"></textarea>
   </div>
 </div>
@@ -218,109 +240,141 @@ textarea{resize:vertical;min-height:80px}
 <div class="error-msg" id="errorMsg"></div>
 
 <div class="submit-section">
-  <button type="submit" class="btn btn-primary" id="submitBtn">Submit — We're Ready</button>
+  <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
 </div>
 
 </form>
 
 <div class="success" id="successState">
-  <div class="check">&#10003;</div>
+  <div class="success-icon">&#10003;</div>
   <h2>All done.</h2>
-  <p>Your answers are with us. We'll have your AI team sounding like you, not like a robot, from the first message. You'll hear from us shortly.</p>
+  <p>Your answers are with us. We'll be in touch shortly with your agent, sounding like you from the first message.</p>
 </div>
 
+<div class="fog"></div>
 <footer class="foot"><span>Snowark</span> Consulting</footer>
 
-<script>
-const SUPABASE_URL = "https://fwnqlryktisglebhmfeb.supabase.co";
-const SUPABASE_KEY = "sb_publishable_BfWyBmPTdmr_WW92HI3Yew_1rvSkGpZ";
+<script type="module">
+import * as THREE from 'three';
 
-// Scroll animations
-gsap.utils.toArray('.section').forEach(s => {
-  ScrollTrigger.create({
-    trigger: s,
-    start: 'top 85%',
-    onEnter: () => s.classList.add('visible')
-  });
+// ── Three.js Particle Field ──────────────────────────
+const canvas = document.getElementById('bg-canvas');
+const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 100);
+camera.position.z = 30;
+
+// Particles
+const count = 120;
+const geometry = new THREE.BufferGeometry();
+const positions = new Float32Array(count*3);
+const colors = new Float32Array(count*3);
+
+const teal = new THREE.Color('#174445');
+const green = new THREE.Color('#0d8f64');
+const warm = new THREE.Color('#e9e7e3');
+
+for(let i=0;i<count;i++){
+  positions[i*3]=(Math.random()-0.5)*50;
+  positions[i*3+1]=(Math.random()-0.5)*40;
+  positions[i*3+2]=(Math.random()-0.5)*20;
+  const mix=Math.random();
+  const c=mix<0.15?teal.clone():mix<0.25?green.clone():warm.clone();
+  c.multiplyScalar(0.4+Math.random()*0.6);
+  colors[i*3]=c.r;colors[i*3+1]=c.g;colors[i*3+2]=c.b;
+}
+geometry.setAttribute('position',new THREE.BufferAttribute(positions,3));
+geometry.setAttribute('color',new THREE.BufferAttribute(colors,3));
+
+const mat=new THREE.PointsMaterial({size:0.25,vertexColors:true,transparent:true,opacity:0.7,blending:THREE.AdditiveBlending,depthWrite:false});
+const particles=new THREE.Points(geometry,mat);
+scene.add(particles);
+
+// Central geometric accent
+const ringGeo=new THREE.TorusGeometry(8,0.04,16,100);
+const ringMat=new THREE.MeshBasicMaterial({color:'#174445',transparent:true,opacity:0.12});
+const ring=new THREE.Mesh(ringGeo,ringMat);
+ring.rotation.x=Math.PI*0.45;ring.rotation.y=Math.PI*0.1;
+scene.add(ring);
+
+const ring2=new THREE.Mesh(new THREE.TorusGeometry(5.5,0.03,16,80),new THREE.MeshBasicMaterial({color:'#0d8f64',transparent:true,opacity:0.08}));
+ring2.rotation.x=Math.PI*0.55;ring2.rotation.y=-Math.PI*0.15;
+scene.add(ring2);
+
+// Mouse tracking
+let mouseX=0,mouseY=0,targetX=0,targetY=0;
+window.addEventListener('mousemove',e=>{
+  targetX=(e.clientX/window.innerWidth-0.5)*4;
+  targetY=(e.clientY/window.innerHeight-0.5)*3;
 });
 
-// Progress tracking
-const totalSections = 7;
-const progressBar = document.getElementById('progressBar');
-const progressText = document.getElementById('progressText');
+// Scroll tracking for parallax
+let scrollY=0;
+window.addEventListener('scroll',()=>{scrollY=window.scrollY});
 
-function updateProgress() {
-  const sections = document.querySelectorAll('.section');
-  let highest = 0;
-  sections.forEach(s => {
-    const rect = s.getBoundingClientRect();
-    if (rect.top < window.innerHeight * 0.6) {
-      highest = Math.max(highest, parseInt(s.dataset.section));
-    }
-  });
-  const pct = Math.round((highest / totalSections) * 100);
-  progressBar.style.width = pct + '%';
-  progressText.textContent = highest > 0 ? 'Section ' + highest + ' of ' + totalSections : 'Section 1 of ' + totalSections;
+function animate(){
+  requestAnimationFrame(animate);
+  mouseX+=(targetX-mouseX)*0.03;
+  mouseY+=(targetY-mouseY)*0.03;
+  particles.rotation.x+=0.00015;
+  particles.rotation.y=mouseX*0.05;
+  particles.rotation.x+=mouseY*0.03;
+  ring.rotation.z+=0.0003;
+  ring2.rotation.z-=0.0002;
+  camera.position.y=-scrollY*0.008;
+  renderer.render(scene,camera);
 }
+animate();
 
-window.addEventListener('scroll', updateProgress);
+window.addEventListener('resize',()=>{
+  renderer.setSize(window.innerWidth,window.innerHeight);
+  camera.aspect=window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+});
+
+// Fallback if three.js module fails
+canvas.addEventListener('error',()=>{canvas.style.display='none'});
+</script>
+
+<script>
+// ── GSAP Scroll Animations ──────────────────────────
+gsap.utils.toArray('.section').forEach(s=>{
+  ScrollTrigger.create({trigger:s,start:'top 82%',onEnter:()=>s.classList.add('visible')});
+});
+ScrollTrigger.create({trigger:'.divider',start:'top 85%',onEnter:()=>document.querySelector('.divider')?.classList.add('visible')});
+
+// ── Progress ────────────────────────────────────────
+const totalSections=7,progressBar=document.getElementById('progressBar'),progressText=document.getElementById('progressText'),progressWrap=document.getElementById('progressWrap');
+function updateProgress(){
+  const sections=document.querySelectorAll('.section');
+  let highest=0;
+  sections.forEach(s=>{const r=s.getBoundingClientRect();if(r.top<window.innerHeight*0.5)highest=Math.max(highest,parseInt(s.dataset.section));});
+  progressBar.style.width=Math.round(highest/totalSections*100)+'%';
+  progressText.textContent=highest>0?'Section '+highest+' of '+totalSections:'Getting started';
+  progressWrap.classList.toggle('scrolled',window.scrollY>60);
+}
+window.addEventListener('scroll',updateProgress);
 updateProgress();
 
-// Form submission
-document.getElementById('onboardingForm').addEventListener('submit', async (e) => {
+// ── Form Submit ──────────────────────────────────────
+const SUPABASE_URL='https://fwnqlryktisglebhmfeb.supabase.co';
+const SUPABASE_KEY='sb_publishable_BfWyBmPTdmr_WW92HI3Yew_1rvSkGpZ';
+
+document.getElementById('onboardingForm').addEventListener('submit',async e=>{
   e.preventDefault();
-  const btn = document.getElementById('submitBtn');
-  const err = document.getElementById('errorMsg');
-  btn.disabled = true;
-  btn.textContent = 'Submitting...';
-  err.style.display = 'none';
-
-  const data = {};
-  const fields = ['client_name','business_description','customers','biggest_time_eater',
-    'agent_name','agent_mission','formality','response_length','warmth',
-    'loved_phrases','banned_phrases','signoff',
-    'brand_colors','brand_fonts','brand_vibe','brand_notes','other_notes'];
-  
-  fields.forEach(f => {
-    const el = document.getElementById(f);
-    if (el) {
-      if (el.type === 'radio') {
-        const checked = document.querySelector('input[name="' + f + '"]:checked');
-        data[f] = checked ? checked.value : '';
-      } else {
-        data[f] = el.value.trim();
-      }
-    }
-  });
-  data.status = 'new';
-
-  try {
-    const resp = await fetch(SUPABASE_URL + '/rest/v1/client_responses', {
-      method: 'POST',
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_KEY,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify(data)
-    });
-
-    if (resp.ok) {
-      document.getElementById('onboardingForm').style.display = 'none';
-      document.getElementById('successState').style.display = 'block';
-      document.getElementById('progressWrap').style.display = 'none';
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    } else {
-      const body = await resp.text();
-      throw new Error(body);
-    }
-  } catch (error) {
-    err.textContent = 'Something went wrong. Please try again or email josh@theafsgroup.org.';
-    err.style.display = 'block';
-    btn.disabled = false;
-    btn.textContent = 'Submit — We\'re Ready';
-  }
+  const btn=document.getElementById('submitBtn'),err=document.getElementById('errorMsg');
+  btn.disabled=true;btn.textContent='Submitting...';err.style.display='none';
+  const data={},fields=['client_name','business_description','customers','biggest_time_eater','agent_name','agent_mission','formality','response_length','warmth','loved_phrases','banned_phrases','signoff','brand_colors','brand_fonts','brand_vibe','brand_notes','other_notes'];
+  fields.forEach(f=>{const el=document.getElementById(f);if(el){if(el.type==='radio'){const c=document.querySelector('input[name="'+f+'"]:checked');data[f]=c?c.value:'';}else{data[f]=el.value.trim();}}});
+  data.status='new';
+  try{
+    const resp=await fetch(SUPABASE_URL+'/rest/v1/client_responses',{method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(data)});
+    if(resp.ok){document.getElementById('onboardingForm').style.display='none';document.getElementById('successState').style.display='block';document.getElementById('progressWrap').style.display='none';window.scrollTo({top:0,behavior:'smooth'});gsap.to('#bg-canvas',{opacity:0.3,duration:1.5});}
+    else{throw new Error(await resp.text());}
+  }catch(error){err.textContent='Something went wrong. Please try again.';err.style.display='block';btn.disabled=false;btn.textContent='Submit';}
 });
 </script>
 </body>
