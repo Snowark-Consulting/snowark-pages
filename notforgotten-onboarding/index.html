@@ -249,6 +249,10 @@ textarea{resize:vertical;min-height:80px}
       <div class="pc-check">&#10003;</div>
     </label>
   </div>
+  <div class="field" id="customPersonalityField" style="display:none;margin-top:16px">
+    <label for="custom_personality">Describe the personality you want</label>
+    <textarea id="custom_personality" name="custom_personality" placeholder="e.g. Like a wise old mechanic who's seen it all, or a sharp-eyed proofreader who misses nothing..."></textarea>
+  </div>
 </div>
 
 <!-- 5: Voice Fine-Tuning -->
@@ -523,6 +527,8 @@ document.getElementById('personalityGrid').addEventListener('click',function(e){
   document.querySelectorAll('.personality-card').forEach(c=>c.classList.remove('selected'));
   card.classList.add('selected');
   card.querySelector('input').checked = true;
+  const customField = document.getElementById('customPersonalityField');
+  customField.style.display = card.dataset.value==='Custom' ? 'block' : 'none';
 });
 
 // ── GSAP Scroll ─────────────────────────────────────
@@ -553,7 +559,7 @@ document.getElementById('onboardingForm').addEventListener('submit',async e=>{
   btn.disabled=true;btn.textContent='Deploying...';err.style.display='none';
   
   const data={};
-  const textFields=['client_name','business_description','customers','biggest_time_eater','agent_name','agent_mission','loved_phrases','banned_phrases','signoff','brand_colors','brand_fonts','brand_vibe','brand_notes','stack_notes','other_notes'];
+  const textFields=['client_name','business_description','customers','biggest_time_eater','agent_name','agent_mission','loved_phrases','banned_phrases','signoff','brand_colors','brand_fonts','brand_vibe','brand_notes','stack_notes','custom_personality','other_notes'];
   textFields.forEach(f=>{const el=document.getElementById(f);if(el)data[f]=el.value.trim();});
   
   // Radio fields
