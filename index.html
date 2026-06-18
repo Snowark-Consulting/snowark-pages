@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Snowark — Client Onboarding</title>
+<title>Build Your Agent — Snowark</title>
 <link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -27,7 +27,6 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-family:var(--font-body);font-size:16px;line-height:1.6;color:var(--ink);background:var(--gray-50);scroll-behavior:smooth}
 
-/* Three.js canvas */
 #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 #bg-canvas.loading{z-index:1000}
 
@@ -40,24 +39,25 @@ html{font-family:var(--font-body);font-size:16px;line-height:1.6;color:var(--ink
 .loading-dot{width:4px;height:4px;border-radius:50%;background:var(--teal);margin-top:32px;animation:pulse 1.2s ease-in-out infinite;opacity:0}
 @keyframes pulse{0%,100%{transform:scale(1);opacity:0.6}50%{transform:scale(2.5);opacity:0}}
 
-/* Content sits above canvas */
 body{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:0 24px}
 
 h1{font-family:var(--font-display);font-size:clamp(1.8rem,6vw,2.8rem);line-height:1.1;margin-bottom:12px;font-weight:400}
 h2{font-family:var(--font-display);font-size:1.5rem;line-height:1.25;margin-bottom:16px;font-weight:400}
+h3{font-family:var(--font-body);font-size:0.95rem;font-weight:700;margin-bottom:8px;color:var(--ink)}
 p{color:var(--body);margin-bottom:16px;font-size:0.95rem}
 
 .kicker{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--teal);margin-bottom:12px}
 
 /* Progress */
-.progress-wrap{position:sticky;top:0;z-index:100;padding:16px 0 12px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:rgba(247,246,244,0.7);margin-bottom:0;border-bottom:1px solid transparent}
+.progress-wrap{position:sticky;top:0;z-index:100;padding:12px 0 10px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:rgba(247,246,244,0.7);margin-bottom:0;border-bottom:1px solid transparent}
 .progress-wrap.scrolled{border-bottom-color:var(--border)}
+.progress-wrap img{height:18px;opacity:0.7;display:block;margin-bottom:8px}
 .progress-bar{height:2px;background:var(--border);border-radius:1px;overflow:hidden}
 .progress-fill{height:100%;background:var(--teal);width:0%;transition:width 0.5s ease;border-radius:1px}
-.progress-text{font-size:0.72rem;color:var(--muted);margin-top:6px;text-align:right}
+.progress-text{font-size:0.72rem;color:var(--muted);margin-top:6px}
 
 /* Hero */
-.hero{text-align:center;padding:120px 0 80px;position:relative}
+.hero{text-align:center;padding:80px 0 64px}
 .hero-tag{display:inline-block;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--green);border:1px solid var(--green);padding:6px 16px;border-radius:100px;margin-bottom:24px}
 .hero h1{margin-bottom:20px}
 .hero p{font-size:1.05rem;max-width:440px;margin:0 auto 0;color:var(--body)}
@@ -66,9 +66,10 @@ p{color:var(--body);margin-bottom:16px;font-size:0.95rem}
 /* Section cards */
 .section{background:rgba(255,255,255,0.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:var(--radius-lg);padding:36px;margin-bottom:24px;box-shadow:var(--shadow-card);opacity:0;transform:translateY(30px)}
 .section.visible{opacity:1;transform:translateY(0);transition:opacity 0.7s ease,transform 0.7s ease}
-.section-header{display:flex;align-items:baseline;gap:12px;margin-bottom:24px}
+.section-header{display:flex;align-items:baseline;gap:12px;margin-bottom:20px}
 .section-num{font-family:var(--font-display);font-size:2rem;color:var(--teal);line-height:1;min-width:36px}
 .section h2{margin-bottom:0}
+.section-intro{font-size:0.88rem;color:var(--body);margin-bottom:24px}
 
 /* Form */
 .field{margin-bottom:20px}
@@ -78,23 +79,41 @@ label{display:block;font-size:0.82rem;font-weight:600;color:var(--ink);margin-bo
 input,textarea{width:100%;padding:14px 16px;font-family:var(--font-body);font-size:0.95rem;border:1px solid var(--border);border-radius:var(--radius);color:var(--ink);background:rgba(255,255,255,0.9);transition:all 0.2s;outline:none;-webkit-appearance:none}
 input:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-glow);background:#fff}
 textarea{resize:vertical;min-height:80px}
+
+/* Radio group */
 .radio-group{display:flex;flex-wrap:wrap;gap:8px}
 .radio-option{flex:1;min-width:100px}
 .radio-option input{display:none}
 .radio-option label{display:block;text-align:center;padding:12px 8px;background:var(--gray-50);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;font-size:0.82rem;font-weight:400;transition:all 0.2s;margin:0}
 .radio-option input:checked+label{background:var(--green-soft);border-color:var(--green);color:var(--green);font-weight:600}
 
-/* Divider */
-.divider{text-align:center;padding:16px 0 32px;color:var(--muted);font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;opacity:0}
-.divider.visible{opacity:1;transition:opacity 1s ease}
+/* Personality cards */
+.personality-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.personality-card{position:relative;background:var(--gray-50);border:2px solid var(--border);border-radius:var(--radius-lg);padding:20px;cursor:pointer;transition:all 0.25s ease;text-align:left}
+.personality-card:hover{border-color:var(--teal);box-shadow:var(--shadow)}
+.personality-card.selected{border-color:var(--teal);background:rgba(23,68,69,0.04);box-shadow:0 0 0 3px var(--teal-glow)}
+.personality-card input{display:none}
+.personality-card .pc-name{font-family:var(--font-display);font-size:1.1rem;color:var(--teal);margin-bottom:4px}
+.personality-card .pc-tagline{font-size:0.78rem;color:var(--body);line-height:1.4}
+.personality-card .pc-check{position:absolute;top:12px;right:12px;width:20px;height:20px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:transparent;transition:all 0.2s}
+.personality-card.selected .pc-check{background:var(--teal);border-color:var(--teal);color:#fff}
+
+/* Multi-select chips */
+.chip-group{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input{display:none}
+.chip label{display:inline-block;padding:10px 18px;background:var(--gray-50);border:1px solid var(--border);border-radius:100px;cursor:pointer;font-size:0.82rem;font-weight:400;transition:all 0.2s;margin:0}
+.chip input:checked+label{background:var(--green-soft);border-color:var(--green);color:var(--green);font-weight:600}
+
+/* Spacer before submit */
+.submit-section{text-align:center;padding:16px 0 100px}
+.submit-section .btn{font-size:1rem;padding:18px 56px}
 
 /* Button */
 .btn{display:inline-block;font-family:var(--font-body);font-weight:600;font-size:0.9rem;padding:14px 32px;border-radius:var(--radius);cursor:pointer;border:0;transition:all 0.2s;text-decoration:none}
 .btn-primary{background:var(--teal);color:#fff}
 .btn-primary:hover{background:var(--teal-hover);transform:translateY(-1px);box-shadow:0 4px 16px rgba(23,68,69,.25)}
 .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.submit-section{text-align:center;padding:16px 0 100px}
-.submit-section .btn{font-size:1rem;padding:18px 56px}
 
 /* Success */
 .success{display:none;text-align:center;padding:120px 0;position:relative;overflow:hidden}
@@ -112,22 +131,18 @@ textarea{resize:vertical;min-height:80px}
 /* Error */
 .error-msg{display:none;background:rgba(248,227,222,0.9);backdrop-filter:blur(4px);border:1px solid #c23b22;color:#a91a0a;padding:14px 18px;border-radius:var(--radius);font-size:0.85rem;margin-bottom:20px}
 
-/* Fog overlay at bottom */
 .fog{position:fixed;bottom:0;left:0;right:0;height:200px;background:linear-gradient(transparent,var(--gray-50));z-index:2;pointer-events:none}
-
-/* Footer */
 .foot{text-align:center;padding:40px 0;color:var(--muted);font-size:0.75rem;border-top:1px solid var(--border)}
 .foot span{color:var(--teal)}
 
 @media(prefers-reduced-motion){#bg-canvas{display:none}.section{opacity:1;transform:none}}
-
 @media(max-width:700px){
   body{padding:0 16px}
-  .hero{padding:80px 0 48px}
-  .hero h1{font-size:clamp(1.5rem,6vw,1.8rem)}
+  .hero{padding:60px 0 48px}
+  .hero h1{font-size:clamp(1.4rem,6vw,1.7rem)}
   .hero p{font-size:0.9rem}
   .section{padding:24px}
-  .progress-text{font-size:0.68rem}
+  .personality-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -148,9 +163,9 @@ textarea{resize:vertical;min-height:80px}
 </div>
 
 <section class="hero">
-  <div class="hero-tag">WELCOME</div>
-  <h1>We're building your AI<br>agent. A few questions<br>first.</h1>
-  <p>Takes about ten minutes. Your answers shape how your agent works — its style, priorities, and how it presents itself to the world.</p>
+  <div class="hero-tag">BUILD YOUR AGENT</div>
+  <h1>Let's build the AI that<br>runs your business.</h1>
+  <p>Nine questions. Ten minutes. At the end: a calm, capable agent that knows your business, handles the busywork, and never sleeps.</p>
   <div class="hero-line"></div>
 </section>
 
@@ -159,12 +174,13 @@ textarea{resize:vertical;min-height:80px}
 <!-- 1: Business -->
 <div class="section" data-section="1">
   <div class="section-header"><span class="section-num">1</span><h2>Your Business</h2></div>
+  <p class="section-intro">We need to understand what you do so your agent can talk about it intelligently.</p>
   <div class="field">
     <label for="client_name">Your name</label>
     <input type="text" id="client_name" name="client_name" required>
   </div>
   <div class="field">
-    <label for="business_description">What does your business do — as you'd explain it to a mate?</label>
+    <label for="business_description">What does your business do? Describe it as you would to a mate.</label>
     <textarea id="business_description" name="business_description" required></textarea>
   </div>
   <div class="field">
@@ -180,8 +196,9 @@ textarea{resize:vertical;min-height:80px}
 <!-- 2: Name -->
 <div class="section" data-section="2">
   <div class="section-header"><span class="section-num">2</span><h2>Name Your Agent</h2></div>
+  <p class="section-intro">Every great agent has a name. It gives it an identity — something you can trust, delegate to, even be proud of.</p>
   <div class="field">
-    <label for="agent_name">What should it be called? This name will appear in every message it sends you.</label>
+    <label for="agent_name">What will yours be called?</label>
     <input type="text" id="agent_name" name="agent_name" placeholder="e.g. Winston, Atlas, Mercury" required>
   </div>
 </div>
@@ -189,15 +206,55 @@ textarea{resize:vertical;min-height:80px}
 <!-- 3: Mission -->
 <div class="section" data-section="3">
   <div class="section-header"><span class="section-num">3</span><h2>Its Mission</h2></div>
+  <p class="section-intro">One sentence that captures what it's here to do. This becomes its north star.</p>
   <div class="field">
     <label for="agent_mission">Finish this sentence: "Your job is to..."</label>
     <textarea id="agent_mission" name="agent_mission" placeholder="e.g. keep my pipeline full and my evenings free" required></textarea>
   </div>
 </div>
 
-<!-- 4: Voice -->
+<!-- 4: Personality Type -->
 <div class="section" data-section="4">
-  <div class="section-header"><span class="section-num">4</span><h2>How It Should Sound</h2></div>
+  <div class="section-header"><span class="section-num">4</span><h2>Choose Its Personality</h2></div>
+  <p class="section-intro">Every agent has a character. Pick the one that feels right — you can fine-tune it next.</p>
+  <div class="personality-grid" id="personalityGrid">
+    <label class="personality-card" data-value="The Butler">
+      <input type="radio" name="personality_type" value="The Butler">
+      <div class="pc-name">The Butler</div>
+      <div class="pc-tagline">Refined, understated, hyper-competent. Anticipates needs before you voice them.</div>
+      <div class="pc-check">&#10003;</div>
+    </label>
+    <label class="personality-card" data-value="The Analyst">
+      <input type="radio" name="personality_type" value="The Analyst">
+      <div class="pc-name">The Analyst</div>
+      <div class="pc-tagline">Precise, data-driven, thorough. Every answer backed by evidence.</div>
+      <div class="pc-check">&#10003;</div>
+    </label>
+    <label class="personality-card" data-value="The Partner">
+      <input type="radio" name="personality_type" value="The Partner">
+      <div class="pc-name">The Partner</div>
+      <div class="pc-tagline">Warm, collaborative, invested. Like a co-founder who actually replies.</div>
+      <div class="pc-check">&#10003;</div>
+    </label>
+    <label class="personality-card" data-value="The Guardian">
+      <input type="radio" name="personality_type" value="The Guardian">
+      <div class="pc-name">The Guardian</div>
+      <div class="pc-tagline">Protective, vigilant, no-nonsense. Nothing slips through the cracks.</div>
+      <div class="pc-check">&#10003;</div>
+    </label>
+    <label class="personality-card" data-value="Custom" style="grid-column:1/-1">
+      <input type="radio" name="personality_type" value="Custom">
+      <div class="pc-name">Something else entirely</div>
+      <div class="pc-tagline">Describe the vibe and we'll build it from scratch.</div>
+      <div class="pc-check">&#10003;</div>
+    </label>
+  </div>
+</div>
+
+<!-- 5: Voice Fine-Tuning -->
+<div class="section" data-section="5">
+  <div class="section-header"><span class="section-num">5</span><h2>Fine-Tune Its Voice</h2></div>
+  <p class="section-intro">Dial in the details. Your agent's personality sets the direction; this locks in the specifics.</p>
   <div class="field">
     <label>Formality</label>
     <div class="radio-group">
@@ -231,22 +288,72 @@ textarea{resize:vertical;min-height:80px}
   </div>
 </div>
 
-<!-- 5: Signoff -->
-<div class="section" data-section="5">
-  <div class="section-header"><span class="section-num">5</span><h2>Signing Off</h2></div>
+<!-- 6: Signoff -->
+<div class="section" data-section="6">
+  <div class="section-header"><span class="section-num">6</span><h2>Signing Off</h2></div>
+  <p class="section-intro">How your agent introduces itself. This appears in every message.</p>
   <div class="field">
     <label for="signoff">How should your agent sign its messages?</label>
     <input type="text" id="signoff" name="signoff" placeholder='e.g. "Winston (Josh&apos;s assistant)"'>
   </div>
 </div>
 
-<!-- 6: Brand -->
-<div class="section" data-section="6">
-  <div class="section-header"><span class="section-num">6</span><h2>Visual Brand</h2></div>
-  <p class="hint">Your agent can produce designs, pages, and decks in your brand. Share what you have — skip anything you don't have answers for.</p>
+<!-- 7: Tech Stack -->
+<div class="section" data-section="7">
+  <div class="section-header"><span class="section-num">7</span><h2>Your Tech Stack</h2></div>
+  <p class="section-intro">What tools do you use to run the business? Knowing this helps us connect your agent to the right places.</p>
+  <div class="field">
+    <label>Email provider</label>
+    <div class="chip-group">
+      <div class="chip"><input type="checkbox" name="stack_email" value="Google Workspace" id="se1"><label for="se1">Google Workspace</label></div>
+      <div class="chip"><input type="checkbox" name="stack_email" value="Microsoft 365" id="se2"><label for="se2">Microsoft 365</label></div>
+      <div class="chip"><input type="checkbox" name="stack_email" value="Other" id="se3"><label for="se3">Other</label></div>
+    </div>
+  </div>
+  <div class="field">
+    <label>Website platform</label>
+    <div class="chip-group">
+      <div class="chip"><input type="checkbox" name="stack_website" value="Shopify" id="sw1"><label for="sw1">Shopify</label></div>
+      <div class="chip"><input type="checkbox" name="stack_website" value="WordPress" id="sw2"><label for="sw2">WordPress</label></div>
+      <div class="chip"><input type="checkbox" name="stack_website" value="Squarespace" id="sw3"><label for="sw3">Squarespace</label></div>
+      <div class="chip"><input type="checkbox" name="stack_website" value="Custom" id="sw4"><label for="sw4">Custom</label></div>
+      <div class="chip"><input type="checkbox" name="stack_website" value="Other" id="sw5"><label for="sw5">Other</label></div>
+    </div>
+  </div>
+  <div class="field">
+    <label>Project management / CRM</label>
+    <div class="chip-group">
+      <div class="chip"><input type="checkbox" name="stack_pm" value="Asana" id="sp1"><label for="sp1">Asana</label></div>
+      <div class="chip"><input type="checkbox" name="stack_pm" value="Trello" id="sp2"><label for="sp2">Trello</label></div>
+      <div class="chip"><input type="checkbox" name="stack_pm" value="Notion" id="sp3"><label for="sp3">Notion</label></div>
+      <div class="chip"><input type="checkbox" name="stack_pm" value="Monday.com" id="sp4"><label for="sp4">Monday</label></div>
+      <div class="chip"><input type="checkbox" name="stack_pm" value="HubSpot" id="sp5"><label for="sp5">HubSpot</label></div>
+      <div class="chip"><input type="checkbox" name="stack_pm" value="Salesforce" id="sp6"><label for="sp6">Salesforce</label></div>
+      <div class="chip"><input type="checkbox" name="stack_pm" value="Other" id="sp7"><label for="sp7">Other</label></div>
+    </div>
+  </div>
+  <div class="field">
+    <label>Accounting</label>
+    <div class="chip-group">
+      <div class="chip"><input type="checkbox" name="stack_accounting" value="Xero" id="sa1"><label for="sa1">Xero</label></div>
+      <div class="chip"><input type="checkbox" name="stack_accounting" value="MYOB" id="sa2"><label for="sa2">MYOB</label></div>
+      <div class="chip"><input type="checkbox" name="stack_accounting" value="QuickBooks" id="sa3"><label for="sa3">QuickBooks</label></div>
+      <div class="chip"><input type="checkbox" name="stack_accounting" value="Other" id="sa4"><label for="sa4">Other</label></div>
+    </div>
+  </div>
+  <div class="field">
+    <label for="stack_notes">Anything else we should know about your tools or systems?</label>
+    <textarea id="stack_notes" name="stack_notes" placeholder="e.g. We use Stripe for payments, Calendly for bookings..."></textarea>
+  </div>
+</div>
+
+<!-- 8: Brand -->
+<div class="section" data-section="8">
+  <div class="section-header"><span class="section-num">8</span><h2>Visual Brand</h2></div>
+  <p class="section-intro">Your agent can produce designs, pages, and decks in your brand. Share what you have — skip anything you don't.</p>
   <div class="field">
     <label for="brand_colors">Brand colours (hex codes or describe them)</label>
-    <textarea id="brand_colors" name="brand_colors" placeholder='e.g. "#174445 dark teal and #0d8f64 green" or "dark navy with warm orange"'></textarea>
+    <textarea id="brand_colors" name="brand_colors" placeholder='e.g. "#174445 dark teal and #0d8f64 green" or "dark navy with warm orange accents"'></textarea>
   </div>
   <div class="field">
     <label for="brand_fonts">Fonts you use, or the vibe you prefer</label>
@@ -254,7 +361,7 @@ textarea{resize:vertical;min-height:80px}
   </div>
   <div class="field">
     <label for="brand_vibe">How should things look and feel?</label>
-    <input type="text" id="brand_vibe" name="brand_vibe" placeholder='e.g. "Clean and modern", "Warm and editorial"'>
+    <input type="text" id="brand_vibe" name="brand_vibe" placeholder='e.g. "Warm and editorial, like a design magazine"'>
   </div>
   <div class="field">
     <label for="brand_notes">Website, style guide, or brand assets we should reference? (URLs welcome)</label>
@@ -262,11 +369,12 @@ textarea{resize:vertical;min-height:80px}
   </div>
 </div>
 
-<!-- 7: Anything Else -->
-<div class="section" data-section="7">
-  <div class="section-header"><span class="section-num">7</span><h2>Anything Else?</h2></div>
+<!-- 9: Anything Else -->
+<div class="section" data-section="9">
+  <div class="section-header"><span class="section-num">9</span><h2>Anything Else?</h2></div>
+  <p class="section-intro">Last one. What should your agent know from day one about how you work, what you worry about, and what great service means in your world?</p>
   <div class="field">
-    <label for="other_notes">How you work, what you worry about, what good service means in your business — anything your agent should know from day one.</label>
+    <label for="other_notes"></label>
     <textarea id="other_notes" name="other_notes"></textarea>
   </div>
 </div>
@@ -274,7 +382,7 @@ textarea{resize:vertical;min-height:80px}
 <div class="error-msg" id="errorMsg"></div>
 
 <div class="submit-section">
-  <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
+  <button type="submit" class="btn btn-primary" id="submitBtn">Deploy My Agent</button>
 </div>
 
 </form>
@@ -299,23 +407,19 @@ textarea{resize:vertical;min-height:80px}
 <script type="module">
 import * as THREE from 'three';
 
-// ── Three.js Particle Field ──────────────────────────
 const canvas = document.getElementById('bg-canvas');
 const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
-
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 100);
 camera.position.z = 30;
 
-// Particles — start collapsed at origin
 const count = 120;
 const geometry = new THREE.BufferGeometry();
 const positions = new Float32Array(count*3);
 const targetPositions = new Float32Array(count*3);
 const colors = new Float32Array(count*3);
-
 const teal = new THREE.Color('#174445');
 const green = new THREE.Color('#0d8f64');
 const warm = new THREE.Color('#e9e7e3');
@@ -332,55 +436,44 @@ for(let i=0;i<count;i++){
 }
 geometry.setAttribute('position',new THREE.BufferAttribute(positions,3));
 geometry.setAttribute('color',new THREE.BufferAttribute(colors,3));
-
 const mat=new THREE.PointsMaterial({size:0.25,vertexColors:true,transparent:true,opacity:0.7,blending:THREE.AdditiveBlending,depthWrite:false});
 const particles=new THREE.Points(geometry,mat);
 scene.add(particles);
 
-// Rings — start tiny
 const ringGeo=new THREE.TorusGeometry(8,0.04,16,100);
 const ringMat=new THREE.MeshBasicMaterial({color:'#174445',transparent:true,opacity:0});
 const ring=new THREE.Mesh(ringGeo,ringMat);
 ring.rotation.x=Math.PI*0.45;ring.rotation.y=Math.PI*0.1;ring.scale.set(0.01,0.01,0.01);
 scene.add(ring);
-
 const ring2Geo=new THREE.TorusGeometry(5.5,0.03,16,80);
 const ring2Mat=new THREE.MeshBasicMaterial({color:'#0d8f64',transparent:true,opacity:0});
 const ring2=new THREE.Mesh(ring2Geo,ring2Mat);
 ring2.rotation.x=Math.PI*0.55;ring2.rotation.y=-Math.PI*0.15;ring2.scale.set(0.01,0.01,0.01);
 scene.add(ring2);
 
-// Loading state
 let loadingProgress=0,loadingComplete=false;
 const loadingOverlay=document.getElementById('loading-overlay');
 const loadingIcon=document.getElementById('loadingIcon');
 const loadingTag=document.getElementById('loadingTag');
 const loadingDot=document.getElementById('loadingDot');
-
-// Animate icon and tag in
 setTimeout(()=>{
   gsap.to(loadingIcon,{opacity:1,duration:0.8,ease:'power2.out'});
   gsap.to(loadingTag,{opacity:1,duration:0.6,delay:0.3,ease:'power2.out'});
   gsap.to(loadingDot,{opacity:1,duration:0.6,delay:0.5,ease:'power2.out'});
 },300);
 
-// Mouse tracking
 let mouseX=0,mouseY=0,targetX=0,targetY=0;
 window.addEventListener('mousemove',e=>{
   targetX=(e.clientX/window.innerWidth-0.5)*4;
   targetY=(e.clientY/window.innerHeight-0.5)*3;
 });
-
 let scrollY=0;
 window.addEventListener('scroll',()=>{scrollY=window.scrollY});
 
 function animate(){
   requestAnimationFrame(animate);
-  
   if(!loadingComplete){
     loadingProgress=Math.min(1,loadingProgress+0.008);
-    
-    // Burst particles outward
     const ease=1-Math.pow(1-loadingProgress,3);
     const pos=geometry.attributes.position.array;
     for(let i=0;i<count;i++){
@@ -389,21 +482,11 @@ function animate(){
       pos[i*3+2]=targetPositions[i*3+2]*ease;
     }
     geometry.attributes.position.needsUpdate=true;
-    
-    // Scale rings up
     const s=0.01+(1-0.01)*ease;
-    ring.scale.setScalar(s);
-    ring2.scale.setScalar(s);
-    ringMat.opacity=0.12*ease;
-    ring2Mat.opacity=0.08*ease;
-    
-    // Move camera back slightly
+    ring.scale.setScalar(s);ring2.scale.setScalar(s);
+    ringMat.opacity=0.12*ease;ring2Mat.opacity=0.08*ease;
     camera.position.z=30+(1-ease)*25;
-    
-    // Increase particle opacity
     mat.opacity=0.7*ease;
-    
-    // Hide overlay when done
     if(loadingProgress>=1){
       loadingComplete=true;
       loadingOverlay.classList.add('hidden');
@@ -411,7 +494,6 @@ function animate(){
       setTimeout(()=>loadingOverlay.style.display='none',800);
     }
   }
-  
   mouseX+=(targetX-mouseX)*0.03;
   mouseY+=(targetY-mouseY)*0.03;
   if(loadingComplete){
@@ -425,26 +507,31 @@ function animate(){
   renderer.render(scene,camera);
 }
 animate();
-
 window.addEventListener('resize',()=>{
   renderer.setSize(window.innerWidth,window.innerHeight);
   camera.aspect=window.innerWidth/window.innerHeight;
   camera.updateProjectionMatrix();
 });
-
-// Fallback if three.js module fails
 canvas.addEventListener('error',()=>{canvas.style.display='none'});
 </script>
 
 <script>
-// ── GSAP Scroll Animations ──────────────────────────
+// ── Personality card selection ──────────────────────
+document.getElementById('personalityGrid').addEventListener('click',function(e){
+  const card = e.target.closest('.personality-card');
+  if(!card) return;
+  document.querySelectorAll('.personality-card').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+  card.querySelector('input').checked = true;
+});
+
+// ── GSAP Scroll ─────────────────────────────────────
 gsap.utils.toArray('.section').forEach(s=>{
   ScrollTrigger.create({trigger:s,start:'top 82%',onEnter:()=>s.classList.add('visible')});
 });
-ScrollTrigger.create({trigger:'.divider',start:'top 85%',onEnter:()=>document.querySelector('.divider')?.classList.add('visible')});
 
 // ── Progress ────────────────────────────────────────
-const totalSections=7,progressBar=document.getElementById('progressBar'),progressText=document.getElementById('progressText'),progressWrap=document.getElementById('progressWrap');
+const totalSections=9,progressBar=document.getElementById('progressBar'),progressText=document.getElementById('progressText'),progressWrap=document.getElementById('progressWrap');
 function updateProgress(){
   const sections=document.querySelectorAll('.section');
   let highest=0;
@@ -463,14 +550,29 @@ const SUPABASE_KEY='sb_publishable_BfWyBmPTdmr_WW92HI3Yew_1rvSkGpZ';
 document.getElementById('onboardingForm').addEventListener('submit',async e=>{
   e.preventDefault();
   const btn=document.getElementById('submitBtn'),err=document.getElementById('errorMsg');
-  btn.disabled=true;btn.textContent='Submitting...';err.style.display='none';
-  const data={},fields=['client_name','business_description','customers','biggest_time_eater','agent_name','agent_mission','formality','response_length','warmth','loved_phrases','banned_phrases','signoff','brand_colors','brand_fonts','brand_vibe','brand_notes','other_notes'];
-  fields.forEach(f=>{const el=document.getElementById(f);if(el){if(el.type==='radio'){const c=document.querySelector('input[name="'+f+'"]:checked');data[f]=c?c.value:'';}else{data[f]=el.value.trim();}}});
+  btn.disabled=true;btn.textContent='Deploying...';err.style.display='none';
+  
+  const data={};
+  const textFields=['client_name','business_description','customers','biggest_time_eater','agent_name','agent_mission','loved_phrases','banned_phrases','signoff','brand_colors','brand_fonts','brand_vibe','brand_notes','stack_notes','other_notes'];
+  textFields.forEach(f=>{const el=document.getElementById(f);if(el)data[f]=el.value.trim();});
+  
+  // Radio fields
+  ['personality_type','formality','response_length','warmth'].forEach(f=>{
+    const c=document.querySelector('input[name="'+f+'"]:checked');
+    if(c)data[f]=c.value;
+  });
+  
+  // Checkbox groups
+  ['stack_email','stack_website','stack_pm','stack_accounting'].forEach(f=>{
+    const checked=document.querySelectorAll('input[name="'+f+'"]:checked');
+    if(checked.length)data[f]=Array.from(checked).map(c=>c.value).join(', ');
+  });
+  
   data.status='new';
+  
   try{
     const resp=await fetch(SUPABASE_URL+'/rest/v1/client_responses',{method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(data)});
     if(resp.ok){
-      // Success state
       document.getElementById('onboardingForm').style.display='none';
       document.getElementById('progressWrap').style.display='none';
       
@@ -483,75 +585,37 @@ document.getElementById('onboardingForm').addEventListener('submit',async e=>{
       document.getElementById('successState').style.display='block';
       window.scrollTo({top:0,behavior:'smooth'});
       gsap.to('#bg-canvas',{opacity:0.3,duration:1.5});
-      
-      // Animate success elements
       gsap.fromTo('.success .kicker',{opacity:0,y:12},{opacity:1,y:0,duration:0.7,delay:0.3});
       gsap.fromTo('.success h2',{opacity:0,y:12},{opacity:1,y:0,duration:0.7,delay:0.5});
       gsap.fromTo('.success p',{opacity:0,y:12},{opacity:1,y:0,duration:0.7,delay:0.7});
       gsap.fromTo('.success-line',{opacity:0,scaleX:0},{opacity:1,scaleX:1,duration:0.8,delay:0.9});
       gsap.fromTo('.success-note',{opacity:0},{opacity:1,duration:0.8,delay:1.1});
       
-      // ── Confetti burst from button ─────────────
+      // Confetti
       (function(){
-        const btn=document.getElementById('submitBtn');
         const rect=btn.getBoundingClientRect();
-        const cx=rect.left+rect.width/2;
-        const cy=rect.top+rect.height/2;
-        
-        const confettiCanvas=document.createElement('canvas');
-        Object.assign(confettiCanvas.style,{
-          position:'fixed',inset:'0',zIndex:'9999',pointerEvents:'none'
-        });
-        document.body.appendChild(confettiCanvas);
-        confettiCanvas.width=window.innerWidth;
-        confettiCanvas.height=window.innerHeight;
-        const ctx=confettiCanvas.getContext('2d');
-        
-        const particles=[];
-        const colors=['#174445','#0d8f64','#e9e7e3','#d5d2cc','#7e7869'];
+        const cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
+        const cc=document.createElement('canvas');
+        Object.assign(cc.style,{position:'fixed',inset:'0',zIndex:'9999',pointerEvents:'none'});
+        document.body.appendChild(cc);
+        cc.width=window.innerWidth;cc.height=window.innerHeight;
+        const ctx=cc.getContext('2d');
+        const ps=[];
+        const cls=['#174445','#0d8f64','#e9e7e3','#d5d2cc','#7e7869'];
         for(let i=0;i<150;i++){
-          const angle=Math.random()*Math.PI*2;
-          const speed=6+Math.random()*14;
-          particles.push({
-            x:cx,y:cy,
-            vx:Math.cos(angle)*speed,
-            vy:Math.sin(angle)*speed-3-Math.random()*8,
-            size:3+Math.random()*7,
-            color:colors[Math.floor(Math.random()*colors.length)],
-            rotation:Math.random()*Math.PI*2,
-            rotSpeed:(Math.random()-0.5)*0.3,
-            life:1,
-            decay:0.008+Math.random()*0.012
-          });
+          const a=Math.random()*Math.PI*2,s=6+Math.random()*14;
+          ps.push({x:cx,y:cy,vx:Math.cos(a)*s,vy:Math.sin(a)*s-3-Math.random()*8,size:3+Math.random()*7,color:cls[Math.floor(Math.random()*cls.length)],rot:Math.random()*Math.PI*2,rs:(Math.random()-0.5)*0.3,life:1,decay:0.008+Math.random()*0.012});
         }
-        
-        function drawConfetti(){
-          ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+        function draw(){
+          ctx.clearRect(0,0,cc.width,cc.height);
           let alive=false;
-          for(const p of particles){
-            if(p.life<=0)continue;
-            alive=true;
-            p.x+=p.vx;
-            p.vy+=0.35;
-            p.y+=p.vy;
-            p.rotation+=p.rotSpeed;
-            p.life-=p.decay;
-            ctx.save();
-            ctx.translate(p.x,p.y);
-            ctx.rotate(p.rotation);
-            ctx.globalAlpha=p.life;
-            ctx.fillStyle=p.color;
-            ctx.fillRect(-p.size/2,-p.size/4,p.size,p.size/2);
-            ctx.restore();
-          }
-          if(alive)requestAnimationFrame(drawConfetti);
-          else confettiCanvas.remove();
+          for(const p of ps){if(p.life<=0)continue;alive=true;p.x+=p.vx;p.vy+=0.35;p.y+=p.vy;p.rot+=p.rs;p.life-=p.decay;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.globalAlpha=p.life;ctx.fillStyle=p.color;ctx.fillRect(-p.size/2,-p.size/4,p.size,p.size/2);ctx.restore();}
+          if(alive)requestAnimationFrame(draw);else cc.remove();
         }
-        drawConfetti();
+        draw();
       })();
-    }
-    else{throw new Error(await resp.text());}
-  }catch(error){err.textContent='Something went wrong. Please try again.';err.style.display='block';btn.disabled=false;btn.textContent='Submit';}
+    }else{throw new Error(await resp.text());}
+  }catch(error){err.textContent='Something went wrong. Please try again.';err.style.display='block';btn.disabled=false;btn.textContent='Deploy My Agent';}
 });
 </script>
 </body>
