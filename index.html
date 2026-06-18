@@ -29,6 +29,15 @@ html{font-family:var(--font-body);font-size:16px;line-height:1.6;color:var(--ink
 
 /* Three.js canvas */
 #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+#bg-canvas.loading{z-index:1000}
+
+/* Loading overlay */
+#loading-overlay{position:fixed;inset:0;z-index:999;background:var(--gray-50);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity 0.8s ease}
+#loading-overlay.hidden{opacity:0;pointer-events:none}
+.loading-logo{font-family:var(--font-display);font-size:2.2rem;color:var(--teal);margin-bottom:8px;opacity:0}
+.loading-tag{font-family:var(--font-body);font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--muted);opacity:0}
+.loading-dot{width:4px;height:4px;border-radius:50%;background:var(--teal);margin-top:32px;animation:pulse 1.2s ease-in-out infinite;opacity:0}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:0.6}50%{transform:scale(2.5);opacity:0}}
 
 /* Content sits above canvas */
 body{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:0 24px}
@@ -107,6 +116,12 @@ textarea{resize:vertical;min-height:80px}
 <body>
 
 <canvas id="bg-canvas"></canvas>
+
+<div id="loading-overlay">
+  <div class="loading-logo" id="loadingLogo">Snowark</div>
+  <div class="loading-tag" id="loadingTag">Preparing your experience</div>
+  <div class="loading-dot" id="loadingDot"></div>
+</div>
 
 <div class="progress-wrap" id="progressWrap">
   <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
@@ -267,10 +282,11 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 100);
 camera.position.z = 30;
 
-// Particles
+// Particles — start collapsed at origin
 const count = 120;
 const geometry = new THREE.BufferGeometry();
 const positions = new Float32Array(count*3);
+const targetPositions = new Float32Array(count*3);
 const colors = new Float32Array(count*3);
 
 const teal = new THREE.Color('#174445');
@@ -278,9 +294,10 @@ const green = new THREE.Color('#0d8f64');
 const warm = new THREE.Color('#e9e7e3');
 
 for(let i=0;i<count;i++){
-  positions[i*3]=(Math.random()-0.5)*50;
-  positions[i*3+1]=(Math.random()-0.5)*40;
-  positions[i*3+2]=(Math.random()-0.5)*20;
+  positions[i*3]=0; positions[i*3+1]=0; positions[i*3+2]=0;
+  targetPositions[i*3]=(Math.random()-0.5)*50;
+  targetPositions[i*3+1]=(Math.random()-0.5)*40;
+  targetPositions[i*3+2]=(Math.random()-0.5)*20;
   const mix=Math.random();
   const c=mix<0.15?teal.clone():mix<0.25?green.clone():warm.clone();
   c.multiplyScalar(0.4+Math.random()*0.6);
@@ -293,16 +310,32 @@ const mat=new THREE.PointsMaterial({size:0.25,vertexColors:true,transparent:true
 const particles=new THREE.Points(geometry,mat);
 scene.add(particles);
 
-// Central geometric accent
+// Rings — start tiny
 const ringGeo=new THREE.TorusGeometry(8,0.04,16,100);
-const ringMat=new THREE.MeshBasicMaterial({color:'#174445',transparent:true,opacity:0.12});
+const ringMat=new THREE.MeshBasicMaterial({color:'#174445',transparent:true,opacity:0});
 const ring=new THREE.Mesh(ringGeo,ringMat);
-ring.rotation.x=Math.PI*0.45;ring.rotation.y=Math.PI*0.1;
+ring.rotation.x=Math.PI*0.45;ring.rotation.y=Math.PI*0.1;ring.scale.set(0.01,0.01,0.01);
 scene.add(ring);
 
-const ring2=new THREE.Mesh(new THREE.TorusGeometry(5.5,0.03,16,80),new THREE.MeshBasicMaterial({color:'#0d8f64',transparent:true,opacity:0.08}));
-ring2.rotation.x=Math.PI*0.55;ring2.rotation.y=-Math.PI*0.15;
+const ring2Geo=new THREE.TorusGeometry(5.5,0.03,16,80);
+const ring2Mat=new THREE.MeshBasicMaterial({color:'#0d8f64',transparent:true,opacity:0});
+const ring2=new THREE.Mesh(ring2Geo,ring2Mat);
+ring2.rotation.x=Math.PI*0.55;ring2.rotation.y=-Math.PI*0.15;ring2.scale.set(0.01,0.01,0.01);
 scene.add(ring2);
+
+// Loading state
+let loadingProgress=0,loadingComplete=false;
+const loadingOverlay=document.getElementById('loading-overlay');
+const loadingLogo=document.getElementById('loadingLogo');
+const loadingTag=document.getElementById('loadingTag');
+const loadingDot=document.getElementById('loadingDot');
+
+// Animate logo and tag in
+setTimeout(()=>{
+  gsap.to(loadingLogo,{opacity:1,duration:0.6,ease:'power2.out'});
+  gsap.to(loadingTag,{opacity:1,duration:0.6,delay:0.2,ease:'power2.out'});
+  gsap.to(loadingDot,{opacity:1,duration:0.6,delay:0.4,ease:'power2.out'});
+},300);
 
 // Mouse tracking
 let mouseX=0,mouseY=0,targetX=0,targetY=0;
@@ -311,17 +344,54 @@ window.addEventListener('mousemove',e=>{
   targetY=(e.clientY/window.innerHeight-0.5)*3;
 });
 
-// Scroll tracking for parallax
 let scrollY=0;
 window.addEventListener('scroll',()=>{scrollY=window.scrollY});
 
 function animate(){
   requestAnimationFrame(animate);
+  
+  if(!loadingComplete){
+    loadingProgress=Math.min(1,loadingProgress+0.008);
+    
+    // Burst particles outward
+    const ease=1-Math.pow(1-loadingProgress,3);
+    const pos=geometry.attributes.position.array;
+    for(let i=0;i<count;i++){
+      pos[i*3]=targetPositions[i*3]*ease;
+      pos[i*3+1]=targetPositions[i*3+1]*ease;
+      pos[i*3+2]=targetPositions[i*3+2]*ease;
+    }
+    geometry.attributes.position.needsUpdate=true;
+    
+    // Scale rings up
+    const s=0.01+(1-0.01)*ease;
+    ring.scale.setScalar(s);
+    ring2.scale.setScalar(s);
+    ringMat.opacity=0.12*ease;
+    ring2Mat.opacity=0.08*ease;
+    
+    // Move camera back slightly
+    camera.position.z=30+(1-ease)*25;
+    
+    // Increase particle opacity
+    mat.opacity=0.7*ease;
+    
+    // Hide overlay when done
+    if(loadingProgress>=1){
+      loadingComplete=true;
+      loadingOverlay.classList.add('hidden');
+      canvas.classList.remove('loading');
+      setTimeout(()=>loadingOverlay.style.display='none',800);
+    }
+  }
+  
   mouseX+=(targetX-mouseX)*0.03;
   mouseY+=(targetY-mouseY)*0.03;
-  particles.rotation.x+=0.00015;
-  particles.rotation.y=mouseX*0.05;
-  particles.rotation.x+=mouseY*0.03;
+  if(loadingComplete){
+    particles.rotation.x+=0.00015;
+    particles.rotation.y=mouseX*0.05;
+    particles.rotation.x+=mouseY*0.03;
+  }
   ring.rotation.z+=0.0003;
   ring2.rotation.z-=0.0002;
   camera.position.y=-scrollY*0.008;
@@ -372,7 +442,73 @@ document.getElementById('onboardingForm').addEventListener('submit',async e=>{
   data.status='new';
   try{
     const resp=await fetch(SUPABASE_URL+'/rest/v1/client_responses',{method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(data)});
-    if(resp.ok){document.getElementById('onboardingForm').style.display='none';document.getElementById('successState').style.display='block';document.getElementById('progressWrap').style.display='none';window.scrollTo({top:0,behavior:'smooth'});gsap.to('#bg-canvas',{opacity:0.3,duration:1.5});}
+    if(resp.ok){
+      // Success state
+      document.getElementById('onboardingForm').style.display='none';
+      document.getElementById('successState').style.display='block';
+      document.getElementById('progressWrap').style.display='none';
+      window.scrollTo({top:0,behavior:'smooth'});
+      gsap.to('#bg-canvas',{opacity:0.3,duration:1.5});
+      
+      // ── Confetti burst from button ─────────────
+      (function(){
+        const btn=document.getElementById('submitBtn');
+        const rect=btn.getBoundingClientRect();
+        const cx=rect.left+rect.width/2;
+        const cy=rect.top+rect.height/2;
+        
+        const confettiCanvas=document.createElement('canvas');
+        Object.assign(confettiCanvas.style,{
+          position:'fixed',inset:'0',zIndex:'9999',pointerEvents:'none'
+        });
+        document.body.appendChild(confettiCanvas);
+        confettiCanvas.width=window.innerWidth;
+        confettiCanvas.height=window.innerHeight;
+        const ctx=confettiCanvas.getContext('2d');
+        
+        const particles=[];
+        const colors=['#174445','#0d8f64','#e9e7e3','#d5d2cc','#7e7869'];
+        for(let i=0;i<150;i++){
+          const angle=Math.random()*Math.PI*2;
+          const speed=6+Math.random()*14;
+          particles.push({
+            x:cx,y:cy,
+            vx:Math.cos(angle)*speed,
+            vy:Math.sin(angle)*speed-3-Math.random()*8,
+            size:3+Math.random()*7,
+            color:colors[Math.floor(Math.random()*colors.length)],
+            rotation:Math.random()*Math.PI*2,
+            rotSpeed:(Math.random()-0.5)*0.3,
+            life:1,
+            decay:0.008+Math.random()*0.012
+          });
+        }
+        
+        function drawConfetti(){
+          ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+          let alive=false;
+          for(const p of particles){
+            if(p.life<=0)continue;
+            alive=true;
+            p.x+=p.vx;
+            p.vy+=0.35;
+            p.y+=p.vy;
+            p.rotation+=p.rotSpeed;
+            p.life-=p.decay;
+            ctx.save();
+            ctx.translate(p.x,p.y);
+            ctx.rotate(p.rotation);
+            ctx.globalAlpha=p.life;
+            ctx.fillStyle=p.color;
+            ctx.fillRect(-p.size/2,-p.size/4,p.size,p.size/2);
+            ctx.restore();
+          }
+          if(alive)requestAnimationFrame(drawConfetti);
+          else confettiCanvas.remove();
+        }
+        drawConfetti();
+      })();
+    }
     else{throw new Error(await resp.text());}
   }catch(error){err.textContent='Something went wrong. Please try again.';err.style.display='block';btn.disabled=false;btn.textContent='Submit';}
 });
