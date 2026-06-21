@@ -246,6 +246,87 @@
   .loading { text-align: center; padding: 40px; color: rgba(0,0,0,0.4); }
   .error-state { text-align: center; padding: 40px; color: #c44a4a; }
 
+  /* Capabilities */
+  .capability-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .skill-stat-card {
+    flex: 1;
+    background: linear-gradient(135deg, rgba(var(--teal-rgb), 0.06), rgba(var(--green-rgb), 0.06));
+    border-radius: 10px;
+    padding: 18px 16px;
+    text-align: center;
+    border: 1px solid rgba(var(--green-rgb), 0.12);
+  }
+  .skill-stat-num {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    color: var(--teal);
+    line-height: 1;
+  }
+  .skill-stat-num .accent { color: var(--green); }
+  .skill-stat-label {
+    font-size: 0.78rem;
+    color: rgba(0,0,0,0.5);
+    margin-top: 4px;
+  }
+  .tip-box {
+    background: linear-gradient(135deg, rgba(var(--teal-rgb), 0.92), rgba(var(--teal-rgb), 0.85));
+    border-radius: 10px;
+    padding: 18px 20px;
+    position: relative;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .tip-box::before {
+    content: '💡';
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.4rem;
+    opacity: 0.5;
+  }
+  .tip-content {
+    padding-left: 40px;
+    width: 100%;
+  }
+  .tip-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 4px;
+  }
+  .tip-text {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.92);
+    line-height: 1.5;
+  }
+  .tip-text em {
+    font-style: normal;
+    color: #5ce0b8;
+    font-weight: 700;
+  }
+  .tip-dots {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .tip-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: background 0.4s ease;
+  }
+  .tip-dot.active { background: rgba(255,255,255,0.8); }
+
   @media (max-width: 600px) {
     .container { padding: 16px 12px 40px; }
     .panel-header { padding: 16px 16px 0; }
@@ -290,6 +371,21 @@
     <div class="panel-body">
       <div class="counter-row" id="counters"></div>
       <div id="activity-feed"></div>
+    </div>
+  </div>
+
+  <!-- Capabilities -->
+  <div class="panel">
+    <div class="panel-header">What Atlas Can Do For You</div>
+    <div class="panel-body">
+      <div class="capability-row" id="skill-stats"></div>
+      <div class="tip-box" id="tip-box">
+        <div class="tip-content">
+          <div class="tip-label">Try asking Atlas</div>
+          <div class="tip-text" id="tip-text"></div>
+          <div class="tip-dots" id="tip-dots"></div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -382,6 +478,37 @@
         '</div>'
       ).join('');
       document.getElementById('activity-feed').innerHTML = feedHTML;
+
+      // Capabilities
+      const cap = d.capabilities;
+      document.getElementById('skill-stats').innerHTML =
+        '<div class="skill-stat-card"><div class="skill-stat-num">' + cap.skills_count + '</div><div class="skill-stat-label">Skills loaded</div></div>' +
+        '<div class="skill-stat-card"><div class="skill-stat-num"><span class="accent">' + cap.categories_count + '</span></div><div class="skill-stat-label">Capability areas</div></div>' +
+        '<div class="skill-stat-card"><div class="skill-stat-num">' + cap.tips.length + '</div><div class="skill-stat-label">Things to try</div></div>';
+
+      // Rotating tips
+      let tipIndex = 0;
+      const tips = cap.tips;
+      const tipText = document.getElementById('tip-text');
+      const tipDots = document.getElementById('tip-dots');
+
+      // Build dots
+      tipDots.innerHTML = tips.map((_, i) =>
+        '<div class="tip-dot' + (i === 0 ? ' active' : '') + '"></div>'
+      ).join('');
+
+      function showTip(i) {
+        tipText.innerHTML = tips[i];
+        tipDots.querySelectorAll('.tip-dot').forEach((d, j) => {
+          d.className = 'tip-dot' + (j === i ? ' active' : '');
+        });
+      }
+      showTip(0);
+
+      setInterval(() => {
+        tipIndex = (tipIndex + 1) % tips.length;
+        showTip(tipIndex);
+      }, 5000);
 
       // Health cards
       const h = d.health;

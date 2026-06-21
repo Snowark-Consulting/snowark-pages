@@ -113,5 +113,18 @@
     },
     "model": "deepseek-v4-pro (DeepSeek)"
   },
-  "last_updated": "2026-06-21T16:17:15.678204"
+  "capabilities": {
+    "skills_count": 73,
+    "categories_count": 14,
+    "tips": [
+      "<em>Build me a professional quote page</em> for a painting client with my branding and pricing tiers",
+      "<em>Draft a 3-email follow-up sequence</em> for trade service quotes that goes out over 5 days",
+      "<em>Create a comparison landing page</em> showing Not Forgotten vs manual follow-up \u2014 with ROI calculator",
+      "<em>Write a case study</em> from the Travis Krieg Painting example \u2014 $59,000 recovered in 3 weeks",
+      "<em>Research my top 5 competitors</em> in automated quote follow-up and summarise their strengths",
+      "<em>Build me a client intake form</em> that captures quote preferences and service details",
+      "<em>Analyse winning patterns</em> in successful quotes \u2014 which follow-up cadence converts best?"
+    ]
+  },
+  "last_updated": "2026-06-21T16:41:08.561092"
 }
