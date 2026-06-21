@@ -1,0 +1,117 @@
+{
+  "client": {
+    "name": "James Hardstaff",
+    "business": "Not Forgotten Systems",
+    "agent": "Atlas",
+    "slug": "atlas"
+  },
+  "onboarding": {
+    "stages": [
+      {
+        "name": "Questionnaire",
+        "status": "in_progress",
+        "detail": "Partial submission \u2014 re-send with scroll-gate instructions"
+      },
+      {
+        "name": "Agent Build",
+        "status": "complete",
+        "detail": "Atlas deployed on orgo.ai with DeepSeek v4 Pro"
+      },
+      {
+        "name": "Channels",
+        "status": "complete",
+        "detail": "Telegram group active, email channel pending provider details"
+      },
+      {
+        "name": "Profile Picture",
+        "status": "in_progress",
+        "detail": "Avatar generated via Gemini Imagen \u2014 yearbook-style, final touches needed"
+      },
+      {
+        "name": "Knowledge Base",
+        "status": "pending",
+        "detail": "Awaiting James: logo, workflows, PM tool, email provider, internal docs"
+      },
+      {
+        "name": "Handover",
+        "status": "pending",
+        "detail": "James to be added to Telegram group, final review"
+      }
+    ]
+  },
+  "activity": {
+    "tasks_completed": 16,
+    "hours_saved_estimate": 9,
+    "recent": [
+      {
+        "date": "2026-06-21",
+        "task": "System cron jobs activated \u2014 backup, memory consolidation, weekly self-lint",
+        "category": "infrastructure"
+      },
+      {
+        "date": "2026-06-21",
+        "task": "GitHub nightly backup configured and tested for Atlas",
+        "category": "infrastructure"
+      },
+      {
+        "date": "2026-06-21",
+        "task": "Client dashboard built \u2014 live at snowark.ai/atlas",
+        "category": "deployment"
+      },
+      {
+        "date": "2026-06-21",
+        "task": "Profile picture: 4+ iterations via Gemini Imagen, yearbook style",
+        "category": "design"
+      },
+      {
+        "date": "2026-06-21",
+        "task": "Telegram group created \u2014 Atlas and Winston bots connected",
+        "category": "channels"
+      },
+      {
+        "date": "2026-06-21",
+        "task": "Atlas deployed to orgo.ai \u2014 DeepSeek v4 Pro, identity configured",
+        "category": "deployment"
+      },
+      {
+        "date": "2026-06-21",
+        "task": "Client vault rendered \u2014 34 files, 0 placeholders",
+        "category": "deployment"
+      },
+      {
+        "date": "2026-06-21",
+        "task": "Not Forgotten Systems business profile scraped and indexed",
+        "category": "knowledge"
+      }
+    ]
+  },
+  "health": {
+    "agent": {
+      "status": "online",
+      "uptime_hours": 14
+    },
+    "crons": [
+      {
+        "name": "Memory consolidation",
+        "status": "pending_first",
+        "next": "21:00 ACST"
+      },
+      {
+        "name": "Nightly backup",
+        "status": "ok",
+        "next": "21:30 ACST"
+      },
+      {
+        "name": "Weekly self-lint",
+        "status": "pending_first",
+        "next": "Sun 17:00 ACST"
+      }
+    ],
+    "backup": {
+      "last": "2026-06-21T06:24:00Z",
+      "status": "ok"
+    },
+    "model": "deepseek-v4-pro (DeepSeek)"
+  },
+  "last_updated": "2026-06-21T16:17:15.678204"
+}
