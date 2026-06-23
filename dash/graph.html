@@ -173,7 +173,7 @@ const COMMUNITY_COLORS = [
 
 let rotating = true;
 let Graph;
-let contentMap = {}; // node id -> markdown content
+let contentMap = {}; // node id -> content_hash for lazy loading
 let nodeFileMap = {}; // node id -> source_file path
 
 fetch(`data/${client}-graph.json`)
@@ -188,8 +188,7 @@ fetch(`data/${client}-graph.json`)
       if (!commMap.has(cid)) commMap.set(cid, { name: cname, count: 0, color: COMMUNITY_COLORS[cid % COMMUNITY_COLORS.length] });
       commMap.get(cid).count++;
 
-      // Store content and file path
-      if (n.content) contentMap[n.id] = n.content;
+      if (n.content_hash) contentMap[n.id] = n.content_hash;
       if (n.source_file) nodeFileMap[n.id] = n.source_file;
 
       return {
@@ -200,7 +199,7 @@ fetch(`data/${client}-graph.json`)
         type: n.file_type || "unknown",
         file: n.source_file || "",
         community: cid,
-        hasContent: !!n.content
+        hasContent: !!n.content_hash
       };
     });
 
@@ -275,19 +274,24 @@ fetch(`data/${client}-graph.json`)
 function openContentPanel(node) {
   const panel = document.getElementById("content-panel");
   const title = document.getElementById("panel-title");
-  const path = document.getElementById("panel-path");
+  const pathEl = document.getElementById("panel-path");
   const body = document.getElementById("panel-body");
 
   title.textContent = node.name;
-  path.textContent = node.file || "";
+  pathEl.textContent = node.file || "";
 
-  const content = contentMap[node.id];
-  if (content) {
-    body.innerHTML = marked.parse(content);
+  const hash = contentMap[node.id];
+  if (hash) {
+    body.innerHTML = '<div id="panel-loading">Loading...</div>';
+    const url = `data/${client}-content/${hash}.md`;
+    fetch(url)
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
+      .then(md => { body.innerHTML = marked.parse(md); })
+      .catch(() => { body.innerHTML = '<p style="color:#ef5a5a">Failed to load file content.</p>'; });
   } else if (node.file) {
-    body.innerHTML = `<p style="color:#7a9a9a">No embedded content for this file. Try a node with a <span style="color:#0d8f64">●</span> larger sphere.</p>`;
+    body.innerHTML = '<p style="color:#7a9a9a">No content available for this node. Try a node with a <span style="color:#0d8f64">●</span> larger sphere.</p>';
   } else {
-    body.innerHTML = `<p style="color:#7a9a9a">This node represents a concept, not a file.</p>`;
+    body.innerHTML = '<p style="color:#7a9a9a">This node represents a concept, not a file.</p>';
   }
 
   panel.classList.add("open");
