@@ -47,11 +47,22 @@
   .header-updated {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 16px;
     margin-top: 12px;
     font-size: 0.8rem;
     color: rgba(255,255,255,0.5);
   }
+  .header-graph-link {
+    color: var(--green);
+    text-decoration: none;
+    font-weight: 700;
+    padding: 4px 10px;
+    border: 1px solid rgba(13, 143, 100, 0.3);
+    border-radius: 6px;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .header-graph-link:hover { background: rgba(13, 143, 100, 0.15); }
   .pulse {
     width: 8px; height: 8px;
     border-radius: 50%;
@@ -343,6 +354,7 @@
   <div class="header-logo">Snowark</div>
   <div class="header-client" id="header-client">Loading…</div>
   <div class="header-updated">
+    <a href="graph.html" id="graph-link" class="header-graph-link">Knowledge Graph</a>
     <span class="pulse" id="pulse-dot"></span>
     <span id="header-time"></span>
   </div>
@@ -410,6 +422,7 @@
   const params = new URLSearchParams(window.location.search);
   const client = params.get('client') || 'atlas';
   const DATA_URL = `data/${client}.json`;
+  document.getElementById('graph-link').href = `graph.html?client=${client}`;
 
   function timeAgo(iso) {
     const diff = (Date.now() - new Date(iso).getTime()) / 1000;
