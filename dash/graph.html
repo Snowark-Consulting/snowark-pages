@@ -192,6 +192,11 @@
 const params = new URLSearchParams(window.location.search);
 const client = params.get("client") || "atlas";
 
+// Agent display names per client slug
+const AGENT_NAMES = { atlas: "Atlas" };
+const agentName = AGENT_NAMES[client] || client.charAt(0).toUpperCase() + client.slice(1);
+document.querySelector(".loading-tag").textContent = `Loading ${agentName} Knowledge Graph`;
+
 const TEAL = "#174445";
 const GREEN = "#0d8f64";
 const DARK_BG = "#080810";
@@ -313,7 +318,7 @@ fetch(`data/${client}-graph.json`)
   })
   .catch(err => {
     const ol = document.getElementById("loading-overlay");
-    ol.querySelector(".loading-tag").textContent = "Failed to load";
+    ol.querySelector(".loading-tag").textContent = `Failed to load ${agentName}`;
     ol.querySelector(".loading-tag").style.color = "#ef5a5a";
     ol.querySelector("img").style.animation = "none";
   });
