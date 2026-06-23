@@ -182,37 +182,52 @@ fetch(`data/${client}-graph.json`)
     Graph = ForceGraph3D()(elem)
       .graphData({ nodes, links })
       .nodeColor(n => n.color)
-      .nodeVal(n => n.val)
+      .nodeVal(n => 4 + (n.file_type === "doc" ? 3 : 1))
       .nodeLabel(n => `<b>${n.name}</b><br><small>${n.desc}<br>${n.type} · ${n.file}</small>`)
-      .nodeResolution(16)
-      .linkColor(() => `rgba(233, 231, 227, 0.12)`)
-      .linkWidth(l => Math.max(0.3, l.weight * 0.5))
-      .linkDirectionalParticles(0)
-      .linkOpacity(0.15)
-      . backgroundColor(DARK_BG)
+      .nodeResolution(32)
+      .linkColor(l => `rgba(13, 143, 100, 0.45)`)
+      .linkWidth(l => Math.max(1, l.weight * 2.5))
+      .linkDirectionalParticles(2)
+      .linkDirectionalParticleWidth(1.2)
+      .linkCurvature(0.15)
+      .linkOpacity(0.55)
+      .backgroundColor(DARK_BG)
       .onNodeHover(node => {
         const info = document.getElementById("info");
         if (node) {
           info.querySelector(".name").textContent = node.name;
           info.querySelector(".detail").innerHTML = `${node.desc}<br>${node.type} · ${node.file}`;
           info.classList.add("visible");
+          // Highlight connected links
+          Graph.linkWidth(l => {
+            const sid = typeof l.source === 'object' ? l.source.id : l.source;
+            const tid = typeof l.target === 'object' ? l.target.id : l.target;
+            return (sid === node.id || tid === node.id) ? 3 : 0.3;
+          });
+          Graph.linkColor(l => {
+            const sid = typeof l.source === 'object' ? l.source.id : l.source;
+            const tid = typeof l.target === 'object' ? l.target.id : l.target;
+            return (sid === node.id || tid === node.id) ? 'rgba(13, 143, 100, 0.9)' : 'rgba(13, 143, 100, 0.08)';
+          });
         } else {
           info.classList.remove("visible");
+          Graph.linkWidth(l => Math.max(1, l.weight * 2.5));
+          Graph.linkColor(() => 'rgba(13, 143, 100, 0.45)');
         }
       })
       .onNodeClick(node => {
-        const dist = 60;
+        const dist = 40;
         const pos = { x: node.x, y: node.y, z: node.z };
         Graph.cameraPosition(
-          { x: pos.x + dist * 1.5, y: pos.y + dist * 0.5, z: pos.z + dist * 1.5 },
+          { x: pos.x + dist * 1.2, y: pos.y + dist * 0.4, z: pos.z + dist * 1.2 },
           pos,
-          1500
+          1200
         );
       });
 
-    // Custom forces
-    Graph.d3Force("charge").strength(-40);
-    Graph.d3Force("link").distance(l => 20 + l.weight * 30);
+    // Softer forces for tighter clusters
+    Graph.d3Force("charge").strength(-60);
+    Graph.d3Force("link").distance(l => 25 + l.weight * 15);
 
     // Gentle auto-rotation
     animateRotation();
