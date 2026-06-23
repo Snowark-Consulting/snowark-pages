@@ -211,7 +211,11 @@ let nodeFileMap = {}; // node id -> source_file path
 fetch(`data/${client}-graph.json`)
   .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
   .then(raw => {
-    document.getElementById("loading-overlay").classList.add("hidden");
+    // Build graph data first, then ensure loading screen shows at least 8s
+    const startTime = Date.now();
+    
+    // Process data in background, then show after 8s minimum
+    function buildGraph() {
 
     const commMap = new Map();
     const nodes = (raw.nodes || []).map(n => {
@@ -294,9 +298,18 @@ fetch(`data/${client}-graph.json`)
 
     Graph.d3Force("charge").strength(-60);
     Graph.d3Force("link").distance(l => 25 + l.weight * 15);
-
     animateRotation();
     addStarfield(Graph.scene());
+    
+    } // end buildGraph
+
+    // Ensure loading screen shows at least 8 seconds
+    const elapsed = Date.now() - startTime;
+    const remaining = Math.max(0, 8000 - elapsed);
+    setTimeout(() => {
+      buildGraph();
+      document.getElementById("loading-overlay").classList.add("hidden");
+    }, remaining);
   })
   .catch(err => {
     const ol = document.getElementById("loading-overlay");
