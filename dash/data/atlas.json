@@ -2,129 +2,116 @@
   "client": {
     "name": "James Hardstaff",
     "business": "Not Forgotten Systems",
-    "agent": "Atlas",
-    "slug": "atlas"
+    "agent": "Atlas"
   },
   "onboarding": {
     "stages": [
       {
-        "name": "Questionnaire",
-        "status": "in_progress",
-        "detail": "Partial submission \u2014 re-send with scroll-gate instructions"
+        "name": "Agent Deployed",
+        "status": "complete",
+        "detail": "Atlas live on orgo.ai \u2014 DeepSeek v4 Pro"
       },
       {
-        "name": "Agent Build",
+        "name": "Telegram Group",
         "status": "complete",
-        "detail": "Atlas deployed on orgo.ai with DeepSeek v4 Pro"
+        "detail": "Group active with James, Josh, Winston, Atlas"
       },
       {
-        "name": "Channels",
+        "name": "GitHub Pages",
         "status": "complete",
-        "detail": "Telegram group active, email channel pending provider details"
+        "detail": "notforgotten-pages repo \u2014 case studies and dash live"
+      },
+      {
+        "name": "Knowledge Base",
+        "status": "complete",
+        "detail": "Business profile, pricing, services, case studies loaded"
+      },
+      {
+        "name": "Email Channel",
+        "status": "pending",
+        "detail": "Awaiting James's email provider details"
       },
       {
         "name": "Profile Picture",
         "status": "in_progress",
-        "detail": "Avatar generated via Gemini Imagen \u2014 yearbook-style, final touches needed"
-      },
-      {
-        "name": "Knowledge Base",
-        "status": "pending",
-        "detail": "Awaiting James: logo, workflows, PM tool, email provider, internal docs"
-      },
-      {
-        "name": "Handover",
-        "status": "pending",
-        "detail": "James to be added to Telegram group, final review"
+        "detail": "Yearbook-style avatar \u2014 final touches needed"
       }
     ]
   },
   "activity": {
-    "tasks_completed": 16,
-    "hours_saved_estimate": 9,
+    "tasks_completed": 8,
+    "hours_saved_estimate": 4.48,
+    "sessions": 3,
     "recent": [
       {
-        "date": "2026-06-21",
-        "task": "System cron jobs activated \u2014 backup, memory consolidation, weekly self-lint",
-        "category": "infrastructure"
+        "date": "2026-06-23 13:10",
+        "task": "Ingested and adapted 12 marketing skills from coreyhaines31/marketingskills for Not Forgotten: copywriting, emails, cro, marketing-psychology, cold-email, offers, copy-editing, pricing, popups, signup, churn-prevention, ad-creative. All tradie-adapted with NFS voice/product context.",
+        "category": "task"
       },
       {
-        "date": "2026-06-21",
-        "task": "GitHub nightly backup configured and tested for Atlas",
-        "category": "infrastructure"
+        "date": "2026-06-23 07:11",
+        "task": "Fixed inbox pulse double-post bug \u2014 mark-as-read now happens before summarising, closing race condition between Phase 1 (60s poll) and Phase 2 (slow agent boot)",
+        "category": "task"
       },
       {
-        "date": "2026-06-21",
-        "task": "Client dashboard built \u2014 live at snowark.ai/atlas",
-        "category": "deployment"
+        "date": "2026-06-22 20:51",
+        "task": "Rebuilt inbox watchdog as two-phase pulse: 60s unread scan + full-identity agent boot when mail found, auto-mark-read",
+        "category": "task"
       },
       {
-        "date": "2026-06-21",
-        "task": "Profile picture: 4+ iterations via Gemini Imagen, yearbook style",
-        "category": "design"
+        "date": "2026-06-22 20:35",
+        "task": "Full-graph wikilink pass + vault lint: 22 files connected (~70 links), 2 orphan cards fixed (git, supabase), 0 broken links",
+        "category": "task"
       },
       {
-        "date": "2026-06-21",
-        "task": "Telegram group created \u2014 Atlas and Winston bots connected",
-        "category": "channels"
+        "date": "2026-06-21 12:14",
+        "task": "Delivered readiness overview for James \u2014 what's live, what's waiting, next steps for the week",
+        "category": "task"
       },
       {
-        "date": "2026-06-21",
-        "task": "Atlas deployed to orgo.ai \u2014 DeepSeek v4 Pro, identity configured",
-        "category": "deployment"
+        "date": "2026-06-21 11:33",
+        "task": "Nightly memory consolidation: created notes/2026-06-21.md, updated MEMORY.md index with 4 entries, added 2 LEARNINGS entries (edit-tool and .sessions/ fallback), fixed broken hook paths in SOPs.md and Infrastructure.md",
+        "category": "task"
       },
       {
-        "date": "2026-06-21",
-        "task": "Client vault rendered \u2014 34 files, 0 placeholders",
-        "category": "deployment"
+        "date": "2026-06-21 10:32",
+        "task": "Built full landing page replica of notforgotten.com.au as GitHub Pages site",
+        "category": "task"
       },
       {
-        "date": "2026-06-21",
-        "task": "Not Forgotten Systems business profile scraped and indexed",
-        "category": "knowledge"
+        "date": "2026-06-21 10:04",
+        "task": "Dashboard deployed \u2014 Atlas can now self-report tasks",
+        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 14
+      "uptime_hours": 77.9
     },
     "crons": [
       {
         "name": "Memory consolidation",
-        "status": "pending_first",
-        "next": "21:00 ACST"
+        "status": "unknown",
+        "next": "?"
       },
       {
         "name": "Nightly backup",
-        "status": "ok",
-        "next": "21:30 ACST"
-      },
-      {
-        "name": "Weekly self-lint",
-        "status": "pending_first",
-        "next": "Sun 17:00 ACST"
+        "status": "unknown",
+        "next": "?"
       }
     ],
     "backup": {
-      "last": "2026-06-21T06:24:00Z",
-      "status": "ok"
+      "last": "unknown",
+      "status": "unknown"
     },
-    "model": "deepseek-v4-pro (DeepSeek)"
+    "model": ""
   },
   "capabilities": {
-    "skills_count": 73,
+    "skills_count": 92,
     "categories_count": 14,
-    "tips": [
-      "<em>Build me a professional quote page</em> for a painting client with my branding and pricing tiers",
-      "<em>Draft a 3-email follow-up sequence</em> for trade service quotes that goes out over 5 days",
-      "<em>Create a comparison landing page</em> showing Not Forgotten vs manual follow-up \u2014 with ROI calculator",
-      "<em>Write a case study</em> from the Travis Krieg Painting example \u2014 $59,000 recovered in 3 weeks",
-      "<em>Research my top 5 competitors</em> in automated quote follow-up and summarise their strengths",
-      "<em>Build me a client intake form</em> that captures quote preferences and service details",
-      "<em>Analyse winning patterns</em> in successful quotes \u2014 which follow-up cadence converts best?"
-    ]
+    "tips": []
   },
-  "last_updated": "2026-06-21T16:41:08.561092"
+  "last_updated": "2026-06-24T07:54:22.673356"
 }
