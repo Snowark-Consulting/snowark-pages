@@ -39,9 +39,29 @@
     ]
   },
   "activity": {
-    "tasks_completed": 8,
-    "hours_saved_estimate": 4.5,
+    "tasks_completed": 12,
+    "hours_saved_estimate": 6.7,
     "recent": [
+      {
+        "date": "2026-06-24 11:28",
+        "task": "Hardened James's inbox scope rule across 3 files \u2014 pulse-bootstrap.md, email-inbox-pulse SKILL.md, delegated-mailbox-access.md. Read-only: no send, no mark-read, no labels.",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-24 11:24",
+        "task": "Pressure-tested persistent Chrome browser \u2014 restart resilience \u2713, Google session persistence \u2713, form interaction \u2713. Created orgo-chrome skill with known limitations and workarounds.",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-24 11:16",
+        "task": "Accepted Gmail delegation from james@notforgotten.com.au \u2014 verification propagating (up to 30min). Chrome persistent profile active on CDP :9222.",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-24 11:02",
+        "task": "Inbox pulse cron upgraded to 24/7 coverage \u2014 closed the 8-hour blind spot that caused a delegation verification email to be silently missed today",
+        "category": "task"
+      },
       {
         "date": "2026-06-23 13:10",
         "task": "Ingested and adapted 12 marketing skills from coreyhaines31/marketingskills for Not Forgotten: copywriting, emails, cro, marketing-psychology, cold-email, offers, copy-editing, pricing, popups, signup, churn-prevention, ad-creative. All tradie-adapted with NFS voice/product context.",
@@ -61,39 +81,19 @@
         "date": "2026-06-22 20:35",
         "task": "Full-graph wikilink pass + vault lint: 22 files connected (~70 links), 2 orphan cards fixed (git, supabase), 0 broken links",
         "category": "task"
-      },
-      {
-        "date": "2026-06-21 12:14",
-        "task": "Delivered readiness overview for James \u2014 what's live, what's waiting, next steps for the week",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-21 11:33",
-        "task": "Nightly memory consolidation: created notes/2026-06-21.md, updated MEMORY.md index with 4 entries, added 2 LEARNINGS entries (edit-tool and .sessions/ fallback), fixed broken hook paths in SOPs.md and Infrastructure.md",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-21 10:32",
-        "task": "Built full landing page replica of notforgotten.com.au as GitHub Pages site",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-21 10:04",
-        "task": "Dashboard deployed \u2014 Atlas can now self-report tasks",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 81.0
+      "uptime_hours": 82.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-24T12:00:00+00:00",
+        "next": "2026-06-24T13:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -104,7 +104,7 @@
     "model": ""
   },
   "capabilities": {
-    "skills_count": 92,
+    "skills_count": 93,
     "categories_count": 14,
     "tips": [
       "Build me a professional quote page for a painting client",
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-24T11:00:33.689992"
+  "last_updated": "2026-06-24T12:00:39.537857"
 }
