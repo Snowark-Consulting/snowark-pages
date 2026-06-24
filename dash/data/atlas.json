@@ -40,8 +40,7 @@
   },
   "activity": {
     "tasks_completed": 8,
-    "hours_saved_estimate": 4.48,
-    "sessions": 3,
+    "hours_saved_estimate": 4.5,
     "recent": [
       {
         "date": "2026-06-23 13:10",
@@ -88,22 +87,18 @@
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 77.9
+      "uptime_hours": 78.0
     },
     "crons": [
       {
-        "name": "Memory consolidation",
-        "status": "unknown",
-        "next": "?"
-      },
-      {
-        "name": "Nightly backup",
-        "status": "unknown",
-        "next": "?"
+        "name": "Dashboard hourly refresh",
+        "status": "ok",
+        "next": "2026-06-24T09:00:00+00:00",
+        "schedule": "0 * * * *"
       }
     ],
     "backup": {
-      "last": "unknown",
+      "last": null,
       "status": "unknown"
     },
     "model": ""
@@ -111,7 +106,15 @@
   "capabilities": {
     "skills_count": 92,
     "categories_count": 14,
-    "tips": []
+    "tips": [
+      "Build me a professional quote page for a painting client",
+      "Draft a 3-email follow-up sequence over 5 days",
+      "Create a comparison landing page with ROI calculator",
+      "Write a case study from the Travis Krieg Painting example",
+      "Research my top 5 competitors in automated quote follow-up",
+      "Build me a client intake form for quote preferences",
+      "Analyse winning patterns in successful quotes"
+    ]
   },
-  "last_updated": "2026-06-24T07:54:22.673356"
+  "last_updated": "2026-06-24T08:00:29.566820"
 }
