@@ -39,9 +39,14 @@
     ]
   },
   "activity": {
-    "tasks_completed": 15,
-    "hours_saved_estimate": 8.4,
+    "tasks_completed": 16,
+    "hours_saved_estimate": 9.0,
     "recent": [
+      {
+        "date": "2026-06-25 11:35",
+        "task": "Nightly consolidation: wrote Jun 25 notes (2 sessions, inbox mining + design skills), added frontmatter to testimonials.md, Registry +4 entries, Infrastructure 7/7 verified, 0 broken wikilinks",
+        "category": "task"
+      },
       {
         "date": "2026-06-25 04:44",
         "task": "Rebuilt NFS Editions page: mouse-interactive Three.js ring (tilt/particles follow cursor), power-design 20 principles (8-pt grid, 1.333 type scale, 60-30-10 color split)",
@@ -76,24 +81,19 @@
         "date": "2026-06-24 11:02",
         "task": "Inbox pulse cron upgraded to 24/7 coverage \u2014 closed the 8-hour blind spot that caused a delegation verification email to be silently missed today",
         "category": "task"
-      },
-      {
-        "date": "2026-06-23 13:10",
-        "task": "Ingested and adapted 12 marketing skills from coreyhaines31/marketingskills for Not Forgotten: copywriting, emails, cro, marketing-psychology, cold-email, offers, copy-editing, pricing, popups, signup, churn-prevention, ad-creative. All tradie-adapted with NFS voice/product context.",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 105.0
+      "uptime_hours": 106.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-25T12:00:00+00:00",
+        "next": "2026-06-25T13:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-25T11:00:59.087266"
+  "last_updated": "2026-06-25T12:01:13.051764"
 }
