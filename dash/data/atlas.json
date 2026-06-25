@@ -39,9 +39,14 @@
     ]
   },
   "activity": {
-    "tasks_completed": 12,
-    "hours_saved_estimate": 6.7,
+    "tasks_completed": 13,
+    "hours_saved_estimate": 7.3,
     "recent": [
+      {
+        "date": "2026-06-24 23:28",
+        "task": "Published email intelligence reports (Travis Krieg, quotes/follow-ups, completed pipeline) to GitHub Pages",
+        "category": "task"
+      },
       {
         "date": "2026-06-24 11:28",
         "task": "Hardened James's inbox scope rule across 3 files \u2014 pulse-bootstrap.md, email-inbox-pulse SKILL.md, delegated-mailbox-access.md. Read-only: no send, no mark-read, no labels.",
@@ -76,24 +81,19 @@
         "date": "2026-06-22 20:51",
         "task": "Rebuilt inbox watchdog as two-phase pulse: 60s unread scan + full-identity agent boot when mail found, auto-mark-read",
         "category": "task"
-      },
-      {
-        "date": "2026-06-22 20:35",
-        "task": "Full-graph wikilink pass + vault lint: 22 files connected (~70 links), 2 orphan cards fixed (git, supabase), 0 broken links",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 93.0
+      "uptime_hours": 94.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-25T00:00:00+00:00",
+        "next": "2026-06-25T01:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -104,7 +104,7 @@
     "model": ""
   },
   "capabilities": {
-    "skills_count": 93,
+    "skills_count": 94,
     "categories_count": 14,
     "tips": [
       "Build me a professional quote page for a painting client",
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-24T23:01:03.528717"
+  "last_updated": "2026-06-25T00:00:56.778378"
 }
