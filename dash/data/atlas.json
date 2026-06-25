@@ -39,9 +39,19 @@
     ]
   },
   "activity": {
-    "tasks_completed": 13,
-    "hours_saved_estimate": 7.3,
+    "tasks_completed": 15,
+    "hours_saved_estimate": 8.4,
     "recent": [
+      {
+        "date": "2026-06-25 04:44",
+        "task": "Rebuilt NFS Editions page: mouse-interactive Three.js ring (tilt/particles follow cursor), power-design 20 principles (8-pt grid, 1.333 type scale, 60-30-10 color split)",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-25 04:38",
+        "task": "Built Not Forgotten Editions page \u2014 Shopify Editions-style dark navy theme, Three.js hero ring, product sections, pricing",
+        "category": "task"
+      },
       {
         "date": "2026-06-24 23:28",
         "task": "Published email intelligence reports (Travis Krieg, quotes/follow-ups, completed pipeline) to GitHub Pages",
@@ -71,29 +81,19 @@
         "date": "2026-06-23 13:10",
         "task": "Ingested and adapted 12 marketing skills from coreyhaines31/marketingskills for Not Forgotten: copywriting, emails, cro, marketing-psychology, cold-email, offers, copy-editing, pricing, popups, signup, churn-prevention, ad-creative. All tradie-adapted with NFS voice/product context.",
         "category": "task"
-      },
-      {
-        "date": "2026-06-23 07:11",
-        "task": "Fixed inbox pulse double-post bug \u2014 mark-as-read now happens before summarising, closing race condition between Phase 1 (60s poll) and Phase 2 (slow agent boot)",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-22 20:51",
-        "task": "Rebuilt inbox watchdog as two-phase pulse: 60s unread scan + full-identity agent boot when mail found, auto-mark-read",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 98.0
+      "uptime_hours": 99.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-25T05:00:00+00:00",
+        "next": "2026-06-25T06:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -104,7 +104,7 @@
     "model": ""
   },
   "capabilities": {
-    "skills_count": 94,
+    "skills_count": 96,
     "categories_count": 14,
     "tips": [
       "Build me a professional quote page for a painting client",
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-25T04:01:06.404622"
+  "last_updated": "2026-06-25T05:00:56.675693"
 }
