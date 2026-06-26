@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAO Client Reference | Snowark</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal: #174445;
+      --teal-rgb: 23, 68, 69;
+      --green: #0d8f64;
+      --green-rgb: 13, 143, 100;
+      --warm: #e9e7e3;
+      --warm-rgb: 233, 231, 227;
+      --white: #FFFFFF;
+      --black: #000000;
+      --gray-600: #4a4a4a;
+      --gray-400: #9a9a9a;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--black);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4 {
+      font-family: 'Cambo', Georgia, 'Times New Roman', serif;
+      font-weight: 400;
+      color: var(--teal);
+    }
+    h1 { font-size: 2.2rem; line-height: 1.2; margin-bottom: 0.5rem; }
+    h2 { font-size: 1.5rem; margin: 3rem 0 1rem 0; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(23,68,69,0.15); }
+    h2:first-of-type { margin-top: 0; }
+    h3 { font-size: 1.1rem; margin: 2rem 0 0.75rem 0; font-family: 'Lato', sans-serif; font-weight: 700; color: var(--black); }
+    h4 { font-size: 0.95rem; font-family: 'Lato', sans-serif; font-weight: 700; font-style: italic; color: var(--gray-600); margin: 1.5rem 0 0.5rem 0; }
+    p, li { font-size: 0.95rem; color: var(--black); }
+    p { margin-bottom: 0.75rem; }
+    ul, ol { margin: 0.5rem 0 1rem 1.25rem; }
+    li { margin-bottom: 0.4rem; }
+    strong { font-weight: 700; }
+    blockquote {
+      border-left: 3px solid var(--green);
+      padding: 0.75rem 1.25rem;
+      margin: 1.25rem 0;
+      background: rgba(13,143,100,0.06);
+      border-radius: 0 6px 6px 0;
+      font-style: italic;
+      color: var(--gray-600);
+    }
+    blockquote p { margin-bottom: 0; color: var(--gray-600); }
+    code {
+      font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      background: rgba(0,0,0,0.05);
+      padding: 0.15em 0.4em;
+      border-radius: 3px;
+    }
+    pre {
+      background: var(--teal);
+      color: var(--white);
+      padding: 1.5rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 1rem 0;
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+    pre code { background: none; padding: 0; color: inherit; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    th { font-weight: 700; color: var(--teal); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    td { color: var(--black); }
+    tr:last-child td { border-bottom: none; }
+    hr {
+      border: none;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      margin: 2rem 0;
+    }
+
+    /* Layout */
+    .container { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+
+    /* Hero */
+    .hero {
+      background: var(--teal);
+      color: var(--white);
+      padding: 64px 0 48px 0;
+      margin-bottom: 48px;
+    }
+    .hero h1 { color: var(--white); font-size: 2.4rem; }
+    .hero .sub { color: rgba(255,255,255,0.75); font-size: 1.05rem; margin-top: 0.5rem; }
+    .hero .meta { color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-top: 1.5rem; }
+
+    /* Cards */
+    .card {
+      background: var(--warm);
+      border-radius: 10px;
+      padding: 24px;
+      margin: 1rem 0;
+    }
+    .card h3 { margin-top: 0; }
+
+    /* Badge */
+    .badge {
+      display: inline-block;
+      background: var(--green);
+      color: var(--white);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+    .badge-warn {
+      background: rgba(13,143,100,0.12);
+      color: var(--green);
+    }
+
+    /* Constraint boxes */
+    .constraint-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 1.5rem 0;
+    }
+    .constraint-box {
+      background: var(--warm);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+    .constraint-box .num {
+      font-family: 'Cambo', serif;
+      font-size: 2rem;
+      color: var(--teal);
+      margin-bottom: 0.25rem;
+    }
+    .constraint-box .label {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--black);
+      margin-bottom: 0.5rem;
+    }
+    .constraint-box .hint {
+      font-size: 0.8rem;
+      color: var(--gray-600);
+      line-height: 1.4;
+    }
+    .arrow-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      color: var(--green);
+      font-size: 1.2rem;
+      margin: 0.5rem 0 1rem 0;
+    }
+
+    /* Checklist */
+    .checklist { list-style: none; margin-left: 0; }
+    .checklist li { padding-left: 1.5rem; position: relative; }
+    .checklist li::before {
+      content: '☐';
+      position: absolute;
+      left: 0;
+      color: var(--teal);
+    }
+
+    /* Agency table highlight */
+    .rec-out { color: var(--green); }
+    .rec-in { color: var(--teal); }
+    .rec-mix { color: var(--gray-600); }
+
+    /* Q&A */
+    .qa-item {
+      margin-bottom: 2rem;
+    }
+    .qa-q {
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 0.5rem;
+    }
+    .qa-a {
+      color: var(--black);
+      padding-left: 1rem;
+      border-left: 2px solid var(--green);
+    }
+
+    /* Close section */
+    .close-section {
+      background: var(--teal);
+      color: var(--white);
+      padding: 48px 0;
+      margin-top: 48px;
+    }
+    .close-section h2 { color: var(--white); border-bottom-color: rgba(255,255,255,0.15); }
+    .close-section p, .close-section li { color: rgba(255,255,255,0.85); }
+    .close-section blockquote {
+      background: rgba(255,255,255,0.08);
+      border-left-color: var(--green);
+      color: rgba(255,255,255,0.9);
+    }
+    .close-section blockquote p { color: rgba(255,255,255,0.9); }
+    .close-section table th { color: rgba(255,255,255,0.7); }
+    .close-section table td { color: rgba(255,255,255,0.85); border-bottom-color: rgba(255,255,255,0.08); }
+
+    .takeaway {
+      text-align: center;
+      font-family: 'Cambo', serif;
+      font-size: 1.4rem;
+      color: var(--white);
+      padding: 2rem 1rem;
+      margin-top: 2rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--gray-400);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 700px) {
+      .hero { padding: 40px 0 32px 0; }
+      .hero h1 { font-size: 1.6rem; }
+      .constraint-row { grid-template-columns: 1fr; }
+      h1 { font-size: 1.5rem; }
+      h2 { font-size: 1.25rem; }
+      table { font-size: 0.8rem; }
+      th, td { padding: 0.4rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="container">
+    <div class="badge">Confidential</div>
+    <h1>CAO Client Interview Reference</h1>
+    <p class="sub">Multi-Trade Business (Paul),  Stepney, Adelaide</p>
+    <p class="meta">Prepared from CAO Partners brief, 24 June 2026 · Updated with Josh's frameworks, 26 June 2026</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 1. BUSINESS SNAPSHOT -->
+  <h2>1. Business Snapshot</h2>
+  <table>
+    <tr><th>Industry</th><td>Trades &amp; Home Services</td></tr>
+    <tr><th>Location</th><td>Stepney, Adelaide SA</td></tr>
+    <tr><th>Size</th><td>11–50 staff</td></tr>
+    <tr><th>Service lines</th><td>Plumbing, Electrical, Roofing, Solar</td></tr>
+    <tr><th>Structure</th><td>Founder-led (Paul), recognised entrepreneur</td></tr>
+    <tr><th>Website</th><td>WordPress / Elementor</td></tr>
+    <tr><th>Role</th><td>AI Growth &amp; Marketing Automation Lead (AI Officer tier)</td></tr>
+  </table>
+
+  <h3>Tech Stack</h3>
+  <table>
+    <tr><th>Platform</th><th>Function</th></tr>
+    <tr><td>ServiceTitan</td><td>Job management, scheduling, quoting, dispatch</td></tr>
+    <tr><td>Xero</td><td>Accounting, invoicing</td></tr>
+    <tr><td>WordPress / Elementor</td><td>Website</td></tr>
+    <tr><td>Podium</td><td>Customer reviews, messaging, payments</td></tr>
+    <tr><td>WageLock</td><td>Workforce management</td></tr>
+    <tr><td>Asset Panda</td><td>Equipment and asset tracking</td></tr>
+    <tr><td>Google Ads + Meta Ads</td><td>Paid marketing</td></tr>
+    <tr><td>External agencies</td><td>Current SEO, SEM, EDM</td></tr>
+  </table>
+
+  <!-- 2. PAIN POINTS -->
+  <h2>2. Pain Points</h2>
+
+  <h3>Operational</h3>
+  <ol>
+    <li><strong>Four service lines, one manual operation.</strong> Plumbing, electrical, roofing, and solar each carry their own scheduling, quoting, and compliance requirements. Manual coordination across all four creates bottlenecks at every handoff.</li>
+    <li><strong>Quoting and job management is time-intensive.</strong> Quote generation across multiple trade types, job tracking, and compliance documentation are high-volume, rules-based tasks consuming significant bandwidth daily.</li>
+    <li><strong>Compliance burden.</strong> Trade businesses carry heavy compliance obligations. Document processing, licensing tracking, and job record management eat hours of admin per week.</li>
+  </ol>
+
+  <h3>Marketing</h3>
+  <ol start="4">
+    <li><strong>Marketing ROI is unclear.</strong> Investment across multiple digital channels with no clear attribution from spend to booked jobs and revenue.</li>
+    <li><strong>Heavy agency dependency.</strong> Digital marketing and reporting currently outsourced. Goal is to progressively build in-house capability, reducing cost and dependency.</li>
+  </ol>
+
+  <h3>Systems</h3>
+  <ol start="6">
+    <li><strong>No unified layer.</strong> ServiceTitan, Xero, Podium, WageLock, Asset Panda all operate in silos. Manual reconciliation between systems.</li>
+    <li><strong>AI-ready founder, no systems yet.</strong> Paul has shown up twice for initial calls despite connection issues,  genuine intent. The gap is finding the right operator to design and build the automation layer end-to-end.</li>
+  </ol>
+
+  <!-- 3. GROWTH CONSTRAINT FRAMEWORK -->
+  <h2>3. Growth Constraint Framework</h2>
+
+  <blockquote>
+    <p>The rule of growth: when lead and growth marketing stall, there are only three possible bottlenecks. Find which one is binding, fix it, then find the next one.</p>
+  </blockquote>
+
+  <div class="constraint-row">
+    <div class="constraint-box">
+      <div class="num">1</div>
+      <div class="label">Awareness</div>
+      <div class="hint">Are we getting enough leads?</div>
+      <div class="hint" style="margin-top:4px;">Channel mix, spend levels, reach</div>
+    </div>
+    <div class="constraint-box">
+      <div class="num">2</div>
+      <div class="label">Conversion</div>
+      <div class="hint">Are we converting the leads we get?</div>
+      <div class="hint" style="margin-top:4px;">Close rates, quote quality, sales process</div>
+    </div>
+    <div class="constraint-box">
+      <div class="num">3</div>
+      <div class="label">Operations</div>
+      <div class="hint">How fast are we getting through the back end?</div>
+      <div class="hint" style="margin-top:4px;">Booking → completion time, system friction</div>
+    </div>
+  </div>
+
+  <p><strong>How to diagnose:</strong> The first thing is understanding the data. What data are we collecting around lead awareness, conversions, and back-end process? Once we have the data, we determine the baselines and where the bottlenecks are. If we don't have the data, that is where we start: how do we collect it?</p>
+
+  <div class="card">
+    <h3>The Sequencing Rule</h3>
+    <p>If awareness and conversion are working but growth is still slow, the constraint is in operations: how quickly are we getting from booking through to job completion? Is there time wasted in the systems we are using?</p>
+    <p>For a multi-trade business, <strong>operations constraint is highly likely</strong>. Four service lines, manual quoting/scheduling, compliance overhead,  the back end is where friction compounds.</p>
+  </div>
+
+  <h3>Working Backwards from Business Goals</h3>
+  <p>If the goal is X thousand jobs in the next year:</p>
+  <ol>
+    <li>How many leads are needed, given current conversion rate, for that to happen?</li>
+    <li>Where are those leads coming from currently?</li>
+    <li>What channels are actually working?</li>
+    <li>If we don't have tracking in place, that is step one,  get baselines to see what's working and what's not.</li>
+  </ol>
+
+  <blockquote>
+    <p>Core principle: Do not optimise anything in isolation. Understand what is going to move the needle for the business goals. Critical numbers are the measure of success.</p>
+  </blockquote>
+
+  <!-- 4. MARKETING: AGENCY VS IN-HOUSE -->
+  <h2>4. Marketing: Agency vs In-House</h2>
+
+  <table>
+    <tr><th>Channel</th><th>Recommendation</th><th>Reasoning</th></tr>
+    <tr><td>Media buying (Google Ads)</td><td class="rec-out">Outsource to agency</td><td>Being an expert day in, day out across multiple brands is an advantage. Agencies do not need deep business knowledge to be good at ad placement.</td></tr>
+    <tr><td>Social media</td><td class="rec-in">In-house</td><td>Needs to be close to the business, based on core principles, deeply entwined. Engagement, posting, content creation all benefit from internal ownership.</td></tr>
+    <tr><td>Videography</td><td class="rec-mix">Part-time in-house</td><td>Creative work that benefits from brand intimacy.</td></tr>
+    <tr><td>SEO / SEM</td><td class="rec-mix">Case by case</td><td>Depends on current agency quality and data visibility.</td></tr>
+  </table>
+
+  <p><strong>The decision framework:</strong> We need to understand the current baseline first. Work backwards from business goals. What channels are currently producing? If we cannot answer that because tracking doesn't exist, fix tracking first,  then decide.</p>
+
+  <h3>Attribution Tools (Start Simple)</h3>
+  <table>
+    <tr><th>Tool</th><th>Use</th></tr>
+    <tr><td>GA4</td><td>Good enough for channel-level attribution at this stage</td></tr>
+    <tr><td>Microsoft Clarity</td><td>Heatmaps, session recordings, behaviour insights</td></tr>
+    <tr><td>Agent synthesis</td><td>Pull data from GA4 and Clarity, synthesise into a coherent picture. Low cost, high speed.</td></tr>
+  </table>
+
+  <div class="card">
+    <strong>Do not recommend expensive attribution software</strong> like Triple Whale at this stage. You can go a long way without it. The priority is understanding what leads have been generated by media spend or advertising channels,  achievable with free tools plus an agent layer.
+  </div>
+
+  <!-- 5. CUSTOMER INSIGHTS -->
+  <h2>5. Customer Insights</h2>
+
+  <p><strong>This is the piece most operators skip.</strong> Before optimising channels, you need to know who you are optimising for.</p>
+
+  <h3>What to Ask / Investigate</h3>
+  <table>
+    <tr><th>Question</th><th>Why</th></tr>
+    <tr><td>Who is our best customer?</td><td>Segment by revenue, frequency, margin</td></tr>
+    <tr><td>What are their jobs to be done?</td><td>What task are they hiring the service to complete?</td></tr>
+    <tr><td>What are their motivations?</td><td>Why did they pick up the phone?</td></tr>
+    <tr><td>What are their barriers?</td><td>What almost stopped them from booking?</td></tr>
+    <tr><td>What are their pain points?</td><td>What problem were they trying to solve?</td></tr>
+  </table>
+
+  <h3>What to Build</h3>
+  <ul>
+    <li><strong>Customer lifetime value analysis</strong>,  run over the CRM if it hasn't been done</li>
+    <li><strong>Retention and returning customer rate</strong>,  how much is repeat vs. new</li>
+    <li><strong>Dashboards</strong>,  one place tracking all of the above</li>
+  </ul>
+
+  <!-- 6. TRACKING ASSESSMENT -->
+  <h2>6. Marketing Tracking Assessment</h2>
+
+  <h3>What to Ask Paul</h3>
+  <table>
+    <tr><th>Question</th><th>Why It Matters</th></tr>
+    <tr><td>Who currently runs your Google Ads and Meta Ads?</td><td>Establish whether it's one agency, multiple, or someone in-house</td></tr>
+    <tr><td>How do you decide if a campaign is working?</td><td>Tests whether they have any attribution at all, or just gut feel</td></tr>
+    <tr><td>Can you show me a report you currently receive?</td><td>Reveals what the agencies are actually providing vs. what's useful</td></tr>
+    <tr><td>How does a booked job get traced back to the channel that produced it?</td><td>Tests the end-to-end tracking chain</td></tr>
+    <tr><td>What does your current conversion tracking look like on the website?</td><td>WordPress/Elementor sites often have broken or missing tracking</td></tr>
+    <tr><td>Who is your best customer, and how do you know?</td><td>Tests whether customer insight work has been done</td></tr>
+    <tr><td>What are the key business priorities for the next 12 months?</td><td>Frames everything in context of what moves the needle</td></tr>
+  </table>
+
+  <h3>Tracking Checklist</h3>
+  <ul class="checklist">
+    <li><strong>Google Ads conversion tracking</strong>,  firing on form submissions and phone calls</li>
+    <li><strong>Meta Pixel</strong>,  installed, firing, with standard events (Lead, Contact, Schedule)</li>
+    <li><strong>GA4 configured correctly</strong>,  channel grouping, conversions defined, no gaps</li>
+    <li><strong>Microsoft Clarity installed</strong>,  session recordings for qualitative insight</li>
+    <li><strong>UTM hygiene</strong>,  all paid traffic consistently tagged with source/medium/campaign</li>
+    <li><strong>Call tracking</strong>,  phone calls attributed to the channel that generated them</li>
+    <li><strong>CRM lead source tracking</strong>,  ServiceTitan recording lead source so jobs can be traced to channel</li>
+    <li><strong>Dashboard</strong>,  single view: spend → leads → booked jobs → revenue, per channel. Plus customer LTV, retention, and repeat rate.</li>
+  </ul>
+
+  <h3>Likely State of Play</h3>
+  <p>The brief says "marketing ROI is unclear" and "heavy reliance on external agencies." This almost certainly means:</p>
+  <ul>
+    <li>Agencies are reporting on their own performance (clicks, impressions, spend) with no connection to actual jobs booked</li>
+    <li>The website likely has incomplete or broken conversion tracking</li>
+    <li>No UTM discipline across campaigns</li>
+    <li>ServiceTitan is probably not being used as a lead source tracker</li>
+    <li>No customer insight work has been done,  no one knows who the best customer is</li>
+    <li>Paul is making marketing decisions on incomplete data</li>
+  </ul>
+
+  <h3>The Fix (What Josh Proposes)</h3>
+  <ol>
+    <li><strong>Audit the tracking stack</strong>,  2–3 days. Map every pixel, tag, and conversion event. Fix what's broken.</li>
+    <li><strong>Get the baselines</strong>,  GA4 + Clarity + agent synthesis. Understand what channels are working before changing anything.</li>
+    <li><strong>Wire ServiceTitan to attribution</strong>,  every booked job carries a lead source. This is the missing link between marketing spend and revenue.</li>
+    <li><strong>Run customer insight analysis</strong>,  best customer, LTV, retention, JTBD. Over the CRM.</li>
+    <li><strong>Build a single dashboard</strong>,  one place for spend, leads, jobs, revenue, cost per acquisition, and customer metrics. Updated automatically.</li>
+    <li><strong>Then,  and only then,  decide</strong> which channels to keep outsourced and which to bring in-house. Data first, decisions second.</li>
+  </ol>
+
+  <!-- 7. COUNTER-OFFER RECAP -->
+  <h2>7. Counter-Offer Recap</h2>
+
+  <p>Josh proposed a <strong>fractional model</strong>: 2–3 days/week as AI systems lead and CMO. Not a full-time embedded role.</p>
+
+  <div class="card">
+    <p><strong>What was offered:</strong></p>
+    <ul>
+      <li>Marketing attribution built in weeks</li>
+      <li>AI agents handling scheduling, quoting, compliance from day one</li>
+      <li>Full-time agent output for part-time cost</li>
+      <li>Infrastructure stays with the business (Paul's IP)</li>
+      <li>Knowledge transfer to Paul's team</li>
+    </ul>
+    <p style="margin-top:1rem;"><strong>The pitch:</strong> "Not consulting. Deploying an operating system and leading the configuration. Same outcome, faster, lower commitment."</p>
+    <p><strong>Timing:</strong> Available part-time in 4–6 weeks (backfilling current role).</p>
+  </div>
+
+  <!-- 8. INTERVIEW Q&A -->
+  <h2>8. Interview Questions,  Josh's Anchors</h2>
+
+  <div class="qa-item">
+    <p class="qa-q">Q1: "Walk me through the most complex AI system you've built and deployed in a real business."</p>
+    <div class="qa-a">
+      <p>Not Forgotten Systems (Atlas). Automated quote follow-up for trades. Quote emails → agent processes → follow-up sequences → owner notified on response. Built end-to-end: knowledge base scraping, agent deployment on orgo.ai, Telegram + email channels, dashboard generation, AI avatar video content via HeyGen. Recovered $150k+ in attributed revenue. The Snowark deploy kit was designed to handle multi-service operations with scheduling, quoting, and compliance out of the box,  this is not a custom build per client, it's infrastructure.</p>
+    </div>
+  </div>
+
+  <div class="qa-item">
+    <p class="qa-q">Q2: "If you were starting here on Monday, what's the first thing you'd want to understand?"</p>
+    <div class="qa-a">
+      <p>The data. What data are we collecting around lead awareness, conversions, and back-end process? The rule of growth says there are only three possible constraints: awareness, conversion, or operations. I need to see which one is binding. If we don't have the data, that's where I start,  how do we collect it, what does the baseline look like? I also need to understand the business strategy: what are the key priorities that move the needle? I don't optimise anything in isolation. Critical numbers are the measure of success.</p>
+      <p>Then I walk the workflow,  how a lead becomes a job and how a job becomes cash,  with the person who does it, for each service line. I want to see where the friction lives, where things get re-entered, where the paper stops.</p>
+    </div>
+  </div>
+
+  <div class="qa-item">
+    <p class="qa-q">Q3: "How would you approach mapping workflows across four service lines in two weeks?"</p>
+    <div class="qa-a">
+      <p>One service line per 2–3 days. Shadow the person who does the work. Document the steps. Identify where the same logic repeats across lines,  quoting structure, compliance checks, scheduling rules are likely the same pattern with different line items. The goal is not four separate automations; it's one automation layer with four configurations.</p>
+    </div>
+  </div>
+
+  <div class="qa-item">
+    <p class="qa-q">Q4: "How would you assess whether to bring marketing in-house vs. keeping it outsourced?"</p>
+    <div class="qa-a">
+      <p>I have done both and I still use a mix. Media buying, Google Ads in particular, I would probably outsource to an agency. Being an expert day in, day out across multiple brands is an advantage for ad placement,  they do not need deep business knowledge to be good at it. Social media is different: it needs to be close to the business, based on core principles, deeply entwined. That should be in-house. Videography, probably part-time in-house.</p>
+      <p>But all of this depends on the baseline. I need to understand what channels are currently working before I recommend changing anything. If we don't have tracking in place, that's step one. Once we can see cost per acquired job by channel, the build vs. buy decision makes itself.</p>
+      <p>I wouldn't recommend expensive attribution software like Triple Whale at this stage. GA4 is fine, Microsoft Clarity is good, and getting an agent to synthesise data from those systems is a very effective way to start.</p>
+    </div>
+  </div>
+
+  <div class="qa-item">
+    <p class="qa-q">Q5: "What does your first 90 days look like?"</p>
+    <div class="qa-a">
+      <p><strong>Days 1–14:</strong> Understand the data,  what's being collected, what's missing, what are the baselines. Map workflows across all four service lines. Run customer insight analysis over the CRM: who is the best customer, what's LTV, what's the retention rate? Understand the business strategy and critical numbers.</p>
+      <p><strong>Days 15–30:</strong> Fix broken tracking. Get GA4 and Clarity properly configured. Deploy agent layer on quoting and scheduling (highest-volume, most rules-based work). Connect to ServiceTitan.</p>
+      <p><strong>Days 31–60:</strong> Build attribution dashboard,  spend, leads, jobs, revenue, CPA per channel,  plus customer metrics. Connect agent to Xero for invoicing. Begin compliance automation.</p>
+      <p><strong>Days 61–90:</strong> Extend agent to customer comms (Podium). Assess agency performance with actual data. Make informed build vs. buy decisions on marketing channels. Train team on systems. Hand off operational ownership.</p>
+      <p><strong>Decision rule:</strong> Prioritise by what's constraining throughput. If the back end is the bottleneck, fixing quoting and scheduling unlocks more value than a perfect attribution dashboard on a trickle. If awareness is the bottleneck, tracking and channel optimisation comes first. The data tells you which.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- 9. THE CLOSE -->
+<div class="close-section">
+  <div class="container">
+    <h2>9. The Close: What Paul Needs to Feel</h2>
+
+    <blockquote>
+      <p>I want him to see just how much agency I have. The AI space is fairly new and there will be new challenges, but I have the agency and capacity to navigate new problems. I won't get stuck. I won't be a waste of time or money.</p>
+    </blockquote>
+
+    <table>
+      <tr><th>He Needs to Feel</th><th>How to Land It</th></tr>
+      <tr><td>You figure things out</td><td>Lead with a story where you hit an unknown and solved it anyway. Not Forgotten works: no template existed, you built the deploy kit from scratch, it now provisions agents in minutes.</td></tr>
+      <tr><td>You have seen complexity before</td><td>Four service lines sounds like a lot. Reference that you have already mapped multi-service operations and the patterns repeat: this is not your first rodeo.</td></tr>
+      <tr><td>You won't disappear when it gets hard</td><td>Be direct about what will be difficult. The founder respects operators who can name the hard parts before they arrive.</td></tr>
+      <tr><td>You are not a consultant who bills and leaves</td><td>Everything you build stays. His IP, his infrastructure, his team trained. The counter-offer already says this: reinforce it in person.</td></tr>
+      <tr><td>Speed without recklessness</td><td>The deploy kit means you are not starting from zero. But you are not selling a magic button either. "We will hit things we didn't expect. I have hit them before and I will figure them out."</td></tr>
+    </table>
+
+    <div class="takeaway">
+      This person solves problems I haven't even described yet, and nothing they build leaves with them.
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    Reference only. Do not distribute. Client identity confidential per CAO Partners brief.
+  </div>
+</footer>
+
+</body>
+</html>
