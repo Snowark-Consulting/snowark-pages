@@ -583,9 +583,75 @@
 <h3>Decision Rule</h3>
 <p>Prioritise by what's constraining throughput. If the back end is the bottleneck, fixing quoting unlocks more value than a perfect dashboard on a trickle of leads. If awareness is the bottleneck, tracking and channel optimisation comes first. The Phase 1 audit tells you which.</p>
 <hr />
-<h2>9. Governance &amp; Cadence</h2>
+<h2>9. Platform Integration Landscape</h2>
 <blockquote>
-<p>From Josh's internal CAO rollout plan. Signals to Paul that this has been designed, not improvised.</p>
+<p>What each platform does in Paul's business, and whether we can connect to it programmatically. Full research: <code>business/clients/cao-platform-research.md</code>.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Used for</th>
+<th>API</th>
+<th>Key connection</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ServiceTitan</strong></td>
+<td>Job management, scheduling, quoting, dispatch</td>
+<td>REST V2, OAuth 2.0</td>
+<td>Marketing Ads domain has <code>/job-attributions</code> ,  the attribution data already exists inside the platform, just needs surfacing</td>
+</tr>
+<tr>
+<td><strong>Xero</strong></td>
+<td>Accounting, invoicing</td>
+<td>REST, OAuth 2.0</td>
+<td>Invoices, contacts, payments. 60 req/min. Single-use refresh tokens ,  needs careful token management</td>
+</tr>
+<tr>
+<td><strong>Podium</strong></td>
+<td>Customer reviews, messaging, payments</td>
+<td>REST V4, OAuth 2.0</td>
+<td>Reviews + conversations = customer voice data. Same pattern as the 3,447 sales calls analysed at AFS</td>
+</tr>
+<tr>
+<td><strong>WordPress / Elementor</strong></td>
+<td>Website, lead forms</td>
+<td>WP REST API + Webhooks</td>
+<td>Elementor Pro has a Webhook form action ,  POSTs leads to an external URL on submission. The wire exists.</td>
+</tr>
+<tr>
+<td><strong>Asset Panda</strong></td>
+<td>Equipment and asset tracking</td>
+<td>REST V3, Bearer</td>
+<td>Assets, change logs, reports. ~133 req/min</td>
+</tr>
+<tr>
+<td><strong>Google Ads</strong></td>
+<td>Paid search marketing</td>
+<td>gRPC + REST, OAuth 2.0</td>
+<td>Campaign spend, impressions, clicks, conversions. Engine for the attribution dashboard</td>
+</tr>
+<tr>
+<td><strong>Meta Ads</strong></td>
+<td>Paid social marketing</td>
+<td>Graph API, OAuth 2.0</td>
+<td>Same pattern Josh already runs at AFS (React dashboard pulling Meta API live)</td>
+</tr>
+<tr>
+<td><strong>WageLock</strong></td>
+<td>Workforce management</td>
+<td>❌ No public API</td>
+<td>ASP.NET forms-based app. Partner integrations only. Near-term: scheduled CSV exports consumed by agent</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The headline for the interview:</strong> ServiceTitan's Marketing Ads API already knows which channel produced which job. The attribution data Paul is missing already exists inside his own platform. We don't need expensive software ,  we need to surface what ServiceTitan already records and combine it with Google Ads and Meta Ads spend data. That's the Phase 1 win.</p>
+<hr />
+<h2>10. Governance &amp; Cadence</h2>
+<blockquote>
+<p>From Josh's internal CAO rollout plan. Signals to Paul that this has been designed, not improvised. <strong>Particularly relevant: the recruiter noted Paul is "tight with his data." Lead with governance.</strong></p>
 </blockquote>
 <table>
 <thead>
@@ -615,10 +681,14 @@
 <td><strong>Weekly rhythm</strong></td>
 <td>Monday: strategy and data review with Paul. Wednesday: deep work on systems. Friday: team training and handoff. Same three days, every week</td>
 </tr>
+<tr>
+<td><strong>Data residency</strong></td>
+<td>All agent infrastructure runs on dedicated local compute. No customer data leaves Paul's environment without explicit approval. API keys never exposed to users ,  the pattern Josh built at AFS puts credentials behind a control layer that no one sees</td>
+</tr>
 </tbody>
 </table>
 <hr />
-<h2>10. Key Risks &amp; Mitigations</h2>
+<h2>11. Key Risks &amp; Mitigations</h2>
 <blockquote>
 <p>Name the hard parts before they arrive. The founder respects operators who do this.</p>
 </blockquote>
@@ -650,10 +720,14 @@
 <td><strong>Platform access delays</strong></td>
 <td>Access confirmed in Phase 1; no workflow designed that depends on unconfirmed integration</td>
 </tr>
+<tr>
+<td><strong>Data sovereignty concerns</strong></td>
+<td>All agent compute runs locally. API keys live behind a control layer, never exposed. Paul can revoke access instantly. The pattern has been production-tested at AFS Group ,  zero credential exposure across 18 platforms</td>
+</tr>
 </tbody>
 </table>
 <hr />
-<h2>11. Interview Questions, Josh's Anchors</h2>
+<h2>12. Interview Questions, Josh's Anchors</h2>
 <h3>Q1: "Walk me through the most complex AI system you've built and deployed in a real business."</h3>
 <p><strong>Anchor:</strong> Lead with Gary, the production AI agent Josh built at AFS Group. Not a pilot ,  8 autonomous processes running across 18 platforms (Gmail, Asana, HubSpot, Shopify, NetSuite, GA4, Meta Ads, Google Ads). 24 packaged skills. 40+ persistent memory files with nightly consolidation. 3,447 sales calls analysed across two brands, codified into 14 data points per call and fed into a live executive dashboard that now drives budget allocation. Custom MCP server architecture ,  Cloudflare Workers exposing Shopify API with read-only scoping, per-user access, zero credential exposure. Standalone tools built and deployed: SOP generator (video→process doc), competitor price scraper (daily Python automation), Chrome extensions for voice dictation and screen recording. Built while running three brands as CMO with $6.2M budget. SaaS replacement: agent-maintained HubSpot-to-Klaviyo sync replaced a paid Zapier subscription.</p>
 <p>For trades context: Not Forgotten Systems (Atlas) ,  automated quote follow-up deploying the same agent architecture on orgo.ai. $150k+ recovered revenue. The Snowark deploy kit extends this pattern to multi-service operations with scheduling, quoting, and compliance out of the box.</p>
@@ -674,7 +748,7 @@
 <p>Full 12-month plan: see Section 8 (The Delivery Plan).</p>
 <hr />
 <hr />
-<h2>12. The Close: What Paul Needs to Feel</h2>
+<h2>13. The Close: What Paul Needs to Feel</h2>
 <p>Josh's own words:</p>
 <blockquote>
 <p>I want him to see just how much agency I have. The AI space is fairly new and there will be new challenges, but I have the agency and capacity to navigate new problems. I won't get stuck. I won't be a waste of time or money.</p>
@@ -707,6 +781,10 @@
 <tr>
 <td>Speed without recklessness</td>
 <td>The deploy kit means you are not starting from zero. But you are not selling a magic button either. "We will hit things we didn't expect. I have hit them before and I will figure them out."</td>
+</tr>
+<tr>
+<td>His data stays his</td>
+<td>Describe the MCP control layer Josh built at AFS: API keys live encrypted server-side, users never see credentials, access is per-user and revocable in seconds. Agents run on local compute. Nothing leaves his environment without his say-so. This is not a pitch ,  show him the architecture</td>
 </tr>
 </tbody>
 </table>
