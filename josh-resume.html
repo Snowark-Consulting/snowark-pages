@@ -556,9 +556,8 @@ if (expTrack && expWrapper) {
   });
 }
 
-// ── Scroll reveals ──
-const revealEls = document.querySelectorAll('#blueprint .grid > div, .tech-line, #experience .w-\\[85vw\\], #experience .w-\\[80vw\\]');
-revealEls.forEach((el, i) => {
+// ── Scroll reveals (blueprint cards only) ──
+document.querySelectorAll('#blueprint .grid > div').forEach((el, i) => {
   gsap.from(el, {
     y: 50,
     opacity: 0,
