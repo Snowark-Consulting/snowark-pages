@@ -39,9 +39,29 @@
     ]
   },
   "activity": {
-    "tasks_completed": 32,
-    "hours_saved_estimate": 17.9,
+    "tasks_completed": 36,
+    "hours_saved_estimate": 20.2,
     "recent": [
+      {
+        "date": "2026-06-27 22:56",
+        "task": "v3 deployed: snapped to 1.333 type scale (64/40/24/16), 8-pt grid, gold-on-dark CTA inverted, mobile hamburger, WCAG fixes",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-27 22:47",
+        "task": "Replica v2 live at notforgotten-replica-v2.vercel.app \u2014 logo from CDN, paper airplane icons, James photo, fixed star ratings",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-27 22:42",
+        "task": "Deployed exact replica of notforgotten.com.au to Vercel: https://notforgotten-replica-v2.vercel.app",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-27 22:23",
+        "task": "Building exact replica of notforgotten.com.au for Vercel deployment",
+        "category": "task"
+      },
       {
         "date": "2026-06-27 12:58",
         "task": "Contact name research complete: 49/181 Airtable prospects now have verified owner first names. Researched via email parsing + 7 browser subagents across all 3 verticals.",
@@ -61,39 +81,19 @@
         "date": "2026-06-27 12:22",
         "task": "V2: Exact copy match + Power Design audit \u2014 redeployed notforgotten-replica.vercel.app with 8-pt grid, modular type scale, corrected About section, missing features restored",
         "category": "task"
-      },
-      {
-        "date": "2026-06-27 12:12",
-        "task": "Contact name research: 3 browser subagents researching 45 trade businesses. 19 names found so far via email parsing",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-27 12:01",
-        "task": "Researching contact names for 180 Airtable prospects \u2014 scraping websites and parsing email addresses",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-27 10:34",
-        "task": "Built quote intake pipeline: auto-detects quote emails in atlas@ inbox, extracts data from PDFs (pymupdf + Gemini vision), cross-references with Airtable, auto-moves Prospects\u2192Clients and creates Quotes. Wired into inbox pulse",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-27 10:07",
-        "task": "Cross-referenced Phase 2 data with Airtable: 50 updated, 60 new prospects created (30 commercial cleaning + 30 marketing agencies). Airtable now at 181 prospects.",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 164.0
+      "uptime_hours": 165.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-27T23:00:00+00:00",
+        "next": "2026-06-28T00:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-27T22:00:49.513728"
+  "last_updated": "2026-06-27T23:00:51.149503"
 }
