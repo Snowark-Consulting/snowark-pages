@@ -39,9 +39,39 @@
     ]
   },
   "activity": {
-    "tasks_completed": 26,
-    "hours_saved_estimate": 14.6,
+    "tasks_completed": 32,
+    "hours_saved_estimate": 17.9,
     "recent": [
+      {
+        "date": "2026-06-27 12:58",
+        "task": "Contact name research complete: 49/181 Airtable prospects now have verified owner first names. Researched via email parsing + 7 browser subagents across all 3 verticals.",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-27 12:47",
+        "task": "V4: Gemini Pro redesign \u2014 constellation tracking Three.js hero + editorial testimonial + timeline How It Works + differentiated industry cards + pull-quote About section",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-27 12:33",
+        "task": "V3: Redesigned with Three.js particle hero + GSAP scroll animations + glass nav + card hover effects \u2014 deployed to notforgotten-replica.vercel.app",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-27 12:22",
+        "task": "V2: Exact copy match + Power Design audit \u2014 redeployed notforgotten-replica.vercel.app with 8-pt grid, modular type scale, corrected About section, missing features restored",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-27 12:12",
+        "task": "Contact name research: 3 browser subagents researching 45 trade businesses. 19 names found so far via email parsing",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-27 12:01",
+        "task": "Researching contact names for 180 Airtable prospects \u2014 scraping websites and parsing email addresses",
+        "category": "task"
+      },
       {
         "date": "2026-06-27 10:34",
         "task": "Built quote intake pipeline: auto-detects quote emails in atlas@ inbox, extracts data from PDFs (pymupdf + Gemini vision), cross-references with Airtable, auto-moves Prospects\u2192Clients and creates Quotes. Wired into inbox pulse",
@@ -51,49 +81,19 @@
         "date": "2026-06-27 10:07",
         "task": "Cross-referenced Phase 2 data with Airtable: 50 updated, 60 new prospects created (30 commercial cleaning + 30 marketing agencies). Airtable now at 181 prospects.",
         "category": "task"
-      },
-      {
-        "date": "2026-06-27 09:16",
-        "task": "Replicated notforgotten.com.au on Vercel using extracted design tokens \u2014 deployed to notforgotten-replica.vercel.app",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-27 06:52",
-        "task": "Phase 2 master prospect list (110 prospects across 3 verticals) published to Google Docs",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-27 03:55",
-        "task": "Phase 2 complete \u2014 110 qualified prospects across trades (50), agencies (30), and cleaning (30)",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-27 03:23",
-        "task": "Phase 2 started \u2014 building 110 prospect lists across trades, marketing agencies, and commercial cleaning",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-27 02:10",
-        "task": "Rebuilt Travis Krieg case study \u2014 problem-first opening, credibility section, testimonial, conversion-optimised",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-27 01:58",
-        "task": "Published Travis Krieg Painting case study \u2014 77,555 revenue, 14 jobs, dark canvas design",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 154.0
+      "uptime_hours": 155.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-27T13:00:00+00:00",
+        "next": "2026-06-27T14:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-27T12:00:44.622125"
+  "last_updated": "2026-06-27T13:01:09.789031"
 }
