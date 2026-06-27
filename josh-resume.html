@@ -33,49 +33,25 @@
   }
   .font-display { font-family: 'Space Grotesk', sans-serif; }
   .font-serif { font-family: 'Playfair Display', serif; }
-
-  /* Noise overlay */
   .bg-noise {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     pointer-events: none; z-index: 50; opacity: 0.04;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
-
-  /* Scrollbar */
   ::-webkit-scrollbar { width: 10px; }
   ::-webkit-scrollbar-track { background: #f4f4f5; }
   ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 5px; }
   ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-  /* Revenue bars */
-  .rev-bar-fill {
-    transition: width 0.3s ease;
-    height: 32px; border-radius: 0 100px 100px 0;
-  }
-
-  /* Scroll reveal base */
-  .reveal { opacity: 0; }
-  .reveal.visible { opacity: 1; }
-
-  /* Stagger text words */
-  .stagger-word { display: inline-block; margin-right: 0.25em; }
-
-  /* Experience horizontal scroll */
+  .rev-bar-fill { transition: width 0.3s ease; height: 32px; border-radius: 0 100px 100px 0; }
   .exp-track { will-change: transform; }
-
 </style>
 </head>
 <body>
-
 <div class="bg-noise"></div>
 
 <!-- ═══════════════════ HERO ═══════════════════ -->
 <section class="relative min-h-screen flex flex-col justify-center px-6 md:px-24 bg-[#f4f4f5] pt-32 pb-32 overflow-hidden">
-
-  <!-- Grid pattern -->
   <div class="absolute inset-0 z-0 opacity-[0.05] pointer-events-none" style="background-image:radial-gradient(#000 1px,transparent 1px);background-size:40px 40px"></div>
-
-  <!-- Circuit SVG -->
   <svg class="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible opacity-40 md:opacity-100" id="hero-svg">
     <line x1="5%" y1="10%" x2="25%" y2="10%" stroke="#cbd5e1" stroke-width="1" class="draw-line" data-delay="0.2"/>
     <line x1="25%" y1="10%" x2="25%" y2="25%" stroke="#cbd5e1" stroke-width="1" class="draw-line" data-delay="0.6"/>
@@ -84,42 +60,28 @@
     <rect x="85%" y="75%" width="10%" height="10%" fill="none" stroke="#cbd5e1" stroke-width="1" class="draw-rect" data-delay="1.2"/>
     <line x1="85%" y1="80%" x2="60%" y2="80%" stroke="#cbd5e1" stroke-width="1" class="draw-line" data-delay="1.5"/>
   </svg>
-
   <div class="z-10 relative max-w-7xl mx-auto w-full">
     <div class="flex flex-col gap-6">
       <div class="flex items-center gap-4">
         <div class="h-[2px] w-16 bg-orange-500"></div>
         <span class="font-display text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-slate-500">Digital Resume</span>
       </div>
-
       <div class="font-serif text-[15vw] md:text-[12vw] leading-[0.85] text-slate-900 tracking-tighter -ml-[0.05em]">
         <div>Josh</div>
-        <div class="flex items-baseline gap-4 md:gap-8">
-          <span>Hancock</span>
-          <div class="w-4 h-4 md:w-8 md:h-8 bg-orange-500 rounded-full mb-4 md:mb-8"></div>
-        </div>
+        <div class="flex items-baseline gap-4 md:gap-8"><span>Hancock</span><div class="w-4 h-4 md:w-8 md:h-8 bg-orange-500 rounded-full mb-4 md:mb-8"></div></div>
       </div>
-
       <div class="max-w-3xl mt-8">
         <p class="font-display text-xl md:text-3xl text-slate-700 font-light leading-relaxed">Chief Marketing Officer.</p>
         <p class="font-display text-lg md:text-xl text-slate-500 font-light mt-1">Digital & eCommerce Growth Leader.</p>
         <p class="text-slate-500 text-base md:text-lg mt-4 leading-relaxed max-w-2xl">Driving growth for $100M+ portfolios through data, design, and commercial discipline.</p>
       </div>
-
       <div class="flex gap-8 mt-12 pt-8 border-t border-slate-900/10 w-full md:w-auto self-start">
-        <div class="flex flex-col">
-          <span class="text-[10px] uppercase tracking-widest text-slate-400 mb-1">Location</span>
-          <span class="text-sm font-medium text-slate-900">Adelaide, Australia</span>
-        </div>
-        <div class="flex flex-col">
-          <span class="text-[10px] uppercase tracking-widest text-slate-400 mb-1">Focus</span>
-          <span class="text-sm font-medium text-slate-900">Scale-ups & Retail</span>
-        </div>
+        <div class="flex flex-col"><span class="text-[10px] uppercase tracking-widest text-slate-400 mb-1">Location</span><span class="text-sm font-medium text-slate-900">Adelaide, Australia</span></div>
+        <div class="flex flex-col"><span class="text-[10px] uppercase tracking-widest text-slate-400 mb-1">Focus</span><span class="text-sm font-medium text-slate-900">Scale-ups & Retail</span></div>
       </div>
     </div>
   </div>
-
-  <div class="absolute bottom-12 left-6 md:left-24 flex items-center gap-4 scroll-hint">
+  <div class="absolute bottom-12 left-6 md:left-24 flex items-center gap-4">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" class="animate-bounce"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
     <span class="text-[10px] uppercase tracking-widest text-slate-400">Scroll to Explore</span>
   </div>
@@ -128,44 +90,21 @@
 <!-- ═══════════════════ REVENUE ═══════════════════ -->
 <section class="relative z-20 -mt-[10vh] rounded-t-[3rem] bg-[#0a0a0a] text-white pt-32 pb-32 px-6 overflow-hidden shadow-2xl">
   <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-blue-900/20 rounded-full blur-[120px] pointer-events-none"></div>
-
   <div class="max-w-7xl mx-auto relative z-10">
     <div class="grid lg:grid-cols-12 gap-20 items-center">
-
-      <!-- Text col -->
       <div class="lg:col-span-5">
-        <div class="font-display text-orange-500 text-xs font-bold uppercase tracking-[0.2em] mb-8 flex items-center gap-4">
-          Commercial Accountability
-          <div class="h-[1px] w-12 bg-orange-500/50"></div>
-        </div>
-
-        <h3 class="font-serif text-5xl md:text-7xl leading-none mb-8 text-white relative">
-          $100M+
-          <span class="block text-slate-500 italic text-4xl mt-2">Portfolio Exposure.</span>
-        </h3>
-
-        <p class="text-slate-400 text-lg leading-relaxed mb-12 font-light max-w-md border-l border-white/10 pl-6">
-          Responsible for P&L, budget pacing, and growth forecasting across 100% owned and partially owned brands.
-        </p>
-
+        <div class="font-display text-orange-500 text-xs font-bold uppercase tracking-[0.2em] mb-8 flex items-center gap-4">Commercial Accountability<div class="h-[1px] w-12 bg-orange-500/50"></div></div>
+        <h3 class="font-serif text-5xl md:text-7xl leading-none mb-8 text-white relative">$100M+<span class="block text-slate-500 italic text-4xl mt-2">Portfolio Exposure.</span></h3>
+        <p class="text-slate-400 text-lg leading-relaxed mb-12 font-light max-w-md border-l border-white/10 pl-6">Responsible for P&L, budget pacing, and growth forecasting across 100% owned and partially owned brands.</p>
         <div class="grid grid-cols-2 gap-8 pt-8 border-t border-white/10">
-          <div>
-            <div class="text-3xl font-display font-bold text-white mb-1 tracking-tighter">$6.2M+</div>
-            <div class="text-slate-500 text-[10px] uppercase tracking-widest">Direct Budget Ownership</div>
-          </div>
-          <div>
-            <div class="text-3xl font-display font-bold text-white mb-1 tracking-tighter">$8.2M+</div>
-            <div class="text-slate-500 text-[10px] uppercase tracking-widest">Advisory Oversight</div>
-          </div>
+          <div><div class="text-3xl font-display font-bold text-white mb-1 tracking-tighter">$6.2M+</div><div class="text-slate-500 text-[10px] uppercase tracking-widest">Direct Budget Ownership</div></div>
+          <div><div class="text-3xl font-display font-bold text-white mb-1 tracking-tighter">$8.2M+</div><div class="text-slate-500 text-[10px] uppercase tracking-widest">Advisory Oversight</div></div>
         </div>
       </div>
-
-      <!-- Chart col -->
       <div class="lg:col-span-7 w-full min-w-0">
         <div class="bg-white/5 rounded-2xl border border-white/5 p-4 md:p-8 w-full relative flex flex-col" style="min-height:400px">
           <div class="absolute top-0 left-0 w-4 h-4 border-t border-l border-white/20"></div>
           <div class="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-white/20"></div>
-
           <div class="flex flex-col gap-5 justify-center flex-1 px-2" id="revenue-chart">
             <div class="flex items-center gap-4"><span class="font-display text-sm text-slate-300 w-28 text-right">Force USA</span><div class="flex-1 h-8 bg-white/5 rounded-full overflow-hidden"><div class="rev-bar-fill h-full" style="width:0%;background:#3b82f6" data-width="92%"></div></div><span class="font-bold text-white text-sm w-14">$39M</span></div>
             <div class="flex items-center gap-4"><span class="font-display text-sm text-slate-300 w-28 text-right">Gym & Fitness</span><div class="flex-1 h-8 bg-white/5 rounded-full overflow-hidden"><div class="rev-bar-fill h-full" style="width:0%;background:#8b5cf6" data-width="57%"></div></div><span class="font-bold text-white text-sm w-14">$24M</span></div>
@@ -182,48 +121,26 @@
 <!-- ═══════════════════ BLUEPRINT ═══════════════════ -->
 <section id="blueprint" class="relative py-32 bg-[#0f172a] text-white overflow-hidden">
   <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image:linear-gradient(#334155 1px,transparent 1px),linear-gradient(90deg,#334155 1px,transparent 1px);background-size:40px 40px"></div>
-
   <div class="max-w-7xl mx-auto px-6 relative z-10">
     <div class="mb-24">
-      <div class="flex items-center gap-4 mb-8">
-        <div class="w-12 h-1 bg-orange-500"></div>
-        <h2 class="font-display uppercase tracking-[0.2em] text-sm text-slate-400">Strategic Highlights</h2>
-      </div>
+      <div class="flex items-center gap-4 mb-8"><div class="w-12 h-1 bg-orange-500"></div><h2 class="font-display uppercase tracking-[0.2em] text-sm text-slate-400">Strategic Highlights</h2></div>
       <h3 class="font-serif text-5xl md:text-7xl relative inline-block">The Growth Blueprint</h3>
     </div>
-
     <div class="grid lg:grid-cols-3 gap-8">
       <div class="relative group p-10 h-full border border-[#334155]">
         <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-orange-500"></div>
         <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-orange-500"></div>
-        <div class="relative z-10">
-          <h4 class="font-display text-4xl text-white font-bold mb-4 tracking-tighter">$9M to $24M</h4>
-          <h5 class="font-serif text-xl text-slate-300 mb-6 italic">eCommerce Growth Blueprint</h5>
-          <div class="w-1/5 h-px bg-slate-600 mb-6"></div>
-          <p class="text-slate-400 text-sm leading-relaxed">Codified a repeatable growth system covering acquisition, CRO, and lifecycle marketing. Scaled Gym & Fitness to $24M, STEPR to $13M, and Revel Saunas to $14M.</p>
-        </div>
+        <div class="relative z-10"><h4 class="font-display text-4xl text-white font-bold mb-4 tracking-tighter">$9M to $24M</h4><h5 class="font-serif text-xl text-slate-300 mb-6 italic">eCommerce Growth Blueprint</h5><div class="w-1/5 h-px bg-slate-600 mb-6"></div><p class="text-slate-400 text-sm leading-relaxed">Codified a repeatable growth system covering acquisition, CRO, and lifecycle marketing. Scaled Gym & Fitness to $24M, STEPR to $13M, and Revel Saunas to $14M.</p></div>
       </div>
-
       <div class="relative group p-10 h-full border border-[#334155]">
         <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-orange-500"></div>
         <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-orange-500"></div>
-        <div class="relative z-10">
-          <h4 class="font-display text-4xl text-white font-bold mb-4 tracking-tighter">Exclusive</h4>
-          <h5 class="font-serif text-xl text-slate-300 mb-6 italic">Nike Strength Partnership</h5>
-          <div class="w-1/5 h-px bg-slate-600 mb-6"></div>
-          <p class="text-slate-400 text-sm leading-relaxed">Represented AFS Group in Portland, OR. Secured exclusive ANZ distribution rights for Nike's gym equipment line through senior-level negotiations.</p>
-        </div>
+        <div class="relative z-10"><h4 class="font-display text-4xl text-white font-bold mb-4 tracking-tighter">Exclusive</h4><h5 class="font-serif text-xl text-slate-300 mb-6 italic">Nike Strength Partnership</h5><div class="w-1/5 h-px bg-slate-600 mb-6"></div><p class="text-slate-400 text-sm leading-relaxed">Represented AFS Group in Portland, OR. Secured exclusive ANZ distribution rights for Nike's gym equipment line through senior-level negotiations.</p></div>
       </div>
-
       <div class="relative group p-10 h-full border border-[#334155]">
         <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-orange-500"></div>
         <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-orange-500"></div>
-        <div class="relative z-10">
-          <h4 class="font-display text-4xl text-white font-bold mb-4 tracking-tighter">Company-Wide</h4>
-          <h5 class="font-serif text-xl text-slate-300 mb-6 italic">AI Enablement & Governance</h5>
-          <div class="w-1/5 h-px bg-slate-600 mb-6"></div>
-          <p class="text-slate-400 text-sm leading-relaxed">Led structured rollout of GenAI platforms (ChatGPT, Gemini, Claude) including safe-use education, governance frameworks, and practical workflow adoption.</p>
-        </div>
+        <div class="relative z-10"><h4 class="font-display text-4xl text-white font-bold mb-4 tracking-tighter">Company-Wide</h4><h5 class="font-serif text-xl text-slate-300 mb-6 italic">AI Enablement & Governance</h5><div class="w-1/5 h-px bg-slate-600 mb-6"></div><p class="text-slate-400 text-sm leading-relaxed">Led structured rollout of GenAI platforms (ChatGPT, Gemini, Claude) including safe-use education, governance frameworks, and practical workflow adoption.</p></div>
       </div>
     </div>
   </div>
@@ -231,158 +148,29 @@
 
 <!-- ═══════════════════ EXPERIENCE (horizontal scroll) ═══════════════════ -->
 <section id="experience" class="relative h-[400vh] bg-[#f4f4f5] z-30">
-  <div class="sticky top-0 h-screen flex items-center overflow-hidden exp-wrapper">
-    <!-- Watermark -->
-    <div class="absolute top-24 left-4 md:left-12 z-0 pointer-events-none opacity-[0.03] select-none">
-      <h2 class="font-display text-[20vw] font-bold text-slate-900 leading-none tracking-tighter">TIMELINE</h2>
-    </div>
-
-    <!-- Line -->
-    <svg class="absolute top-1/2 left-0 w-full h-[2px] z-0 pointer-events-none overflow-visible">
-      <line x1="0" y1="0" x2="100%" y2="0" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="10 10"/>
-    </svg>
-
-    <!-- Horizontal track -->
+  <div class="sticky top-0 h-screen flex items-center overflow-hidden">
+    <div class="absolute top-24 left-4 md:left-12 z-0 pointer-events-none opacity-[0.03] select-none"><h2 class="font-display text-[20vw] font-bold text-slate-900 leading-none tracking-tighter">TIMELINE</h2></div>
+    <svg class="absolute top-1/2 left-0 w-full h-[2px] z-0 pointer-events-none overflow-visible"><line x1="0" y1="0" x2="100%" y2="0" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="10 10"/></svg>
     <div class="flex gap-8 md:gap-16 px-8 md:px-24 items-center h-full z-10 w-max exp-track">
-
-      <!-- Title card -->
-      <div class="w-[80vw] md:w-[30vw] flex-shrink-0 pr-8 md:pr-12">
-        <span class="block w-12 h-1 bg-orange-500 mb-6 md:mb-8"></span>
-        <h2 class="font-serif text-5xl md:text-7xl text-slate-900 mb-6 md:mb-8">Career<br><span class="italic text-slate-400">Chronicle</span></h2>
-        <p class="text-lg md:text-xl text-slate-600 leading-relaxed max-w-sm font-light">Scaling brands, building teams, and driving impact.</p>
-      </div>
-
-      <!-- Role cards -->
-      <div class="w-[85vw] md:w-[60vw] lg:w-[40vw] flex-shrink-0 flex flex-col p-6 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-md border border-white/50 shadow-[0_30px_60px_rgba(0,0,0,0.05)] max-h-[85vh] overflow-y-auto" style="scrollbar-width:none;-ms-overflow-style:none">
-        <div class="mb-auto">
-          <div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-6">
-            <span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">2024 – Present</span>
-            <div class="h-[1px] flex-1 bg-slate-100"></div>
-            <span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1 md:gap-2 whitespace-nowrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Global</span>
-          </div>
-          <h3 class="font-serif text-2xl md:text-4xl text-slate-900 mb-2 md:mb-3 leading-[1.1]">Chief Marketing Officer & Minority Shareholder</h3>
-          <div class="text-sm md:text-base text-slate-500 font-medium mb-4 md:mb-8">The AFS Group</div>
-          <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6 md:mb-8 font-light">Executive leadership for a $100M+ portfolio. Directing marketing strategy, digital growth, brand governance, and AI enablement across 38+ countries.</p>
-        </div>
-        <div class="space-y-2 md:space-y-3 border-t border-slate-100 pt-4 md:pt-6 mt-4">
-          <div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">01</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Strategic Planning: Led Scaling Up sessions. Built brand-level OPSPs, 7 Strata, and Scoreboards for execution discipline.</p></div>
-          <div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">02</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Shared Services: Designed and launched a shared model, utilising marketing as the successful pilot.</p></div>
-          <div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">03</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Commercial Governance: Active board member with voting authority on brand expansion and capital allocation.</p></div>
-        </div>
-      </div>
-
-      <div class="w-[85vw] md:w-[60vw] lg:w-[40vw] flex-shrink-0 flex flex-col p-6 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-md border border-white/50 shadow-[0_30px_60px_rgba(0,0,0,0.05)] max-h-[85vh] overflow-y-auto" style="scrollbar-width:none;-ms-overflow-style:none">
-        <div class="mb-auto">
-          <div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-6">
-            <span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">2022 – 2024</span>
-            <div class="h-[1px] flex-1 bg-slate-100"></div>
-            <span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1 md:gap-2 whitespace-nowrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Australia / USA</span>
-          </div>
-          <h3 class="font-serif text-2xl md:text-4xl text-slate-900 mb-2 md:mb-3 leading-[1.1]">Group Head of Marketing</h3>
-          <div class="text-sm md:text-base text-slate-500 font-medium mb-4 md:mb-8">The AFS Group</div>
-          <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6 md:mb-8 font-light">Scaled into group leadership, standardising growth methodologies. Orchestrated go-to-market strategies and scaled new ventures rapidly.</p>
-        </div>
-        <div class="space-y-2 md:space-y-3 border-t border-slate-100 pt-4 md:pt-6 mt-4">
-          <div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">01</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Scale-Up Success: Grew STEPR to $13M in 24 months and Revel Saunas to $14M in 18 months via custom Growth Blueprints.</p></div>
-          <div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">02</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Team Architecture: Restructured hybrid squads (in-house, offshore) to minimise friction and improve output.</p></div>
-          <div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">03</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Global Alignment: Directed weekly execution rhythms for the global export business unit.</p></div>
-        </div>
-      </div>
-
-      <div class="w-[85vw] md:w-[60vw] lg:w-[40vw] flex-shrink-0 flex flex-col p-6 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-md border border-white/50 shadow-[0_30px_60px_rgba(0,0,0,0.05)] max-h-[85vh] overflow-y-auto" style="scrollbar-width:none;-ms-overflow-style:none">
-        <div class="mb-auto">
-          <div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-6">
-            <span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">2020 – 2022</span>
-            <div class="h-[1px] flex-1 bg-slate-100"></div>
-            <span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1 md:gap-2 whitespace-nowrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Adelaide</span>
-          </div>
-          <h3 class="font-serif text-2xl md:text-4xl text-slate-900 mb-2 md:mb-3 leading-[1.1]">Marketing Manager</h3>
-          <div class="text-sm md:text-base text-slate-500 font-medium mb-4 md:mb-8">Gym and Fitness</div>
-          <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6 md:mb-8 font-light">Led marketing for Australia's largest boutique online gym equipment retailer, driving strong performance discipline and commercial outcomes.</p>
-        </div>
-        <div class="space-y-2 md:space-y-3 border-t border-slate-100 pt-4 md:pt-6 mt-4">
-          <div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">01</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Revenue Growth: Significantly scaled revenue by optimising integrated campaigns across media, CRM, and search.</p></div>
-          <div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">02</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Loyalty Program: Launched 'Your Gym' to drive long-term customer value and brand equity without blanket discounting.</p></div>
-          <div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">03</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Crisis Leadership: Led COVID strategy, boosting brand equity and improving star ratings during peak supply chain constraints.</p></div>
-        </div>
-      </div>
-
-      <div class="w-[85vw] md:w-[60vw] lg:w-[40vw] flex-shrink-0 flex flex-col p-6 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-md border border-white/50 shadow-[0_30px_60px_rgba(0,0,0,0.05)] max-h-[85vh] overflow-y-auto" style="scrollbar-width:none;-ms-overflow-style:none">
-        <div class="mb-auto">
-          <div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-6">
-            <span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">2018 – 2020</span>
-            <div class="h-[1px] flex-1 bg-slate-100"></div>
-            <span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1 md:gap-2 whitespace-nowrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Adelaide</span>
-          </div>
-          <h3 class="font-serif text-2xl md:text-4xl text-slate-900 mb-2 md:mb-3 leading-[1.1]">Online Marketing Manager</h3>
-          <div class="text-sm md:text-base text-slate-500 font-medium mb-4 md:mb-8">Gym and Fitness</div>
-          <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6 md:mb-8 font-light">Hands-on digital strategy execution. Developed the foundational eCommerce pipeline that scaled the broader group.</p>
-        </div>
-        <div class="space-y-2 md:space-y-3 border-t border-slate-100 pt-4 md:pt-6 mt-4">
-          <div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">01</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Growth Foundation: Built systems that scaled core revenue from $9M (2018) to a $24M (2025) trajectory.</p></div>
-          <div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">02</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Performance Marketing: Managed daily MER and budget pacing, tightly linking ad performance to true margin.</p></div>
-          <div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">03</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Capability Building: Recruited and standardised external media buyers alongside offshore execution teams.</p></div>
-        </div>
-      </div>
-
-      <!-- Outro card -->
-      <div class="w-[80vw] md:w-[40vw] flex-shrink-0 flex items-center justify-center pl-8 md:pl-0">
-        <div class="text-center p-12 md:p-16 bg-[#111] rounded-[3rem] text-white relative overflow-hidden group shadow-2xl" style="cursor:pointer">
-          <div class="absolute inset-0 bg-gradient-to-br from-blue-900/40 to-purple-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-          <h3 class="font-serif text-4xl md:text-5xl italic mb-6 relative z-10">What's Next?</h3>
-          <p class="text-slate-400 mb-10 relative z-10 max-w-md mx-auto">Combining C-Suite strategy with hands-on AI engineering.</p>
-          <a href="mailto:hancockjluke@gmail.com" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-black rounded-full font-bold relative z-10 hover:scale-105 transition-transform duration-300">
-            Start Conversation <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-        </div>
-      </div>
+      <div class="w-[80vw] md:w-[30vw] flex-shrink-0 pr-8 md:pr-12"><span class="block w-12 h-1 bg-orange-500 mb-6 md:mb-8"></span><h2 class="font-serif text-5xl md:text-7xl text-slate-900 mb-6 md:mb-8">Career<br><span class="italic text-slate-400">Chronicle</span></h2><p class="text-lg md:text-xl text-slate-600 leading-relaxed max-w-sm font-light">Scaling brands, building teams, and driving impact.</p></div>
+      <div class="w-[85vw] md:w-[60vw] lg:w-[40vw] flex-shrink-0 flex flex-col p-6 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-md border border-white/50 shadow-[0_30px_60px_rgba(0,0,0,0.05)] max-h-[85vh] overflow-y-auto" style="scrollbar-width:none;-ms-overflow-style:none"><div class="mb-auto"><div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-6"><span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">2024 – Present</span><div class="h-[1px] flex-1 bg-slate-100"></div><span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1 md:gap-2 whitespace-nowrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Global</span></div><h3 class="font-serif text-2xl md:text-4xl text-slate-900 mb-2 md:mb-3 leading-[1.1]">Chief Marketing Officer & Minority Shareholder</h3><div class="text-sm md:text-base text-slate-500 font-medium mb-4 md:mb-8">The AFS Group</div><p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6 md:mb-8 font-light">Executive leadership for a $100M+ portfolio. Directing marketing strategy, digital growth, brand governance, and AI enablement across 38+ countries.</p></div><div class="space-y-2 md:space-y-3 border-t border-slate-100 pt-4 md:pt-6 mt-4"><div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">01</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Strategic Planning: Led Scaling Up sessions. Built brand-level OPSPs, 7 Strata, and Scoreboards for execution discipline.</p></div><div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">02</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Shared Services: Designed and launched a shared model, utilising marketing as the successful pilot.</p></div><div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">03</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Commercial Governance: Active board member with voting authority on brand expansion and capital allocation.</p></div></div></div>
+      <div class="w-[85vw] md:w-[60vw] lg:w-[40vw] flex-shrink-0 flex flex-col p-6 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-md border border-white/50 shadow-[0_30px_60px_rgba(0,0,0,0.05)] max-h-[85vh] overflow-y-auto" style="scrollbar-width:none;-ms-overflow-style:none"><div class="mb-auto"><div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-6"><span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">2022 – 2024</span><div class="h-[1px] flex-1 bg-slate-100"></div><span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1 md:gap-2 whitespace-nowrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Australia / USA</span></div><h3 class="font-serif text-2xl md:text-4xl text-slate-900 mb-2 md:mb-3 leading-[1.1]">Group Head of Marketing</h3><div class="text-sm md:text-base text-slate-500 font-medium mb-4 md:mb-8">The AFS Group</div><p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6 md:mb-8 font-light">Scaled into group leadership, standardising growth methodologies. Orchestrated go-to-market strategies and scaled new ventures rapidly.</p></div><div class="space-y-2 md:space-y-3 border-t border-slate-100 pt-4 md:pt-6 mt-4"><div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">01</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Scale-Up Success: Grew STEPR to $13M in 24 months and Revel Saunas to $14M in 18 months via custom Growth Blueprints.</p></div><div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">02</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Team Architecture: Restructured hybrid squads (in-house, offshore) to minimise friction and improve output.</p></div><div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">03</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Global Alignment: Directed weekly execution rhythms for the global export business unit.</p></div></div></div>
+      <div class="w-[85vw] md:w-[60vw] lg:w-[40vw] flex-shrink-0 flex flex-col p-6 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-md border border-white/50 shadow-[0_30px_60px_rgba(0,0,0,0.05)] max-h-[85vh] overflow-y-auto" style="scrollbar-width:none;-ms-overflow-style:none"><div class="mb-auto"><div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-6"><span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">2020 – 2022</span><div class="h-[1px] flex-1 bg-slate-100"></div><span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1 md:gap-2 whitespace-nowrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Adelaide</span></div><h3 class="font-serif text-2xl md:text-4xl text-slate-900 mb-2 md:mb-3 leading-[1.1]">Marketing Manager</h3><div class="text-sm md:text-base text-slate-500 font-medium mb-4 md:mb-8">Gym and Fitness</div><p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6 md:mb-8 font-light">Led marketing for Australia's largest boutique online gym equipment retailer, driving strong performance discipline and commercial outcomes.</p></div><div class="space-y-2 md:space-y-3 border-t border-slate-100 pt-4 md:pt-6 mt-4"><div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">01</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Revenue Growth: Significantly scaled revenue by optimising integrated campaigns across media, CRM, and search.</p></div><div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">02</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Loyalty Program: Launched 'Your Gym' to drive long-term customer value and brand equity without blanket discounting.</p></div><div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">03</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Crisis Leadership: Led COVID strategy, boosting brand equity and improving star ratings during peak supply chain constraints.</p></div></div></div>
+      <div class="w-[85vw] md:w-[60vw] lg:w-[40vw] flex-shrink-0 flex flex-col p-6 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-md border border-white/50 shadow-[0_30px_60px_rgba(0,0,0,0.05)] max-h-[85vh] overflow-y-auto" style="scrollbar-width:none;-ms-overflow-style:none"><div class="mb-auto"><div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-6"><span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">2018 – 2020</span><div class="h-[1px] flex-1 bg-slate-100"></div><span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1 md:gap-2 whitespace-nowrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Adelaide</span></div><h3 class="font-serif text-2xl md:text-4xl text-slate-900 mb-2 md:mb-3 leading-[1.1]">Online Marketing Manager</h3><div class="text-sm md:text-base text-slate-500 font-medium mb-4 md:mb-8">Gym and Fitness</div><p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6 md:mb-8 font-light">Hands-on digital strategy execution. Developed the foundational eCommerce pipeline that scaled the broader group.</p></div><div class="space-y-2 md:space-y-3 border-t border-slate-100 pt-4 md:pt-6 mt-4"><div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">01</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Growth Foundation: Built systems that scaled core revenue from $9M (2018) to a $24M (2025) trajectory.</p></div><div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">02</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Performance Marketing: Managed daily MER and budget pacing, tightly linking ad performance to true margin.</p></div><div class="flex gap-4 items-start"><span class="font-display text-slate-300 text-[10px] md:text-xs font-bold mt-1 md:mt-1.5">03</span><p class="text-slate-600 text-xs md:text-sm font-medium leading-relaxed">Capability Building: Recruited and standardised external media buyers alongside offshore execution teams.</p></div></div></div>
+      <div class="w-[80vw] md:w-[40vw] flex-shrink-0 flex items-center justify-center pl-8 md:pl-0"><div class="text-center p-12 md:p-16 bg-[#111] rounded-[3rem] text-white relative overflow-hidden group shadow-2xl cursor-pointer"><div class="absolute inset-0 bg-gradient-to-br from-blue-900/40 to-purple-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div><h3 class="font-serif text-4xl md:text-5xl italic mb-6 relative z-10">What's Next?</h3><p class="text-slate-400 mb-10 relative z-10 max-w-md mx-auto">Combining C-Suite strategy with hands-on AI engineering.</p><a href="mailto:hancockjluke@gmail.com" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-black rounded-full font-bold relative z-10 hover:scale-105 transition-transform duration-300">Start Conversation <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div></div>
     </div>
   </div>
 </section>
 
 <!-- ═══════════════════ TECH STACK ═══════════════════ -->
-<section class="py-32 px-6 bg-[#f4f4f5] border-t border-slate-200 relative overflow-hidden z-20">
-  <svg class="absolute inset-0 w-full h-full pointer-events-none z-0">
-    <line x1="40" y1="0" x2="40" y2="100%" stroke="#cbd5e1" stroke-width="2" class="tech-line"/>
-  </svg>
-
+<section id="techstack" class="py-32 px-6 bg-[#f4f4f5] border-t border-slate-200 relative overflow-hidden z-20">
+  <svg class="absolute inset-0 w-full h-full pointer-events-none z-0" id="tech-svg"><line x1="40" y1="0" x2="40" y2="100%" stroke="#cbd5e1" stroke-width="2" id="tech-line"/></svg>
   <div class="max-w-7xl mx-auto relative z-10 pl-16 md:pl-0">
-    <div class="mb-16">
-      <h3 class="font-serif text-4xl md:text-5xl text-slate-900 mb-6">Tools & Platforms</h3>
-      <p class="text-slate-500 max-w-2xl text-lg">My operational stack blends enterprise-grade marketing infrastructure with modern AI automation.</p>
-    </div>
-
+    <div class="mb-16"><h3 class="font-serif text-4xl md:text-5xl text-slate-900 mb-6">Tools & Platforms</h3><p class="text-slate-500 max-w-2xl text-lg">My operational stack blends enterprise-grade marketing infrastructure with modern AI automation.</p></div>
     <div class="grid md:grid-cols-3 gap-12">
-      <div>
-        <h4 class="font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-8 border-b border-slate-200 pb-2">eCommerce & CRM</h4>
-        <div class="flex flex-wrap gap-3">
-          <span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Shopify</span>
-          <span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Klaviyo</span>
-          <span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">HubSpot</span>
-          <span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Netsuite</span>
-          <span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Mailchimp</span>
-        </div>
-      </div>
-      <div>
-        <h4 class="font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-8 border-b border-slate-200 pb-2">AI & Automation</h4>
-        <div class="flex flex-wrap gap-3">
-          <span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">ChatGPT</span>
-          <span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Google Gemini</span>
-          <span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Claude</span>
-          <span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Zapier</span>
-          <span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Python</span>
-        </div>
-      </div>
-      <div>
-        <h4 class="font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-8 border-b border-slate-200 pb-2">Productivity</h4>
-        <div class="flex flex-wrap gap-3">
-          <span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Google Workspace</span>
-          <span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Docs</span>
-          <span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Sheets</span>
-          <span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Slides</span>
-          <span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Drive</span>
-        </div>
-      </div>
+      <div><h4 class="font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-8 border-b border-slate-200 pb-2">eCommerce & CRM</h4><div class="flex flex-wrap gap-3"><span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Shopify</span><span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Klaviyo</span><span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">HubSpot</span><span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Netsuite</span><span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Mailchimp</span></div></div>
+      <div><h4 class="font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-8 border-b border-slate-200 pb-2">AI & Automation</h4><div class="flex flex-wrap gap-3"><span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">ChatGPT</span><span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Google Gemini</span><span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Claude</span><span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Zapier</span><span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Python</span></div></div>
+      <div><h4 class="font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-8 border-b border-slate-200 pb-2">Productivity</h4><div class="flex flex-wrap gap-3"><span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Google Workspace</span><span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Docs</span><span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Sheets</span><span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Slides</span><span class="px-5 py-3 bg-white border border-slate-200 rounded-full text-slate-600 text-sm font-medium shadow-sm">Drive</span></div></div>
     </div>
   </div>
 </section>
@@ -390,72 +178,12 @@
 <!-- ═══════════════════ AI LAB ═══════════════════ -->
 <section class="py-40 px-6 bg-[#f4f4f5] relative overflow-hidden">
   <div class="absolute bottom-0 left-0 w-[1000px] h-[1000px] bg-slate-200/50 rounded-full blur-[150px] -translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
-
   <div class="max-w-7xl mx-auto relative z-10">
-    <div class="flex flex-col md:flex-row justify-between items-end mb-24 pb-8 border-b border-slate-200">
-      <div class="max-w-3xl">
-        <div class="font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-6">The Laboratory</div>
-        <div class="font-serif text-6xl md:text-8xl text-slate-900 leading-none">Vibe Coding.</div>
-      </div>
-      <div class="max-w-xs mt-8 md:mt-0">
-        <p class="text-slate-600 leading-relaxed text-sm">Moving beyond theory. Building custom AI tools and automation workflows to solve real business problems.</p>
-      </div>
-    </div>
-
+    <div class="flex flex-col md:flex-row justify-between items-end mb-24 pb-8 border-b border-slate-200"><div class="max-w-3xl"><div class="font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-6">The Laboratory</div><div class="font-serif text-6xl md:text-8xl text-slate-900 leading-none">Vibe Coding.</div></div><div class="max-w-xs mt-8 md:mt-0"><p class="text-slate-600 leading-relaxed text-sm">Moving beyond theory. Building custom AI tools and automation workflows to solve real business problems.</p></div></div>
     <div class="grid md:grid-cols-3 gap-6">
-      <!-- Project 1 -->
-      <div class="relative group min-h-[450px] p-10 flex flex-col justify-between border border-[#cbd5e1]">
-        <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 shadow-[0_30px_60px_rgba(0,0,0,0.05)] -z-10"></div>
-        <div class="relative z-10">
-          <div class="w-12 h-12 flex items-center justify-center mb-12 text-slate-900 border border-slate-100 rounded-full group-hover:bg-slate-900 group-hover:text-white transition-colors duration-300 bg-white">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
-          </div>
-          <h3 class="font-display text-2xl font-bold text-slate-900 mb-4 uppercase tracking-tight">Competitor Price Scraper</h3>
-          <p class="text-slate-500 leading-relaxed mb-6 text-sm">Designed and coded an automated daily tool in Python to scrape market pricing data. Supports pricing strategy and promotional planning by identifying margin opportunities.</p>
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">Python</span>
-            <span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">Automation</span>
-            <span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">Data Scraping</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Project 2 -->
-      <div class="relative group min-h-[450px] p-10 flex flex-col justify-between border border-[#cbd5e1]">
-        <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 shadow-[0_30px_60px_rgba(0,0,0,0.05)] -z-10"></div>
-        <div class="relative z-10">
-          <div class="w-12 h-12 flex items-center justify-center mb-12 text-slate-900 border border-slate-100 rounded-full group-hover:bg-slate-900 group-hover:text-white transition-colors duration-300 bg-white">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
-          </div>
-          <h3 class="font-display text-2xl font-bold text-slate-900 mb-4 uppercase tracking-tight">Voice Insight Engine</h3>
-          <p class="text-slate-500 leading-relaxed mb-6 text-sm">Built tooling to extract and analyse customer insights from recorded phone calls, transforming unstructured voice data into dashboards highlighting motivations and objections.</p>
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">Voice Processing</span>
-            <span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">Unstructured Data</span>
-            <span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">Dashboards</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Project 3 -->
-      <div class="relative group min-h-[450px] p-10 flex flex-col justify-between border border-[#cbd5e1]">
-        <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 shadow-[0_30px_60px_rgba(0,0,0,0.05)] -z-10"></div>
-        <div class="relative z-10">
-          <div class="w-12 h-12 flex items-center justify-center mb-12 text-slate-900 border border-slate-100 rounded-full group-hover:bg-slate-900 group-hover:text-white transition-colors duration-300 bg-white">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          </div>
-          <h3 class="font-display text-2xl font-bold text-slate-900 mb-4 uppercase tracking-tight">AI SOP Generator</h3>
-          <p class="text-slate-500 leading-relaxed mb-6 text-sm">Vibe-coded a tool that converts uploaded screen recordings into step-by-step Standard Operating Procedures, automatically generating annotated screengrabs.</p>
-          <a href="https://qr-code-generator-140130628305.us-west1.run.app/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-xs font-bold uppercase tracking-wider rounded-lg mb-8 hover:bg-orange-500 transition-colors">
-            Open Tool <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-          </a>
-          <div class="flex flex-wrap gap-2">
-            <span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">Video Processing</span>
-            <span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">Workflow Automation</span>
-            <span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">GenAI</span>
-          </div>
-        </div>
-      </div>
+      <div class="relative group min-h-[450px] p-10 flex flex-col justify-between border border-[#cbd5e1]"><div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 shadow-[0_30px_60px_rgba(0,0,0,0.05)] -z-10"></div><div class="relative z-10"><div class="w-12 h-12 flex items-center justify-center mb-12 text-slate-900 border border-slate-100 rounded-full group-hover:bg-slate-900 group-hover:text-white transition-colors duration-300 bg-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div><h3 class="font-display text-2xl font-bold text-slate-900 mb-4 uppercase tracking-tight">Competitor Price Scraper</h3><p class="text-slate-500 leading-relaxed mb-6 text-sm">Designed and coded an automated daily tool in Python to scrape market pricing data. Supports pricing strategy and promotional planning by identifying margin opportunities.</p><div class="flex flex-wrap gap-2"><span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">Python</span><span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">Automation</span><span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">Data Scraping</span></div></div></div>
+      <div class="relative group min-h-[450px] p-10 flex flex-col justify-between border border-[#cbd5e1]"><div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 shadow-[0_30px_60px_rgba(0,0,0,0.05)] -z-10"></div><div class="relative z-10"><div class="w-12 h-12 flex items-center justify-center mb-12 text-slate-900 border border-slate-100 rounded-full group-hover:bg-slate-900 group-hover:text-white transition-colors duration-300 bg-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></div><h3 class="font-display text-2xl font-bold text-slate-900 mb-4 uppercase tracking-tight">Voice Insight Engine</h3><p class="text-slate-500 leading-relaxed mb-6 text-sm">Built tooling to extract and analyse customer insights from recorded phone calls, transforming unstructured voice data into dashboards highlighting motivations and objections.</p><div class="flex flex-wrap gap-2"><span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">Voice Processing</span><span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">Unstructured Data</span><span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">Dashboards</span></div></div></div>
+      <div class="relative group min-h-[450px] p-10 flex flex-col justify-between border border-[#cbd5e1]"><div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 shadow-[0_30px_60px_rgba(0,0,0,0.05)] -z-10"></div><div class="relative z-10"><div class="w-12 h-12 flex items-center justify-center mb-12 text-slate-900 border border-slate-100 rounded-full group-hover:bg-slate-900 group-hover:text-white transition-colors duration-300 bg-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><h3 class="font-display text-2xl font-bold text-slate-900 mb-4 uppercase tracking-tight">AI SOP Generator</h3><p class="text-slate-500 leading-relaxed mb-6 text-sm">Vibe-coded a tool that converts uploaded screen recordings into step-by-step Standard Operating Procedures, automatically generating annotated screengrabs.</p><a href="https://qr-code-generator-140130628305.us-west1.run.app/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-xs font-bold uppercase tracking-wider rounded-lg mb-8 hover:bg-orange-500 transition-colors">Open Tool <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a><div class="flex flex-wrap gap-2"><span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">Video Processing</span><span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">Workflow Automation</span><span class="text-[10px] font-bold px-3 py-1.5 border border-slate-200 text-slate-500 uppercase tracking-widest bg-white/50">GenAI</span></div></div></div>
     </div>
   </div>
 </section>
@@ -464,46 +192,11 @@
 <footer class="bg-white pt-24 pb-12 px-6 border-t border-slate-100">
   <div class="max-w-7xl mx-auto">
     <div class="grid md:grid-cols-12 gap-12 mb-24">
-      <div class="md:col-span-4">
-        <h3 class="font-display text-2xl font-bold text-slate-900 mb-6">JH.</h3>
-        <p class="text-slate-500 mb-8 max-w-sm">Building brands at the intersection of commerce, creativity, and code.</p>
-        <div class="flex gap-4">
-          <a href="mailto:hancockjluke@gmail.com" class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-900 hover:bg-slate-900 hover:text-white transition-colors">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg>
-          </a>
-          <a href="https://www.linkedin.com/in/josh-hancock-81b6a85a/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-900 hover:bg-[#0077b5] hover:text-white transition-colors">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <div class="md:col-span-4">
-        <h4 class="font-bold text-slate-900 mb-8 uppercase tracking-wider text-xs">Philosophy</h4>
-        <ul class="space-y-6">
-          <li><h5 class="font-bold text-slate-900 text-sm mb-1">Data-Led Logic</h5><p class="text-slate-500 text-sm">Brings a balanced, logical perspective to complex decisions. Challenges reactive discounting in favour of long-term planning.</p></li>
-          <li><h5 class="font-bold text-slate-900 text-sm mb-1">People First</h5><p class="text-slate-500 text-sm">Approachable leadership. Reworked team structures to reduce friction and led tough decisions with empathy.</p></li>
-          <li><h5 class="font-bold text-slate-900 text-sm mb-1">Commercial Discipline</h5><p class="text-slate-500 text-sm">Connects marketing performance to P&L. Accountable for revenue forecasts, GL line items, and capital allocation.</p></li>
-        </ul>
-      </div>
-
-      <div class="md:col-span-4">
-        <h4 class="font-bold text-slate-900 mb-8 uppercase tracking-wider text-xs">Credentials</h4>
-        <ul class="space-y-4">
-          <li class="text-slate-600 text-sm py-2 border-b border-slate-100">The eCommerce Equation (Jay Wright) — Growth Program</li>
-          <li class="text-slate-600 text-sm py-2 border-b border-slate-100">Creator Room (Jed Eglington) — Performance Creative Mastermind</li>
-          <li class="text-slate-600 text-sm py-2 border-b border-slate-100">Lean Fundamentals Certified (2022) — Project Management</li>
-          <li class="text-slate-600 text-sm py-2 border-b border-slate-100 last:border-0">Certified Digital Marketing Specialist (Strategy & Planning) — DMI</li>
-        </ul>
-      </div>
+      <div class="md:col-span-4"><h3 class="font-display text-2xl font-bold text-slate-900 mb-6">JH.</h3><p class="text-slate-500 mb-8 max-w-sm">Building brands at the intersection of commerce, creativity, and code.</p><div class="flex gap-4"><a href="mailto:hancockjluke@gmail.com" class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-900 hover:bg-slate-900 hover:text-white transition-colors"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg></a><a href="https://www.linkedin.com/in/josh-hancock-81b6a85a/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-900 hover:bg-[#0077b5] hover:text-white transition-colors"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg></a></div></div>
+      <div class="md:col-span-4"><h4 class="font-bold text-slate-900 mb-8 uppercase tracking-wider text-xs">Philosophy</h4><ul class="space-y-6"><li><h5 class="font-bold text-slate-900 text-sm mb-1">Data-Led Logic</h5><p class="text-slate-500 text-sm">Brings a balanced, logical perspective to complex decisions. Challenges reactive discounting in favour of long-term planning.</p></li><li><h5 class="font-bold text-slate-900 text-sm mb-1">People First</h5><p class="text-slate-500 text-sm">Approachable leadership. Reworked team structures to reduce friction and led tough decisions with empathy.</p></li><li><h5 class="font-bold text-slate-900 text-sm mb-1">Commercial Discipline</h5><p class="text-slate-500 text-sm">Connects marketing performance to P&L. Accountable for revenue forecasts, GL line items, and capital allocation.</p></li></ul></div>
+      <div class="md:col-span-4"><h4 class="font-bold text-slate-900 mb-8 uppercase tracking-wider text-xs">Credentials</h4><ul class="space-y-4"><li class="text-slate-600 text-sm py-2 border-b border-slate-100">The eCommerce Equation (Jay Wright) — Growth Program</li><li class="text-slate-600 text-sm py-2 border-b border-slate-100">Creator Room (Jed Eglington) — Performance Creative Mastermind</li><li class="text-slate-600 text-sm py-2 border-b border-slate-100">Lean Fundamentals Certified (2022) — Project Management</li><li class="text-slate-600 text-sm py-2 border-b border-slate-100 last:border-0">Certified Digital Marketing Specialist (Strategy & Planning) — DMI</li></ul></div>
     </div>
-
-    <div class="flex flex-col md:flex-row justify-between items-center text-slate-400 text-xs border-t border-slate-100 pt-8">
-      <p>&copy; 2026 Josh Hancock. Built with React & Framer Motion.</p>
-      <div class="flex gap-6 mt-4 md:mt-0">
-        <span>Privacy</span>
-        <span>Terms</span>
-      </div>
-    </div>
+    <div class="flex flex-col md:flex-row justify-between items-center text-slate-400 text-xs border-t border-slate-100 pt-8"><p>&copy; 2026 Josh Hancock. Built with React & Framer Motion.</p><div class="flex gap-6 mt-4 md:mt-0"><span>Privacy</span><span>Terms</span></div></div>
   </div>
 </footer>
 
@@ -514,59 +207,51 @@
 gsap.registerPlugin(ScrollTrigger);
 
 // Hero SVG draw animations
-document.querySelectorAll('#hero-svg .draw-line, #hero-svg .draw-circle, #hero-svg .draw-rect').forEach(el => {
+document.querySelectorAll('#hero-svg .draw-line, #hero-svg .draw-circle, #hero-svg .draw-rect').forEach(function(el) {
   var delay = parseFloat(el.dataset.delay || 0);
   var dur = parseFloat(el.dataset.dur || 1.5);
-  gsap.from(el, {
-    drawSVG: 0,
-    opacity: 0,
-    duration: dur,
-    delay: delay,
-    ease: 'power2.inOut',
-    scrollTrigger: { trigger: '#hero-svg', start: 'top 80%', once: true }
-  });
+  gsap.from(el, { drawSVG: 0, opacity: 0, duration: dur, delay: delay, ease: 'power2.inOut',
+    scrollTrigger: { trigger: '#hero-svg', start: 'top 80%', once: true } });
 });
 
 // Revenue bars
-document.querySelectorAll('.rev-bar-fill').forEach(bar => {
+document.querySelectorAll('.rev-bar-fill').forEach(function(bar) {
   var w = bar.dataset.width;
-  gsap.to(bar, {
-    width: w,
-    duration: 1.4,
-    ease: 'power2.out',
-    scrollTrigger: { trigger: '#revenue-chart', start: 'top 80%', once: true }
-  });
+  gsap.to(bar, { width: w, duration: 1.4, ease: 'power2.out',
+    scrollTrigger: { trigger: '#revenue-chart', start: 'top 80%', once: true } });
 });
 
-// Experience horizontal scroll (CSS sticky pins, GSAP scrubs translate)
+// Experience horizontal scroll
 (function() {
-  var expTrack = document.querySelector('.exp-track');
-  var expSection = document.querySelector('#experience');
-  if (expTrack && expSection) {
-    gsap.to(expTrack, {
-      x: function() { return -(expTrack.scrollWidth - window.innerWidth); },
+  var track = document.querySelector('.exp-track');
+  var section = document.querySelector('#experience');
+  if (track && section) {
+    gsap.to(track, {
+      x: function() { return -(track.scrollWidth - window.innerWidth); },
       ease: 'none',
-      scrollTrigger: {
-        trigger: expSection,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.5
-      }
+      scrollTrigger: { trigger: section, start: 'top top', end: 'bottom bottom', scrub: 0.5 }
     });
   }
 })();
 
 // Blueprint card reveals
 document.querySelectorAll('#blueprint .grid > div').forEach(function(el, i) {
-  gsap.from(el, {
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-    delay: i * 0.08,
-    ease: 'power2.out',
-    scrollTrigger: { trigger: el, start: 'top 85%', once: true }
-  });
+  gsap.from(el, { y: 50, opacity: 0, duration: 0.8, delay: i * 0.08, ease: 'power2.out',
+    scrollTrigger: { trigger: el, start: 'top 85%', once: true } });
 });
+
+// Tech stack vertical line — draws as you scroll
+(function() {
+  var line = document.querySelector('#tech-line');
+  if (line) {
+    var svg = document.querySelector('#tech-svg');
+    var h = svg ? svg.getBoundingClientRect().height : 2000;
+    line.setAttribute('stroke-dasharray', h);
+    line.setAttribute('stroke-dashoffset', h);
+    gsap.to(line, { strokeDashoffset: 0, ease: 'none',
+      scrollTrigger: { trigger: '#techstack', start: 'top 80%', end: 'bottom center', scrub: 0.5 } });
+  }
+})();
 </script>
 
 </body>
