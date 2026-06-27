@@ -39,9 +39,24 @@
     ]
   },
   "activity": {
-    "tasks_completed": 16,
-    "hours_saved_estimate": 9.0,
+    "tasks_completed": 19,
+    "hours_saved_estimate": 10.6,
     "recent": [
+      {
+        "date": "2026-06-27 01:58",
+        "task": "Published Travis Krieg Painting case study \u2014 77,555 revenue, 14 jobs, dark canvas design",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-27 01:40",
+        "task": "Reset all 122 Prospects to Pipeline: New \u2014 clean slate for re-outreach",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-27 01:35",
+        "task": "Uploaded 121 outreach records from Google Sheet to Airtable Prospects table (upsert by email)",
+        "category": "task"
+      },
       {
         "date": "2026-06-25 11:35",
         "task": "Nightly consolidation: wrote Jun 25 notes (2 sessions, inbox mining + design skills), added frontmatter to testimonials.md, Registry +4 entries, Infrastructure 7/7 verified, 0 broken wikilinks",
@@ -66,34 +81,19 @@
         "date": "2026-06-24 11:28",
         "task": "Hardened James's inbox scope rule across 3 files \u2014 pulse-bootstrap.md, email-inbox-pulse SKILL.md, delegated-mailbox-access.md. Read-only: no send, no mark-read, no labels.",
         "category": "task"
-      },
-      {
-        "date": "2026-06-24 11:24",
-        "task": "Pressure-tested persistent Chrome browser \u2014 restart resilience \u2713, Google session persistence \u2713, form interaction \u2713. Created orgo-chrome skill with known limitations and workarounds.",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-24 11:16",
-        "task": "Accepted Gmail delegation from james@notforgotten.com.au \u2014 verification propagating (up to 30min). Chrome persistent profile active on CDP :9222.",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-24 11:02",
-        "task": "Inbox pulse cron upgraded to 24/7 coverage \u2014 closed the 8-hour blind spot that caused a delegation verification email to be silently missed today",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 143.0
+      "uptime_hours": 144.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-27T02:00:00+00:00",
+        "next": "2026-06-27T03:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-27T01:00:39.371668"
+  "last_updated": "2026-06-27T02:00:39.721313"
 }
