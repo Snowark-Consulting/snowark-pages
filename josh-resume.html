@@ -60,8 +60,6 @@
   /* Stagger text words */
   .stagger-word { display: inline-block; margin-right: 0.25em; }
 
-  /* Experience horizontal scroll */
-  .exp-track { will-change: transform; }
 </style>
 </head>
 <body>
@@ -228,31 +226,25 @@
   </div>
 </section>
 
-<!-- ═══════════════════ EXPERIENCE (horizontal scroll) ═══════════════════ -->
-<section id="experience" class="relative bg-[#f4f4f5] z-30" style="height:400vh">
-  <div class="sticky top-0 h-screen flex items-center overflow-hidden">
-    <!-- Watermark -->
-    <div class="absolute top-24 left-4 md:left-12 z-0 pointer-events-none opacity-[0.03] select-none">
-      <h2 class="font-display text-[20vw] font-bold text-slate-900 leading-none tracking-tighter">TIMELINE</h2>
+<!-- ═══════════════════ EXPERIENCE ═══════════════════ -->
+<section id="experience" class="relative py-32 px-6 bg-[#f4f4f5] z-30 overflow-hidden">
+  <!-- Watermark -->
+  <div class="absolute top-24 left-4 md:left-12 z-0 pointer-events-none opacity-[0.03] select-none">
+    <h2 class="font-display text-[20vw] font-bold text-slate-900 leading-none tracking-tighter">TIMELINE</h2>
+  </div>
+
+  <div class="max-w-4xl mx-auto relative z-10">
+    <!-- Title -->
+    <div class="mb-20">
+      <span class="block w-12 h-1 bg-orange-500 mb-6 md:mb-8"></span>
+      <h2 class="font-serif text-5xl md:text-7xl text-slate-900 mb-6 md:mb-8">Career<br><span class="italic text-slate-400">Chronicle</span></h2>
+      <p class="text-lg md:text-xl text-slate-600 leading-relaxed max-w-sm font-light">Scaling brands, building teams, and driving impact.</p>
     </div>
 
-    <!-- Line -->
-    <svg class="absolute top-1/2 left-0 w-full h-[2px] z-0 pointer-events-none overflow-visible">
-      <line x1="0" y1="0" x2="100%" y2="0" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="10 10"/>
-    </svg>
+    <!-- Role cards stacked -->
+    <div class="space-y-8">
 
-    <!-- Horizontal track -->
-    <div class="flex gap-8 md:gap-16 px-8 md:px-24 items-center h-full z-10 w-max exp-track">
-
-      <!-- Title card -->
-      <div class="w-[80vw] md:w-[30vw] flex-shrink-0 pr-8 md:pr-12">
-        <span class="block w-12 h-1 bg-orange-500 mb-6 md:mb-8"></span>
-        <h2 class="font-serif text-5xl md:text-7xl text-slate-900 mb-6 md:mb-8">Career<br><span class="italic text-slate-400">Chronicle</span></h2>
-        <p class="text-lg md:text-xl text-slate-600 leading-relaxed max-w-sm font-light">Scaling brands, building teams, and driving impact.</p>
-      </div>
-
-      <!-- Role cards -->
-      <div class="w-[85vw] md:w-[60vw] lg:w-[40vw] flex-shrink-0 flex flex-col p-6 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-md border border-white/50 shadow-[0_30px_60px_rgba(0,0,0,0.05)] max-h-[85vh] overflow-y-auto" style="scrollbar-width:none;-ms-overflow-style:none">
+      <div class="flex flex-col p-6 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-md border border-white/50 shadow-[0_30px_60px_rgba(0,0,0,0.05)]">
         <div class="mb-auto">
           <div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-6">
             <span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">2024 – Present</span>
@@ -270,7 +262,7 @@
         </div>
       </div>
 
-      <div class="w-[85vw] md:w-[60vw] lg:w-[40vw] flex-shrink-0 flex flex-col p-6 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-md border border-white/50 shadow-[0_30px_60px_rgba(0,0,0,0.05)] max-h-[85vh] overflow-y-auto" style="scrollbar-width:none;-ms-overflow-style:none">
+      <div class="flex flex-col p-6 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-md border border-white/50 shadow-[0_30px_60px_rgba(0,0,0,0.05)]">
         <div class="mb-auto">
           <div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-6">
             <span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">2022 – 2024</span>
@@ -288,7 +280,7 @@
         </div>
       </div>
 
-      <div class="w-[85vw] md:w-[60vw] lg:w-[40vw] flex-shrink-0 flex flex-col p-6 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-md border border-white/50 shadow-[0_30px_60px_rgba(0,0,0,0.05)] max-h-[85vh] overflow-y-auto" style="scrollbar-width:none;-ms-overflow-style:none">
+      <div class="flex flex-col p-6 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-md border border-white/50 shadow-[0_30px_60px_rgba(0,0,0,0.05)]">
         <div class="mb-auto">
           <div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-6">
             <span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">2020 – 2022</span>
@@ -306,7 +298,7 @@
         </div>
       </div>
 
-      <div class="w-[85vw] md:w-[60vw] lg:w-[40vw] flex-shrink-0 flex flex-col p-6 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-md border border-white/50 shadow-[0_30px_60px_rgba(0,0,0,0.05)] max-h-[85vh] overflow-y-auto" style="scrollbar-width:none;-ms-overflow-style:none">
+      <div class="flex flex-col p-6 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-md border border-white/50 shadow-[0_30px_60px_rgba(0,0,0,0.05)]">
         <div class="mb-auto">
           <div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-6">
             <span class="font-display text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">2018 – 2020</span>
@@ -324,16 +316,14 @@
         </div>
       </div>
 
-      <!-- Outro card -->
-      <div class="w-[80vw] md:w-[40vw] flex-shrink-0 flex items-center justify-center pl-8 md:pl-0">
-        <div class="text-center p-12 md:p-16 bg-[#111] rounded-[3rem] text-white relative overflow-hidden group shadow-2xl" style="cursor:pointer">
-          <div class="absolute inset-0 bg-gradient-to-br from-blue-900/40 to-purple-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-          <h3 class="font-serif text-4xl md:text-5xl italic mb-6 relative z-10">What's Next?</h3>
-          <p class="text-slate-400 mb-10 relative z-10 max-w-md mx-auto">Combining C-Suite strategy with hands-on AI engineering.</p>
-          <a href="mailto:hancockjluke@gmail.com" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-black rounded-full font-bold relative z-10 hover:scale-105 transition-transform duration-300">
-            Start Conversation <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-        </div>
+      <!-- Outro -->
+      <div class="text-center p-12 md:p-16 bg-[#111] rounded-[3rem] text-white relative overflow-hidden group shadow-2xl" style="cursor:pointer">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-900/40 to-purple-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+        <h3 class="font-serif text-4xl md:text-5xl italic mb-6 relative z-10">What's Next?</h3>
+        <p class="text-slate-400 mb-10 relative z-10 max-w-md mx-auto">Combining C-Suite strategy with hands-on AI engineering.</p>
+        <a href="mailto:hancockjluke@gmail.com" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-black rounded-full font-bold relative z-10 hover:scale-105 transition-transform duration-300">
+          Start Conversation <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
       </div>
     </div>
   </div>
@@ -536,24 +526,6 @@ document.querySelectorAll('.rev-bar-fill').forEach(bar => {
     scrollTrigger: { trigger: '#revenue-chart', start: 'top 80%', once: true }
   });
 });
-
-// ── Experience horizontal scroll (no pin, uses CSS sticky + scroll scrub) ──
-const expTrack = document.querySelector('.exp-track');
-const expSection = document.querySelector('#experience');
-if (expTrack && expSection) {
-  const scrollDist = expTrack.scrollWidth - window.innerWidth;
-  gsap.to(expTrack, {
-    x: () => -scrollDist,
-    ease: 'none',
-    scrollTrigger: {
-      trigger: expSection,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 0.5,
-    }
-  });
-}
-
 // ── Scroll reveals (blueprint cards only) ──
 document.querySelectorAll('#blueprint .grid > div').forEach((el, i) => {
   gsap.from(el, {
