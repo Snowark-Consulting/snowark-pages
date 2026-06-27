@@ -39,9 +39,19 @@
     ]
   },
   "activity": {
-    "tasks_completed": 24,
-    "hours_saved_estimate": 13.4,
+    "tasks_completed": 26,
+    "hours_saved_estimate": 14.6,
     "recent": [
+      {
+        "date": "2026-06-27 10:34",
+        "task": "Built quote intake pipeline: auto-detects quote emails in atlas@ inbox, extracts data from PDFs (pymupdf + Gemini vision), cross-references with Airtable, auto-moves Prospects\u2192Clients and creates Quotes. Wired into inbox pulse",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-27 10:07",
+        "task": "Cross-referenced Phase 2 data with Airtable: 50 updated, 60 new prospects created (30 commercial cleaning + 30 marketing agencies). Airtable now at 181 prospects.",
+        "category": "task"
+      },
       {
         "date": "2026-06-27 09:16",
         "task": "Replicated notforgotten.com.au on Vercel using extracted design tokens \u2014 deployed to notforgotten-replica.vercel.app",
@@ -71,29 +81,19 @@
         "date": "2026-06-27 01:58",
         "task": "Published Travis Krieg Painting case study \u2014 77,555 revenue, 14 jobs, dark canvas design",
         "category": "task"
-      },
-      {
-        "date": "2026-06-27 01:40",
-        "task": "Reset all 122 Prospects to Pipeline: New \u2014 clean slate for re-outreach",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-27 01:35",
-        "task": "Uploaded 121 outreach records from Google Sheet to Airtable Prospects table (upsert by email)",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 152.0
+      "uptime_hours": 153.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-27T11:00:00+00:00",
+        "next": "2026-06-27T12:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -104,7 +104,7 @@
     "model": ""
   },
   "capabilities": {
-    "skills_count": 99,
+    "skills_count": 100,
     "categories_count": 14,
     "tips": [
       "Build me a professional quote page for a painting client",
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-27T10:00:43.881839"
+  "last_updated": "2026-06-27T11:00:43.945362"
 }
