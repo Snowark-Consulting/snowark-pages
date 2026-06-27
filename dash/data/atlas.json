@@ -39,9 +39,14 @@
     ]
   },
   "activity": {
-    "tasks_completed": 23,
-    "hours_saved_estimate": 12.9,
+    "tasks_completed": 24,
+    "hours_saved_estimate": 13.4,
     "recent": [
+      {
+        "date": "2026-06-27 09:16",
+        "task": "Replicated notforgotten.com.au on Vercel using extracted design tokens \u2014 deployed to notforgotten-replica.vercel.app",
+        "category": "task"
+      },
       {
         "date": "2026-06-27 06:52",
         "task": "Phase 2 master prospect list (110 prospects across 3 verticals) published to Google Docs",
@@ -76,24 +81,19 @@
         "date": "2026-06-27 01:35",
         "task": "Uploaded 121 outreach records from Google Sheet to Airtable Prospects table (upsert by email)",
         "category": "task"
-      },
-      {
-        "date": "2026-06-25 11:35",
-        "task": "Nightly consolidation: wrote Jun 25 notes (2 sessions, inbox mining + design skills), added frontmatter to testimonials.md, Registry +4 entries, Infrastructure 7/7 verified, 0 broken wikilinks",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 151.0
+      "uptime_hours": 152.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-27T10:00:00+00:00",
+        "next": "2026-06-27T11:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-27T09:00:43.081644"
+  "last_updated": "2026-06-27T10:00:43.881839"
 }
