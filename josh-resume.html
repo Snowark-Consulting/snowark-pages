@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Josh Hancock | Digital Resume</title>
+<link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+  :root {
+    --teal: #174445;
+    --teal-rgb: 23, 68, 69;
+    --green: #0d8f64;
+    --green-rgb: 13, 143, 100;
+    --warm: #e9e7e3;
+    --white: #FFFFFF;
+    --black: #000000;
+    --text-on-teal: rgba(255,255,255,0.88);
+    --font-heading: 'Cambo', Georgia, 'Times New Roman', serif;
+    --font-body: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--black);
+    background: var(--white);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1, h2, h3, .serif { font-family: var(--font-heading); font-weight: 400; }
+  .section-label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  /* ── Layout ── */
+  section { padding: 96px 24px; position: relative; overflow: hidden; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .container-narrow { max-width: 800px; margin: 0 auto; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
+  .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+
+  /* ── Section theming ── */
+  .bg-teal { background: var(--teal); color: var(--white); }
+  .bg-teal p, .bg-teal .meta { color: var(--text-on-teal); }
+  .bg-white { background: var(--white); }
+  .bg-warm { background: var(--warm); }
+
+  /* ── Hero ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--teal);
+    color: var(--white);
+    padding: 96px 24px;
+    position: relative;
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; width: 100%; }
+  .hero-rule { width: 64px; height: 2px; background: var(--green); margin-bottom: 24px; }
+  .hero-name {
+    font-family: var(--font-heading);
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    line-height: 0.9;
+    margin-bottom: 32px;
+  }
+  .hero-name .dot {
+    display: inline-block;
+    width: clamp(16px, 2.5vw, 28px);
+    height: clamp(16px, 2.5vw, 28px);
+    background: var(--green);
+    border-radius: 50%;
+    margin-left: 0.15em;
+    vertical-align: middle;
+  }
+  .hero-title {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    font-weight: 300;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 8px;
+  }
+  .hero-subtitle {
+    font-family: var(--font-body);
+    font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 24px;
+  }
+  .hero-summary {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.75);
+    max-width: 660px;
+    margin-bottom: 48px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 48px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  .hero-meta-item .meta-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 4px;
+  }
+  .hero-meta-item .meta-value { font-size: 14px; font-weight: 500; }
+
+  /* ── Scroll indicator ── */
+  .scroll-hint {
+    position: absolute;
+    bottom: 48px;
+    left: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255,255,255,0.4);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+  .scroll-dot { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--green); display: flex; align-items: center; justify-content: center; }
+  .scroll-dot::after { content: ''; width: 4px; height: 8px; background: var(--green); border-radius: 2px; }
+
+  /* ── Section headers ── */
+  .section-header { margin-bottom: 64px; }
+  .section-header .accent-line { width: 48px; height: 2px; background: var(--green); margin-bottom: 16px; }
+  .section-header h2 { font-size: clamp(2rem, 4vw, 3rem); }
+  .bg-teal .section-header .accent-line { background: var(--green); }
+
+  /* ── Revenue bars ── */
+  .revenue-bar-group { margin-bottom: 32px; }
+  .revenue-bar-label { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 15px; }
+  .revenue-bar-label .amount { font-weight: 700; }
+  .revenue-bar-track { height: 10px; background: var(--warm); border-radius: 5px; overflow: hidden; }
+  .revenue-bar-fill { height: 100%; border-radius: 5px; transition: width 1.2s ease-out; }
+  .revenue-bar-desc { font-size: 13px; color: #737373; margin-top: 4px; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--white);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 12px;
+    padding: 32px;
+    height: 100%;
+  }
+  .card .card-icon { width: 48px; height: 48px; border-radius: 10px; background: var(--warm); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 24px; }
+  .card .card-metric { font-family: var(--font-heading); font-size: 2.5rem; color: var(--teal); line-height: 1.1; margin-bottom: 8px; }
+  .card .card-title { font-family: var(--font-heading); font-size: 1.15rem; color: var(--black); margin-bottom: 12px; }
+  .card .card-desc { font-size: 0.9rem; color: #555; line-height: 1.6; }
+
+  /* ── Dark cards (teal bg) ── */
+  .bg-teal .card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text-on-teal);
+  }
+  .bg-teal .card .card-metric { color: var(--green); }
+  .bg-teal .card .card-title { color: var(--white); }
+  .bg-teal .card .card-desc { color: rgba(255,255,255,0.65); }
+  .bg-teal .card .card-icon { background: rgba(255,255,255,0.06); }
+
+  /* ── Timeline ── */
+  .timeline-item { display: flex; gap: 24px; margin-bottom: 56px; }
+  .timeline-dot-col { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; }
+  .timeline-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+  .timeline-line { width: 2px; flex: 1; background: var(--warm); margin-top: 8px; }
+  .timeline-content { padding-bottom: 16px; }
+  .timeline-period { font-size: 13px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .timeline-role { font-family: var(--font-heading); font-size: 1.25rem; color: var(--teal); margin-bottom: 2px; }
+  .timeline-company { font-size: 0.9rem; color: #555; margin-bottom: 4px; }
+  .timeline-location { font-size: 0.8rem; color: #999; margin-bottom: 12px; }
+  .timeline-desc { font-size: 0.92rem; line-height: 1.65; color: #444; margin-bottom: 12px; }
+  .timeline-achievements { list-style: none; padding: 0; }
+  .timeline-achievements li { font-size: 0.88rem; color: #555; padding: 4px 0 4px 20px; position: relative; line-height: 1.5; }
+  .timeline-achievements li::before { content: ''; position: absolute; left: 0; top: 12px; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+
+  /* ── Tech stack ── */
+  .skill-category { margin-bottom: 40px; }
+  .skill-category h4 { font-family: var(--font-body); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--teal); margin-bottom: 16px; }
+  .skill-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .skill-chip {
+    background: var(--white);
+    border: 1px solid rgba(0,0,0,0.08);
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-size: 0.88rem;
+    color: var(--black);
+    font-weight: 500;
+  }
+
+  /* ── AI projects ── */
+  .ai-project { margin-bottom: 40px; padding-left: 20px; border-left: 2px solid var(--green); }
+  .ai-project h4 { font-family: var(--font-heading); font-size: 1.15rem; color: var(--teal); margin-bottom: 8px; }
+  .ai-project p { font-size: 0.92rem; color: #555; line-height: 1.6; margin-bottom: 12px; }
+  .ai-project .tech-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ai-project .tech-tag {
+    font-size: 0.78rem;
+    color: var(--green);
+    background: rgba(13,143,100,0.08);
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-weight: 600;
+  }
+  .ai-project .project-link {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--green);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .ai-project .project-link:hover { text-decoration: underline; }
+
+  /* ── Footer ── */
+  footer.bg-teal { padding: 80px 24px; color: var(--white); }
+  footer h3 { font-size: 1.25rem; margin-bottom: 24px; }
+  .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-bottom: 56px; }
+  .value-card { padding: 24px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; }
+  .value-card h4 { font-family: var(--font-heading); font-size: 1.1rem; color: var(--green); margin-bottom: 8px; }
+  .value-card p { font-size: 0.88rem; color: rgba(255,255,255,0.65); line-height: 1.55; }
+  .education-list { list-style: none; padding: 0; }
+  .education-list li { font-size: 0.88rem; color: rgba(255,255,255,0.65); padding: 6px 0; }
+  .footer-bottom {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .grid-3, .grid-5 { grid-template-columns: 1fr 1fr; }
+    .values-grid { grid-template-columns: 1fr; }
+    .timeline-item { gap: 16px; }
+    .hero-meta { gap: 32px; }
+    .hero-name { font-size: clamp(2.5rem, 12vw, 5rem); }
+    section { padding: 64px 20px; }
+  }
+  @media (max-width: 600px) {
+    .grid-2, .grid-3, .grid-5 { grid-template-columns: 1fr; }
+    .hero-meta { flex-direction: column; gap: 16px; }
+    .hero { padding: 64px 16px; }
+    .values-grid { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-rule"></div>
+    <p class="section-label" style="color:rgba(255,255,255,0.5); margin-bottom:16px;">Digital Resume</p>
+    <h1 class="hero-name">Josh<br>Hancock<span class="dot"></span></h1>
+    <p class="hero-title">Chief Marketing Officer</p>
+    <p class="hero-subtitle">Digital & eCommerce Growth Leader</p>
+    <p class="hero-summary">Commercially driven Chief Marketing Officer with 7+ years of progressive leadership experience. I specialise in scaling multi-brand fitness portfolios to $100M+ in revenue through digital marketing, operating model design, and AI enablement.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <p class="meta-label">Location</p>
+        <p class="meta-value">Adelaide, Australia</p>
+      </div>
+      <div class="hero-meta-item">
+        <p class="meta-label">Focus</p>
+        <p class="meta-value">Scale-ups & Retail</p>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-dot"></div>
+    Scroll to explore
+  </div>
+</section>
+
+<!-- ═══════════════ REVENUE ═══════════════ -->
+<section class="bg-white">
+  <div class="container">
+    <div class="section-header">
+      <div class="accent-line"></div>
+      <p class="section-label" style="color:var(--green); margin-bottom:8px;">Portfolio Impact</p>
+      <h2>Revenue at Scale</h2>
+    </div>
+    <div id="revenue-bars">
+      <div class="revenue-bar-group">
+        <div class="revenue-bar-label"><span>Force USA</span><span class="amount">$39M</span></div>
+        <div class="revenue-bar-track"><div class="revenue-bar-fill" data-width="92" style="background:#3b82f6;width:0%"></div></div>
+        <div class="revenue-bar-desc">37% YoY Growth</div>
+      </div>
+      <div class="revenue-bar-group">
+        <div class="revenue-bar-label"><span>Gym & Fitness</span><span class="amount">$24M</span></div>
+        <div class="revenue-bar-track"><div class="revenue-bar-fill" data-width="57" style="background:#8b5cf6;width:0%"></div></div>
+        <div class="revenue-bar-desc">$9M to $24M</div>
+      </div>
+      <div class="revenue-bar-group">
+        <div class="revenue-bar-label"><span>Revel Saunas</span><span class="amount">$14M</span></div>
+        <div class="revenue-bar-track"><div class="revenue-bar-fill" data-width="33" style="background:#ec4899;width:0%"></div></div>
+        <div class="revenue-bar-desc">18-month scale-up</div>
+      </div>
+      <div class="revenue-bar-group">
+        <div class="revenue-bar-label"><span>STEPR</span><span class="amount">$13M</span></div>
+        <div class="revenue-bar-track"><div class="revenue-bar-fill" data-width="31" style="background:var(--green);width:0%"></div></div>
+        <div class="revenue-bar-desc">24-month scale-up</div>
+      </div>
+      <div class="revenue-bar-group">
+        <div class="revenue-bar-label"><span>Global Export</span><span class="amount">$10M</span></div>
+        <div class="revenue-bar-track"><div class="revenue-bar-fill" data-width="24" style="background:#f59e0b;width:0%"></div></div>
+        <div class="revenue-bar-desc">Distributor network</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ BLUEPRINT ═══════════════ -->
+<section class="bg-teal" id="blueprint">
+  <div class="container">
+    <div class="section-header">
+      <div class="accent-line"></div>
+      <p class="section-label" style="color:var(--green); margin-bottom:8px;">Strategic Highlights</p>
+      <h2>The Growth Blueprint</h2>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-metric">$9M to $24M</div>
+        <div class="card-title">eCommerce Growth Blueprint</div>
+        <p class="card-desc">Codified a repeatable growth system covering acquisition, CRO, and lifecycle marketing. Scaled Gym & Fitness to $24M, STEPR to $13M, and Revel Saunas to $14M.</p>
+      </div>
+      <div class="card">
+        <div class="card-metric">Exclusive</div>
+        <div class="card-title">Nike Strength Partnership</div>
+        <p class="card-desc">Represented AFS Group in Portland, OR. Secured exclusive ANZ distribution rights for Nike's gym equipment line through senior-level negotiations.</p>
+      </div>
+      <div class="card">
+        <div class="card-metric">Company-Wide</div>
+        <div class="card-title">AI Enablement & Governance</div>
+        <p class="card-desc">Led structured rollout of GenAI platforms (ChatGPT, Gemini, Claude) including safe-use education, governance frameworks, and practical workflow adoption.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ EXPERIENCE ═══════════════ -->
+<section class="bg-white">
+  <div class="container-narrow">
+    <div class="section-header">
+      <div class="accent-line"></div>
+      <p class="section-label" style="color:var(--green); margin-bottom:8px;">Career</p>
+      <h2>Experience</h2>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot-col">
+        <div class="timeline-dot"></div>
+        <div class="timeline-line"></div>
+      </div>
+      <div class="timeline-content">
+        <p class="timeline-period">2024 – Present</p>
+        <h3 class="timeline-role">Chief Marketing Officer & Minority Shareholder</h3>
+        <p class="timeline-company">The AFS Group</p>
+        <p class="timeline-location">Global</p>
+        <p class="timeline-desc">Executive leadership for a $100M+ portfolio. Directing marketing strategy, digital growth, brand governance, and AI enablement across 38+ countries.</p>
+        <ul class="timeline-achievements">
+          <li>Strategic Planning: Led Scaling Up sessions. Built brand-level OPSPs, 7 Strata, and Scoreboards for execution discipline.</li>
+          <li>Shared Services: Designed and launched a shared model, utilising marketing as the successful pilot.</li>
+          <li>Commercial Governance: Active board member with voting authority on brand expansion and capital allocation.</li>
+          <li>Budget Oversight: Accountable for a $6.2M owned budget and advisory oversight of an $8.2M portfolio budget.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot-col">
+        <div class="timeline-dot"></div>
+        <div class="timeline-line"></div>
+      </div>
+      <div class="timeline-content">
+        <p class="timeline-period">2022 – 2024</p>
+        <h3 class="timeline-role">Group Head of Marketing</h3>
+        <p class="timeline-company">The AFS Group</p>
+        <p class="timeline-location">Australia / USA</p>
+        <p class="timeline-desc">Scaled into group leadership, standardising growth methodologies. Orchestrated go-to-market strategies and scaled new ventures rapidly.</p>
+        <ul class="timeline-achievements">
+          <li>Scale-Up Success: Grew STEPR to $13M in 24 months and Revel Saunas to $14M in 18 months via custom Growth Blueprints.</li>
+          <li>Team Architecture: Restructured hybrid squads (in-house, offshore) to minimise friction and improve output.</li>
+          <li>Global Alignment: Directed weekly execution rhythms for the global export business unit.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot-col">
+        <div class="timeline-dot"></div>
+        <div class="timeline-line"></div>
+      </div>
+      <div class="timeline-content">
+        <p class="timeline-period">2020 – 2022</p>
+        <h3 class="timeline-role">Marketing Manager</h3>
+        <p class="timeline-company">Gym and Fitness</p>
+        <p class="timeline-location">Adelaide</p>
+        <p class="timeline-desc">Led marketing for Australia's largest boutique online gym equipment retailer, driving strong performance discipline and commercial outcomes.</p>
+        <ul class="timeline-achievements">
+          <li>Revenue Growth: Significantly scaled revenue by optimising integrated campaigns across media, CRM, and search.</li>
+          <li>Loyalty Program: Launched 'Your Gym' to drive long-term customer value and brand equity without blanket discounting.</li>
+          <li>Crisis Leadership: Led COVID strategy, boosting brand equity and improving star ratings during peak supply chain constraints.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot-col">
+        <div class="timeline-dot" style="background:var(--warm); border: 2px solid var(--green);"></div>
+      </div>
+      <div class="timeline-content">
+        <p class="timeline-period">2018 – 2020</p>
+        <h3 class="timeline-role">Online Marketing Manager</h3>
+        <p class="timeline-company">Gym and Fitness</p>
+        <p class="timeline-location">Adelaide</p>
+        <p class="timeline-desc">Hands-on digital strategy execution. Developed the foundational eCommerce pipeline that scaled the broader group.</p>
+        <ul class="timeline-achievements">
+          <li>Growth Foundation: Built systems that scaled core revenue from $9M (2018) to a $24M (2025) trajectory.</li>
+          <li>Performance Marketing: Managed daily MER and budget pacing, tightly linking ad performance to true margin.</li>
+          <li>Capability Building: Recruited and standardised external media buyers alongside offshore execution teams.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ TECH STACK ═══════════════ -->
+<section class="bg-warm">
+  <div class="container">
+    <div class="section-header">
+      <div class="accent-line"></div>
+      <p class="section-label" style="color:var(--green); margin-bottom:8px;">Capabilities</p>
+      <h2>Technology & Tools</h2>
+    </div>
+    <div class="grid-3">
+      <div class="skill-category">
+        <h4>eCommerce & CRM</h4>
+        <div class="skill-chips">
+          <span class="skill-chip">Shopify</span>
+          <span class="skill-chip">Klaviyo</span>
+          <span class="skill-chip">HubSpot</span>
+          <span class="skill-chip">Netsuite</span>
+          <span class="skill-chip">Mailchimp</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <h4>AI & Automation</h4>
+        <div class="skill-chips">
+          <span class="skill-chip">ChatGPT</span>
+          <span class="skill-chip">Google Gemini</span>
+          <span class="skill-chip">Claude</span>
+          <span class="skill-chip">Zapier</span>
+          <span class="skill-chip">Python</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <h4>Productivity</h4>
+        <div class="skill-chips">
+          <span class="skill-chip">Google Workspace</span>
+          <span class="skill-chip">Docs</span>
+          <span class="skill-chip">Sheets</span>
+          <span class="skill-chip">Slides</span>
+          <span class="skill-chip">Drive</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ AI LAB ═══════════════ -->
+<section class="bg-white">
+  <div class="container-narrow">
+    <div class="section-header">
+      <div class="accent-line"></div>
+      <p class="section-label" style="color:var(--green); margin-bottom:8px;">Projects</p>
+      <h2>AI Lab</h2>
+    </div>
+
+    <div class="ai-project">
+      <h4>Competitor Price Scraper</h4>
+      <p>Designed and coded an automated daily tool in Python to scrape market pricing data. Supports pricing strategy and promotional planning by identifying margin opportunities.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Python</span>
+        <span class="tech-tag">Automation</span>
+        <span class="tech-tag">Data Scraping</span>
+      </div>
+    </div>
+
+    <div class="ai-project">
+      <h4>Voice Insight Engine</h4>
+      <p>Built tooling to extract and analyse customer insights from recorded phone calls, transforming unstructured voice data into dashboards highlighting motivations and objections.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Voice Processing</span>
+        <span class="tech-tag">Unstructured Data</span>
+        <span class="tech-tag">Dashboards</span>
+      </div>
+    </div>
+
+    <div class="ai-project">
+      <h4>AI SOP Generator</h4>
+      <p>Vibe-coded a tool that converts uploaded screen recordings into step-by-step Standard Operating Procedures, automatically generating annotated screengrabs.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">Video Processing</span>
+        <span class="tech-tag">Workflow Automation</span>
+        <span class="tech-tag">GenAI</span>
+      </div>
+      <a href="https://qr-code-generator-140130628305.us-west1.run.app/" class="project-link" target="_blank" rel="noopener">View project &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="bg-teal">
+  <div class="container">
+    <div class="grid-2" style="align-items:start; gap:64px;">
+      <div>
+        <h3 style="font-family:var(--font-heading);">Leadership Values</h3>
+        <div class="values-grid" style="margin-bottom:0;">
+          <div class="value-card">
+            <h4>Data-Led Logic</h4>
+            <p>Brings a balanced, logical perspective to complex decisions. Challenges reactive discounting in favour of long-term planning.</p>
+          </div>
+          <div class="value-card">
+            <h4>People First</h4>
+            <p>Approachable leadership. Reworked team structures to reduce friction and led tough decisions with empathy.</p>
+          </div>
+          <div class="value-card">
+            <h4>Commercial Discipline</h4>
+            <p>Connects marketing performance to P&L. Accountable for revenue forecasts, GL line items, and capital allocation.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-family:var(--font-heading);">Education & Certification</h3>
+        <ul class="education-list">
+          <li>The eCommerce Equation (Jay Wright), Growth Program</li>
+          <li>Creator Room (Jed Eglington), Performance Creative Mastermind</li>
+          <li>Lean Fundamentals Certified (2022), Project Management</li>
+          <li>Certified Digital Marketing Specialist (Strategy & Planning), DMI</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Josh Hancock &middot; Digital Resume</span>
+      <span>Adelaide, Australia</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════ GSAP ANIMATIONS ═══════════════ -->
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// Revenue bars animate on scroll
+document.querySelectorAll('.revenue-bar-fill').forEach(bar => {
+  const w = bar.getAttribute('data-width');
+  gsap.to(bar, {
+    width: w + '%',
+    duration: 1.2,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: bar,
+      start: 'top 85%',
+      once: true
+    }
+  });
+});
+</script>
+
+</body>
+</html>
