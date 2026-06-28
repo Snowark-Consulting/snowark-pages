@@ -39,9 +39,14 @@
     ]
   },
   "activity": {
-    "tasks_completed": 36,
-    "hours_saved_estimate": 20.2,
+    "tasks_completed": 37,
+    "hours_saved_estimate": 20.7,
     "recent": [
+      {
+        "date": "2026-06-27 23:19",
+        "task": "v4 deploy: hero split-layout w stat cards, timeline how-it-works, testimonial card grid, pricing badge, CTA gradient overlay",
+        "category": "task"
+      },
       {
         "date": "2026-06-27 22:56",
         "task": "v3 deployed: snapped to 1.333 type scale (64/40/24/16), 8-pt grid, gold-on-dark CTA inverted, mobile hamburger, WCAG fixes",
@@ -76,24 +81,19 @@
         "date": "2026-06-27 12:33",
         "task": "V3: Redesigned with Three.js particle hero + GSAP scroll animations + glass nav + card hover effects \u2014 deployed to notforgotten-replica.vercel.app",
         "category": "task"
-      },
-      {
-        "date": "2026-06-27 12:22",
-        "task": "V2: Exact copy match + Power Design audit \u2014 redeployed notforgotten-replica.vercel.app with 8-pt grid, modular type scale, corrected About section, missing features restored",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 165.0
+      "uptime_hours": 166.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-28T00:00:00+00:00",
+        "next": "2026-06-28T01:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-27T23:00:51.149503"
+  "last_updated": "2026-06-28T00:00:52.702739"
 }
