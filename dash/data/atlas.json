@@ -39,9 +39,24 @@
     ]
   },
   "activity": {
-    "tasks_completed": 45,
-    "hours_saved_estimate": 25.2,
+    "tasks_completed": 48,
+    "hours_saved_estimate": 26.9,
     "recent": [
+      {
+        "date": "2026-06-28 06:17",
+        "task": "Designed 7-stage prospect lifecycle (first principles). Built New \u2192 Outreach Active automation. Backfilled 7 calibration prospects. CRM now reflects reality.",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-28 06:06",
+        "task": "Added 'Campaign Complete' Pipeline stage to Airtable Prospects \u2014 campaign end \u2260 relationship end now represented in CRM",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-28 06:02",
+        "task": "Recorded strategic decision: Calibration outreach adopted as living system \u2014 campaign end \u2260 relationship end, context-awareness overrides timetables, data trumps assumptions",
+        "category": "task"
+      },
       {
         "date": "2026-06-28 03:15",
         "task": "Batch 2 sent: Cinderellas, Kleena Cleaners, Performance Cleaning. 7 of 10 calibration emails now live. Researching Batch 3 (agencies).",
@@ -66,34 +81,19 @@
         "date": "2026-06-28 01:41",
         "task": "Backfilled 8 Founding Decisions into permanent Decision Library. Analysed decision-making patterns: 6 meta-patterns identified, 6 watch points encoded. System now actively protects decision-making integrity.",
         "category": "task"
-      },
-      {
-        "date": "2026-06-28 01:41",
-        "task": "Created notforgotten-vercel-site skill \u2014 single reference for Vercel replica: file structure, nav patterns, modal, form, Airtable wiring, deployment, pitfalls",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-28 01:35",
-        "task": "Built Decision Library: permanent system for recording, challenging, and reviewing every meaningful business decision. Template, index, challenge protocol, and retroactive backlog created.",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-28 01:24",
-        "task": "Ingested 20-question founder interview: updated SOUL.md (10 philosophical directives), James Hardstaff profile, business.md philosophy, Registry, people.md, and copywriting skill",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 172.0
+      "uptime_hours": 173.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-28T07:00:00+00:00",
+        "next": "2026-06-28T08:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -104,7 +104,7 @@
     "model": ""
   },
   "capabilities": {
-    "skills_count": 102,
+    "skills_count": 103,
     "categories_count": 14,
     "tips": [
       "Build me a professional quote page for a painting client",
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-28T06:01:03.145714"
+  "last_updated": "2026-06-28T07:00:50.728240"
 }
