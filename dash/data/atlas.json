@@ -39,9 +39,19 @@
     ]
   },
   "activity": {
-    "tasks_completed": 43,
-    "hours_saved_estimate": 24.1,
+    "tasks_completed": 45,
+    "hours_saved_estimate": 25.2,
     "recent": [
+      {
+        "date": "2026-06-28 03:15",
+        "task": "Batch 2 sent: Cinderellas, Kleena Cleaners, Performance Cleaning. 7 of 10 calibration emails now live. Researching Batch 3 (agencies).",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-28 03:02",
+        "task": "Batch 1 sent: 4 calibration emails \u2014 Distinct Painters, All Melbourne Painting (Kristian), Matte Projects, Adelaide Designer Painters. All following Outreach Philosophy. Awaiting replies.",
+        "category": "task"
+      },
       {
         "date": "2026-06-28 02:19",
         "task": "Processed inbox email: Google delegation request from quotes@notforgotten.com.au \u2014 flagged for James",
@@ -71,29 +81,19 @@
         "date": "2026-06-28 01:24",
         "task": "Ingested 20-question founder interview: updated SOUL.md (10 philosophical directives), James Hardstaff profile, business.md philosophy, Registry, people.md, and copywriting skill",
         "category": "task"
-      },
-      {
-        "date": "2026-06-27 23:19",
-        "task": "v4 deploy: hero split-layout w stat cards, timeline how-it-works, testimonial card grid, pricing badge, CTA gradient overlay",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-27 22:56",
-        "task": "v3 deployed: snapped to 1.333 type scale (64/40/24/16), 8-pt grid, gold-on-dark CTA inverted, mobile hamburger, WCAG fixes",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 169.0
+      "uptime_hours": 170.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-28T04:00:00+00:00",
+        "next": "2026-06-28T05:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-28T03:01:00.211932"
+  "last_updated": "2026-06-28T04:00:57.590128"
 }
