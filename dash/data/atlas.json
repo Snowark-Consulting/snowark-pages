@@ -39,9 +39,14 @@
     ]
   },
   "activity": {
-    "tasks_completed": 42,
-    "hours_saved_estimate": 23.5,
+    "tasks_completed": 43,
+    "hours_saved_estimate": 24.1,
     "recent": [
+      {
+        "date": "2026-06-28 02:19",
+        "task": "Processed inbox email: Google delegation request from quotes@notforgotten.com.au \u2014 flagged for James",
+        "category": "task"
+      },
       {
         "date": "2026-06-28 01:55",
         "task": "Built permanent Outreach Philosophy: 11 files across core principles, writing style, psychological principles, personalisation framework, question patterns, common mistakes, rule-breaking guide, industry examples with ACS deconstruction, and learnings log. Philosophy sits above cold-email skill as source of truth.",
@@ -76,24 +81,19 @@
         "date": "2026-06-27 22:56",
         "task": "v3 deployed: snapped to 1.333 type scale (64/40/24/16), 8-pt grid, gold-on-dark CTA inverted, mobile hamburger, WCAG fixes",
         "category": "task"
-      },
-      {
-        "date": "2026-06-27 22:47",
-        "task": "Replica v2 live at notforgotten-replica-v2.vercel.app \u2014 logo from CDN, paper airplane icons, James photo, fixed star ratings",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 168.0
+      "uptime_hours": 169.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-28T03:00:00+00:00",
+        "next": "2026-06-28T04:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-28T02:00:52.252140"
+  "last_updated": "2026-06-28T03:01:00.211932"
 }
