@@ -39,9 +39,14 @@
     ]
   },
   "activity": {
-    "tasks_completed": 48,
-    "hours_saved_estimate": 26.9,
+    "tasks_completed": 49,
+    "hours_saved_estimate": 27.4,
     "recent": [
+      {
+        "date": "2026-06-28 07:44",
+        "task": "Reorganized vault: deleted duplicate Wikilinks.md, rewrote SOUL.md in caveman style (-27% tokens), created research/ directory with 14 files and 6 scripts moved from root",
+        "category": "task"
+      },
       {
         "date": "2026-06-28 06:17",
         "task": "Designed 7-stage prospect lifecycle (first principles). Built New \u2192 Outreach Active automation. Backfilled 7 calibration prospects. CRM now reflects reality.",
@@ -76,24 +81,19 @@
         "date": "2026-06-28 01:55",
         "task": "Built permanent Outreach Philosophy: 11 files across core principles, writing style, psychological principles, personalisation framework, question patterns, common mistakes, rule-breaking guide, industry examples with ACS deconstruction, and learnings log. Philosophy sits above cold-email skill as source of truth.",
         "category": "task"
-      },
-      {
-        "date": "2026-06-28 01:41",
-        "task": "Backfilled 8 Founding Decisions into permanent Decision Library. Analysed decision-making patterns: 6 meta-patterns identified, 6 watch points encoded. System now actively protects decision-making integrity.",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 173.0
+      "uptime_hours": 174.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-28T08:00:00+00:00",
+        "next": "2026-06-28T09:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-28T07:00:50.728240"
+  "last_updated": "2026-06-28T08:00:31.514616"
 }
