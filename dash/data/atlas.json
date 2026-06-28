@@ -39,9 +39,34 @@
     ]
   },
   "activity": {
-    "tasks_completed": 37,
-    "hours_saved_estimate": 20.7,
+    "tasks_completed": 42,
+    "hours_saved_estimate": 23.5,
     "recent": [
+      {
+        "date": "2026-06-28 01:55",
+        "task": "Built permanent Outreach Philosophy: 11 files across core principles, writing style, psychological principles, personalisation framework, question patterns, common mistakes, rule-breaking guide, industry examples with ACS deconstruction, and learnings log. Philosophy sits above cold-email skill as source of truth.",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-28 01:41",
+        "task": "Backfilled 8 Founding Decisions into permanent Decision Library. Analysed decision-making patterns: 6 meta-patterns identified, 6 watch points encoded. System now actively protects decision-making integrity.",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-28 01:41",
+        "task": "Created notforgotten-vercel-site skill \u2014 single reference for Vercel replica: file structure, nav patterns, modal, form, Airtable wiring, deployment, pitfalls",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-28 01:35",
+        "task": "Built Decision Library: permanent system for recording, challenging, and reviewing every meaningful business decision. Template, index, challenge protocol, and retroactive backlog created.",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-28 01:24",
+        "task": "Ingested 20-question founder interview: updated SOUL.md (10 philosophical directives), James Hardstaff profile, business.md philosophy, Registry, people.md, and copywriting skill",
+        "category": "task"
+      },
       {
         "date": "2026-06-27 23:19",
         "task": "v4 deploy: hero split-layout w stat cards, timeline how-it-works, testimonial card grid, pricing badge, CTA gradient overlay",
@@ -56,44 +81,19 @@
         "date": "2026-06-27 22:47",
         "task": "Replica v2 live at notforgotten-replica-v2.vercel.app \u2014 logo from CDN, paper airplane icons, James photo, fixed star ratings",
         "category": "task"
-      },
-      {
-        "date": "2026-06-27 22:42",
-        "task": "Deployed exact replica of notforgotten.com.au to Vercel: https://notforgotten-replica-v2.vercel.app",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-27 22:23",
-        "task": "Building exact replica of notforgotten.com.au for Vercel deployment",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-27 12:58",
-        "task": "Contact name research complete: 49/181 Airtable prospects now have verified owner first names. Researched via email parsing + 7 browser subagents across all 3 verticals.",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-27 12:47",
-        "task": "V4: Gemini Pro redesign \u2014 constellation tracking Three.js hero + editorial testimonial + timeline How It Works + differentiated industry cards + pull-quote About section",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-27 12:33",
-        "task": "V3: Redesigned with Three.js particle hero + GSAP scroll animations + glass nav + card hover effects \u2014 deployed to notforgotten-replica.vercel.app",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 167.0
+      "uptime_hours": 168.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-28T02:00:00+00:00",
+        "next": "2026-06-28T03:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -104,7 +104,7 @@
     "model": ""
   },
   "capabilities": {
-    "skills_count": 100,
+    "skills_count": 102,
     "categories_count": 14,
     "tips": [
       "Build me a professional quote page for a painting client",
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-28T01:00:52.264128"
+  "last_updated": "2026-06-28T02:00:52.252140"
 }
