@@ -39,9 +39,19 @@
     ]
   },
   "activity": {
-    "tasks_completed": 54,
-    "hours_saved_estimate": 30.2,
+    "tasks_completed": 56,
+    "hours_saved_estimate": 31.4,
     "recent": [
+      {
+        "date": "2026-06-29 04:37",
+        "task": "Rebuilt Brain tab: vault-native graph (36 nodes, 84 wikilink edges, 7 communities). Dropped graphify semantic extraction. Orphans removed. Every node = real vault file, every edge = [[wikilink]]. Hubs sized by inbound refs.",
+        "category": "task"
+      },
+      {
+        "date": "2026-06-29 04:17",
+        "task": "Built unified Command Centre dashboard: pipeline (Airtable live), operations (cron health), knowledge (decisions + sales brain). NFS design system. 2-hourly cron refresh (script-only, zero LLM tokens).",
+        "category": "task"
+      },
       {
         "date": "2026-06-29 03:22",
         "task": "Extended crm-update-send.py: now creates Messages records on every send (Prospect + Messages + Verify = full reconciliation). Cold-email skill updated. Messages table gap closed permanently.",
@@ -71,29 +81,19 @@
         "date": "2026-06-28 07:44",
         "task": "Reorganized vault: deleted duplicate Wikilinks.md, rewrote SOUL.md in caveman style (-27% tokens), created research/ directory with 14 files and 6 scripts moved from root",
         "category": "task"
-      },
-      {
-        "date": "2026-06-28 06:17",
-        "task": "Designed 7-stage prospect lifecycle (first principles). Built New \u2192 Outreach Active automation. Backfilled 7 calibration prospects. CRM now reflects reality.",
-        "category": "task"
-      },
-      {
-        "date": "2026-06-28 06:06",
-        "task": "Added 'Campaign Complete' Pipeline stage to Airtable Prospects \u2014 campaign end \u2260 relationship end now represented in CRM",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 194.0
+      "uptime_hours": 195.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-29T05:00:00+00:00",
+        "next": "2026-06-29T06:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-29T04:00:52.592485"
+  "last_updated": "2026-06-29T05:00:54.180247"
 }
