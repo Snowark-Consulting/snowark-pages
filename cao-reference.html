@@ -152,7 +152,7 @@
 </tr>
 <tr>
 <td><strong>Website</strong></td>
-<td>WordPress (custom theme) — separate domains per service line</td>
+<td>WordPress (custom theme, all domains) — separate domain per service line</td>
 </tr>
 <tr>
 <td><strong>Role</strong></td>
@@ -741,7 +741,7 @@
 </tr>
 <tr>
 <td><strong>Data residency</strong></td>
-<td>All agent infrastructure runs on dedicated local compute. No customer data leaves Paul's environment without explicit approval. API keys never exposed to users ,  the pattern Josh built at AFS puts credentials behind a control layer that no one sees</td>
+<td>All agent infrastructure runs on a dedicated orgo.ai cloud instance — single-tenant, isolated container. DeepSeek on Hermes processes prompts via API; no customer data used for model training. API keys never exposed to users — the credential control layer Josh built at AFS (zero exposure across 18 platforms) applies here. Paul can revoke access instantly: cut a key, cut the instance, everything stops</td>
 </tr>
 </tbody>
 </table>
@@ -757,11 +757,19 @@
 <li><strong>Per-user, revocable access.</strong> Every API key lives behind a control layer. No credential is ever exposed to an end user. Access can be revoked in seconds — not days. Pattern production-tested at AFS Group across 18 platforms with zero credential exposure</li>
 </ul>
 
+<h4>Infrastructure</h4>
+<ul>
+<li><strong>Dedicated cloud instance on orgo.ai.</strong> Each Snowark deployment runs in its own isolated Docker container — not shared infrastructure. Paul's agent lives in its own environment, with its own file system, its own credential store. No other client's data or processes touch it</li>
+<li><strong>DeepSeek on Hermes.</strong> The agent runs on the Hermes framework with DeepSeek as the reasoning model. Prompts are processed via API — responses are generated and returned. DeepSeek does not use customer data for model training</li>
+<li><strong>Snowark operates the infrastructure; Paul owns everything on it.</strong> Josh manages the deployment, keeps it running, and handles upgrades. Paul owns the agent, the data, the workflows, and the credentials</li>
+</ul>
+
 <h4>Data Residency &amp; Privacy</h4>
 <ul>
-<li><strong>Dedicated local compute.</strong> All agent operations run on dedicated hardware in Paul's environment. No customer data leaves his infrastructure without explicit approval</li>
+<li><strong>Tenant-isolated.</strong> ABA Trades' agent runs in a dedicated container. No data commingling. No shared databases. The instance is single-tenant by design</li>
 <li><strong>Agent operations comply</strong> with Australian data privacy and security standards</li>
 <li><strong>Audit trails maintained</strong> for all agent actions and decisions — who did what, when, and with what data</li>
+<li><strong>Paul can revoke everything, instantly.</strong> Access to every platform runs through the agent's credential store. Cut one key and the agent loses access to that platform. Cut the orgo instance and everything stops. No data leaves Paul's control without his explicit approval</li>
 </ul>
 
 <h4>Approved-Tooling Marketplace</h4>
@@ -880,7 +888,7 @@
 </tr>
 <tr>
 <td>His data stays his</td>
-<td>Describe the MCP control layer Josh built at AFS: API keys live encrypted server-side, users never see credentials, access is per-user and revocable in seconds. Agents run on local compute. Nothing leaves his environment without his say-so. This is not a pitch ,  show him the architecture</td>
+<td>Describe the infrastructure: dedicated orgo.ai cloud instance, single-tenant, isolated. DeepSeek on Hermes processes prompts via API — no training on customer data. API keys live behind a credential control layer — users never see them, access is per-user and revocable in seconds. Cut the key, cut the instance, everything stops. This is not a pitch — it's already running at AFS Group across 18 platforms with zero credential exposure</td>
 </tr>
 </tbody>
 </table>
