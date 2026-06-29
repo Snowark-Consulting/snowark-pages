@@ -39,9 +39,14 @@
     ]
   },
   "activity": {
-    "tasks_completed": 57,
-    "hours_saved_estimate": 31.9,
+    "tasks_completed": 58,
+    "hours_saved_estimate": 32.5,
     "recent": [
+      {
+        "date": "2026-06-29 10:27",
+        "task": "Dashboard v2: added Learnings tab (experiment hypotheses), Agent tab (Sales Brain readiness + learning velocity), Decision Review Calendar page",
+        "category": "task"
+      },
       {
         "date": "2026-06-29 09:19",
         "task": "Improved footer on desktop: gold border accent, official Facebook SVG icon, logo + tagline layout, 8-pt grid spacing",
@@ -76,24 +81,19 @@
         "date": "2026-06-29 00:03",
         "task": "Built gmail_auth.py shared auth layer (eliminates recurring token expiry). Replaced Cinderellas (invalid email) with Sydney Office Clean in calibration. 3 agency Email 1 drafts pending research.",
         "category": "task"
-      },
-      {
-        "date": "2026-06-28 08:36",
-        "task": "Created Atlas Learning Framework \u2014 systematic self-improvement methodology. Added 'Evidence before optimisation' as SOUL directive #11. Email 2 drafts prepared (variable-isolated). CRM now self-updating.",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 200.0
+      "uptime_hours": 201.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-29T11:00:00+00:00",
+        "next": "2026-06-29T12:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-29T10:01:07.980381"
+  "last_updated": "2026-06-29T11:01:12.227256"
 }
