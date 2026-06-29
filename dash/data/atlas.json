@@ -39,9 +39,14 @@
     ]
   },
   "activity": {
-    "tasks_completed": 56,
-    "hours_saved_estimate": 31.4,
+    "tasks_completed": 57,
+    "hours_saved_estimate": 31.9,
     "recent": [
+      {
+        "date": "2026-06-29 09:19",
+        "task": "Improved footer on desktop: gold border accent, official Facebook SVG icon, logo + tagline layout, 8-pt grid spacing",
+        "category": "task"
+      },
       {
         "date": "2026-06-29 04:37",
         "task": "Rebuilt Brain tab: vault-native graph (36 nodes, 84 wikilink edges, 7 communities). Dropped graphify semantic extraction. Orphans removed. Every node = real vault file, every edge = [[wikilink]]. Hubs sized by inbound refs.",
@@ -76,24 +81,19 @@
         "date": "2026-06-28 08:36",
         "task": "Created Atlas Learning Framework \u2014 systematic self-improvement methodology. Added 'Evidence before optimisation' as SOUL directive #11. Email 2 drafts prepared (variable-isolated). CRM now self-updating.",
         "category": "task"
-      },
-      {
-        "date": "2026-06-28 07:44",
-        "task": "Reorganized vault: deleted duplicate Wikilinks.md, rewrote SOUL.md in caveman style (-27% tokens), created research/ directory with 14 files and 6 scripts moved from root",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 199.0
+      "uptime_hours": 200.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-29T10:00:00+00:00",
+        "next": "2026-06-29T11:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-29T09:01:00.405717"
+  "last_updated": "2026-06-29T10:01:07.980381"
 }
