@@ -87,13 +87,13 @@
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 219.0
+      "uptime_hours": 220.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-30T06:00:00+00:00",
+        "next": "2026-06-30T07:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-30T05:01:02.259537"
+  "last_updated": "2026-06-30T06:01:16.582754"
 }
