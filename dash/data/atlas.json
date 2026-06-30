@@ -39,9 +39,14 @@
     ]
   },
   "activity": {
-    "tasks_completed": 60,
-    "hours_saved_estimate": 33.6,
+    "tasks_completed": 61,
+    "hours_saved_estimate": 34.2,
     "recent": [
+      {
+        "date": "2026-06-30 22:55",
+        "task": "Fixed Gmail token false-alarm in Prepare-Ahead cron: epoch-zero expiry is working state, not breakage. Patched growth-operations skill + LEARNINGS.",
+        "category": "task"
+      },
       {
         "date": "2026-06-30 07:12",
         "task": "Campaign pulse posted \u2014 9 Outreach Active, 0 replies at Day 1-2, Email 2 window opens tomorrow for painters",
@@ -76,24 +81,19 @@
         "date": "2026-06-29 03:22",
         "task": "Extended crm-update-send.py: now creates Messages records on every send (Prospect + Messages + Verify = full reconciliation). Cold-email skill updated. Messages table gap closed permanently.",
         "category": "task"
-      },
-      {
-        "date": "2026-06-29 03:04",
-        "task": "Backfilled 10 missing Messages records for calibration campaign. All sent dates reconciled with Prospects table. Cinderellas bounce confirmed (marked Lost). CRM audit trail now complete.",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 236.0
+      "uptime_hours": 237.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-06-30T23:00:00+00:00",
+        "next": "2026-07-01T00:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-06-30T22:01:21.481860"
+  "last_updated": "2026-06-30T23:01:23.463352"
 }
