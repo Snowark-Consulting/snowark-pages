@@ -56,20 +56,15 @@
       position: absolute;
       inset: 0;
       z-index: 1;
-    }
-
-    .hero-scrim::before {
-      content: '';
-      position: absolute;
-      inset: 0;
+      /* Full coverage dark gradient: this video has no dark areas */
       background:
         linear-gradient(
           135deg,
-          rgba(0,0,0,0.08) 0%,
-          rgba(0,0,0,0.20) 20%,
-          rgba(0,0,0,0.45) 50%,
-          rgba(0,0,0,0.72) 75%,
-          rgba(0,0,0,0.88) 100%
+          rgba(0,0,0,0.25) 0%,
+          rgba(0,0,0,0.35) 25%,
+          rgba(0,0,0,0.55) 55%,
+          rgba(0,0,0,0.78) 80%,
+          rgba(0,0,0,0.90) 100%
         );
     }
 
@@ -79,11 +74,11 @@
       inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(0,0,0,0.18) 0%,
-        rgba(0,0,0,0.04) 25%,
-        rgba(0,0,0,0.04) 55%,
-        rgba(0,0,0,0.50) 80%,
-        rgba(0,0,0,0.72) 100%
+        rgba(0,0,0,0.25) 0%,
+        rgba(0,0,0,0.10) 30%,
+        rgba(0,0,0,0.10) 60%,
+        rgba(0,0,0,0.55) 80%,
+        rgba(0,0,0,0.78) 100%
       );
     }
 
@@ -101,36 +96,42 @@
     .hero-text {
       max-width: 520px;
       text-align: right;
+      /* Solid dark backing for text */
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 36px 40px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
     .hero-text h1 {
       font-family: var(--font-heading);
-      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
       font-weight: 400;
       line-height: 1.15;
       color: #fff;
-      margin-bottom: 16px;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.65), 0 1px 3px rgba(0,0,0,0.50);
+      margin-bottom: 12px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.30);
     }
 
     .hero-text .hero-sub {
       font-family: var(--font-body);
-      font-size: 1.1rem;
-      font-weight: 600;
+      font-size: 1.05rem;
+      font-weight: 500;
       line-height: 1.6;
-      color: rgba(255,255,255,0.95);
-      text-shadow: 0 2px 8px rgba(0,0,0,0.60), 0 1px 2px rgba(0,0,0,0.40);
-      margin-bottom: 32px;
+      color: rgba(255,255,255,0.88);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.30);
+      margin-bottom: 24px;
     }
 
     .hero-scroll {
       font-family: var(--font-body);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
-      color: rgba(255,255,255,0.85);
+      color: rgba(255,255,255,0.70);
       text-transform: uppercase;
       letter-spacing: 0.14em;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.55);
       cursor: pointer;
     }
 
@@ -167,13 +168,8 @@
       color: var(--teal);
     }
 
-    section.warm h2 {
-      color: var(--teal);
-    }
-
-    section.teal h2 {
-      color: var(--white);
-    }
+    section.warm h2 { color: var(--teal); }
+    section.teal h2 { color: var(--white); }
 
     h3 {
       font-family: var(--font-body);
@@ -184,9 +180,7 @@
       color: var(--teal);
     }
 
-    section.teal h3 {
-      color: var(--white);
-    }
+    section.teal h3 { color: var(--white); }
 
     p {
       font-size: 0.95rem;
@@ -195,13 +189,9 @@
       color: var(--black);
     }
 
-    section.teal p {
-      color: rgba(255,255,255,0.88);
-    }
+    section.teal p { color: rgba(255,255,255,0.88); }
 
-    strong {
-      font-weight: 700;
-    }
+    strong { font-weight: 700; }
 
     .eyebrow {
       font-family: var(--font-body);
@@ -220,9 +210,7 @@
       margin-bottom: 24px;
     }
 
-    .takeaway p {
-      margin-bottom: 0;
-    }
+    .takeaway p { margin-bottom: 0; }
 
     .takeaway-label {
       font-family: var(--font-body);
@@ -242,9 +230,7 @@
     }
 
     @media (min-width: 700px) {
-      .card-grid.cols-3 {
-        grid-template-columns: repeat(3, 1fr);
-      }
+      .card-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
     }
 
     .card {
@@ -260,19 +246,11 @@
       border-color: rgba(0,0,0,0.06);
     }
 
-    .card h3 {
-      margin-bottom: 10px;
-    }
-
-    .card p {
-      font-size: 0.9rem;
-      margin-bottom: 0;
-    }
+    .card h3 { margin-bottom: 10px; }
+    .card p { font-size: 0.9rem; margin-bottom: 0; }
 
     /* ── Phase blocks ── */
-    .phase {
-      margin-bottom: 32px;
-    }
+    .phase { margin-bottom: 32px; }
 
     .phase-header {
       display: flex;
@@ -295,14 +273,9 @@
       white-space: nowrap;
     }
 
-    .phase h3 {
-      margin-bottom: 0;
-    }
+    .phase h3 { margin-bottom: 0; }
 
-    .phase ul {
-      list-style: none;
-      padding: 0;
-    }
+    .phase ul { list-style: none; padding: 0; }
 
     .phase ul li {
       font-size: 0.92rem;
@@ -387,10 +360,7 @@
     }
 
     @media (max-width: 600px) {
-      .roi-stats {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
+      .roi-stats { grid-template-columns: 1fr; gap: 16px; }
     }
 
     /* ── Rate Card ── */
@@ -414,13 +384,8 @@
       vertical-align: top;
     }
 
-    .rate-table td:last-child {
-      color: var(--black);
-    }
-
-    .rate-table tr:last-child td {
-      border-bottom: none;
-    }
+    .rate-table td:last-child { color: var(--black); }
+    .rate-table tr:last-child td { border-bottom: none; }
 
     .rate-footer {
       background: var(--teal);
@@ -437,46 +402,30 @@
     }
 
     /* ── Close ── */
-    .close-section {
-      text-align: center;
-    }
-
-    .close-section h2 {
-      margin-bottom: 16px;
-    }
-
+    .close-section { text-align: center; }
+    .close-section h2 { margin-bottom: 16px; }
     .close-section p {
       font-size: 1.05rem;
       color: rgba(0,0,0,0.65);
       margin-bottom: 0;
     }
-
     .close-section a {
       color: var(--green);
       text-decoration: none;
       font-weight: 700;
     }
-
-    .close-section a:hover {
-      text-decoration: underline;
-    }
+    .close-section a:hover { text-decoration: underline; }
 
     /* ── Footer ── */
-    footer {
-      padding: 40px;
-      text-align: center;
-    }
-
+    footer { padding: 40px; text-align: center; }
     footer p {
       font-size: 0.78rem;
       color: rgba(0,0,0,0.40);
       margin-bottom: 0;
     }
 
-    /* ── GSAP reveal defaults ── */
-    .reveal {
-      visibility: visible;
-    }
+    /* ── GSAP reveal: content visible by default, JS hides + animates ── */
+    .reveal { opacity: 1; }
 
     /* ── Responsive ── */
     @media (max-width: 700px) {
@@ -488,54 +437,43 @@
 
       .hero-content {
         justify-content: center;
+        padding: 0 24px;
       }
 
       .hero-text {
         text-align: center;
         max-width: 100%;
+        padding: 28px 24px;
+        background: rgba(0,0,0,0.55);
       }
 
-      .hero-scrim::before {
+      .hero-scrim {
         background:
           linear-gradient(
             135deg,
-            rgba(0,0,0,0.15) 0%,
-            rgba(0,0,0,0.35) 35%,
-            rgba(0,0,0,0.55) 60%,
-            rgba(0,0,0,0.80) 100%
+            rgba(0,0,0,0.30) 0%,
+            rgba(0,0,0,0.45) 35%,
+            rgba(0,0,0,0.60) 60%,
+            rgba(0,0,0,0.82) 100%
           );
       }
 
       .hero-scrim::after {
         background: linear-gradient(
           to bottom,
-          rgba(0,0,0,0.12) 0%,
+          rgba(0,0,0,0.20) 0%,
           transparent 20%,
-          rgba(0,0,0,0.35) 50%,
-          rgba(0,0,0,0.72) 100%
+          rgba(0,0,0,0.40) 55%,
+          rgba(0,0,0,0.78) 100%
         );
       }
 
-      .hero-text h1 {
-        text-shadow: 0 2px 14px rgba(0,0,0,0.70), 0 1px 3px rgba(0,0,0,0.55);
-      }
+      .hero-text h1 { text-shadow: 0 1px 2px rgba(0,0,0,0.35); }
+      .hero-text .hero-sub { text-shadow: 0 1px 2px rgba(0,0,0,0.35); }
 
-      .hero-text .hero-sub {
-        text-shadow: 0 2px 10px rgba(0,0,0,0.65), 0 1px 2px rgba(0,0,0,0.45);
-      }
-
-      section {
-        padding: 56px 24px;
-      }
-
-      .rate-table td:first-child {
-        width: 35%;
-      }
-
-      .phase-header {
-        flex-direction: column;
-        gap: 6px;
-      }
+      section { padding: 56px 24px; }
+      .rate-table td:first-child { width: 35%; }
+      .phase-header { flex-direction: column; gap: 6px; }
     }
   </style>
 </head>
@@ -617,7 +555,6 @@
     <p class="eyebrow reveal">How we would tackle it</p>
     <h2 class="reveal">Three phases, stage-gated</h2>
 
-    <!-- Phase 1 -->
     <div class="phase reveal">
       <div class="phase-header">
         <span class="phase-badge">Phase 1</span>
@@ -633,7 +570,6 @@
       <p class="phase-gate">Gate: you sign off on the Phase 2 roadmap before any build starts.</p>
     </div>
 
-    <!-- Phase 2 -->
     <div class="phase reveal">
       <div class="phase-header">
         <span class="phase-badge">Phase 2</span>
@@ -647,7 +583,6 @@
       </ul>
     </div>
 
-    <!-- Phase 3 -->
     <div class="phase reveal">
       <div class="phase-header">
         <span class="phase-badge">Phase 3</span>
@@ -667,15 +602,15 @@
       <div class="roi-inner">
         <div class="roi-stats">
           <div>
-            <div class="roi-number" data-count="20880">0</div>
+            <div class="roi-number" data-count="20880">20,880</div>
             <div class="roi-label">Quotes per year</div>
           </div>
           <div>
-            <div class="roi-number" data-count="35">0</div>
+            <div class="roi-number" data-count="35">35</div>
             <div class="roi-label">Industry conversion %</div>
           </div>
           <div>
-            <div class="roi-number" data-count="0.6">0</div>
+            <div class="roi-number" data-count="0.6">0.6</div>
             <div class="roi-label">% Lift to break even</div>
           </div>
         </div>
@@ -742,89 +677,76 @@
   <p>Snowark Consulting &middot; Reference only. Client identity confidential.</p>
 </footer>
 
-<!-- GSAP -->
+<!-- GSAP + Three.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
-<!-- Three.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
   /* ══════════════════════════════════════════
-     GSAP Scroll Reveals
+     GSAP: content visible by default,
+     JS adds entrance animations on load + scroll.
+     No gsap.set hiding: page works without JS.
      ══════════════════════════════════════════ */
   gsap.registerPlugin(ScrollTrigger);
 
-  // Hide all reveal elements immediately (no flash)
-  var reveals = document.querySelectorAll('.reveal');
-  gsap.set(reveals, { opacity: 0, y: 28 });
+  // Hero entrance
+  gsap.from('.hero-text', {
+    opacity: 0,
+    y: 30,
+    duration: 1.0,
+    ease: 'power3.out',
+    delay: 0.2
+  });
 
-  reveals.forEach(function(el) {
-    gsap.to(el, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
+  // Section reveals: subtle fade-up on scroll
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    gsap.from(el, {
+      opacity: 0,
+      y: 20,
+      duration: 0.7,
       ease: 'power2.out',
       scrollTrigger: {
         trigger: el,
-        start: 'top 88%',
+        start: 'top 92%',
         toggleActions: 'play none none none'
       }
     });
   });
 
-  /* ══════════════════════════════════════════
-     Hero text entrance
-     ══════════════════════════════════════════ */
-  gsap.set('.hero-text', { opacity: 0, y: 40 });
-  gsap.to('.hero-text', {
-    opacity: 1,
-    y: 0,
-    duration: 1.2,
-    ease: 'power3.out',
-    delay: 0.3
-  });
-
-  /* ══════════════════════════════════════════
-     Stagger cards
-     ══════════════════════════════════════════ */
-  var cards = document.querySelectorAll('.card-grid.cols-3 .card');
-  gsap.set(cards, { opacity: 0, y: 32 });
-  gsap.to(cards, {
-    opacity: 1,
-    y: 0,
-    duration: 0.7,
-    stagger: 0.15,
+  // Card stagger
+  gsap.from('.card-grid.cols-3 .card', {
+    opacity: 0,
+    y: 24,
+    duration: 0.6,
+    stagger: 0.12,
     ease: 'power2.out',
     scrollTrigger: {
       trigger: '.card-grid.cols-3',
-      start: 'top 85%',
+      start: 'top 88%',
       toggleActions: 'play none none none'
     }
   });
 
-  /* ══════════════════════════════════════════
-     ROI number counters
-     ══════════════════════════════════════════ */
-  document.querySelectorAll('.roi-number[data-count]').forEach(el => {
-    const target = parseFloat(el.getAttribute('data-count'));
-    const isFloat = target % 1 !== 0;
-    const decimals = isFloat ? 1 : 0;
+  // ROI number counters
+  document.querySelectorAll('.roi-number[data-count]').forEach(function(el) {
+    var target = parseFloat(el.getAttribute('data-count'));
+    var isFloat = target % 1 !== 0;
 
     ScrollTrigger.create({
       trigger: '#roi-callout',
       start: 'top 80%',
       once: true,
-      onEnter: () => {
-        gsap.to(el, {
-          duration: 1.8,
+      onEnter: function() {
+        gsap.from(el, {
+          duration: 1.5,
           ease: 'power2.out',
-          innerText: target,
-          snap: { innerText: isFloat ? 0.1 : 1 },
+          textContent: 0,
+          snap: { textContent: isFloat ? 0.1 : 1 },
           onUpdate: function() {
             el.textContent = isFloat
-              ? parseFloat(el.innerText).toFixed(1)
-              : Math.round(el.innerText).toLocaleString();
+              ? parseFloat(el.textContent).toFixed(1)
+              : Math.round(el.textContent).toLocaleString();
           }
         });
       }
@@ -832,7 +754,7 @@
   });
 
   /* ══════════════════════════════════════════
-     Three.js particle field in ROI callout
+     Three.js: subtle particle field in ROI
      ══════════════════════════════════════════ */
   (function() {
     var canvas = document.getElementById('roi-canvas');
@@ -856,69 +778,67 @@
     resize();
     window.addEventListener('resize', resize);
 
-    var particleCount = 60;
-    var geometry = new THREE.BufferGeometry();
-    var positions = new Float32Array(particleCount * 3);
-    var velocities = new Float32Array(particleCount); // per-particle drift speed
+    var particleCount = 50;
+    var geo = new THREE.BufferGeometry();
+    var pos = new Float32Array(particleCount * 3);
+    var vels = new Float32Array(particleCount);
 
     for (var i = 0; i < particleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 40;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 15;
-      velocities[i] = 0.002 + Math.random() * 0.006;
+      pos[i * 3] = (Math.random() - 0.5) * 40;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 20;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 15;
+      vels[i] = 0.002 + Math.random() * 0.006;
     }
 
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-    var material = new THREE.PointsMaterial({
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    var mat = new THREE.PointsMaterial({
       color: 0x1a8a6a,
       size: 0.12,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.45,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
-
-    var particles = new THREE.Points(geometry, material);
+    var particles = new THREE.Points(geo, mat);
     scene.add(particles);
 
-    // Second layer: teal, slightly larger, fewer
-    var geometry2 = new THREE.BufferGeometry();
-    var count2 = 20;
-    var positions2 = new Float32Array(count2 * 3);
-    var velocities2 = new Float32Array(count2);
+    // Second layer
+    var geo2 = new THREE.BufferGeometry();
+    var count2 = 18;
+    var pos2 = new Float32Array(count2 * 3);
+    var vels2 = new Float32Array(count2);
     for (var j = 0; j < count2; j++) {
-      positions2[j * 3] = (Math.random() - 0.5) * 40;
-      positions2[j * 3 + 1] = (Math.random() - 0.5) * 20;
-      positions2[j * 3 + 2] = (Math.random() - 0.5) * 15;
-      velocities2[j] = 0.001 + Math.random() * 0.004;
+      pos2[j * 3] = (Math.random() - 0.5) * 40;
+      pos2[j * 3 + 1] = (Math.random() - 0.5) * 20;
+      pos2[j * 3 + 2] = (Math.random() - 0.5) * 15;
+      vels2[j] = 0.001 + Math.random() * 0.004;
     }
-    geometry2.setAttribute('position', new THREE.BufferAttribute(positions2, 3));
-    var material2 = new THREE.PointsMaterial({
+    geo2.setAttribute('position', new THREE.BufferAttribute(pos2, 3));
+    var mat2 = new THREE.PointsMaterial({
       color: 0x174445,
-      size: 0.22,
+      size: 0.20,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.30,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
-    var particles2 = new THREE.Points(geometry2, material2);
+    var particles2 = new THREE.Points(geo2, mat2);
     scene.add(particles2);
 
     function animate() {
       requestAnimationFrame(animate);
 
-      var pos = particles.geometry.attributes.position.array;
+      var p = particles.geometry.attributes.position.array;
       for (var i = 0; i < particleCount; i++) {
-        pos[i * 3 + 1] += velocities[i];
-        if (pos[i * 3 + 1] > 12) pos[i * 3 + 1] = -12;
+        p[i * 3 + 1] += vels[i];
+        if (p[i * 3 + 1] > 12) p[i * 3 + 1] = -12;
       }
       particles.geometry.attributes.position.needsUpdate = true;
 
-      pos = particles2.geometry.attributes.position.array;
+      p = particles2.geometry.attributes.position.array;
       for (var k = 0; k < count2; k++) {
-        pos[k * 3 + 1] += velocities2[k] * 0.7;
-        if (pos[k * 3 + 1] > 12) pos[k * 3 + 1] = -12;
+        p[k * 3 + 1] += vels2[k] * 0.7;
+        if (p[k * 3 + 1] > 12) p[k * 3 + 1] = -12;
       }
       particles2.geometry.attributes.position.needsUpdate = true;
 
