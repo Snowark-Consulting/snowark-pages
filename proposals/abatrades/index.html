@@ -56,13 +56,20 @@
       position: absolute;
       inset: 0;
       z-index: 1;
+    }
+
+    .hero-scrim::before {
+      content: '';
+      position: absolute;
+      inset: 0;
       background:
         linear-gradient(
           135deg,
           rgba(0,0,0,0.00) 0%,
-          rgba(0,0,0,0.08) 30%,
-          rgba(0,0,0,0.22) 60%,
-          rgba(0,0,0,0.48) 100%
+          rgba(0,0,0,0.12) 25%,
+          rgba(0,0,0,0.30) 55%,
+          rgba(0,0,0,0.58) 85%,
+          rgba(0,0,0,0.72) 100%
         );
     }
 
@@ -72,10 +79,10 @@
       inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(0,0,0,0.10) 0%,
+        rgba(0,0,0,0.12) 0%,
         transparent 25%,
         transparent 65%,
-        rgba(0,0,0,0.55) 100%
+        rgba(0,0,0,0.60) 100%
       );
     }
 
@@ -102,32 +109,35 @@
       line-height: 1.15;
       color: #fff;
       margin-bottom: 16px;
-      text-shadow: 0 1px 6px rgba(0,0,0,0.50);
+      text-shadow: 0 2px 12px rgba(0,0,0,0.65), 0 1px 3px rgba(0,0,0,0.50);
     }
 
     .hero-text .hero-sub {
       font-family: var(--font-body);
-      font-size: 1.05rem;
-      font-weight: 500;
+      font-size: 1.1rem;
+      font-weight: 600;
       line-height: 1.6;
-      color: rgba(255,255,255,0.92);
-      text-shadow: 0 1px 4px rgba(0,0,0,0.50);
+      color: rgba(255,255,255,0.95);
+      text-shadow: 0 2px 8px rgba(0,0,0,0.60), 0 1px 2px rgba(0,0,0,0.40);
       margin-bottom: 32px;
     }
 
     .hero-scroll {
       font-family: var(--font-body);
       font-size: 0.8rem;
-      font-weight: 500;
-      color: rgba(255,255,255,0.75);
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.40);
+      letter-spacing: 0.14em;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.55);
+      cursor: pointer;
     }
 
     /* ── Sections ── */
     section {
       padding: 80px 40px;
+      position: relative;
+      z-index: 1;
     }
 
     section.warm {
@@ -137,11 +147,14 @@
     section.teal {
       background: var(--teal);
       color: var(--white);
+      overflow: hidden;
     }
 
     .container {
       max-width: 740px;
       margin: 0 auto;
+      position: relative;
+      z-index: 2;
     }
 
     h2 {
@@ -231,9 +244,6 @@
       .card-grid.cols-3 {
         grid-template-columns: repeat(3, 1fr);
       }
-      .card-grid.cols-2 {
-        grid-template-columns: repeat(2, 1fr);
-      }
     }
 
     .card {
@@ -268,6 +278,7 @@
       align-items: baseline;
       gap: 12px;
       margin-bottom: 12px;
+      flex-wrap: wrap;
     }
 
     .phase-badge {
@@ -311,12 +322,38 @@
       background: var(--green);
     }
 
+    .phase-gate {
+      font-size: 0.85rem;
+      color: rgba(0,0,0,0.45);
+      font-style: italic;
+    }
+
+    .phase-sub {
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+      color: rgba(0,0,0,0.55);
+    }
+
     /* ── ROI Callout ── */
     .roi-callout {
+      position: relative;
       background: var(--teal);
       border-radius: 12px;
-      padding: 32px;
+      padding: 40px 32px;
       margin-top: 40px;
+      overflow: hidden;
+    }
+
+    .roi-callout canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      border-radius: 12px;
+    }
+
+    .roi-inner {
+      position: relative;
+      z-index: 2;
     }
 
     .roi-callout p {
@@ -325,7 +362,7 @@
       margin-bottom: 0;
     }
 
-    .roi-callout .roi-number {
+    .roi-number {
       font-family: var(--font-heading);
       font-size: 2rem;
       color: var(--white);
@@ -333,8 +370,8 @@
       margin-bottom: 4px;
     }
 
-    .roi-callout .roi-label {
-      font-size: 0.82rem;
+    .roi-label {
+      font-size: 0.78rem;
       color: rgba(255,255,255,0.70);
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -344,7 +381,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 24px;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
       text-align: center;
     }
 
@@ -435,11 +472,10 @@
       margin-bottom: 0;
     }
 
-    footer img {
-      height: 14px;
-      opacity: 0.45;
-      vertical-align: middle;
-      margin-right: 6px;
+    /* ── GSAP reveal defaults ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
     }
 
     /* ── Responsive ── */
@@ -447,7 +483,7 @@
       .hero {
         justify-content: center;
         align-items: flex-end;
-        padding-bottom: 80px;
+        padding-bottom: 100px;
       }
 
       .hero-content {
@@ -459,25 +495,33 @@
         max-width: 100%;
       }
 
-      .hero-scrim {
+      .hero-scrim::before {
         background:
           linear-gradient(
             135deg,
-            rgba(0,0,0,0.05) 0%,
-            rgba(0,0,0,0.18) 40%,
-            rgba(0,0,0,0.35) 65%,
-            rgba(0,0,0,0.55) 100%
+            rgba(0,0,0,0.10) 0%,
+            rgba(0,0,0,0.25) 40%,
+            rgba(0,0,0,0.45) 65%,
+            rgba(0,0,0,0.68) 100%
           );
       }
 
       .hero-scrim::after {
         background: linear-gradient(
           to bottom,
-          rgba(0,0,0,0.05) 0%,
+          rgba(0,0,0,0.08) 0%,
           transparent 20%,
-          rgba(0,0,0,0.25) 50%,
-          rgba(0,0,0,0.60) 100%
+          rgba(0,0,0,0.30) 50%,
+          rgba(0,0,0,0.65) 100%
         );
+      }
+
+      .hero-text h1 {
+        text-shadow: 0 2px 14px rgba(0,0,0,0.70), 0 1px 3px rgba(0,0,0,0.55);
+      }
+
+      .hero-text .hero-sub {
+        text-shadow: 0 2px 10px rgba(0,0,0,0.65), 0 1px 2px rgba(0,0,0,0.45);
       }
 
       section {
@@ -486,6 +530,11 @@
 
       .rate-table td:first-child {
         width: 35%;
+      }
+
+      .phase-header {
+        flex-direction: column;
+        gap: 6px;
       }
     }
   </style>
@@ -499,62 +548,62 @@
   </video>
   <div class="hero-scrim"></div>
   <div class="hero-content">
-    <div class="hero-text">
+    <div class="hero-text reveal">
       <h1>Ready for Lift Off, Paul?</h1>
       <p class="hero-sub">A proposal for ABA Trades Group</p>
-      <p class="hero-scroll">Scroll to explore</p>
+      <p class="hero-scroll" onclick="document.querySelector('#start').scrollIntoView({behavior:'smooth'})">Scroll to explore</p>
     </div>
   </div>
 </section>
 
 <!-- ═══════ 1. What I Heard Today ═══════ -->
-<section>
+<section id="start">
   <div class="container">
-    <p class="eyebrow">What I heard today</p>
-    <h2>The intelligence belongs inside your business</h2>
+    <p class="eyebrow reveal">What I heard today</p>
+    <h2 class="reveal">The intelligence belongs inside your business</h2>
 
-    <div class="takeaway">
+    <div class="takeaway reveal">
       <p class="takeaway-label">Marketing attribution is the bottleneck</p>
       <p>Twenty-four Google Ads running across multiple domains and nobody can trace a dollar of spend to a dollar of revenue. The agencies report, but they report in fragments. Until there is one view, every marketing decision is a guess.</p>
     </div>
 
-    <div class="takeaway">
+    <div class="takeaway reveal">
       <p class="takeaway-label">Google Ads needs an AI co-pilot</p>
       <p>You are not looking to fire the agencies. You want to walk into every meeting armed with surfaced insights, anomalies, performance shifts. The agencies execute; the intelligence stays in your hands.</p>
     </div>
 
-    <div class="takeaway">
+    <div class="takeaway reveal">
       <p class="takeaway-label">Your phone calls are an untapped goldmine</p>
       <p>Years of call data and nobody has mined it. A customer insights engine turns that into segmentation, messaging, and channel investment decisions. I have done this before: 3,447 calls analysed at AFS Group, fourteen data points per call, driving a live dashboard that now shapes budget allocation.</p>
     </div>
 
-    <div class="takeaway">
+    <div class="takeaway reveal">
       <p class="takeaway-label">SEO and backlinks belong in-house</p>
       <p>This is a medium-term play, not phase one, but the direction is clear. You want to build a content function inside ABA Trades, not pay an agency that has never met your customers.</p>
     </div>
 
-    <p style="margin-top: 32px; font-weight: 500;">Every conversation pointed to the same thing. <strong>You want the intelligence inside the business.</strong> That is exactly what I build.</p>
+    <p class="reveal" style="margin-top: 32px; font-weight: 500;">Every conversation pointed to the same thing. <strong>You want the intelligence inside the business.</strong> That is exactly what I build.</p>
   </div>
 </section>
 
 <!-- ═══════ 2. What I Bring ═══════ -->
 <section class="warm">
   <div class="container">
-    <p class="eyebrow">What I bring</p>
-    <h2>Not starting from zero</h2>
+    <p class="eyebrow reveal">What I bring</p>
+    <h2 class="reveal">Not starting from zero</h2>
 
     <div class="card-grid cols-3">
-      <div class="card">
+      <div class="card reveal">
         <h3>Pre-built infrastructure</h3>
         <p>A working agent stack proven at AFS Group across eighteen platforms. Deploy kit tested on real trades, Not Forgotten Systems recovered over $150k from automated quote follow-up alone. Everything I build stays with you: your IP, your infrastructure.</p>
       </div>
 
-      <div class="card">
+      <div class="card reveal">
         <h3>On site, in the business</h3>
         <p>Most of my time early on is embedded with your team, understanding the real processes, challenges, and opportunities firsthand. That tapers as we shift into builder mode and the automations take shape. I build what the business actually needs.</p>
       </div>
 
-      <div class="card">
+      <div class="card reveal">
         <h3>You plus me</h3>
         <p>First ninety days: the two of us wielding the AI layer. Between us we design and deploy the workflows that empower the teams and processes. No complexity, no sprawl. Two operators with an unfair advantage.</p>
       </div>
@@ -565,32 +614,32 @@
 <!-- ═══════ 3. How We'd Tackle It ═══════ -->
 <section>
   <div class="container">
-    <p class="eyebrow">How we would tackle it</p>
-    <h2>Three phases, stage-gated</h2>
+    <p class="eyebrow reveal">How we would tackle it</p>
+    <h2 class="reveal">Three phases, stage-gated</h2>
 
     <!-- Phase 1 -->
-    <div class="phase">
+    <div class="phase reveal">
       <div class="phase-header">
         <span class="phase-badge">Phase 1</span>
         <h3>Find the fastest money &middot; Weeks 1 to 4</h3>
       </div>
-      <p style="margin-bottom: 12px; font-size: 0.9rem; color: rgba(0,0,0,0.55);">On site from day one. Goal: identify at least two ROI-positive bolt-ons.</p>
+      <p class="phase-sub">On site from day one. Goal: identify at least two ROI-positive bolt-ons.</p>
       <ul>
         <li>Unify marketing attribution: consolidate GA4 across domains, stand up a single dashboard with cost-per-acquired-job by channel</li>
         <li>Mine phone call data: customer insights engine live within the month</li>
         <li>Surface Google Ads intelligence: anomaly detection and performance briefs before every agency meeting</li>
         <li>Map workflows across all four service lines: where does paper stop? What gets re-entered?</li>
       </ul>
-      <p style="font-size: 0.85rem; color: rgba(0,0,0,0.45); font-style: italic;">Gate: you sign off on the Phase 2 roadmap before any build starts.</p>
+      <p class="phase-gate">Gate: you sign off on the Phase 2 roadmap before any build starts.</p>
     </div>
 
     <!-- Phase 2 -->
-    <div class="phase">
+    <div class="phase reveal">
       <div class="phase-header">
         <span class="phase-badge">Phase 2</span>
         <h3>First wins &middot; Weeks 5 to 12</h3>
       </div>
-      <p style="margin-bottom: 12px; font-size: 0.9rem; color: rgba(0,0,0,0.55);">Shift into builder mode. On-site tapers as automations go live.</p>
+      <p class="phase-sub">Shift into builder mode. On-site tapers as automations go live.</p>
       <ul>
         <li>Deploy the highest-ROI bolt-on from Phase 1, likely quoting automation across all four service lines</li>
         <li>At least one workflow running autonomously end to end</li>
@@ -599,7 +648,7 @@
     </div>
 
     <!-- Phase 3 -->
-    <div class="phase">
+    <div class="phase reveal">
       <div class="phase-header">
         <span class="phase-badge">Phase 3</span>
         <h3>Scale &middot; Months 3 to 6</h3>
@@ -613,22 +662,25 @@
     </div>
 
     <!-- ROI Callout -->
-    <div class="roi-callout">
-      <div class="roi-stats">
-        <div>
-          <div class="roi-number">20,880</div>
-          <div class="roi-label">Quotes per year</div>
+    <div class="roi-callout reveal" id="roi-callout">
+      <canvas id="roi-canvas"></canvas>
+      <div class="roi-inner">
+        <div class="roi-stats">
+          <div>
+            <div class="roi-number" data-count="20880">0</div>
+            <div class="roi-label">Quotes per year</div>
+          </div>
+          <div>
+            <div class="roi-number" data-count="35">0</div>
+            <div class="roi-label">Industry conversion %</div>
+          </div>
+          <div>
+            <div class="roi-number" data-count="0.6">0</div>
+            <div class="roi-label">% Lift to break even</div>
+          </div>
         </div>
-        <div>
-          <div class="roi-number">35%</div>
-          <div class="roi-label">Industry conversion</div>
-        </div>
-        <div>
-          <div class="roi-number">0.6%</div>
-          <div class="roi-label">Lift to break even</div>
-        </div>
+        <p>At roughly $11M revenue with twenty-nine vans, a <strong>0.6% increase in quote-to-job conversion</strong> covers the full monthly investment. At two to three percent, conservative for quoting automation, it is three to five times. That is the floor, not the ceiling.</p>
       </div>
-      <p>At roughly $11M revenue with twenty-nine vans, a <strong>0.6% increase in quote-to-job conversion</strong> covers the full monthly investment. At two to three percent, conservative for quoting automation, it is three to five times. That is the floor, not the ceiling.</p>
     </div>
   </div>
 </section>
@@ -636,41 +688,43 @@
 <!-- ═══════ 4. The Rate Card ═══════ -->
 <section class="warm">
   <div class="container">
-    <p class="eyebrow">The rate card</p>
-    <h2>Clear terms, no lock-in</h2>
+    <p class="eyebrow reveal">The rate card</p>
+    <h2 class="reveal">Clear terms, no lock-in</h2>
 
-    <table class="rate-table">
-      <tr>
-        <td>Engagement</td>
-        <td>Three days per week, embedded on site</td>
-      </tr>
-      <tr>
-        <td>Monthly retainer</td>
-        <td>$14,400 + GST</td>
-      </tr>
-      <tr>
-        <td>Infrastructure</td>
-        <td>$110 per month (orgo.ai hosting + DeepSeek API token)</td>
-      </tr>
-      <tr>
-        <td>Start</td>
-        <td>Late August 2026</td>
-      </tr>
-      <tr>
-        <td>Kick-off sessions (pre-August)</td>
-        <td>$150 per hour</td>
-      </tr>
-      <tr>
-        <td>Terms</td>
-        <td>Month to month, no lock-in</td>
-      </tr>
-      <tr>
-        <td>Everything built</td>
-        <td>Stays with you. Your IP, your infrastructure.</td>
-      </tr>
-    </table>
+    <div class="reveal">
+      <table class="rate-table">
+        <tr>
+          <td>Engagement</td>
+          <td>Three days per week, embedded on site</td>
+        </tr>
+        <tr>
+          <td>Monthly retainer</td>
+          <td>$14,400 + GST</td>
+        </tr>
+        <tr>
+          <td>Infrastructure</td>
+          <td>$110 per month (orgo.ai hosting + DeepSeek API token)</td>
+        </tr>
+        <tr>
+          <td>Start</td>
+          <td>Late August 2026</td>
+        </tr>
+        <tr>
+          <td>Kick-off sessions (pre-August)</td>
+          <td>$150 per hour</td>
+        </tr>
+        <tr>
+          <td>Terms</td>
+          <td>Month to month, no lock-in</td>
+        </tr>
+        <tr>
+          <td>Everything built</td>
+          <td>Stays with you. Your IP, your infrastructure.</td>
+        </tr>
+      </table>
+    </div>
 
-    <div class="rate-footer">
+    <div class="rate-footer reveal">
       <p>Even a 0.6% conversion lift covers this. That is not the ceiling. That is the floor.</p>
     </div>
   </div>
@@ -679,14 +733,206 @@
 <!-- ═══════ 5. Close ═══════ -->
 <section>
   <div class="container close-section">
-    <h2>You know where to find me</h2>
-    <p>The conversation has already started. The <a href="https://snowark-consulting.github.io/snowark-pages/cao-reference.html" target="_blank">CAO reference deck</a> has the full picture.</p>
+    <h2 class="reveal">You know where to find me</h2>
+    <p class="reveal">The conversation has already started. The <a href="https://snowark-consulting.github.io/snowark-pages/cao-reference.html" target="_blank">CAO reference deck</a> has the full picture.</p>
   </div>
 </section>
 
 <footer>
   <p>Snowark Consulting &middot; Reference only. Client identity confidential.</p>
 </footer>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+  /* ══════════════════════════════════════════
+     GSAP Scroll Reveals
+     ══════════════════════════════════════════ */
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    gsap.fromTo(el,
+      { opacity: 0, y: 28 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+  });
+
+  /* ══════════════════════════════════════════
+     Hero text entrance
+     ══════════════════════════════════════════ */
+  gsap.fromTo('.hero-text',
+    { opacity: 0, y: 40 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 1.2,
+      ease: 'power3.out',
+      delay: 0.3
+    }
+  );
+
+  /* ══════════════════════════════════════════
+     Stagger cards
+     ══════════════════════════════════════════ */
+  gsap.fromTo('.card-grid.cols-3 .card',
+    { opacity: 0, y: 32 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      stagger: 0.15,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.card-grid.cols-3',
+        start: 'top 85%',
+        toggleActions: 'play none none none'
+      }
+    }
+  );
+
+  /* ══════════════════════════════════════════
+     ROI number counters
+     ══════════════════════════════════════════ */
+  document.querySelectorAll('.roi-number[data-count]').forEach(el => {
+    const target = parseFloat(el.getAttribute('data-count'));
+    const isFloat = target % 1 !== 0;
+    const decimals = isFloat ? 1 : 0;
+
+    ScrollTrigger.create({
+      trigger: '#roi-callout',
+      start: 'top 80%',
+      once: true,
+      onEnter: () => {
+        gsap.to(el, {
+          duration: 1.8,
+          ease: 'power2.out',
+          innerText: target,
+          snap: { innerText: isFloat ? 0.1 : 1 },
+          onUpdate: function() {
+            el.textContent = isFloat
+              ? parseFloat(el.innerText).toFixed(1)
+              : Math.round(el.innerText).toLocaleString();
+          }
+        });
+      }
+    });
+  });
+
+  /* ══════════════════════════════════════════
+     Three.js particle field in ROI callout
+     ══════════════════════════════════════════ */
+  (function() {
+    var canvas = document.getElementById('roi-canvas');
+    if (!canvas) return;
+
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.z = 30;
+
+    var container = document.getElementById('roi-callout');
+    var resize = function() {
+      var w = container.clientWidth;
+      var h = container.clientHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / Math.max(h, 1);
+      camera.updateProjectionMatrix();
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    var particleCount = 60;
+    var geometry = new THREE.BufferGeometry();
+    var positions = new Float32Array(particleCount * 3);
+    var velocities = new Float32Array(particleCount); // per-particle drift speed
+
+    for (var i = 0; i < particleCount; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 40;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 15;
+      velocities[i] = 0.002 + Math.random() * 0.006;
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+    var material = new THREE.PointsMaterial({
+      color: 0x1a8a6a,
+      size: 0.12,
+      transparent: true,
+      opacity: 0.5,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+
+    var particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    // Second layer: teal, slightly larger, fewer
+    var geometry2 = new THREE.BufferGeometry();
+    var count2 = 20;
+    var positions2 = new Float32Array(count2 * 3);
+    var velocities2 = new Float32Array(count2);
+    for (var j = 0; j < count2; j++) {
+      positions2[j * 3] = (Math.random() - 0.5) * 40;
+      positions2[j * 3 + 1] = (Math.random() - 0.5) * 20;
+      positions2[j * 3 + 2] = (Math.random() - 0.5) * 15;
+      velocities2[j] = 0.001 + Math.random() * 0.004;
+    }
+    geometry2.setAttribute('position', new THREE.BufferAttribute(positions2, 3));
+    var material2 = new THREE.PointsMaterial({
+      color: 0x174445,
+      size: 0.22,
+      transparent: true,
+      opacity: 0.35,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    var particles2 = new THREE.Points(geometry2, material2);
+    scene.add(particles2);
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      var pos = particles.geometry.attributes.position.array;
+      for (var i = 0; i < particleCount; i++) {
+        pos[i * 3 + 1] += velocities[i];
+        if (pos[i * 3 + 1] > 12) pos[i * 3 + 1] = -12;
+      }
+      particles.geometry.attributes.position.needsUpdate = true;
+
+      pos = particles2.geometry.attributes.position.array;
+      for (var k = 0; k < count2; k++) {
+        pos[k * 3 + 1] += velocities2[k] * 0.7;
+        if (pos[k * 3 + 1] > 12) pos[k * 3 + 1] = -12;
+      }
+      particles2.geometry.attributes.position.needsUpdate = true;
+
+      particles.rotation.y += 0.0003;
+      particles2.rotation.y -= 0.0002;
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  })();
+</script>
 
 </body>
 </html>
