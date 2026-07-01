@@ -259,6 +259,23 @@
       .prepared-bar { padding: 24px 24px; }
       .prepared-inner { gap: 24px; }
     }
+
+    /* ── Framework Diagram ── */
+    .framework-diagram {
+      margin: 40px 0 0 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .framework-diagram svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    @media (max-width: 600px) {
+      .framework-diagram { margin: 32px 0 0 0; }
+    }
+
     .takeaway {
       border-left: 3px solid var(--green);
       padding: 4px 0 4px 20px;
@@ -557,8 +574,87 @@
   </div>
 </section>
 
-<!-- ═══════ 2. What I Bring ═══════ -->
+<!-- ═══════ 2. The Framework ═══════ -->
 <section class="warm">
+  <div class="container">
+    <p class="eyebrow">The framework</p>
+    <h2>Constraint, then more, then better, then new</h2>
+
+    <p>Every business has one binding constraint. The engine does not matter if you can only build one chassis a day. Find it, fix it, and the whole business speeds up.</p>
+
+    <p><strong>1. Find the constraint.</strong> Paul's is marketing attribution. Twenty-four Google Ads running and nobody can trace a dollar to a job. Until that is fixed, every other decision is a guess.</p>
+
+    <p><strong>2. More.</strong> Once we can see what is working, we double down. Same channels, more volume, driven by data — not instinct. Before adding anything new, exhaust what is already converting.</p>
+
+    <p><strong>3. Better.</strong> Improve the effectiveness of those same channels. Quoting automation lifts conversion without a dollar of new ad spend. Better hooks, better follow-up, higher yield per lead.</p>
+
+    <p><strong>4. New.</strong> Only after more and better are maxed out. In-house content, SEO, founder-led brand. These are Phase 3 plays — not the starting line.</p>
+
+    <p><strong>AI accelerates every step.</strong> Surface Google Ads insights for more. Automate quoting for better. Generate content for new. But AI follows the strategy — it does not lead it.</p>
+
+    <p>At every step: measure. Then solve the constraint and earn a larger one. Attribution fixed? The bottleneck shifts to operations — how fast can a quote become a completed job? The cycle never ends.</p>
+
+    <div class="framework-diagram">
+      <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0,0 8,3 0,6" fill="#0d8f64"/>
+          </marker>
+          <marker id="arrowTeal" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0,0 8,3 0,6" fill="#174445"/>
+          </marker>
+          <linearGradient id="aiGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#174445"/>
+            <stop offset="100%" stop-color="#0d8f64"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Step boxes -->
+        <rect x="40" y="70" width="120" height="56" rx="8" fill="#174445"/>
+        <text x="100" y="103" text-anchor="middle" fill="#fff" font-family="Lato,sans-serif" font-size="12" font-weight="700" letter-spacing="0.08em">CONSTRAINT</text>
+
+        <rect x="205" y="70" width="100" height="56" rx="8" fill="#174445"/>
+        <text x="255" y="103" text-anchor="middle" fill="#fff" font-family="Lato,sans-serif" font-size="12" font-weight="700" letter-spacing="0.08em">MORE</text>
+
+        <rect x="350" y="70" width="100" height="56" rx="8" fill="#174445"/>
+        <text x="400" y="103" text-anchor="middle" fill="#fff" font-family="Lato,sans-serif" font-size="12" font-weight="700" letter-spacing="0.08em">BETTER</text>
+
+        <rect x="495" y="70" width="100" height="56" rx="8" fill="#174445"/>
+        <text x="545" y="103" text-anchor="middle" fill="#fff" font-family="Lato,sans-serif" font-size="12" font-weight="700" letter-spacing="0.08em">NEW</text>
+
+        <!-- Arrows between boxes -->
+        <line x1="162" y1="98" x2="200" y2="98" stroke="#0d8f64" stroke-width="2" marker-end="url(#arrowGreen)"/>
+        <line x1="307" y1="98" x2="345" y2="98" stroke="#0d8f64" stroke-width="2" marker-end="url(#arrowGreen)"/>
+        <line x1="452" y1="98" x2="490" y2="98" stroke="#0d8f64" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+        <!-- AI bar above -->
+        <rect x="40" y="24" width="555" height="28" rx="6" fill="url(#aiGrad)" opacity="0.12"/>
+        <text x="317" y="43" text-anchor="middle" fill="#0d8f64" font-family="Lato,sans-serif" font-size="11" font-weight="700" letter-spacing="0.10em">AI ACCELERATES EVERY STEP</text>
+
+        <!-- Subtle vertical connectors from AI bar to each step -->
+        <line x1="100" y1="52" x2="100" y2="68" stroke="#0d8f64" stroke-width="1" opacity="0.3"/>
+        <line x1="255" y1="52" x2="255" y2="68" stroke="#0d8f64" stroke-width="1" opacity="0.3"/>
+        <line x1="400" y1="52" x2="400" y2="68" stroke="#0d8f64" stroke-width="1" opacity="0.3"/>
+        <line x1="545" y1="52" x2="545" y2="68" stroke="#0d8f64" stroke-width="1" opacity="0.3"/>
+
+        <!-- Loop-back arrow -->
+        <path d="M595,98 C595,140 595,170 545,170 L100,170 C55,170 40,155 40,140 L40,128" fill="none" stroke="#174445" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowTeal)"/>
+
+        <!-- Next constraint label -->
+        <text x="317" y="192" text-anchor="middle" fill="#174445" font-family="Lato,sans-serif" font-size="10" font-weight="600" letter-spacing="0.08em">MEASURE, THEN THE NEXT CONSTRAINT</text>
+
+        <!-- Context labels below each step -->
+        <text x="100" y="150" text-anchor="middle" fill="rgba(0,0,0,0.4)" font-family="Lato,sans-serif" font-size="9">Attribution</text>
+        <text x="255" y="150" text-anchor="middle" fill="rgba(0,0,0,0.4)" font-family="Lato,sans-serif" font-size="9">Double down</text>
+        <text x="400" y="150" text-anchor="middle" fill="rgba(0,0,0,0.4)" font-family="Lato,sans-serif" font-size="9">Convert higher</text>
+        <text x="545" y="150" text-anchor="middle" fill="rgba(0,0,0,0.4)" font-family="Lato,sans-serif" font-size="9">Content · SEO</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 3. What I Bring ═══════ -->
+<section>
   <div class="container">
     <p class="eyebrow">What I bring</p>
     <h2>Not starting from zero</h2>
