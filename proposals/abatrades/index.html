@@ -31,6 +31,9 @@
       scroll-behavior: smooth;
     }
 
+    /* Prevent orphan words in headings */
+    h1, h2, h3 { text-wrap: balance; }
+
     /* ── Hero ── */
     .hero {
       position: relative;
@@ -90,6 +93,20 @@
       padding: 0 40px;
       display: flex;
       justify-content: flex-end;
+      align-items: center;
+    }
+
+    .hero-logo {
+      position: absolute;
+      top: -32vh;
+      left: 40px;
+      z-index: 3;
+      height: 24px;
+      opacity: 0.55;
+    }
+
+    @media (max-width: 700px) {
+      .hero-logo { left: 24px; top: -38vh; }
     }
 
     .hero-text {
@@ -204,7 +221,45 @@
       margin-bottom: 8px;
     }
 
-    /* ── Takeaways ── */
+    /* ── Prepared-For Bar ── */
+    .prepared-bar {
+      background: var(--warm);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 28px 40px;
+    }
+
+    .prepared-inner {
+      max-width: 740px;
+      margin: 0 auto;
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .prepared-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .prepared-item .prepared-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(0,0,0,0.35);
+    }
+
+    .prepared-item .prepared-value {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--teal);
+    }
+
+    @media (max-width: 700px) {
+      .prepared-bar { padding: 24px 24px; }
+      .prepared-inner { gap: 24px; }
+    }
     .takeaway {
       border-left: 3px solid var(--green);
       padding: 4px 0 4px 20px;
@@ -447,13 +502,32 @@
   </video>
   <div class="hero-scrim"></div>
   <div class="hero-content">
+    <img class="hero-logo" src="logo-white.png" alt="Snowark">
     <div class="hero-text">
-      <h1>Ready for Lift Off, Paul?</h1>
+      <h1>Ready for Lift&nbsp;Off,&nbsp;Paul?</h1>
       <p class="hero-sub">A proposal for ABA Trades Group</p>
       <p class="hero-scroll" onclick="document.querySelector('#start').scrollIntoView({behavior:'smooth'})">Scroll to explore</p>
     </div>
   </div>
 </section>
+
+<!-- ═══════ Prepared-For Bar ═══════ -->
+<div class="prepared-bar">
+  <div class="prepared-inner">
+    <div class="prepared-item">
+      <span class="prepared-label">Prepared for</span>
+      <span class="prepared-value">Paul Chaina, ABA&nbsp;Trades&nbsp;Group</span>
+    </div>
+    <div class="prepared-item">
+      <span class="prepared-label">Prepared by</span>
+      <span class="prepared-value">Josh Hancock, Snowark&nbsp;Consulting</span>
+    </div>
+    <div class="prepared-item">
+      <span class="prepared-label">Date</span>
+      <span class="prepared-value">July 2026</span>
+    </div>
+  </div>
+</div>
 
 <!-- ═══════ 1. What I Heard Today ═══════ -->
 <section id="start">
