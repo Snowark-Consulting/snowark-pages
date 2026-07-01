@@ -684,25 +684,23 @@
 
 <script>
   /* ══════════════════════════════════════════
-     GSAP: content visible by default,
-     JS adds entrance animations on load + scroll.
-     No gsap.set hiding: page works without JS.
+     GSAP: content always visible.
+     Animations are subtle motion only — no opacity.
+     Page looks complete with or without JS.
      ══════════════════════════════════════════ */
   gsap.registerPlugin(ScrollTrigger);
 
   // Hero entrance
   gsap.from('.hero-text', {
-    opacity: 0,
     y: 30,
     duration: 1.0,
     ease: 'power3.out',
     delay: 0.2
   });
 
-  // Section reveals: subtle fade-up on scroll
+  // Section reveals: subtle lift on scroll
   document.querySelectorAll('.reveal').forEach(function(el) {
     gsap.from(el, {
-      opacity: 0,
       y: 20,
       duration: 0.7,
       ease: 'power2.out',
@@ -716,7 +714,6 @@
 
   // Card stagger
   gsap.from('.card-grid.cols-3 .card', {
-    opacity: 0,
     y: 24,
     duration: 0.6,
     stagger: 0.12,
