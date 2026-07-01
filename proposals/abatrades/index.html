@@ -366,49 +366,49 @@
       color: rgba(0,0,0,0.55);
     }
 
-    /* ── ROI Callout ── */
-    .roi-callout {
-      position: relative;
-      background: var(--teal);
-      border-radius: 12px;
-      padding: 40px 32px;
-      margin-top: 40px;
-      overflow: hidden;
+    /* ── ROI Stats Strip ── */
+    .roi-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      margin: 20px 0 36px 0;
     }
-    .roi-callout canvas {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      border-radius: 12px;
+
+    .roi-stat-card {
+      background: rgba(23,68,69,0.06);
+      border: 1px solid rgba(23,68,69,0.10);
+      border-radius: 8px;
+      padding: 20px 16px;
+      text-align: center;
     }
-    .roi-inner { position: relative; z-index: 2; }
-    .roi-callout p {
-      color: rgba(255,255,255,0.90);
-      font-size: 0.95rem;
-      margin-bottom: 0;
-    }
-    .roi-number {
+
+    .roi-stat-card .roi-num {
       font-family: var(--font-heading);
-      font-size: 2rem;
-      color: var(--white);
+      font-size: 1.6rem;
+      color: var(--teal);
       line-height: 1.2;
       margin-bottom: 4px;
     }
-    .roi-label {
-      font-size: 0.78rem;
-      color: rgba(255,255,255,0.70);
+
+    .roi-stat-card .roi-lab {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: rgba(0,0,0,0.40);
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
-    .roi-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 24px;
-      margin-bottom: 28px;
+
+    .roi-strip-note {
+      grid-column: 1 / -1;
+      font-size: 0.85rem;
+      color: rgba(0,0,0,0.50);
+      font-style: italic;
       text-align: center;
+      margin: 0;
     }
-    @media (max-width: 600px) {
-      .roi-stats { grid-template-columns: 1fr; gap: 16px; }
+
+    @media (max-width: 500px) {
+      .roi-strip { grid-template-columns: 1fr; gap: 12px; }
     }
 
     /* ── Rate Card ── */
@@ -417,12 +417,14 @@
       border-collapse: collapse;
       margin-bottom: 32px;
     }
+
     .rate-table td {
       padding: 14px 0;
       font-size: 0.95rem;
       line-height: 1.5;
       border-bottom: 1px solid rgba(0,0,0,0.06);
     }
+
     .rate-table td:first-child {
       font-weight: 700;
       color: var(--teal);
@@ -712,6 +714,23 @@
       </ul>
     </div>
 
+    <!-- Proof strip -->
+    <div class="roi-strip">
+      <div class="roi-stat-card">
+        <div class="roi-num">20,880</div>
+        <div class="roi-lab">Quotes per year</div>
+      </div>
+      <div class="roi-stat-card">
+        <div class="roi-num">35%</div>
+        <div class="roi-lab">Industry conversion</div>
+      </div>
+      <div class="roi-stat-card">
+        <div class="roi-num">0.6%</div>
+        <div class="roi-lab">Lift to break even</div>
+      </div>
+      <p class="roi-strip-note">At ~$11M with 29 vans, a 0.6% conversion lift covers the engagement. At two to three percent it is three to five times. That is the floor.</p>
+    </div>
+
     <div class="phase">
       <div class="phase-header">
         <span class="phase-badge">Phase 3</span>
@@ -725,27 +744,6 @@
       </ul>
     </div>
 
-    <!-- ROI Callout -->
-    <div class="roi-callout" id="roi-callout">
-      <canvas id="roi-canvas"></canvas>
-      <div class="roi-inner">
-        <div class="roi-stats">
-          <div>
-            <div class="roi-number">20,880</div>
-            <div class="roi-label">Quotes per year</div>
-          </div>
-          <div>
-            <div class="roi-number">35%</div>
-            <div class="roi-label">Industry conversion</div>
-          </div>
-          <div>
-            <div class="roi-number">0.6%</div>
-            <div class="roi-label">Lift to break even</div>
-          </div>
-        </div>
-        <p>At roughly $11M revenue with twenty-nine vans, a <strong>0.6% increase in quote-to-job conversion</strong> covers the full monthly investment. At two to three percent, conservative for quoting automation, it is three to five times. That is the floor, not the ceiling.</p>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -781,100 +779,6 @@
 <footer>
   <p>Snowark Consulting &middot; Reference only. Client identity confidential.</p>
 </footer>
-
-<!-- Three.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-<script>
-  /* ══════════════════════════════════════════
-     Three.js: subtle particle field in ROI callout
-     ══════════════════════════════════════════ */
-  (function() {
-    var canvas = document.getElementById('roi-canvas');
-    if (!canvas) return;
-
-    var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    camera.position.z = 30;
-
-    var container = document.getElementById('roi-callout');
-    var resize = function() {
-      var w = container.clientWidth;
-      var h = container.clientHeight;
-      renderer.setSize(w, h, false);
-      camera.aspect = w / Math.max(h, 1);
-      camera.updateProjectionMatrix();
-    };
-    resize();
-    window.addEventListener('resize', resize);
-
-    // Layer 1: small green particles
-    var count1 = 50;
-    var geo1 = new THREE.BufferGeometry();
-    var pos1 = new Float32Array(count1 * 3);
-    var vels1 = new Float32Array(count1);
-    for (var i = 0; i < count1; i++) {
-      pos1[i * 3] = (Math.random() - 0.5) * 40;
-      pos1[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      pos1[i * 3 + 2] = (Math.random() - 0.5) * 15;
-      vels1[i] = 0.002 + Math.random() * 0.006;
-    }
-    geo1.setAttribute('position', new THREE.BufferAttribute(pos1, 3));
-    var mat1 = new THREE.PointsMaterial({
-      color: 0x1a8a6a, size: 0.12, transparent: true, opacity: 0.45,
-      blending: THREE.AdditiveBlending, depthWrite: false
-    });
-    var particles1 = new THREE.Points(geo1, mat1);
-    scene.add(particles1);
-
-    // Layer 2: slightly larger teal particles
-    var count2 = 18;
-    var geo2 = new THREE.BufferGeometry();
-    var pos2 = new Float32Array(count2 * 3);
-    var vels2 = new Float32Array(count2);
-    for (var j = 0; j < count2; j++) {
-      pos2[j * 3] = (Math.random() - 0.5) * 40;
-      pos2[j * 3 + 1] = (Math.random() - 0.5) * 20;
-      pos2[j * 3 + 2] = (Math.random() - 0.5) * 15;
-      vels2[j] = 0.001 + Math.random() * 0.004;
-    }
-    geo2.setAttribute('position', new THREE.BufferAttribute(pos2, 3));
-    var mat2 = new THREE.PointsMaterial({
-      color: 0x174445, size: 0.20, transparent: true, opacity: 0.30,
-      blending: THREE.AdditiveBlending, depthWrite: false
-    });
-    var particles2 = new THREE.Points(geo2, mat2);
-    scene.add(particles2);
-
-    function animate() {
-      requestAnimationFrame(animate);
-
-      var p = particles1.geometry.attributes.position.array;
-      for (var i = 0; i < count1; i++) {
-        p[i * 3 + 1] += vels1[i];
-        if (p[i * 3 + 1] > 12) p[i * 3 + 1] = -12;
-      }
-      particles1.geometry.attributes.position.needsUpdate = true;
-
-      p = particles2.geometry.attributes.position.array;
-      for (var k = 0; k < count2; k++) {
-        p[k * 3 + 1] += vels2[k] * 0.7;
-        if (p[k * 3 + 1] > 12) p[k * 3 + 1] = -12;
-      }
-      particles2.geometry.attributes.position.needsUpdate = true;
-
-      particles1.rotation.y += 0.0003;
-      particles2.rotation.y -= 0.0002;
-
-      renderer.render(scene, camera);
-    }
-
-    animate();
-  })();
-</script>
 
 </body>
 </html>
