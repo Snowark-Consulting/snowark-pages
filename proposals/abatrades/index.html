@@ -935,11 +935,11 @@
 
     <div class="calc-box">
       <p class="calc-box-title">How a small conversion lift pays for this engagement</p>
-      <p class="calc-question">Dial up your close rate and watch the revenue follow</p>
+      <p class="calc-question">What could an AI agent do for your close rate?</p>
       <div class="calc-slider-row">
-        <span class="calc-slider-label">Close rate: 35%</span>
-        <input type="range" id="calc-rate" class="calc-slider" value="35" min="35" max="50" step="0.5">
-        <span class="calc-slider-label" id="calc-target">50%</span>
+        <span class="calc-slider-label">Lift: 1%</span>
+        <input type="range" id="calc-lift" class="calc-slider" value="1" min="0.5" max="10" step="0.5">
+        <span class="calc-slider-label" id="calc-target">10%</span>
       </div>
       <div class="calc-row">
         <div class="calc-field">
@@ -951,7 +951,7 @@
           <input type="number" id="calc-avg" class="calc-input" value="3500" min="500" step="50">
         </div>
       </div>
-      <p class="calc-result" id="calc-result">At 35%, your current revenue is roughly $11M. Dial it up.</p>
+      <p class="calc-result" id="calc-result">A <strong>1%</strong> lift in close rate, delivered by AI automation, generates roughly <strong>~$26K</strong> in additional monthly revenue.</p>
       <p class="calc-hint">Current revenue anchors at $11M. Adjust quotes or job value to match your assumptions.</p>
     </div>
   </div>
@@ -970,7 +970,7 @@
 
 <script>
   (function() {
-    var slider = document.getElementById('calc-rate');
+    var slider = document.getElementById('calc-lift');
     var targetEl = document.getElementById('calc-target');
     var quotesEl = document.getElementById('calc-quotes');
     var avgEl = document.getElementById('calc-avg');
@@ -983,12 +983,12 @@
     function fmt(n) { return n.toLocaleString(); }
 
     function upd() {
-      var rate = parseFloat(slider.value);
+      var lift = parseFloat(slider.value);
       var quotes = parseInt(quotesEl.value) || 0;
       var avg = parseInt(avgEl.value) || 0;
 
-      targetEl.textContent = rate + '%';
-      labelEl.textContent = 'Close rate: ' + rate + '%';
+      targetEl.textContent = lift + '%';
+      labelEl.textContent = 'Lift: ' + lift + '%';
 
       if (quotes === 0 || avg === 0) {
         out.innerHTML = 'Enter your numbers to see the maths.';
@@ -996,16 +996,10 @@
       }
 
       var baseRev = quotes * (BASE / 100) * avg;
-      var targetRev = quotes * (rate / 100) * avg;
-      var diff = targetRev - baseRev;
-      var mo = Math.round(diff / 12);
+      var yr = quotes * (lift / 100) * avg;
+      var mo = Math.round(yr / 12);
 
-      if (rate === BASE) {
-        out.innerHTML = 'At 35%, current revenue is roughly <strong>$' + fmt(Math.round(baseRev / 1000000)) + 'M</strong>. Dial it up.';
-        return;
-      }
-
-      out.innerHTML = 'At <strong>' + rate + '%</strong> close rate, that is an additional <strong>~$' + fmt(mo) + '</strong> in revenue per month. Current baseline: ~$' + fmt(Math.round(baseRev / 1000000)) + 'M/year.';
+      out.innerHTML = 'A <strong>' + lift + '%</strong> lift in close rate, delivered by AI automation, generates roughly <strong>~$' + fmt(mo) + '</strong> in additional monthly revenue. Baseline: ~$' + fmt(Math.round(baseRev / 1000000)) + 'M/year.';
     }
 
     slider.addEventListener('input', upd);
