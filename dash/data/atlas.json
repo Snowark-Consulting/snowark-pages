@@ -39,9 +39,14 @@
     ]
   },
   "activity": {
-    "tasks_completed": 67,
-    "hours_saved_estimate": 37.5,
+    "tasks_completed": 68,
+    "hours_saved_estimate": 38.1,
     "recent": [
+      {
+        "date": "2026-07-02 11:02",
+        "task": "GitHub token refreshed \u2014 auth restored for hancockjluke with repo + workflow scopes. Dash updates and GitHub Pages push operational.",
+        "category": "task"
+      },
       {
         "date": "2026-07-02 10:16",
         "task": "Sent Email 2 to all 9 Outreach Active prospects: 6 painters/cleaners + 3 agencies. 9/9 sent, 9/9 CRM reconciled.",
@@ -76,24 +81,19 @@
         "date": "2026-06-30 22:55",
         "task": "Fixed Gmail token false-alarm in Prepare-Ahead cron: epoch-zero expiry is working state, not breakage. Patched growth-operations skill + LEARNINGS.",
         "category": "task"
-      },
-      {
-        "date": "2026-06-30 07:12",
-        "task": "Campaign pulse posted \u2014 9 Outreach Active, 0 replies at Day 1-2, Email 2 window opens tomorrow for painters",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 263.0
+      "uptime_hours": 264.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-07-02T02:00:00+00:00",
+        "next": "2026-07-02T03:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -104,7 +104,7 @@
     "model": ""
   },
   "capabilities": {
-    "skills_count": 105,
+    "skills_count": 106,
     "categories_count": 14,
     "tips": [
       "Build me a professional quote page for a painting client",
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-07-02T10:30:31.342034+09:30"
+  "last_updated": "2026-07-02T11:30:37.023433+09:30"
 }
