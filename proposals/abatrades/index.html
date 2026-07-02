@@ -980,7 +980,23 @@
 
     var BASE = 35;
 
+    var REV = 11000000;
+
     function fmt(n) { return n.toLocaleString(); }
+
+    function recalcQuotes() {
+      var avg = parseInt(avgEl.value) || 0;
+      if (avg === 0) return;
+      var q = Math.round(REV / (avg * (BASE / 100)));
+      quotesEl.value = q;
+    }
+
+    function recalcAvg() {
+      var quotes = parseInt(quotesEl.value) || 0;
+      if (quotes === 0) return;
+      var a = Math.round(REV / (quotes * (BASE / 100)));
+      avgEl.value = a;
+    }
 
     function upd() {
       var lift = parseFloat(slider.value);
@@ -1003,8 +1019,8 @@
     }
 
     slider.addEventListener('input', upd);
-    quotesEl.addEventListener('input', upd);
-    avgEl.addEventListener('input', upd);
+    quotesEl.addEventListener('input', function() { recalcAvg(); upd(); });
+    avgEl.addEventListener('input', function() { recalcQuotes(); upd(); });
   })();
 </script>
 
