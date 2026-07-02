@@ -549,6 +549,54 @@
       .calc-slider-label { min-width: 60px; font-size: 0.65rem; }
     }
 
+    .calc-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .calc-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.10);
+      border-radius: 6px;
+      padding: 8px 12px;
+    }
+
+    .calc-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(0,0,0,0.40);
+      white-space: nowrap;
+    }
+
+    .calc-input {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--teal);
+      border: none;
+      background: transparent;
+      width: 70px;
+      text-align: right;
+      outline: none;
+      -moz-appearance: textfield;
+    }
+
+    .calc-input::-webkit-inner-spin-button,
+    .calc-input::-webkit-outer-spin-button { opacity: 1; }
+
+    @media (max-width: 500px) {
+      .calc-field { width: 100%; justify-content: space-between; }
+      .calc-input { width: 60px; }
+    }
+
     /* ── Close ── */
     .close-section { text-align: center; }
     .close-section h2 { margin-bottom: 16px; }
@@ -878,12 +926,22 @@
     <div class="calc-box">
       <p class="calc-question">Dial up your close rate and watch the revenue follow</p>
       <div class="calc-slider-row">
-        <span class="calc-slider-label">Current: 35%</span>
+        <span class="calc-slider-label">Close rate: 35%</span>
         <input type="range" id="calc-rate" class="calc-slider" value="35" min="35" max="50" step="0.5">
-        <span class="calc-slider-label" id="calc-target">Target: 35%</span>
+        <span class="calc-slider-label" id="calc-target">50%</span>
       </div>
-      <p class="calc-result" id="calc-result">At 35%, no lift yet. Dial it up.</p>
-      <p class="calc-hint">Based on ~$11M annual revenue. Quote volume and average job value are baked in.</p>
+      <div class="calc-row">
+        <div class="calc-field">
+          <label class="calc-label">Quotes / year</label>
+          <input type="number" id="calc-quotes" class="calc-input" value="10000" min="1000" step="500">
+        </div>
+        <div class="calc-field">
+          <label class="calc-label">Avg. job value</label>
+          <input type="number" id="calc-avg" class="calc-input" value="3150" min="500" step="50">
+        </div>
+      </div>
+      <p class="calc-result" id="calc-result">At 35%, your current revenue is roughly $11M. Dial it up.</p>
+      <p class="calc-hint">Current revenue anchors at $11M. Adjust quotes or job value to match your assumptions.</p>
     </div>
   </div>
 </section>
@@ -903,28 +961,45 @@
   (function() {
     var slider = document.getElementById('calc-rate');
     var targetEl = document.getElementById('calc-target');
+    var quotesEl = document.getElementById('calc-quotes');
+    var avgEl = document.getElementById('calc-avg');
     var out = document.getElementById('calc-result');
-    if (!slider || !targetEl || !out) return;
+    var labelEl = document.querySelector('.calc-slider-label');
+    if (!slider || !targetEl || !quotesEl || !avgEl || !out || !labelEl) return;
 
-    var REV = 11000000;
     var BASE = 35;
 
     function fmt(n) { return n.toLocaleString(); }
 
     function upd() {
       var rate = parseFloat(slider.value);
-      targetEl.textContent = 'Target: ' + rate + '%';
-      if (rate === BASE) {
-        out.innerHTML = 'At 35%, no lift yet. Dial it up.';
+      var quotes = parseInt(quotesEl.value) || 0;
+      var avg = parseInt(avgEl.value) || 0;
+
+      targetEl.textContent = rate + '%';
+      labelEl.textContent = 'Close rate: ' + rate + '%';
+
+      if (quotes === 0 || avg === 0) {
+        out.innerHTML = 'Enter your numbers to see the maths.';
         return;
       }
-      var lift = rate - BASE;
-      var yr = REV * (lift / BASE);
-      var mo = Math.round(yr / 12);
-      out.innerHTML = 'At <strong>' + rate + '%</strong> close rate, that is an additional <strong>~$' + fmt(mo) + '</strong> in revenue per month.';
+
+      var baseRev = quotes * (BASE / 100) * avg;
+      var targetRev = quotes * (rate / 100) * avg;
+      var diff = targetRev - baseRev;
+      var mo = Math.round(diff / 12);
+
+      if (rate === BASE) {
+        out.innerHTML = 'At 35%, current revenue is roughly <strong>$' + fmt(Math.round(baseRev / 1000000)) + 'M</strong>. Dial it up.';
+        return;
+      }
+
+      out.innerHTML = 'At <strong>' + rate + '%</strong> close rate, that is an additional <strong>~$' + fmt(mo) + '</strong> in revenue per month. Current baseline: ~$' + fmt(Math.round(baseRev / 1000000)) + 'M/year.';
     }
 
     slider.addEventListener('input', upd);
+    quotesEl.addEventListener('input', upd);
+    avgEl.addEventListener('input', upd);
   })();
 </script>
 
