@@ -39,9 +39,14 @@
     ]
   },
   "activity": {
-    "tasks_completed": 69,
-    "hours_saved_estimate": 38.6,
+    "tasks_completed": 70,
+    "hours_saved_estimate": 39.2,
     "recent": [
+      {
+        "date": "2026-07-02 13:57",
+        "task": "Synced dev site with production + added ROI calculator section",
+        "category": "task"
+      },
       {
         "date": "2026-07-02 11:33",
         "task": "Growth audit v1: reduced booking form to 4 fields, fixed pricing CTA, added privacy reassurance, standardised revenue to $177K+, made case study link prominent, updated bottom CTA",
@@ -76,24 +81,19 @@
         "date": "2026-06-30 23:11",
         "task": "Fixed draft accordion toggle: display:flex on summary kills native details toggle (WebKit bug). Moved flex to inner wrapper div, summary now display:block.",
         "category": "task"
-      },
-      {
-        "date": "2026-06-30 23:05",
-        "task": "Morning briefing posted \u2014 9 active, 0 replies, Email 2 window opening for painters/cleaners (Day 5-7). Inbox pulse restored after OAuth re-auth.",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 266.0
+      "uptime_hours": 267.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-07-02T05:00:00+00:00",
+        "next": "2026-07-02T06:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-07-02T13:30:37.152469+09:30"
+  "last_updated": "2026-07-02T14:30:31.322183+09:30"
 }
