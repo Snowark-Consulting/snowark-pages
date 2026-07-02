@@ -465,6 +465,7 @@
       border-radius: 10px;
       padding: 28px 28px 22px 28px;
       margin-top: 16px;
+      text-align: center;
     }
 
     .calc-question {
@@ -472,57 +473,55 @@
       font-size: 0.85rem;
       font-weight: 700;
       color: var(--teal);
-      margin-bottom: 16px;
-      text-align: center;
+      margin-bottom: 18px;
     }
 
-    .calc-row {
+    .calc-slider-row {
       display: flex;
-      gap: 16px;
+      align-items: center;
+      gap: 14px;
       margin-bottom: 18px;
-      flex-wrap: wrap;
       justify-content: center;
     }
 
-    .calc-field {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--white);
-      border: 1px solid rgba(0,0,0,0.10);
-      border-radius: 6px;
-      padding: 8px 12px;
-    }
-
-    .calc-label {
-      font-size: 0.7rem;
+    .calc-slider-label {
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: rgba(0,0,0,0.40);
       white-space: nowrap;
+      min-width: 80px;
     }
 
-    .calc-input {
-      font-family: var(--font-mono);
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--teal);
-      border: none;
-      background: transparent;
-      width: 70px;
-      text-align: right;
+    .calc-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 200px;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(23,68,69,0.15);
       outline: none;
-      -moz-appearance: textfield;
     }
 
-    .calc-input::-webkit-inner-spin-button,
-    .calc-input::-webkit-outer-spin-button { opacity: 1; }
+    .calc-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--green);
+      cursor: pointer;
+      border: 2px solid var(--white);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    }
 
-    .calc-suffix {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: rgba(0,0,0,0.40);
+    .calc-slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--green);
+      cursor: pointer;
+      border: 2px solid var(--white);
     }
 
     .calc-result {
@@ -546,8 +545,8 @@
     }
 
     @media (max-width: 500px) {
-      .calc-field { width: 100%; justify-content: space-between; }
-      .calc-input { width: 60px; }
+      .calc-slider { width: 140px; }
+      .calc-slider-label { min-width: 60px; font-size: 0.65rem; }
     }
 
     /* ── Close ── */
@@ -830,18 +829,18 @@
     <div class="roi-strip">
       <p class="roi-strip-title">Here is the maths on a one percent lift in quote to close</p>
       <div class="roi-stat-card">
-        <div class="roi-num">~12,000</div>
-        <div class="roi-lab">Quotes per year</div>
+        <div class="roi-num">$11M</div>
+        <div class="roi-lab">Annual revenue</div>
       </div>
       <div class="roi-stat-card">
         <div class="roi-num">35%</div>
-        <div class="roi-lab">Industry conversion</div>
+        <div class="roi-lab">Current close rate</div>
       </div>
       <div class="roi-stat-card">
-        <div class="roi-num">~$180K</div>
+        <div class="roi-num">~$314K</div>
         <div class="roi-lab">Revenue from 1% lift</div>
       </div>
-      <p class="roi-strip-note">29 vans, ~$11M revenue, 35% industry conversion rate. Conservative estimates based on roughly 8 quotes per van per week. A small lift in quote-to-close goes a long way.</p>
+      <p class="roi-strip-note">Based on $11M annual revenue. Each percent of close rate improvement is worth roughly $314K in additional revenue per year, or ~$26K per month.</p>
     </div>
 
     <div class="phase">
@@ -877,23 +876,14 @@
     </table>
 
     <div class="calc-box">
-      <p class="calc-question">What conversion lift covers this investment?</p>
-      <div class="calc-row">
-        <div class="calc-field">
-          <label class="calc-label">Quotes per year</label>
-          <input type="number" id="calc-quotes" class="calc-input" value="12000" min="1000" step="500">
-        </div>
-        <div class="calc-field">
-          <label class="calc-label">Avg. job value</label>
-          <input type="number" id="calc-avg" class="calc-input" value="1500" min="500" step="100">
-        </div>
-        <div class="calc-field">
-          <label class="calc-label">Current close rate</label>
-          <input type="number" id="calc-rate" class="calc-input" value="35" min="10" max="80" step="1"><span class="calc-suffix">%</span>
-        </div>
+      <p class="calc-question">Dial up your close rate and watch the revenue follow</p>
+      <div class="calc-slider-row">
+        <span class="calc-slider-label">Current: 35%</span>
+        <input type="range" id="calc-rate" class="calc-slider" value="35" min="35" max="50" step="0.5">
+        <span class="calc-slider-label" id="calc-target">Target: 35%</span>
       </div>
-      <p class="calc-result" id="calc-result">A <strong>1.1%</strong> lift in quote-to-close covers the monthly retainer. That is roughly <strong>~$15K</strong> in additional monthly revenue.</p>
-      <p class="calc-hint">Adjust the numbers to match your own assumptions.</p>
+      <p class="calc-result" id="calc-result">At 35%, no lift yet. Dial it up.</p>
+      <p class="calc-hint">Based on ~$11M annual revenue. Quote volume and average job value are baked in.</p>
     </div>
   </div>
 </section>
@@ -911,24 +901,30 @@
 
 <script>
   (function() {
-    var q = document.getElementById('calc-quotes');
-    var a = document.getElementById('calc-avg');
-    var r = document.getElementById('calc-rate');
+    var slider = document.getElementById('calc-rate');
+    var targetEl = document.getElementById('calc-target');
     var out = document.getElementById('calc-result');
-    if (!q || !a || !r || !out) return;
-    var M = 14400;
+    if (!slider || !targetEl || !out) return;
+
+    var REV = 11000000;
+    var BASE = 35;
+
     function fmt(n) { return n.toLocaleString(); }
+
     function upd() {
-      var quotes = parseInt(q.value) || 0;
-      var avg = parseInt(a.value) || 0;
-      if (quotes === 0 || avg === 0) { out.innerHTML = 'Enter your numbers to see the maths.'; return; }
-      var lift = M / (quotes * avg) * 100;
-      var rev = Math.round((quotes * lift / 100 * avg) / 12);
-      out.innerHTML = 'A <strong>' + lift.toFixed(1) + '%</strong> lift in quote-to-close covers the monthly retainer. That is roughly <strong>~$' + fmt(rev) + '</strong> in additional monthly revenue.';
+      var rate = parseFloat(slider.value);
+      targetEl.textContent = 'Target: ' + rate + '%';
+      if (rate === BASE) {
+        out.innerHTML = 'At 35%, no lift yet. Dial it up.';
+        return;
+      }
+      var lift = rate - BASE;
+      var yr = REV * (lift / BASE);
+      var mo = Math.round(yr / 12);
+      out.innerHTML = 'At <strong>' + rate + '%</strong> close rate, that is an additional <strong>~$' + fmt(mo) + '</strong> in revenue per month.';
     }
-    q.addEventListener('input', upd);
-    a.addEventListener('input', upd);
-    r.addEventListener('input', upd);
+
+    slider.addEventListener('input', upd);
   })();
 </script>
 
