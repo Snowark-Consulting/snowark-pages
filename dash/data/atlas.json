@@ -39,9 +39,14 @@
     ]
   },
   "activity": {
-    "tasks_completed": 74,
-    "hours_saved_estimate": 41.4,
+    "tasks_completed": 75,
+    "hours_saved_estimate": 42.0,
     "recent": [
+      {
+        "date": "2026-07-02 16:45",
+        "task": "Campaign pulse posted \u2014 9 Email 1s across 3 verticals, 0 replies, Email 2s deployed today",
+        "category": "task"
+      },
       {
         "date": "2026-07-02 16:01",
         "task": "Completed Q2 2026 Quarterly Business Audit: comprehensive 10-area review. Delivered 30-day execution plan focused on product visibility, customer conversations, and design partners. Week 1 checklist issued.",
@@ -76,24 +81,19 @@
         "date": "2026-07-02 11:02",
         "task": "GitHub token refreshed \u2014 auth restored for hancockjluke with repo + workflow scopes. Dash updates and GitHub Pages push operational.",
         "category": "task"
-      },
-      {
-        "date": "2026-07-02 10:16",
-        "task": "Sent Email 2 to all 9 Outreach Active prospects: 6 painters/cleaners + 3 agencies. 9/9 sent, 9/9 CRM reconciled.",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 269.0
+      "uptime_hours": 270.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-07-02T08:00:00+00:00",
+        "next": "2026-07-02T09:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-07-02T16:30:32.358713+09:30"
+  "last_updated": "2026-07-02T17:30:43.826159+09:30"
 }
