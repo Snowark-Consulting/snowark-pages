@@ -39,9 +39,14 @@
     ]
   },
   "activity": {
-    "tasks_completed": 68,
-    "hours_saved_estimate": 38.1,
+    "tasks_completed": 69,
+    "hours_saved_estimate": 38.6,
     "recent": [
+      {
+        "date": "2026-07-02 11:33",
+        "task": "Growth audit v1: reduced booking form to 4 fields, fixed pricing CTA, added privacy reassurance, standardised revenue to $177K+, made case study link prominent, updated bottom CTA",
+        "category": "task"
+      },
       {
         "date": "2026-07-02 11:02",
         "task": "GitHub token refreshed \u2014 auth restored for hancockjluke with repo + workflow scopes. Dash updates and GitHub Pages push operational.",
@@ -76,24 +81,19 @@
         "date": "2026-06-30 23:05",
         "task": "Morning briefing posted \u2014 9 active, 0 replies, Email 2 window opening for painters/cleaners (Day 5-7). Inbox pulse restored after OAuth re-auth.",
         "category": "task"
-      },
-      {
-        "date": "2026-06-30 22:55",
-        "task": "Fixed Gmail token false-alarm in Prepare-Ahead cron: epoch-zero expiry is working state, not breakage. Patched growth-operations skill + LEARNINGS.",
-        "category": "task"
       }
     ]
   },
   "health": {
     "agent": {
       "status": "online",
-      "uptime_hours": 264.0
+      "uptime_hours": 265.0
     },
     "crons": [
       {
         "name": "Dashboard hourly refresh",
         "status": "ok",
-        "next": "2026-07-02T03:00:00+00:00",
+        "next": "2026-07-02T04:00:00+00:00",
         "schedule": "0 * * * *"
       }
     ],
@@ -116,5 +116,5 @@
       "Analyse winning patterns in successful quotes"
     ]
   },
-  "last_updated": "2026-07-02T11:30:37.023433+09:30"
+  "last_updated": "2026-07-02T12:30:29.963559+09:30"
 }
