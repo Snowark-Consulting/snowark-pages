@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snowark | Your AI operations team, deployed in days</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "xg3yr6za4i");
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal: #174445;
+      --teal-rgb: 23,68,69;
+      --green: #0d8f64;
+      --green-rgb: 13,143,100;
+      --warm: #e9e7e3;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 16px; }
+    body {
+      font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 400;
+      color: #000;
+      background: #fff;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2 { font-family: 'Cambo', Georgia, 'Times New Roman', serif; font-weight: 400; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    /* Subtle neutral scrim: darkens toward bottom-right where text lives.
+       Keeps the sun (upper-left) and rocket (center) visible. */
+    .hero-scrim {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(
+        135deg,
+        rgba(0,0,0,0.00) 0%,
+        rgba(0,0,0,0.08) 30%,
+        rgba(0,0,0,0.22) 60%,
+        rgba(0,0,0,0.42) 100%
+      );
+    }
+
+    /* Additional vertical scrim: darkens top edge slightly, bottom more
+       so mobile centered text has a dark bed over clouds. */
+    .hero-scrim::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.10) 0%,
+        transparent 25%,
+        transparent 65%,
+        rgba(0,0,0,0.50) 100%
+      );
+    }
+
+    .hero-logo {
+      position: absolute;
+      top: 32px;
+      left: 40px;
+      z-index: 3;
+      height: 36px;
+      width: auto;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 40px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .hero-text {
+      max-width: 540px;
+      text-align: right;
+    }
+
+    .hero-text h1 {
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      line-height: 1.12;
+      color: #fff;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.50);
+      margin-bottom: 24px;
+    }
+
+    .hero-text p {
+      font-weight: 500;
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      line-height: 1.5;
+      color: rgba(255,255,255,0.92);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.50);
+      margin-bottom: 36px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+      background: var(--green);
+      padding: 14px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn:hover { background: #0a7a54; transform: translateY(-2px); }
+    .btn::after { content: '→'; font-size: 1.1em; }
+
+    /* ── SECTIONS ── */
+    .section {
+      padding: 96px 40px;
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section h2 {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      color: var(--teal);
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .section-intro {
+      font-size: 1.1rem;
+      color: rgba(0,0,0,0.65);
+      max-width: 620px;
+      margin-bottom: 56px;
+      line-height: 1.6;
+    }
+
+    .section-alt { background: var(--warm); }
+
+    /* ── SERVICES ── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px 80px;
+    }
+
+    .service h3 {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+
+    .service p {
+      font-size: 0.95rem;
+      color: rgba(0,0,0,0.65);
+      line-height: 1.6;
+    }
+
+    /* ── QUOTE ── */
+    .section-quote {
+      background: var(--teal);
+      color: #fff;
+    }
+
+    .section-quote blockquote {
+      font-family: 'Cambo', serif;
+      font-size: clamp(1.3rem, 2.2vw, 1.6rem);
+      line-height: 1.5;
+      font-style: italic;
+      max-width: 720px;
+    }
+
+    .section-quote .attr {
+      margin-top: 20px;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.55);
+    }
+
+    .section-quote .attr strong {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    /* ── HOW WE WORK ── */
+    .steps-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 48px;
+    }
+
+    .step .num {
+      font-family: 'Cambo', serif;
+      font-size: 2.2rem;
+      color: var(--green);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .step h3 {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      font-size: 0.9rem;
+      color: rgba(0,0,0,0.6);
+      line-height: 1.6;
+    }
+
+    /* ── CLOSE ── */
+    .section-close {
+      text-align: center;
+    }
+
+    .section-close .section-inner {
+      max-width: 560px;
+    }
+
+    .section-close .section-intro {
+      margin: 0 auto 36px;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      padding: 32px 40px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: rgba(0,0,0,0.35);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero-logo { top: 24px; left: 24px; height: 28px; }
+      .hero-content {
+        justify-content: center;
+        padding: 60px 24px;
+        /* Push text lower so it sits below the centered rocket, on the darker scrim bed */
+        align-items: flex-end;
+        padding-bottom: 80px;
+      }
+      .hero-text { text-align: center; }
+      .hero-text h1 {
+        font-size: 1.75rem;
+        text-shadow: 0 1px 8px rgba(0,0,0,0.60);
+      }
+      .hero-text p {
+        font-size: 0.95rem;
+        text-shadow: 0 1px 6px rgba(0,0,0,0.55);
+      }
+      /* Heavier scrim on mobile: rocket visible in upper half, dark bed for text below */
+      .hero-scrim {
+        background: linear-gradient(
+          135deg,
+          rgba(0,0,0,0.05) 0%,
+          rgba(0,0,0,0.18) 40%,
+          rgba(0,0,0,0.35) 65%,
+          rgba(0,0,0,0.55) 100%
+        );
+      }
+      .hero-scrim::after {
+        background: linear-gradient(
+          to bottom,
+          rgba(0,0,0,0.05) 0%,
+          transparent 20%,
+          rgba(0,0,0,0.25) 50%,
+          rgba(0,0,0,0.60) 100%
+        );
+      }
+
+      .section { padding: 64px 28px; }
+      .services-grid { grid-template-columns: 1fr; gap: 36px; }
+      .steps-row { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-logo { top: 20px; left: 20px; height: 24px; }
+      .hero-text h1 { font-size: 1.55rem; }
+      .hero-text p { font-size: 0.9rem; }
+      .btn { padding: 12px 24px; font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <video class="hero-video" autoplay muted loop playsinline preload="auto">
+      <source src="hero-video.mp4" type="video/mp4">
+    </video>
+    <img class="hero-logo" src="logo-white.png" alt="Snowark">
+    <div class="hero-scrim"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>Your AI operations team, deployed in days</h1>
+        <p>We build and run the backend AI systems that handle your admin, coordinate your workflows, and keep everything moving.</p>
+        <a href="mailto:josh@snowark.com.au" class="btn">Let's talk</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WHAT WE DO ── -->
+  <section class="section">
+    <div class="section-inner">
+      <h2>We build the operating system for your business</h2>
+      <p class="section-intro">Not chatbots. Not dashboards. Real agents that connect to your tools, learn how you work, and take things off your plate. Deployed in days, not months.</p>
+
+      <div class="services-grid">
+        <div class="service">
+          <h3>Admin automation</h3>
+          <p>Email, scheduling, data entry, reporting. The repetitive work that eats your afternoons, handled 24/7.</p>
+        </div>
+        <div class="service">
+          <h3>System coordination</h3>
+          <p>Your CRM, project tools, spreadsheets, and comms talking to each other. Nothing falls through the cracks.</p>
+        </div>
+        <div class="service">
+          <h3>Thinking systems</h3>
+          <p>Agents that challenge assumptions, reason from evidence, and improve their own approach over time.</p>
+        </div>
+        <div class="service">
+          <h3>Client operations</h3>
+          <p>Onboarding, status updates, follow-ups. Your clients stay informed without you touching a thing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── QUOTE ── -->
+  <section class="section section-quote">
+    <div class="section-inner">
+      <blockquote>
+        The more context our agent gets, the less it feels like an automation platform and the more it feels like a genuine business partner that understands how I think and why decisions get made.
+      </blockquote>
+      <p class="attr"><strong>James</strong>, Not Forgotten Systems</p>
+    </div>
+  </section>
+
+  <!-- ── HOW WE WORK ── -->
+  <section class="section section-alt">
+    <div class="section-inner">
+      <h2>Not starting from zero</h2>
+      <p class="section-intro">Our infrastructure is pre-built. We spend our time configuring your agents, not building scaffolding. You get working systems in days, and we operate them month to month so you do not carry the overhead.</p>
+
+      <div class="steps-row">
+        <div class="step">
+          <div class="num">01</div>
+          <h3>Map your operations</h3>
+          <p>We learn your workflows, tools, and where the friction lives. We research your stack before we even meet.</p>
+        </div>
+        <div class="step">
+          <div class="num">02</div>
+          <h3>Configure your agents</h3>
+          <p>Using pre-built infrastructure, we deploy agents that plug into your existing tools and start working.</p>
+        </div>
+        <div class="step">
+          <div class="num">03</div>
+          <h3>Run and refine</h3>
+          <p>We do not hand over and walk away. We operate and improve your agents while you focus on your clients.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CLOSE ── -->
+  <section class="section section-close">
+    <div class="section-inner">
+      <h2>Ready to take admin off your plate?</h2>
+      <p class="section-intro">No pitch deck. Just a conversation about your business and whether this makes sense.</p>
+      <a href="mailto:josh@snowark.com.au" class="btn">Let's talk</a>
+    </div>
+  </section>
+
+  <div class="footer">
+    <p>Snowark Consulting &copy; 2026</p>
+  </div>
+
+</body>
+</html>
