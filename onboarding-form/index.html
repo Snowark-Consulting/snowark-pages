@@ -7,9 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script type="importmap">
-{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
-</script>
 <style>
 /* ── Snowark Design System v1.0 ── */
 :root {
@@ -39,8 +36,13 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-family:var(--font-body);font-size:16px;line-height:1.7;color:var(--text-body);background:var(--page-bg);scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 
-#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
-#bg-canvas.loading{z-index:1000}
+/* ── Hero network background ── */
+.hero-net{position:fixed;inset:0;z-index:0;pointer-events:none;width:100%;height:100%}
+.hero-net .net-line{stroke:rgba(23,68,69,0.05)}
+.hero-net .net-path{stroke:rgba(13,143,100,0.07);fill:none}
+.hero-net .net-node{fill:rgba(23,68,69,0.12)}
+.hero-net .net-node-accent{fill:rgba(13,143,100,0.18)}
+.hero-net .net-pulse{fill:rgba(13,143,100,0.35)}
 
 /* Loading overlay */
 #loading-overlay{position:fixed;inset:0;z-index:999;background:var(--page-bg);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity 0.8s ease}
@@ -148,7 +150,7 @@ textarea{resize:vertical;min-height:80px}
 .foot{text-align:center;padding:40px 0;color:var(--text-muted);font-size:0.75rem;border-top:1px solid var(--border-hairline)}
 .foot span{color:var(--teal)}
 
-@media(prefers-reduced-motion){#bg-canvas{display:none}.section{opacity:1;transform:none}}
+@media(prefers-reduced-motion){.hero-net{display:none}.section{opacity:1;transform:none}}
 @media(max-width:700px){
   body{padding:0 16px}
   .hero{padding:60px 0 48px}
@@ -169,7 +171,57 @@ textarea{resize:vertical;min-height:80px}
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
+<svg class="hero-net" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <g class="net-line" stroke-width="1">
+    <line x1="0" y1="160" x2="1440" y2="120"/>
+    <line x1="0" y1="420" x2="1440" y2="480"/>
+    <line x1="0" y1="720" x2="1440" y2="680"/>
+    <line x1="180" y1="0" x2="260" y2="900"/>
+    <line x1="620" y1="0" x2="560" y2="900"/>
+    <line x1="1180" y1="0" x2="1100" y2="900"/>
+  </g>
+  <g class="net-path" stroke-width="1.2">
+    <path d="M 180 150 C 420 60, 680 220, 1100 140"/>
+    <path d="M 260 640 C 560 720, 820 500, 1100 560"/>
+    <path d="M 120 380 C 340 460, 600 340, 900 400"/>
+  </g>
+  <g class="net-node">
+    <circle cx="180" cy="150" r="2.8"/>
+    <circle cx="1100" cy="140" r="2.8"/>
+    <circle cx="260" cy="640" r="2.8"/>
+    <circle cx="1100" cy="560" r="2.8"/>
+    <circle cx="900" cy="400" r="2.4"/>
+    <circle cx="420" cy="260" r="2.4"/>
+    <circle cx="720" cy="520" r="2.4"/>
+    <circle cx="140" cy="500" r="2"/>
+    <circle cx="1280" cy="340" r="2.4"/>
+  </g>
+  <g class="net-node-accent">
+    <circle cx="180" cy="150" r="3.6">
+      <animate attributeName="opacity" values="1;0.2;1" dur="3.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1100" cy="560" r="3.6">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="4.4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="560" cy="100" r="3.6">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="3.2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  <g>
+    <circle r="3" class="net-pulse">
+      <animateMotion dur="7s" repeatCount="indefinite" path="M 180 150 C 420 60, 680 220, 1100 140"/>
+      <animate attributeName="opacity" values="0;1;1;0" dur="7s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="3" class="net-pulse">
+      <animateMotion dur="8.5s" repeatCount="indefinite" path="M 260 640 C 560 720, 820 500, 1100 560"/>
+      <animate attributeName="opacity" values="0;1;1;0" dur="8.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="2.4" class="net-pulse">
+      <animateMotion dur="6.5s" repeatCount="indefinite" path="M 120 380 C 340 460, 600 340, 900 400"/>
+      <animate attributeName="opacity" values="0;1;1;0" dur="6.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>
 
 <div id="loading-overlay">
   <img src="https://snowark.com.au/assets/logos/Snowark-Icon.png" alt="Snowark" style="width:48px;height:48px;margin-bottom:24px;opacity:0" id="loadingIcon">
@@ -490,110 +542,20 @@ textarea{resize:vertical;min-height:80px}
 <footer class="foot"><img src="https://snowark.com.au/assets/logos/Snowark-Icon.png" alt="Snowark" style="height:14px;vertical-align:middle;margin-right:4px;"><span>Snowark</span> Consulting</footer>
 
 <script type="module">
-import * as THREE from 'three';
-
-// ── THREE.js Background ──
-const canvas = document.getElementById('bg-canvas');
-const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setSize(window.innerWidth, window.innerHeight);
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 100);
-camera.position.z = 30;
-
-const count = 120;
-const geometry = new THREE.BufferGeometry();
-const positions = new Float32Array(count*3);
-const targetPositions = new Float32Array(count*3);
-const colors = new Float32Array(count*3);
-const teal = new THREE.Color('#174445');
-const green = new THREE.Color('#0d8f64');
-const warm = new THREE.Color('#e9e7e3');
-
-for(let i=0;i<count;i++){
-  positions[i*3]=0; positions[i*3+1]=0; positions[i*3+2]=0;
-  targetPositions[i*3]=(Math.random()-0.5)*50;
-  targetPositions[i*3+1]=(Math.random()-0.5)*40;
-  targetPositions[i*3+2]=(Math.random()-0.5)*20;
-  const mix=Math.random();
-  const c=mix<0.15?teal.clone():mix<0.25?green.clone():warm.clone();
-  c.multiplyScalar(0.4+Math.random()*0.6);
-  colors[i*3]=c.r;colors[i*3+1]=c.g;colors[i*3+2]=c.b;
-}
-geometry.setAttribute('position',new THREE.BufferAttribute(positions,3));
-geometry.setAttribute('color',new THREE.BufferAttribute(colors,3));
-const mat=new THREE.PointsMaterial({size:0.25,vertexColors:true,transparent:true,opacity:0.7,blending:THREE.AdditiveBlending,depthWrite:false});
-const particles=new THREE.Points(geometry,mat);
-scene.add(particles);
-
-const ringGeo=new THREE.TorusGeometry(8,0.04,16,100);
-const ringMat=new THREE.MeshBasicMaterial({color:'#174445',transparent:true,opacity:0});
-const ring=new THREE.Mesh(ringGeo,ringMat);
-ring.rotation.x=Math.PI*0.45;ring.rotation.y=Math.PI*0.1;ring.scale.set(0.01,0.01,0.01);
-scene.add(ring);
-const ring2Geo=new THREE.TorusGeometry(5.5,0.03,16,80);
-const ring2Mat=new THREE.MeshBasicMaterial({color:'#0d8f64',transparent:true,opacity:0});
-const ring2=new THREE.Mesh(ring2Geo,ring2Mat);
-ring2.rotation.x=Math.PI*0.55;ring2.rotation.y=-Math.PI*0.15;ring2.scale.set(0.01,0.01,0.01);
-scene.add(ring2);
-
-let loadingProgress=0,loadingComplete=false;
-const loadingOverlay=document.getElementById('loading-overlay');
-const loadingIcon=document.getElementById('loadingIcon');
-const loadingTag=document.getElementById('loadingTag');
-const loadingDot=document.getElementById('loadingDot');
-setTimeout(()=>{
-  gsap.to(loadingIcon,{opacity:1,duration:0.8,ease:'power2.out'});
-  gsap.to(loadingTag,{opacity:1,duration:0.6,delay:0.3,ease:'power2.out'});
-  gsap.to(loadingDot,{opacity:1,duration:0.6,delay:0.5,ease:'power2.out'});
-},300);
-
-let mouseX=0,mouseY=0,targetX=0,targetY=0;
-window.addEventListener('mousemove',e=>{
-  targetX=(e.clientX/window.innerWidth-0.5)*4;
-  targetY=(e.clientY/window.innerHeight-0.5)*3;
-});
-let scrollY=0;
-window.addEventListener('scroll',()=>{scrollY=window.scrollY});
-
-function animate(){
-  requestAnimationFrame(animate);
-  if(!loadingComplete){
-    loadingProgress=Math.min(1,loadingProgress+0.008);
-    const ease=1-Math.pow(1-loadingProgress,3);
-    const pos=geometry.attributes.position.array;
-    for(let i=0;i<count;i++){
-      pos[i*3]=targetPositions[i*3]*ease;
-      pos[i*3+1]=targetPositions[i*3+1]*ease;
-      pos[i*3+2]=targetPositions[i*3+2]*ease;
-    }
-    geometry.attributes.position.needsUpdate=true;
-    const s=0.01+(1-0.01)*ease;
-    ring.scale.setScalar(s);ring2.scale.setScalar(s);
-    ringMat.opacity=0.12*ease;ring2Mat.opacity=0.08*ease;
-    camera.position.z=30+(1-ease)*25;
-    mat.opacity=0.7*ease;
-    if(loadingProgress>=1){
-      loadingComplete=true;
-      loadingOverlay.classList.add('hidden');
-      canvas.classList.remove('loading');
-      setTimeout(()=>loadingOverlay.style.display='none',800);
-    }
-  }
-  mouseX+=(targetX-mouseX)*0.05;
-  mouseY+=(targetY-mouseY)*0.05;
-  ring.rotation.z+=0.001;ring2.rotation.z-=0.0008;
-  particles.rotation.x=mouseY*0.02;
-  particles.rotation.y=mouseX*0.02;
-  renderer.render(scene,camera);
-}
-animate();
-
-window.addEventListener('resize',()=>{
-  camera.aspect=window.innerWidth/window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth,window.innerHeight);
-});
+// ── Loading overlay ──
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingIcon = document.getElementById('loadingIcon');
+const loadingTag = document.getElementById('loadingTag');
+const loadingDot = document.getElementById('loadingDot');
+setTimeout(() => {
+  gsap.to(loadingIcon, {opacity: 1, duration: 0.8, ease: 'power2.out'});
+  gsap.to(loadingTag, {opacity: 1, duration: 0.6, delay: 0.3, ease: 'power2.out'});
+  gsap.to(loadingDot, {opacity: 1, duration: 0.6, delay: 0.5, ease: 'power2.out'});
+}, 300);
+setTimeout(() => {
+  loadingOverlay.classList.add('hidden');
+  setTimeout(() => loadingOverlay.style.display = 'none', 800);
+}, 2200);
 
 // ── FORM LOGIC ──
 
