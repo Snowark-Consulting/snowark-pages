@@ -3,425 +3,1069 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Snowark | Your AI operations team, deployed in days</title>
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-
-  <!-- Microsoft Clarity -->
-  <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "xg3yr6za4i");
-  </script>
-
-  <link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <title>Snowark | Your AI business partner</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <style>
     :root {
       --teal: #174445;
-      --teal-rgb: 23,68,69;
+      --teal-rgb: 23, 68, 69;
       --green: #0d8f64;
-      --green-rgb: 13,143,100;
+      --green-rgb: 13, 143, 100;
       --warm: #e9e7e3;
+      --warm-rgb: 233, 231, 227;
+      --white: #FFFFFF;
+      --black: #000000;
+      --font-heading: 'Cambo', Georgia, 'Times New Roman', serif;
+      --font-body: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { font-size: 16px; }
-    body {
-      font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      font-weight: 400;
-      color: #000;
-      background: #fff;
+    html {
+      font-family: var(--font-body);
+      font-size: 16px;
       line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
+      color: var(--black);
+      background: var(--white);
+      scroll-behavior: smooth;
     }
 
-    h1, h2 { font-family: 'Cambo', Georgia, 'Times New Roman', serif; font-weight: 400; }
+    /* ── Header ── */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.3s ease, backdrop-filter 0.3s ease;
+    }
 
-    /* ── HERO ── */
+    .site-header.scrolled {
+      background: rgba(23, 68, 69, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .header-logo {
+      height: 20px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .site-header.scrolled .header-logo { opacity: 0.75; }
+
+    .header-cta {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.82);
+      text-decoration: none;
+      padding: 8px 20px;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      opacity: 0;
+    }
+
+    .site-header.scrolled .header-cta { opacity: 1; }
+
+    .header-cta:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.40);
+      color: #fff;
+    }
+
+    /* ── Hero ── */
     .hero {
       position: relative;
-      width: 100%;
+      background: var(--teal);
+      overflow: hidden;
       min-height: 100vh;
       display: flex;
       align-items: center;
-      overflow: hidden;
     }
 
-    .hero-video {
+    .hero-bg {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      opacity: 0.40;
       z-index: 0;
     }
 
-    /* Subtle neutral scrim: darkens toward bottom-right where text lives.
-       Keeps the sun (upper-left) and rocket (center) visible. */
-    .hero-scrim {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      background: linear-gradient(
-        135deg,
-        rgba(0,0,0,0.00) 0%,
-        rgba(0,0,0,0.08) 30%,
-        rgba(0,0,0,0.22) 60%,
-        rgba(0,0,0,0.42) 100%
-      );
-    }
-
-    /* Additional vertical scrim: darkens top edge slightly, bottom more
-       so mobile centered text has a dark bed over clouds. */
-    .hero-scrim::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.10) 0%,
-        transparent 25%,
-        transparent 65%,
-        rgba(0,0,0,0.50) 100%
-      );
-    }
-
-    .hero-logo {
-      position: absolute;
-      top: 32px;
-      left: 40px;
-      z-index: 3;
-      height: 36px;
-      width: auto;
-    }
+    .hero-bg svg { width: 100%; height: 100%; }
 
     .hero-content {
       position: relative;
-      z-index: 2;
-      width: 100%;
-      max-width: 1100px;
+      z-index: 1;
+      max-width: 920px;
       margin: 0 auto;
-      padding: 80px 40px;
-      display: flex;
-      justify-content: flex-end;
+      padding: 120px 40px 100px;
+      width: 100%;
     }
 
-    .hero-text {
-      max-width: 540px;
-      text-align: right;
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--green);
+      margin-bottom: 16px;
     }
 
-    .hero-text h1 {
-      font-size: clamp(2rem, 4.5vw, 3.2rem);
-      line-height: 1.12;
-      color: #fff;
-      text-shadow: 0 1px 6px rgba(0,0,0,0.50);
-      margin-bottom: 24px;
+    .hero-content h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--white);
+      margin-bottom: 20px;
+      text-wrap: balance;
     }
 
-    .hero-text p {
-      font-weight: 500;
-      font-size: clamp(1rem, 1.8vw, 1.2rem);
-      line-height: 1.5;
-      color: rgba(255,255,255,0.92);
-      text-shadow: 0 1px 4px rgba(0,0,0,0.50);
-      margin-bottom: 36px;
+    .hero-sub {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      font-weight: 400;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.85);
+      max-width: 580px;
+      margin-bottom: 32px;
+      text-wrap: balance;
     }
 
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 700;
-      font-size: 1rem;
-      color: #fff;
-      background: var(--green);
-      padding: 14px 32px;
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: 0;
       border-radius: 8px;
+      padding: 14px 32px;
+      cursor: pointer;
       text-decoration: none;
-      transition: background 0.2s ease, transform 0.2s ease;
+      transition: background 0.2s ease, transform 0.15s ease;
     }
 
-    .btn:hover { background: #0a7a54; transform: translateY(-2px); }
-    .btn::after { content: '→'; font-size: 1.1em; }
-
-    /* ── SECTIONS ── */
-    .section {
-      padding: 96px 40px;
+    .btn-primary {
+      background: var(--green);
+      color: var(--white);
     }
 
-    .section-inner {
-      max-width: 1100px;
+    .btn-primary:hover {
+      background: #0a7a55;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255,255,255,0.25);
+      margin-left: 12px;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.40);
+    }
+
+    /* ── Sections ── */
+    section {
+      padding: 80px 40px;
+      position: relative;
+    }
+
+    section.warm { background: var(--warm); }
+    section.teal {
+      background: var(--teal);
+      color: var(--white);
+      overflow: hidden;
+    }
+
+    .container {
+      max-width: 780px;
       margin: 0 auto;
     }
 
-    .section h2 {
-      font-size: clamp(1.8rem, 3vw, 2.4rem);
-      color: var(--teal);
-      margin-bottom: 20px;
-      line-height: 1.2;
+    .container-wide {
+      max-width: 920px;
+      margin: 0 auto;
     }
 
-    .section-intro {
-      font-size: 1.1rem;
-      color: rgba(0,0,0,0.65);
-      max-width: 620px;
-      margin-bottom: 56px;
-      line-height: 1.6;
-    }
-
-    .section-alt { background: var(--warm); }
-
-    /* ── SERVICES ── */
-    .services-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px 80px;
-    }
-
-    .service h3 {
-      font-family: 'Lato', sans-serif;
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
       font-weight: 700;
-      font-size: 1.05rem;
-      color: var(--teal);
-      margin-bottom: 8px;
-    }
-
-    .service p {
-      font-size: 0.95rem;
-      color: rgba(0,0,0,0.65);
-      line-height: 1.6;
-    }
-
-    /* ── QUOTE ── */
-    .section-quote {
-      background: var(--teal);
-      color: #fff;
-    }
-
-    .section-quote blockquote {
-      font-family: 'Cambo', serif;
-      font-size: clamp(1.3rem, 2.2vw, 1.6rem);
-      line-height: 1.5;
-      font-style: italic;
-      max-width: 720px;
-    }
-
-    .section-quote .attr {
-      margin-top: 20px;
-      font-size: 0.95rem;
-      color: rgba(255,255,255,0.55);
-    }
-
-    .section-quote .attr strong {
-      color: #fff;
-      font-weight: 700;
-    }
-
-    /* ── HOW WE WORK ── */
-    .steps-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 48px;
-    }
-
-    .step .num {
-      font-family: 'Cambo', serif;
-      font-size: 2.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
       color: var(--green);
-      line-height: 1;
       margin-bottom: 12px;
     }
 
-    .step h3 {
-      font-family: 'Lato', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
+    h2 {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 400;
+      line-height: 1.25;
+      margin-bottom: 24px;
       color: var(--teal);
-      margin-bottom: 8px;
+      text-wrap: balance;
     }
 
-    .step p {
+    section.warm h2 { color: var(--teal); }
+    section.teal h2 { color: var(--white); }
+
+    h3 {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 10px;
+      color: var(--teal);
+    }
+
+    section.teal h3 { color: var(--white); }
+
+    p {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      margin-bottom: 20px;
+      color: var(--black);
+    }
+
+    section.teal p { color: rgba(255,255,255,0.88); }
+
+    .lead {
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: rgba(0,0,0,0.70);
+      margin-bottom: 40px;
+    }
+
+    /* ── Problem Cards ── */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .problem-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 32px;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .problem-card .icon {
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .problem-card h3 { margin-bottom: 8px; }
+    .problem-card p { font-size: 0.9rem; margin-bottom: 0; }
+
+    /* ── Alternative Cards ── */
+    .alt-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .alt-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 28px 32px;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      border-left: 3px solid rgba(0,0,0,0.12);
+    }
+
+    .alt-card h3 { margin-bottom: 6px; font-size: 0.95rem; }
+    .alt-card p { font-size: 0.85rem; margin-bottom: 0; color: rgba(0,0,0,0.55); }
+
+    /* ── Guide ── */
+    .portrait {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      float: left;
+      margin: 0 20px 12px 0;
+      shape-outside: circle(50%);
+      border: 2px solid rgba(255,255,255,0.8);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .empathy-block {
+      background: var(--warm);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+
+    .empathy-block p {
+      font-size: 1rem;
+      font-style: italic;
+      margin-bottom: 0;
+      color: var(--teal);
+      line-height: 1.55;
+    }
+
+    .cred-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .cred-stat {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid rgba(0,0,0,0.06);
+      text-align: center;
+    }
+
+    .cred-stat .stat-num {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      color: var(--teal);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .cred-stat .stat-label {
+      font-size: 0.78rem;
+      color: rgba(0,0,0,0.50);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+    }
+
+    /* ── Plan Steps ── */
+    .step-list { list-style: none; padding: 0; }
+
+    .step {
+      display: flex;
+      gap: 28px;
+      margin-bottom: 40px;
+      align-items: flex-start;
+    }
+
+    .step:last-child { margin-bottom: 0; }
+
+    .step-num {
+      flex-shrink: 0;
+      font-family: var(--font-heading);
+      font-size: 2.4rem;
+      color: var(--green);
+      line-height: 1;
+      opacity: 0.85;
+    }
+
+    .step-body h3 { margin-bottom: 6px; }
+    .step-body p { margin-bottom: 0; font-size: 0.9rem; }
+
+    /* ── Testimonial ── */
+    .testimonial {
+      background: var(--warm);
+      border-radius: 12px;
+      padding: 40px;
+    }
+
+    .testimonial blockquote {
+      margin: 0;
+      padding: 0;
+    }
+
+    .testimonial blockquote p {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      color: var(--teal);
+    }
+
+    .testimonial .attribution {
       font-size: 0.9rem;
-      color: rgba(0,0,0,0.6);
+      color: rgba(0,0,0,0.55);
+    }
+
+    .testimonial .attribution strong {
+      color: var(--black);
+    }
+
+    /* ── Proof Stats ── */
+    .proof-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .proof-stat .stat-big {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .proof-stat .stat-label {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.65);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+    }
+
+    .proof-context {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.82);
+      text-align: center;
+      max-width: 620px;
+      margin: 0 auto;
       line-height: 1.6;
     }
 
-    /* ── CLOSE ── */
-    .section-close {
+    .proof-context a {
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .proof-context a:hover { text-decoration: underline; }
+
+    /* ── Bottom CTA / Form ── */
+    .cta-bottom { text-align: center; }
+
+    .cta-bottom h2 { margin-bottom: 16px; }
+
+    .cta-bottom p {
+      font-size: 1.05rem;
+      color: rgba(0,0,0,0.60);
+      margin-bottom: 40px;
+    }
+
+    .contact-form {
+      max-width: 480px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      padding: 12px 16px;
+      border: 1px solid rgba(0,0,0,0.12);
+      border-radius: 8px;
+      background: var(--white);
+      color: var(--black);
+      transition: border-color 0.2s ease;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(13,143,100,0.10);
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-submit {
       text-align: center;
+      margin-top: 8px;
     }
 
-    .section-close .section-inner {
-      max-width: 560px;
-    }
-
-    .section-close .section-intro {
-      margin: 0 auto 36px;
-    }
-
-    /* ── FOOTER ── */
-    .footer {
-      padding: 32px 40px;
+    .form-success {
+      display: none;
       text-align: center;
+      padding: 24px;
+      background: var(--warm);
+      border-radius: 12px;
+      margin-top: 24px;
+    }
+
+    .form-success p {
+      color: var(--teal);
+      margin-bottom: 0;
+      font-weight: 500;
+    }
+
+    .form-error {
+      display: none;
+      text-align: center;
+      padding: 16px;
+      background: rgba(13,143,100,0.08);
+      border-radius: 8px;
+      margin-top: 16px;
       font-size: 0.85rem;
-      color: rgba(0,0,0,0.35);
+      color: #8B1A1A;
     }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      .hero-logo { top: 24px; left: 24px; height: 28px; }
-      .hero-content {
-        justify-content: center;
-        padding: 60px 24px;
-        /* Push text lower so it sits below the centered rocket, on the darker scrim bed */
-        align-items: flex-end;
-        padding-bottom: 80px;
-      }
-      .hero-text { text-align: center; }
-      .hero-text h1 {
-        font-size: 1.75rem;
-        text-shadow: 0 1px 8px rgba(0,0,0,0.60);
-      }
-      .hero-text p {
-        font-size: 0.95rem;
-        text-shadow: 0 1px 6px rgba(0,0,0,0.55);
-      }
-      /* Heavier scrim on mobile: rocket visible in upper half, dark bed for text below */
-      .hero-scrim {
-        background: linear-gradient(
-          135deg,
-          rgba(0,0,0,0.05) 0%,
-          rgba(0,0,0,0.18) 40%,
-          rgba(0,0,0,0.35) 65%,
-          rgba(0,0,0,0.55) 100%
-        );
-      }
-      .hero-scrim::after {
-        background: linear-gradient(
-          to bottom,
-          rgba(0,0,0,0.05) 0%,
-          transparent 20%,
-          rgba(0,0,0,0.25) 50%,
-          rgba(0,0,0,0.60) 100%
-        );
-      }
-
-      .section { padding: 64px 28px; }
-      .services-grid { grid-template-columns: 1fr; gap: 36px; }
-      .steps-row { grid-template-columns: 1fr; gap: 32px; }
+    /* ── Footer ── */
+    footer {
+      padding: 48px 40px;
+      background: var(--warm);
+      text-align: center;
     }
 
-    @media (max-width: 480px) {
-      .hero-logo { top: 20px; left: 20px; height: 24px; }
-      .hero-text h1 { font-size: 1.55rem; }
-      .hero-text p { font-size: 0.9rem; }
-      .btn { padding: 12px 24px; font-size: 0.9rem; }
+    footer p {
+      font-size: 0.8rem;
+      color: rgba(0,0,0,0.40);
+      margin-bottom: 0;
+    }
+
+    /* ── Animations ── */
+    @keyframes glowPulse1 {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.12); }
+    }
+
+    @keyframes glowPulse2 {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 0.9; transform: scale(1.08); }
+    }
+
+    #glow-group circle:nth-child(1) {
+      animation: glowPulse1 6s ease-in-out infinite;
+      transform-origin: 450px 240px;
+    }
+
+    #glow-group circle:nth-child(2) {
+      animation: glowPulse2 7s ease-in-out infinite;
+      transform-origin: 350px 480px;
+    }
+
+    /* Reveal elements: visible by default, JS adds entrance */
+    .reveal { opacity: 1; }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .site-header { padding: 12px 24px; }
+      .hero-content { padding: 100px 24px 80px; }
+      section { padding: 56px 24px; }
+      h2 { font-size: 1.35rem; }
+
+      .problem-grid,
+      .alt-grid,
+      .guide-grid { grid-template-columns: 1fr; gap: 16px; }
+
+      .step { gap: 20px; }
+      .step-num { font-size: 1.8rem; }
+
+      .proof-stats { grid-template-columns: 1fr 1fr; gap: 24px; }
+      .proof-stat .stat-big { font-size: 1.6rem; }
+
+      .cred-stats { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .cred-stat .stat-num { font-size: 1.3rem; }
+
+      .testimonial { padding: 28px; }
+
+      .btn-secondary { margin-left: 0; margin-top: 12px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ── HERO ── -->
-  <section class="hero">
-    <video class="hero-video" autoplay muted loop playsinline preload="auto">
-      <source src="hero-video.mp4" type="video/mp4">
-    </video>
-    <img class="hero-logo" src="logo-white.png" alt="Snowark">
-    <div class="hero-scrim"></div>
-    <div class="hero-content">
-      <div class="hero-text">
-        <h1>Your AI operations team, deployed in days</h1>
-        <p>We build and run the backend AI systems that handle your admin, coordinate your workflows, and keep everything moving.</p>
-        <a href="mailto:josh@snowark.com.au" class="btn">Let's talk</a>
-      </div>
-    </div>
-  </section>
+<!-- ═══════════════════════════════════════════ HEADER ═══════════════════════════════════════════ -->
+<header class="site-header" id="header">
+  <img src="logo-white.png" alt="Snowark" class="header-logo">
+  <a href="#contact" class="header-cta">Let's talk</a>
+</header>
 
-  <!-- ── WHAT WE DO ── -->
-  <section class="section">
-    <div class="section-inner">
-      <h2>We build the operating system for your business</h2>
-      <p class="section-intro">Not chatbots. Not dashboards. Real agents that connect to your tools, learn how you work, and take things off your plate. Deployed in days, not months.</p>
-
-      <div class="services-grid">
-        <div class="service">
-          <h3>Admin automation</h3>
-          <p>Email, scheduling, data entry, reporting. The repetitive work that eats your afternoons, handled 24/7.</p>
-        </div>
-        <div class="service">
-          <h3>System coordination</h3>
-          <p>Your CRM, project tools, spreadsheets, and comms talking to each other. Nothing falls through the cracks.</p>
-        </div>
-        <div class="service">
-          <h3>Thinking systems</h3>
-          <p>Agents that challenge assumptions, reason from evidence, and improve their own approach over time.</p>
-        </div>
-        <div class="service">
-          <h3>Client operations</h3>
-          <p>Onboarding, status updates, follow-ups. Your clients stay informed without you touching a thing.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── QUOTE ── -->
-  <section class="section section-quote">
-    <div class="section-inner">
-      <blockquote>
-        The more context our agent gets, the less it feels like an automation platform and the more it feels like a genuine business partner that understands how I think and why decisions get made.
-      </blockquote>
-      <p class="attr"><strong>James</strong>, Not Forgotten Systems</p>
-    </div>
-  </section>
-
-  <!-- ── HOW WE WORK ── -->
-  <section class="section section-alt">
-    <div class="section-inner">
-      <h2>Not starting from zero</h2>
-      <p class="section-intro">Our infrastructure is pre-built. We spend our time configuring your agents, not building scaffolding. You get working systems in days, and we operate them month to month so you do not carry the overhead.</p>
-
-      <div class="steps-row">
-        <div class="step">
-          <div class="num">01</div>
-          <h3>Map your operations</h3>
-          <p>We learn your workflows, tools, and where the friction lives. We research your stack before we even meet.</p>
-        </div>
-        <div class="step">
-          <div class="num">02</div>
-          <h3>Configure your agents</h3>
-          <p>Using pre-built infrastructure, we deploy agents that plug into your existing tools and start working.</p>
-        </div>
-        <div class="step">
-          <div class="num">03</div>
-          <h3>Run and refine</h3>
-          <p>We do not hand over and walk away. We operate and improve your agents while you focus on your clients.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── CLOSE ── -->
-  <section class="section section-close">
-    <div class="section-inner">
-      <h2>Ready to take admin off your plate?</h2>
-      <p class="section-intro">No pitch deck. Just a conversation about your business and whether this makes sense.</p>
-      <a href="mailto:josh@snowark.com.au" class="btn">Let's talk</a>
-    </div>
-  </section>
-
-  <div class="footer">
-    <p>Snowark Consulting &copy; 2026</p>
+<!-- ═══════════════════════════════════════════ 1. HERO ═══════════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <svg id="hero-svg" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="g1" cx="30%" cy="20%" r="50%">
+          <stop offset="0%" stop-color="#0d8f64" stop-opacity="0.8"/>
+          <stop offset="100%" stop-color="#0d8f64" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="g2" cx="75%" cy="60%" r="40%">
+          <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="g3" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#0d8f64" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="#0d8f64" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="1200" height="600" fill="url(#g1)"/>
+      <rect width="1200" height="600" fill="url(#g2)"/>
+      <g stroke="white" stroke-width="0.8" opacity="0.25">
+        <line x1="0" y1="120" x2="1200" y2="120"/>
+        <line x1="0" y1="240" x2="1200" y2="240"/>
+        <line x1="0" y1="360" x2="1200" y2="360"/>
+        <line x1="0" y1="480" x2="1200" y2="480"/>
+        <line x1="300" y1="0" x2="300" y2="600"/>
+        <line x1="600" y1="0" x2="600" y2="600"/>
+        <line x1="900" y1="0" x2="900" y2="600"/>
+      </g>
+      <g id="nodes-group" fill="white" opacity="0.45">
+        <circle cx="200" cy="120" r="4"/><circle cx="450" cy="240" r="5"/>
+        <circle cx="700" cy="120" r="3.5"/><circle cx="950" cy="360" r="5"/>
+        <circle cx="150" cy="360" r="3"/><circle cx="550" cy="480" r="4.5"/>
+        <circle cx="850" cy="240" r="3"/><circle cx="350" cy="480" r="5.5"/>
+        <circle cx="1050" cy="120" r="3.5"/><circle cx="100" cy="480" r="3"/>
+        <circle cx="650" cy="360" r="4"/>
+      </g>
+      <g id="accents-group" fill="#0d8f64" opacity="0.6">
+        <circle cx="450" cy="240" r="5"/>
+        <circle cx="350" cy="480" r="5.5"/>
+        <circle cx="950" cy="360" r="4.5"/>
+      </g>
+      <g id="paths-group" stroke="white" stroke-width="0.8" opacity="0.18" fill="none">
+        <path d="M200,120 Q325,180 450,240"/>
+        <path d="M450,240 Q575,300 700,120"/>
+        <path d="M700,120 Q825,240 950,360"/>
+        <path d="M150,360 Q250,420 350,480"/>
+        <path d="M350,480 Q450,420 550,480"/>
+        <path d="M550,480 Q600,420 650,360"/>
+        <path d="M850,240 Q900,300 950,360"/>
+        <path d="M450,240 Q500,360 550,480"/>
+        <path d="M650,360 Q750,360 850,240"/>
+        <path d="M350,480 Q500,300 700,120"/>
+      </g>
+      <g id="glow-group">
+        <circle cx="450" cy="240" r="120" fill="url(#g3)"/>
+        <circle cx="350" cy="480" r="100" fill="url(#g3)"/>
+      </g>
+    </svg>
   </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow reveal">Snowark Consulting</p>
+    <h1 class="reveal">Your AI business partner, deployed in days</h1>
+    <p class="hero-sub reveal">A persistent, context-rich agent that connects to your tools, learns how you operate, and takes work off your plate. We deploy it. We run it. You get your nights back.</p>
+    <a href="#contact" class="btn btn-primary reveal">Let's talk</a>
+    <a href="#problem" class="btn btn-secondary reveal">See how it works</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ 2. THE PROBLEM ═══════════════════════════════════════════ -->
+<section id="problem">
+  <div class="container">
+    <p class="eyebrow reveal">The problem</p>
+    <h2 class="reveal">Your business is running you</h2>
+    <p class="lead reveal">You built something real. But somewhere along the way, the admin took over. The tools that were meant to help now demand your attention. The data that should guide your decisions is scattered across platforms. And every hour spent in the weeds is an hour not spent on growth.</p>
+
+    <div class="problem-grid">
+      <div class="problem-card reveal">
+        <span class="icon">&#128202;</span>
+        <h3>Fragmented data</h3>
+        <p>Your CRM, project tools, spreadsheets, and inbox do not talk to each other. You cannot trace a dollar of spend to a dollar of revenue, and every decision rests on a hunch rather than a single source of truth.</p>
+      </div>
+      <div class="problem-card reveal">
+        <span class="icon">&#9203;</span>
+        <h3>Admin eating your afternoons</h3>
+        <p>Email follow-ups, data entry, quoting, reporting. The repetitive work that keeps the business running but keeps you from building it. Every hour on admin is an hour your competitors are spending on growth.</p>
+      </div>
+      <div class="problem-card reveal">
+        <span class="icon">&#128268;</span>
+        <h3>Things falling through cracks</h3>
+        <p>Leads go cold. Quotes sit unapproved. Clients wait for updates. Your team is capable, but no one has a complete view of what needs attention right now.</p>
+      </div>
+      <div class="problem-card reveal">
+        <span class="icon">&#128200;</span>
+        <h3>Competitors pulling ahead</h3>
+        <p>While you are working in the business, others are adopting AI to reduce costs, close more deals, and move faster. The gap is widening. You can feel it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ 3. THE ALTERNATIVE ═══════════════════════════════════════════ -->
+<section class="warm">
+  <div class="container">
+    <p class="eyebrow reveal">What founders try first</p>
+    <h2 class="reveal">None of it quite works</h2>
+    <p class="lead reveal">Before Snowark, most founders try one of these paths. Each solves part of the problem. None solves the whole thing.</p>
+
+    <div class="alt-grid">
+      <div class="alt-card reveal">
+        <h3>An offshore virtual assistant</h3>
+        <p>Still a person, still constrained by time. You trade one set of management overhead for another, and the context never quite accumulates the way it should.</p>
+      </div>
+      <div class="alt-card reveal">
+        <h3>Zapier and point solutions</h3>
+        <p>Powerful, but they demand you understand every workflow up front. They automate what you already know to automate. They do not surface what you are missing.</p>
+      </div>
+      <div class="alt-card reveal">
+        <h3>Doing it yourself with ChatGPT</h3>
+        <p>The learning curve is steep and the output is shallow. A chatbot does not have persistent memory, does not connect to your tools, and does not run while you sleep.</p>
+      </div>
+      <div class="alt-card reveal">
+        <h3>A freelancer from Upwork or Fiverr</h3>
+        <p>Short-term resource, no business context. They build on flimsy hosting and disappear when things break. The IP walks out the door with them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ 4. THE GUIDE ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <p class="eyebrow reveal">The guide</p>
+    <h2 class="reveal">You are not behind. You are wearing too many hats.</h2>
+
+    <div class="empathy-block reveal">
+      <img src="josh.jpg" alt="Josh Hancock" class="portrait">
+      <p>Most founders know AI is the answer. What they lack is the time, the technical depth, and the executive lens to deploy it at the right problems. They try shortcuts that do not stick. They wonder if they are falling behind. They are not. They just need someone who has done this from the inside.</p>
+    </div>
+
+    <div class="guide-grid">
+      <div>
+        <h3 class="reveal">Built from the inside</h3>
+        <p class="reveal">Snowark was not built by an AI vendor. It was built by a CMO who needed more hours in the day and decided to engineer them. While running marketing across multiple eight-figure brands with a $6.2M budget, Josh Hancock built the infrastructure now deployed at Snowark: an AI operating system that runs 24/7 across every platform a business uses, with its own memory, its own governance, and its own capability.</p>
+        <p class="reveal">The agent that runs his own portfolio has analysed 3,447 sales calls, connected to 18 platforms, and replaced paid SaaS subscriptions with agent-maintained integrations. This is not a pilot. It is production infrastructure, and it is what gets deployed for Snowark clients from day one.</p>
+      </div>
+      <div>
+        <h3 class="reveal">Deployed into real businesses</h3>
+        <div class="cred-stats reveal">
+          <div class="cred-stat">
+            <div class="stat-num">8-figure</div>
+            <div class="stat-label">Brands deployed into</div>
+          </div>
+          <div class="cred-stat">
+            <div class="stat-num">$6.2M</div>
+            <div class="stat-label">Direct budget owned</div>
+          </div>
+          <div class="cred-stat">
+            <div class="stat-num">18</div>
+            <div class="stat-label">Connected platforms</div>
+          </div>
+          <div class="cred-stat">
+            <div class="stat-num">3,447</div>
+            <div class="stat-label">Sales calls analysed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ 5. THE PLAN ═══════════════════════════════════════════ -->
+<section class="warm">
+  <div class="container">
+    <p class="eyebrow reveal">How we work</p>
+    <h2 class="reveal">Business strategy first, AI second</h2>
+    <p class="lead reveal">Most AI vendors start with the tool and look for a problem. We start with the P&amp;L. We find the bottleneck, then point the AI at it. Here is how it works.</p>
+
+    <ol class="step-list">
+      <li class="step reveal">
+        <span class="step-num">01</span>
+        <div class="step-body">
+          <h3>Map your operations</h3>
+          <p>We learn your workflows, your tools, and where the friction lives. We identify the single biggest constraint on your growth: awareness, conversion, or operations. We research your stack before we even meet.</p>
+        </div>
+      </li>
+      <li class="step reveal">
+        <span class="step-num">02</span>
+        <div class="step-body">
+          <h3>Configure your agent</h3>
+          <p>Using pre-built infrastructure, we deploy an agent that plugs into your existing tools and starts working at the highest-leverage point. Not a generic chatbot. A configured business partner that understands your context and acts on it.</p>
+        </div>
+      </li>
+      <li class="step reveal">
+        <span class="step-num">03</span>
+        <div class="step-body">
+          <h3>Run and refine</h3>
+          <p>We do not hand over and walk away. We operate your agent month to month, improving its capability and pointing it at the next constraint. You focus on your clients. The agent handles the rest.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ 6. WHAT IT IS ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <p class="eyebrow reveal">What you actually get</p>
+    <h2 class="reveal">Not automation. A business partner.</h2>
+    <p class="lead reveal">The agent does not just run workflows. It builds context. It learns how you think, why decisions get made, and what matters to your business. Over time, it becomes the operating system.</p>
+
+    <div class="testimonial reveal">
+      <blockquote>
+        <p>The more context our agent gets, the less it feels like an automation platform and the more it feels like a genuine business partner that understands how I think and why decisions get made.</p>
+      </blockquote>
+      <p class="attribution"><strong>James</strong>, Not Forgotten Systems</p>
+    </div>
+
+    <p class="reveal" style="margin-top: 32px; text-align: center; font-size: 0.9rem; color: rgba(0,0,0,0.55);">Everything we build stays with you. Your IP, your infrastructure, your agent. We run it while you need us. You own it forever.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ 7. PROOF ═══════════════════════════════════════════ -->
+<section class="teal">
+  <div class="container-wide">
+    <p class="eyebrow reveal" style="color: var(--green);">Proven results</p>
+    <h2 class="reveal">Not our first deployment</h2>
+
+    <div class="proof-stats reveal">
+      <div class="proof-stat">
+        <div class="stat-big">18</div>
+        <div class="stat-label">Connected platforms</div>
+      </div>
+      <div class="proof-stat">
+        <div class="stat-big">24</div>
+        <div class="stat-label">Packaged workflows</div>
+      </div>
+      <div class="proof-stat">
+        <div class="stat-big">3,447</div>
+        <div class="stat-label">Calls analysed</div>
+      </div>
+    </div>
+
+    <p class="proof-context reveal">The same AI operating system running at AFS Group, connecting Shopify, HubSpot, GA4, Meta Ads, Google Ads, Asana, NetSuite, and more, is what deploys for Snowark clients. Built by someone who runs P&amp;Ls, not by someone who sells AI. <a href="https://gary-afs.github.io/afs-pages/garys-portfolio/" target="_blank">See the full portfolio.</a></p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ 8. CONTACT ═══════════════════════════════════════════ -->
+<section id="contact">
+  <div class="container cta-bottom">
+    <p class="eyebrow reveal">Next step</p>
+    <h2 class="reveal">No pitch deck. Just a conversation about your business.</h2>
+    <p class="reveal">Tell us where the friction is. We will tell you whether this makes sense. No commitment, no hard sell.</p>
+
+    <form class="contact-form reveal" id="contact-form">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required placeholder="you@company.com">
+      </div>
+      <div class="form-group">
+        <label for="company">Company</label>
+        <input type="text" id="company" name="company" placeholder="Your business name">
+      </div>
+      <div class="form-group">
+        <label for="message">Where is the friction?</label>
+        <textarea id="message" name="message" placeholder="Tell us about your business and what is holding it back."></textarea>
+      </div>
+      <div class="form-submit">
+        <button type="submit" class="btn btn-primary" id="submit-btn">Send</button>
+      </div>
+      <div class="form-success" id="form-success">
+        <p>Thanks. We will be in touch within 24 hours.</p>
+      </div>
+      <div class="form-error" id="form-error">
+        <p>Something went wrong. Please try again or email <a href="mailto:josh@snowark.com.au" style="color:inherit;">josh@snowark.com.au</a>.</p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ FOOTER ═══════════════════════════════════════════ -->
+<footer>
+  <p>Snowark Consulting &copy; 2026</p>
+</footer>
+
+<!-- ═══════════════════════════════════════════ JS ═══════════════════════════════════════════ -->
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ── Header scroll state ── */
+  var header = document.getElementById('header');
+  window.addEventListener('scroll', function() {
+    header.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  /* ── Hero entrance (above fold, safe for opacity) ── */
+  gsap.from('.hero-content .reveal', {
+    opacity: 0,
+    y: 30,
+    duration: 0.9,
+    stagger: 0.15,
+    ease: 'power3.out',
+    delay: 0.3
+  });
+
+  /* ── Scroll reveals: motion only, never touch opacity ── */
+  document.querySelectorAll('section .reveal').forEach(function(el) {
+    gsap.from(el, {
+      y: 24,
+      duration: 0.7,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 92%',
+        toggleActions: 'play none none none'
+      }
+    });
+  });
+
+  /* ── Card grid stagger: motion only ── */
+  ['problem-grid', 'alt-grid'].forEach(function(cls) {
+    var grid = document.querySelector('.' + cls);
+    if (!grid) return;
+    gsap.from(grid.children, {
+      y: 24,
+      duration: 0.6,
+      stagger: 0.08,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: grid,
+        start: 'top 90%',
+        toggleActions: 'play none none none'
+      }
+    });
+  });
+
+  /* ── Hero SVG parallax ── */
+  (function() {
+    var hero = document.getElementById('hero');
+    var nodesGroup = document.getElementById('nodes-group');
+    var pathsGroup = document.getElementById('paths-group');
+    var accentsGroup = document.getElementById('accents-group');
+    if (!hero || !nodesGroup) return;
+
+    var baseX = 0, baseY = 0;
+    var currentX = 0, currentY = 0;
+
+    function drift(dx, dy, t, phase) {
+      return {
+        x: Math.sin(t * 0.0004 + phase) * dx + Math.cos(t * 0.0007 + phase * 1.3) * (dx * 0.5),
+        y: Math.cos(t * 0.0005 + phase) * dy + Math.sin(t * 0.0006 + phase * 0.7) * (dy * 0.5)
+      };
+    }
+
+    function animate(timestamp) {
+      currentX += (baseX - currentX) * 0.05;
+      currentY += (baseY - currentY) * 0.05;
+      var px = currentX, py = currentY;
+
+      nodesGroup.setAttribute('transform', 'translate(' + px + ',' + py + ')');
+      pathsGroup.setAttribute('transform', 'translate(' + (px * 0.7) + ',' + (py * 0.7) + ')');
+
+      var d = drift(8, 6, timestamp, 0);
+      accentsGroup.setAttribute('transform',
+        'translate(' + (px * 0.5 + d.x) + ',' + (py * 0.5 + d.y) + ')');
+
+      requestAnimationFrame(animate);
+    }
+
+    hero.addEventListener('mousemove', function(e) {
+      var rect = hero.getBoundingClientRect();
+      var cx = rect.left + rect.width / 2;
+      var cy = rect.top + rect.height / 2;
+      baseX = (e.clientX - cx) * 0.03;
+      baseY = (e.clientY - cy) * 0.03;
+    });
+
+    hero.addEventListener('touchmove', function(e) {
+      var rect = hero.getBoundingClientRect();
+      var cx = rect.left + rect.width / 2;
+      var cy = rect.top + rect.height / 2;
+      baseX = (e.touches[0].clientX - cx) * 0.03;
+      baseY = (e.touches[0].clientY - cy) * 0.03;
+    }, {passive: true});
+
+    hero.addEventListener('mouseleave', function() { baseX = 0; baseY = 0; });
+    hero.addEventListener('touchend', function() { baseX = 0; baseY = 0; });
+
+    requestAnimationFrame(animate);
+  })();
+
+  /* ── Contact form ── */
+  (function() {
+    var form = document.getElementById('contact-form');
+    if (!form) return;
+
+    var SUPABASE_URL = 'https://fwnqlryktisglebhmfeb.supabase.co';
+    var SUPABASE_KEY = 'sb_publishable_BfWyBmPTdmr_WW92HI3Yew_1rvSkGpZ';
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      var btn = document.getElementById('submit-btn');
+      var success = document.getElementById('form-success');
+      var error = document.getElementById('form-error');
+
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+      success.style.display = 'none';
+      error.style.display = 'none';
+
+      fetch(SUPABASE_URL + '/rest/v1/client_responses', {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_KEY,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({
+          client_name: document.getElementById('name').value,
+          custom_personality: document.getElementById('email').value,
+          customers: document.getElementById('company').value,
+          business_description: document.getElementById('message').value,
+          status: 'contact_form'
+        })
+      })
+      .then(function(resp) {
+        if (resp.ok) {
+          form.style.display = 'none';
+          success.style.display = 'block';
+        } else {
+          btn.textContent = 'Send';
+          btn.disabled = false;
+          error.style.display = 'block';
+        }
+      })
+      .catch(function() {
+        btn.textContent = 'Send';
+        btn.disabled = false;
+        error.style.display = 'block';
+      });
+    });
+  })();
+</script>
 
 </body>
 </html>
-
-<!-- deploy: 2026-07-07 — GitHub-backed version control established -->
