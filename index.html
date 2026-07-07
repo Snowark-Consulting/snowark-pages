@@ -731,7 +731,7 @@
     .guide-cols { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; margin-top: 64px; align-items: start; }
     .guide-cols h3 { margin-bottom: 16px; }
     .guide-cols p + p { margin-top: 16px; }
-    .cred-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .cred-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
     .cred {
       padding: 26px 24px;
       text-align: left;
@@ -1075,7 +1075,10 @@
       .ledger-row { grid-template-columns: 1fr; gap: 10px; padding: 26px 8px; }
       .ledger-row p { grid-column: 1; grid-row: auto; }
       .verdict { justify-self: start; }
-      .cred-grid { grid-template-columns: 1fr 1fr; }
+      .cred-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .cred { padding: 18px 14px; }
+      .cred .num { font-size: 1.02rem; }
+      .cred .lbl { font-size: 0.62rem; }
       .what-grid { grid-template-columns: 1fr; gap: 32px; }
       .feed-window { height: 260px; }
       .proof-stats { grid-template-columns: 1fr; }
