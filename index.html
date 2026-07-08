@@ -1991,7 +1991,7 @@
       var tl = gsap.timeline({
         scrollTrigger: {
           trigger: '.statement',
-          start: 'top 75%',
+          start: 'top top',
           end: '+=140%',
           pin: true,
           scrub: 0.7,
@@ -1999,7 +1999,7 @@
         }
       });
       tl.from('#statement-text .w', {
-        opacity: 0.22,
+        opacity: 0.35,
         stagger: 0.06,
         ease: 'none'
       });
