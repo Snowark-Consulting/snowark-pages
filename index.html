@@ -1096,6 +1096,54 @@
     }
 
     :focus-visible { outline: 2px solid var(--green-lift); outline-offset: 3px; border-radius: 4px; }
+  
+    /* Content depth pass: returns, fit, faq, letter */
+    .returns-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 56px; }
+    .return-card { padding: 34px 30px; border-radius: 18px; transition: translate 0.35s ease, box-shadow 0.35s ease; }
+    .return-card:hover { translate: 0 -5px; box-shadow: 0 16px 44px rgba(14, 41, 41, 0.10); }
+    .ret-art { height: 64px; margin: 16px 0 6px; }
+    .ret-art svg { width: 100%; height: 100%; overflow: visible; }
+    .ret-art .art-bg { stroke: rgba(23, 68, 69, 0.14); stroke-width: 1.5; fill: none; }
+    .ret-art .art-draw { stroke: var(--green); stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-dasharray: 24 76; animation: artdash 4.2s linear infinite; }
+    .spot { position: relative; }
+    .spot::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgba(13, 143, 100, 0.09), transparent 65%); opacity: 0; transition: opacity 0.35s ease; pointer-events: none; }
+    .spot:hover::after { opacity: 1; }
+    .return-card .ret-idx { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal-lift); }
+    .return-card h3 { font-family: var(--font-heading); font-weight: 400; font-size: 1.55rem; margin: 12px 0 12px; }
+    .return-card p { font-size: 0.95rem; max-width: none; }
+    .fit-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; align-items: start; }
+    .fit-col { padding: 34px 30px; border-radius: 18px; transition: translate 0.35s ease, box-shadow 0.35s ease; }
+    .fit-col:hover { translate: 0 -5px; box-shadow: 0 16px 44px rgba(14, 41, 41, 0.10); }
+    .fit-col h3 { margin-bottom: 20px; }
+    .fit-col ul { list-style: none; display: grid; gap: 14px; }
+    .fit-col li { position: relative; padding-left: 28px; font-size: 0.95rem; line-height: 1.55; }
+    .fit-col li::before { position: absolute; left: 0; top: -1px; font-weight: 700; font-size: 1.05rem; }
+    .fit-yes li::before { content: '+'; color: var(--green); }
+    .fit-no li::before { content: '\2212'; color: rgba(14, 41, 41, 0.4); }
+    .faq-list { max-width: 840px; margin: 48px auto 0; border-top: 1px solid rgba(0, 0, 0, 0.12); counter-reset: faq; }
+    .faq-list details { border-bottom: 1px solid rgba(0, 0, 0, 0.12); }
+    .faq-list summary { cursor: pointer; list-style: none; display: flex; justify-content: flex-start; align-items: center; gap: 18px; padding: 22px 4px; font-weight: 700; font-size: 1.02rem; color: #0e2929; transition: color 0.25s ease; }
+    .faq-list summary:hover { color: var(--green); }
+    .faq-list summary::before { counter-increment: faq; content: counter(faq, decimal-leading-zero); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; color: var(--teal-lift); min-width: 26px; flex: none; }
+    .faq-list summary::-webkit-details-marker { display: none; }
+    .faq-list summary::after { content: '+'; font-family: var(--font-heading); font-size: 1.5rem; font-weight: 400; color: var(--teal-lift); transition: transform 0.25s ease; flex: none; margin-left: auto; }
+    .faq-list details[open] summary::after, .faq-list details.is-open summary::after { transform: rotate(45deg); }
+    .faq-body { overflow: hidden; }
+    .faq-body p { padding: 0 48px 24px 48px; font-size: 0.95rem; max-width: 720px; }
+    .letter-wrap { max-width: 780px; margin: 48px auto 0; padding: 48px 44px; border-radius: 20px; position: relative; overflow: hidden; }
+    .letter-wrap .card-glow { top: -70px; right: -70px; }
+    .letter-tag { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal-lift); margin-bottom: 22px; }
+    .letter-wrap > p { font-size: 1.02rem; line-height: 1.8; max-width: none; }
+    .letter-wrap > p + p { margin-top: 18px; }
+    .letter-sig { display: flex; align-items: center; gap: 16px; margin-top: 34px; }
+    .letter-sig img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
+    .letter-sig .name { font-family: var(--font-heading); font-size: 1.15rem; color: #0e2929; display: block; }
+    .letter-sig .role { display: block; font-size: 0.8rem; color: rgba(14, 41, 41, 0.6); margin-top: 2px; }
+    @media (max-width: 900px) {
+      .returns-grid { grid-template-columns: 1fr; }
+      .fit-cols { grid-template-columns: 1fr; }
+      .letter-wrap { padding: 36px 24px; }
+    }
   </style>
 </head>
 <body>
@@ -1189,7 +1237,7 @@
   <div class="hero-content">
     <p class="hero-badge glass anim"><span class="dot"></span>Snowark Consulting</p>
     <h1 class="anim">Your AI business partner, deployed in days</h1>
-    <p class="hero-sub anim">A persistent, context-rich agent that connects to your tools, learns how you operate, and takes work off your plate. We deploy it. We run it. You get your nights back.</p>
+    <p class="hero-sub anim">A persistent, context-rich agent that connects to your tools, learns how you operate, and gets to work: operations handled, costs cut, growth compounding. We deploy it. We run it. You get your nights back.</p>
     <div class="hero-ctas anim">
       <a href="#contact" class="btn btn-primary">Let's talk</a>
       <a href="#statement" class="btn btn-ghost">See how it works</a>
@@ -1301,7 +1349,7 @@
         <div class="j-text">
           <span class="j-num">01</span>
           <h3>Fragmented data</h3>
-          <p>Your CRM, project tools, spreadsheets, and inbox do not talk to each other. Every decision rests on a hunch rather than a single source of truth.</p>
+          <p>Your CRM, project tools, spreadsheets, and inbox don’t talk to each other. Every decision rests on a hunch rather than a single source of truth.</p>
         </div>
       </div>
       <div class="j-row rev reveal">
@@ -1408,7 +1456,7 @@
         <div class="j-text">
           <span class="j-num">04</span>
           <h3>Competitors pulling ahead</h3>
-          <p>While you are working in the business, others are adopting AI to reduce costs, close more deals, and move faster. The gap is widening. You can feel it.</p>
+          <p>While you’re working in the business, others are adopting AI to reduce costs, close more deals, and move faster. The gap is widening. You can feel it.</p>
         </div>
       </div>
     </div>
@@ -1432,13 +1480,13 @@
       <div class="ledger-row reveal">
         <span class="idx">02</span>
         <h3>Zapier and point solutions</h3>
-        <p>Powerful, but they demand you understand every workflow up front. They automate what you already know to automate. They do not surface what you are missing.</p>
+        <p>Powerful, but they demand you understand every workflow up front. They automate what you already know to automate. They don’t surface what you’re missing.</p>
         <span class="verdict">Automates only the known</span>
       </div>
       <div class="ledger-row reveal">
         <span class="idx">03</span>
         <h3>Doing it yourself with ChatGPT</h3>
-        <p>The learning curve is steep and the output is shallow. A chatbot does not have persistent memory, does not connect to your tools, and does not run while you sleep.</p>
+        <p>The learning curve is steep and the output is shallow. A chatbot doesn’t have persistent memory, doesn’t connect to your tools, and doesn’t run while you sleep.</p>
         <span class="verdict">No memory, no tools</span>
       </div>
       <div class="ledger-row reveal">
@@ -1458,20 +1506,20 @@
   </div>
   <div class="container">
     <p class="eyebrow reveal">Who you'll work with</p>
-    <h2 class="reveal">You are not behind. You are wearing too many hats.</h2>
+    <h2 class="reveal">You’re not behind. You’re wearing too many hats.</h2>
 
     <div class="guide-hero glass reveal">
       <div class="portrait-wrap">
         <img src="josh.jpg" alt="Josh Hancock" class="portrait">
       </div>
-      <p class="guide-quote">Most founders know AI is the answer. What they lack is the time, the technical depth, and the executive lens to deploy it at the right problems. They try shortcuts that do not stick. They wonder if they are falling behind. <strong>They are not. They just need someone who has done this from the inside.</strong></p>
+      <p class="guide-quote">Most founders know AI is the answer. What they lack is the time, the technical depth, and the executive lens to deploy it at the right problems. They try shortcuts that don’t stick. They wonder if they’re falling behind. <strong>They’re not. They just need someone who’s done this from the inside.</strong></p>
     </div>
 
     <div class="guide-cols">
       <div>
-        <h3 class="reveal">Built from the inside</h3>
-        <p class="reveal">Snowark was not built by an AI vendor. It was built by a CMO who needed more hours in the day and decided to engineer them. While running marketing across multiple eight-figure brands with a $6.2M budget, Josh Hancock built the infrastructure now deployed at Snowark: an AI operating system that runs 24/7 across every platform a business uses, with its own memory, its own governance, and its own capability.</p>
-        <p class="reveal">The agent that runs his own portfolio has analysed 3,447 sales calls to build a customer insights engine, connected to 18 platforms, and replaced paid SaaS subscriptions with agent-maintained integrations. This is not a pilot. It is production infrastructure, and it is what gets deployed for Snowark clients from day one.</p>
+        <h3 class="reveal">Hi, I’m Josh. This was built from the inside.</h3>
+        <p class="reveal">I’m not an AI vendor. I spent years as CMO across multiple eight-figure brands, and six months ago I finally ran out of hours. So I built an AI operating system that works the way I do: connected to every platform I use, carrying context from one day into the next, working while I sleep. It runs 24/7, with its own memory, its own governance, and its own capability.</p>
+        <p class="reveal">That system is production infrastructure, not a pilot. It has analysed 3,447 sales calls to build a customer insights engine, connected to 18 platforms, and replaced paid SaaS subscriptions with integrations it maintains itself. It ran alongside a $6.2M marketing operation, and it’s the playbook every Snowark placement is built from on day one. I now run Snowark full time. You deal with me directly, and the overnight work happens because my own agents do it.</p>
       </div>
       <div class="cred-grid reveal">
         <div class="cred glass">
@@ -1530,7 +1578,7 @@
         <span class="step-no">03</span>
         <div>
           <h3>Run and refine</h3>
-          <p>We do not hand over and walk away. We operate your agent month to month, improving its capability and pointing it at the next constraint. You focus on your clients. The agent handles the rest.</p>
+          <p>We don’t hand over and walk away. We operate your agent month to month, improving its capability and pointing it at the next constraint. You focus on your clients. The agent handles the rest.</p>
         </div>
       </div>
     </div>
@@ -1545,8 +1593,8 @@
 
     <div class="what-grid">
       <div>
-        <p class="lead reveal">The agent does not just run workflows. It builds context. It learns how you think, why decisions get made, and what matters to your business. Over time, it becomes the operating system.</p>
-        <p class="lead reveal" style="margin-top:18px;">While you are with clients, it is already working. A morning report before you wake. A quote chased before it goes cold. A brief on your desk before the meeting.</p>
+        <p class="lead reveal">The agent doesn’t just run workflows. It builds context. It learns how you think, why decisions get made, and what matters to your business. Over time, it becomes the operating system.</p>
+        <p class="lead reveal" style="margin-top:18px;">While you’re with clients, it’s already working. A morning report before you wake. A quote chased before it goes cold. A brief on your desk before the meeting.</p>
       </div>
       <div class="feed glass reveal" aria-label="A sample day of agent activity">
         <p class="feed-head">A Tuesday, unsupervised</p>
@@ -1557,6 +1605,7 @@
             <div class="feed-item"><time>08:47</time><span>Overdue quote chased with a polite nudge</span></div>
             <div class="feed-item"><time>10:15</time><span>Ad spend anomaly flagged for review</span></div>
             <div class="feed-item"><time>12:02</time><span>Supplier reply drafted, waiting for sign-off</span></div>
+            <div class="feed-item"><time>13:15</time><span>Campaign email designed, segment built, staged for approval</span></div>
             <div class="feed-item"><time>14:30</time><span>Meeting brief prepared with talking points</span></div>
             <div class="feed-item"><time>17:20</time><span>Pipeline updated, three leads progressed</span></div>
             <div class="feed-item"><time>22:00</time><span>Tomorrow's priorities briefed</span></div>
@@ -1577,6 +1626,35 @@
   </div>
 </section>
 
+<!-- ═══ 7B. THREE RETURNS ═══ -->
+<section id="returns" class="warm">
+  <div class="container">
+    <p class="eyebrow reveal">Where the value lands</p>
+    <h2 class="reveal">An agent earns its keep three ways.</h2>
+    <p class="lead reveal">Admin relief is the obvious one. It’s also the smallest. A well-placed agent works all three at once.</p>
+    <div class="returns-grid">
+      <div class="return-card glass spot reveal">
+        <span class="ret-idx">01 &middot; Time</span>
+        <div class="ret-art" aria-hidden="true"><svg viewBox="0 0 220 70" preserveAspectRatio="xMidYMid meet"><path class="art-bg" d="M 110 8 A 27 27 0 1 0 110 62 A 27 27 0 1 0 110 8 M 110 35 L 110 18 M 110 35 L 124 43"/><path class="art-draw" d="M 110 8 A 27 27 0 1 0 110 62 A 27 27 0 1 0 110 8 M 110 35 L 110 18 M 110 35 L 124 43" pathLength="100" style="animation-delay:0s"/></svg></div>
+        <h3>The load comes off</h3>
+        <p>Morning reports before you wake. The inbox triaged, quotes chased, meeting briefs on your desk. The operational weight of the business stops landing on you. You get your nights back.</p>
+      </div>
+      <div class="return-card glass spot reveal">
+        <span class="ret-idx">02 &middot; Cost</span>
+        <div class="ret-art" aria-hidden="true"><svg viewBox="0 0 220 70" preserveAspectRatio="xMidYMid meet"><path class="art-bg" d="M 68 8 H 152 V 48 L 145 56 L 138 48 L 131 56 L 124 48 L 117 56 L 110 48 L 103 56 L 96 48 L 89 56 L 82 48 L 75 56 L 68 48 Z M 82 22 H 138 M 82 33 H 122"/><path class="art-draw" d="M 68 8 H 152 V 48 L 145 56 L 138 48 L 131 56 L 124 48 L 117 56 L 110 48 L 103 56 L 96 48 L 89 56 L 82 48 L 75 56 L 68 48 Z M 82 22 H 138 M 82 33 H 122" pathLength="100" style="animation-delay:-1.4s"/></svg></div>
+        <h3>Line items disappear</h3>
+        <p>The agent replaces spend. Software subscriptions swapped for integrations it builds and maintains itself. Reporting tools retired. Work that used to be billed by the hour, done in-house overnight.</p>
+      </div>
+      <div class="return-card glass spot reveal">
+        <span class="ret-idx">03 &middot; Growth</span>
+        <div class="ret-art" aria-hidden="true"><svg viewBox="0 0 220 70" preserveAspectRatio="xMidYMid meet"><path class="art-bg" d="M 10 58 L 50 50 L 90 55 L 130 28 L 165 34 L 204 10 M 204 10 L 190 12 M 204 10 L 200 23"/><path class="art-draw" d="M 10 58 L 50 50 L 90 55 L 130 28 L 165 34 L 204 10 M 204 10 L 190 12 M 204 10 L 200 23" pathLength="100" style="animation-delay:-2.8s"/></svg></div>
+        <h3>Strategy and execution</h3>
+        <p>The most underused part, and the most valuable. Ours turned 3,447 sales calls into a customer insights engine, models acquisition cost by customer type, and ships the landing pages and dashboards that act on it. Same day, not next sprint.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════ 8. PROOF ═══════════════ -->
 <section class="proof dark-sec" id="proof">
   <div class="aurora">
@@ -1587,7 +1665,7 @@
   <div class="container">
     <p class="eyebrow reveal">Recent placements</p>
     <h2 class="reveal">Meet a few of our placements</h2>
-    <p class="lead reveal">We do not install software. We place a new team member. Gary runs with the marketing team at AFS Group. Winston keeps Snowark itself running. Atlas works for Not Forgotten Systems. A few of their colleagues prefer to keep their engagements confidential.</p>
+    <p class="lead reveal">We don’t install software. We place a new team member. Gary runs with the marketing team at AFS Group. Winston keeps Snowark itself running. Atlas works for Not Forgotten Systems. A few of their colleagues prefer to keep their engagements confidential.</p>
 
     <div class="orb-stage" aria-label="Agents placed with businesses, orbiting the Snowark platform">
       <div class="orb" aria-hidden="true"></div>
@@ -1618,12 +1696,12 @@
         <p>Replaced a paid sync subscription with an integration he built himself. He also maintains it.</p>
       </article>
       <article class="fan-card">
-        <header><img src="assets/profile/winston-avatar.jpg" alt=""><div><strong>Winston</strong><span>Snowark</span></div></header>
-        <p>Ran the deployment checks on this website. Yes, the one you are reading.</p>
+        <header><img src="assets/profile/gary-avatar.jpg" alt=""><div><strong>Gary</strong><span>The AFS Group</span></div></header>
+        <p>Tagged in an Asana comment about a campaign. Designed the on-brand email in HubSpot, built the audience segment, and staged both for approval.</p>
       </article>
       <article class="fan-card">
-        <header><img src="assets/profile/gary-avatar.jpg" alt=""><div><strong>Gary</strong><span>The AFS Group</span></div></header>
-        <p>Watched two products for the boss's wife, caught the 30% price drop at 9am, and messaged her before they sold out.</p>
+        <header><img src="assets/profile/winston-avatar.jpg" alt=""><div><strong>Winston</strong><span>Snowark</span></div></header>
+        <p>Ran the deployment checks on this website. Yes, the one you are reading.</p>
       </article>
       <article class="fan-card">
         <header><span class="sil"><svg viewBox="0 0 42 42"><circle cx="21" cy="15" r="8" fill="rgba(20,30,30,0.3)"/><path d="M5 42 a16 13 0 0 1 32 0" fill="rgba(20,30,30,0.3)"/></svg></span><div><strong>Classified</strong><span>Under NDA</span></div></header>
@@ -1639,12 +1717,119 @@
   </div>
 </section>
 
+<!-- ═══ 8B. FIT ═══ -->
+<section id="fit">
+  <div class="container">
+    <p class="eyebrow reveal">Are we a fit?</p>
+    <h2 class="reveal">We’d rather say no early than waste your time.</h2>
+    <div class="fit-cols">
+      <div class="fit-col glass spot fit-yes reveal">
+        <h3>We’ll get on well if</h3>
+        <ul>
+          <li class="reveal">You’ve got more opportunities than hours, whether that’s an established business drowning in its own operations or an earlier-stage one you want to build AI-first from day one</li>
+          <li class="reveal">You already live in tools like Shopify, Xero, HubSpot or Asana, or you’re ready to adopt them</li>
+          <li class="reveal">You want to stay in the loop: reviewing, approving, redirecting</li>
+          <li class="reveal">You’re building leverage, not just delegating tasks</li>
+          <li class="reveal">You’re comfortable letting a system earn trust gradually</li>
+        </ul>
+      </div>
+      <div class="fit-col glass spot fit-no reveal">
+        <h3>Probably not for you if</h3>
+        <ul>
+          <li class="reveal">You want a set-and-forget magic button</li>
+          <li class="reveal">You need enterprise procurement, security questionnaires and a vendor team. We’re deliberately small</li>
+          <li class="reveal">You’re shopping for the cheapest possible chatbot</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 8C. FAQ ═══ -->
+<section id="faq" class="warm">
+  <div class="container">
+    <p class="eyebrow reveal">Fair questions</p>
+    <h2 class="reveal">The things people actually ask.</h2>
+    <div class="faq-list reveal">
+      <details>
+        <summary>Is this just ChatGPT with extra steps?</summary>
+        <div class="faq-body">
+        <p>No. A chatbot waits for you to type. Your agent has persistent memory, connects to your actual tools, and works to a schedule whether you’re at your desk or not. The difference shows up at 6am, when the morning report is already written.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Is Snowark really one person?</summary>
+        <div class="faq-body">
+        <p>One operator, plus his agents, and that’s the point. You get the person who built the infrastructure, on every engagement. The heavy lifting runs overnight because my own agents do it. And everything built for you is documented and owned by you, so nothing depends on me being awake.</p>
+        </div>
+      </details>
+      <details>
+        <summary>What happens to my data?</summary>
+        <div class="faq-body">
+        <p>It stays in your systems. The agent connects to your platforms under credentials you control and can revoke at any time. Nothing is pooled, resold, or used to train anything.</p>
+        </div>
+      </details>
+      <details>
+        <summary>What if the agent makes a mistake?</summary>
+        <div class="faq-body">
+        <p>It will, occasionally, which is why nothing external leaves without sign-off. Agents draft, humans approve. Trust is widened gradually, task by task, exactly as you’d do with a new hire.</p>
+        </div>
+      </details>
+      <details>
+        <summary>How long before it’s actually useful?</summary>
+        <div class="faq-body">
+        <p>Deployed in days, useful in the first week, and compounding from there. The agent gets more valuable as its context builds. Month three beats month one comfortably.</p>
+        </div>
+      </details>
+      <details>
+        <summary>What if we stop working together?</summary>
+        <div class="faq-body">
+        <p>You keep everything. Your agent, your infrastructure, your integrations, your documentation. We run it while you need us. You own it forever.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Do I need technical staff?</summary>
+        <div class="faq-body">
+        <p>No. If your team can use the tools they already use, they can work with the agent. We handle the plumbing.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Can I talk to the agent myself?</summary>
+        <div class="faq-body">
+        <p>Yes, and you should. It’s not a black box we operate behind a curtain. It’s a colleague you message, question, and redirect. Most clients are surprised how quickly that becomes normal.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 8D. A NOTE FROM JOSH ═══ -->
+<section id="note">
+  <div class="container">
+    <p class="eyebrow reveal">A note from Josh</p>
+    <div class="letter-wrap glass reveal">
+      <div class="card-glow"></div>
+      <p class="letter-tag">Read this if nothing else</p>
+      <p>You’ve scrolled a fair way to get here, so let me save you the guesswork about who you’d actually be dealing with.</p>
+      <p>I’m Josh. Until recently I was CMO across a portfolio of eight-figure brands, with a $6.2M budget and never enough hours. Six months ago I built an AI agent to engineer those hours back.</p>
+      <p>It worked, and not just on the admin. The agent turned 3,447 sales calls into a customer insights engine that shaped strategy. It replaced paid software with integrations it built and still maintains. It shipped landing pages the same day they were requested, briefed me before meetings, and chased quotes while I was in them. Time back, costs down, growth moving. My nights came back as a side effect.</p>
+      <p>In fact, it worked well enough that I left the day job. Snowark is now what I do full time: placing that same infrastructure into other businesses. Not a team of account managers. Not a chatbot subscription. Me, working out where the leverage is in your business, and an agent configured to go after it, deployed in days and run month to month.</p>
+      <p>I keep the client list deliberately short. Fewer placements, more attention.</p>
+      <p>If your business is running you, I’d like to hear about it. The form below takes a minute, and a real reply lands within 24 hours. Winston will have read it in seconds. He’s the one who deployed this page.</p>
+      <div class="letter-sig">
+        <img src="josh.jpg" alt="Josh Hancock">
+        <div><span class="name">Josh Hancock</span><span class="role">Founder, Snowark</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════ 9. CONTACT ═══════════════ -->
 <section id="contact">
   <div class="container contact-head">
     <p class="eyebrow reveal">Next step</p>
     <h2 class="reveal">No pitch deck. Just a conversation about your business.</h2>
-    <p class="lead reveal">Tell us where the friction is. We will tell you whether this makes sense. No commitment, no hard sell.</p>
+    <p class="lead reveal">Tell us where the friction is. We’ll tell you whether this makes sense. No commitment, no hard sell. Worst case, you leave with a clearer picture of where your hours go.</p>
 
     <form class="contact-wrap glass reveal" id="contact-form">
       <div class="form-group">
@@ -1661,16 +1846,16 @@
       </div>
       <div class="form-group">
         <label for="message">Where is the friction?</label>
-        <textarea id="message" name="message" placeholder="Tell us about your business and what is holding it back."></textarea>
+        <textarea id="message" name="message" placeholder="Tell us about your business and what’s holding it back."></textarea>
       </div>
       <div class="form-submit">
-        <button type="submit" class="btn btn-primary" id="submit-btn">Send</button>
+        <button type="submit" class="btn btn-primary" id="submit-btn">Send it through</button>
       </div>
       <div class="form-success" id="form-success">
-        <p>Thanks. We will be in touch within 24 hours.</p>
+        <p>Thanks. A real reply within 24 hours. An agent will have read it within seconds.</p>
       </div>
       <div class="form-error" id="form-error">
-        <p>Something went wrong. Please try again or email <a href="mailto:josh@snowark.com.au">josh@snowark.com.au</a>.</p>
+        <p>Something went wrong, which is mildly embarrassing for an AI company. Email <a href="mailto:josh@snowark.com.au">josh@snowark.com.au</a> and a human will sort it.</p>
       </div>
     </form>
   </div>
@@ -1960,14 +2145,14 @@
 
       /* Line-art motifs matched to each card's story:
          voice waveform, page wireframe, envelope, linked systems,
-         deployment check, price-drop chart, redaction bars */
+         sent campaign email, deployment check, redaction bars */
       var ARTS = [
         'M 6 35 L 30 35 L 38 18 L 48 52 L 58 10 L 68 60 L 78 24 L 88 46 L 98 35 L 126 35 L 134 26 L 142 44 L 150 35 L 214 35',
         'M 32 8 H 188 V 62 H 32 Z M 32 21 H 188 M 44 34 H 132 M 44 46 H 162',
         'M 56 15 H 164 V 55 H 56 Z M 56 17 L 110 43 L 164 17',
         'M 40 35 A 14 14 0 1 0 68 35 A 14 14 0 1 0 40 35 M 68 35 H 152 M 152 35 A 14 14 0 1 0 180 35 A 14 14 0 1 0 152 35',
+        'M 66 16 H 176 V 54 H 66 Z M 66 18 L 121 42 L 176 18 M 36 24 H 54 M 28 35 H 54 M 36 46 H 54',
         'M 110 8 A 27 27 0 1 0 110 62 A 27 27 0 1 0 110 8 M 96 36 L 107 47 L 126 24',
-        'M 8 16 L 58 24 L 96 20 L 134 46 L 160 42 L 178 58 M 178 58 L 167 50 M 178 58 L 182 45',
         'M 20 22 H 118 M 134 22 H 200 M 20 38 H 80 M 96 38 H 200 M 20 54 H 158'
       ];
       order.forEach(function(card, i) {
@@ -2069,15 +2254,50 @@
           form.querySelectorAll('.form-group, .form-submit').forEach(function(el) { el.style.display = 'none'; });
           success.style.display = 'block';
         } else {
-          btn.textContent = 'Send';
+          btn.textContent = 'Send it through';
           btn.disabled = false;
           error.style.display = 'block';
         }
       })
       .catch(function() {
-        btn.textContent = 'Send';
+        btn.textContent = 'Send it through';
         btn.disabled = false;
         error.style.display = 'block';
+      });
+    });
+  })();
+
+  /* Cursor spotlight on interactive cards */
+  document.querySelectorAll('.spot').forEach(function(el) {
+    el.addEventListener('mousemove', function(e) {
+      var r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+
+  /* FAQ: GSAP-smoothed accordion, one open at a time */
+  (function() {
+    var list = document.querySelector('.faq-list');
+    if (!list || !motionOK) return;
+    var items = Array.prototype.slice.call(list.querySelectorAll('details'));
+    function close(d) {
+      var body = d.querySelector('.faq-body');
+      d.classList.remove('is-open');
+      gsap.to(body, { height: 0, opacity: 0, duration: 0.32, ease: 'power2.inOut',
+        onComplete: function() { d.open = false; gsap.set(body, { clearProps: 'all' }); } });
+    }
+    items.forEach(function(d) {
+      d.querySelector('summary').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (d.open) { close(d); return; }
+        items.forEach(function(o) { if (o !== d && o.open) close(o); });
+        d.open = true;
+        d.classList.add('is-open');
+        var body = d.querySelector('.faq-body');
+        gsap.fromTo(body, { height: 0, opacity: 0 },
+          { height: 'auto', opacity: 1, duration: 0.42, ease: 'power2.out',
+            onComplete: function() { gsap.set(body, { clearProps: 'height' }); } });
       });
     });
   })();
