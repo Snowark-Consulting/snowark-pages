@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build Your Agent | Snowark</title>
+<link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+/* ── Snowark Design System v1.0 ── */
+:root {
+  --ink: #0b2021;
+  --ink-2: #0e2628;
+  --teal: #174445;
+  --teal-hover: #123636;
+  --teal-glow: rgba(23,68,69,0.12);
+  --teal-lift: #2a7f80;
+  --teal-soft: #7fb8b9;
+  --green: #0d8f64;
+  --green-soft: rgba(13,143,100,0.08);
+  --green-lift: #4cc296;
+  --mist: #e9e7e3;
+  --white: #ffffff;
+  --page-bg: #faf9f7;
+  --text-body: rgba(20,30,30,0.82);
+  --text-muted: rgba(20,30,30,0.55);
+  --text-heading: #0e2929;
+  --border-hairline: rgba(0,0,0,0.08);
+  --border-input: rgba(0,0,0,0.12);
+  --font-display: 'Cambo', Georgia, 'Times New Roman', serif;
+  --font-body: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --radius: 12px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.05);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-family:var(--font-body);font-size:16px;line-height:1.7;color:var(--text-body);background:var(--page-bg);scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+
+/* ── Hero network background ── */
+.hero-net{position:fixed;inset:0;z-index:0;pointer-events:none;width:100%;height:100%}
+.hero-net .net-line{stroke:rgba(23,68,69,0.05)}
+.hero-net .net-path{stroke:rgba(13,143,100,0.07);fill:none}
+.hero-net .net-node{fill:rgba(23,68,69,0.12)}
+.hero-net .net-node-accent{fill:rgba(13,143,100,0.18)}
+.hero-net .net-pulse{fill:rgba(13,143,100,0.35)}
+
+/* Loading overlay */
+#loading-overlay{position:fixed;inset:0;z-index:999;background:var(--page-bg);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity 0.8s ease}
+#loading-overlay.hidden{opacity:0;pointer-events:none}
+#loading-overlay img{display:block;margin:0 auto 24px;animation:logoRotate 4s ease-in-out infinite}
+@keyframes logoRotate{0%{transform:rotate(0deg) scale(1);filter:brightness(1) drop-shadow(0 0 0 transparent)}50%{transform:rotate(180deg) scale(1.05);filter:brightness(1.15) drop-shadow(0 0 12px rgba(23,68,69,.25))}100%{transform:rotate(360deg) scale(1);filter:brightness(1) drop-shadow(0 0 0 transparent)}}
+.loading-tag{font-family:var(--font-body);font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-muted);opacity:0}
+.loading-dot{width:4px;height:4px;border-radius:50%;background:var(--teal);margin-top:32px;animation:pulse 1.2s ease-in-out infinite;opacity:0}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:0.6}50%{transform:scale(2.5);opacity:0}}
+
+body{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:0 24px}
+
+h1{font-family:var(--font-display);font-size:clamp(2rem,5vw,2.8rem);line-height:1.12;margin-bottom:16px;font-weight:400;color:var(--text-heading)}
+h2{font-family:var(--font-display);font-size:1.75rem;line-height:1.2;margin-bottom:12px;font-weight:400;color:var(--text-heading)}
+h3{font-family:var(--font-body);font-size:1rem;font-weight:700;margin-bottom:8px;color:var(--text-heading)}
+p{color:var(--text-body);margin-bottom:16px;font-size:1rem}
+
+/* Eyebrow: matches design system */
+.kicker{font-family:var(--font-body);font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--teal);margin-bottom:12px}
+
+/* Progress */
+.progress-wrap{position:sticky;top:0;z-index:100;padding:12px 0 10px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:rgba(250,249,247,0.75);margin-bottom:0;border-bottom:1px solid transparent}
+.progress-wrap.scrolled{border-bottom-color:var(--border-hairline)}
+.progress-wrap img{height:18px;opacity:0.7;display:block;margin-bottom:8px}
+.progress-bar{height:2px;background:var(--border-hairline);border-radius:1px;overflow:hidden}
+.progress-fill{height:100%;background:var(--teal);width:0%;transition:width 0.5s ease;border-radius:1px}
+.progress-text{font-size:0.72rem;color:var(--text-muted);margin-top:6px}
+
+/* Hero */
+.hero{text-align:center;padding:80px 0 64px}
+.hero-tag{display:inline-block;font-family:var(--font-body);font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.16em;color:var(--green);border:1px solid var(--green);padding:6px 16px;border-radius:100px;margin-bottom:24px}
+.hero h1{margin-bottom:20px}
+.hero p{font-size:1.05rem;max-width:440px;margin:0 auto}
+.hero-line{width:40px;height:2px;background:var(--teal);margin:32px auto 0}
+
+/* Section cards */
+.section{background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--border-hairline);border-radius:var(--radius);padding:40px;margin-bottom:24px;box-shadow:var(--shadow-card);opacity:0;transform:translateY(30px)}
+.section.visible{opacity:1;transform:translateY(0);transition:opacity 0.7s ease,transform 0.7s ease}
+.section-header{display:flex;align-items:baseline;gap:12px;margin-bottom:20px}
+.section-num{font-family:var(--font-display);font-size:2rem;color:var(--teal);line-height:1;min-width:36px}
+.section h2{margin-bottom:0}
+.section-intro{font-size:0.95rem;color:var(--text-body);margin-bottom:24px}
+
+/* Form */
+.field{margin-bottom:24px}
+.field:last-child{margin-bottom:0}
+label{display:block;font-size:0.85rem;font-weight:600;color:var(--text-heading);margin-bottom:6px}
+.hint{font-size:0.8rem;color:var(--text-muted);margin-bottom:8px;font-style:italic}
+input,textarea{width:100%;padding:14px 16px;font-family:var(--font-body);font-size:1rem;border:1px solid var(--border-input);border-radius:8px;color:var(--text-heading);background:rgba(255,255,255,0.9);transition:border-color 0.2s,box-shadow 0.2s;outline:none;-webkit-appearance:none}
+input:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-glow);background:#fff}
+textarea{resize:vertical;min-height:80px}
+
+/* Radio group */
+.radio-group{display:flex;flex-wrap:wrap;gap:8px}
+.radio-option{flex:1;min-width:100px}
+.radio-option input{display:none}
+.radio-option label{display:block;text-align:center;padding:12px 8px;background:var(--page-bg);border:1px solid var(--border-hairline);border-radius:8px;cursor:pointer;font-size:0.85rem;font-weight:400;color:var(--text-body);transition:all 0.2s;margin:0}
+.radio-option input:checked+label{background:var(--green-soft);border-color:var(--green);color:var(--green);font-weight:600}
+
+/* Personality cards */
+.personality-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.personality-card{position:relative;background:var(--page-bg);border:2px solid var(--border-hairline);border-radius:var(--radius);padding:24px;cursor:pointer;transition:all 0.25s ease;text-align:left}
+.personality-card:hover{border-color:var(--teal)}
+.personality-card.selected{border-color:var(--teal);background:rgba(23,68,69,0.04);box-shadow:0 0 0 3px var(--teal-glow)}
+.personality-card input{display:none}
+.personality-card .pc-name{font-family:var(--font-display);font-size:1.15rem;color:var(--teal);margin-bottom:4px}
+.personality-card .pc-tagline{font-size:0.82rem;color:var(--text-body);line-height:1.45}
+.personality-card .pc-check{position:absolute;top:12px;right:12px;width:20px;height:20px;border-radius:50%;border:2px solid var(--border-hairline);display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:transparent;transition:all 0.2s}
+.personality-card.selected .pc-check{background:var(--teal);border-color:var(--teal);color:var(--white)}
+
+/* Multi-select chips */
+.chip-group{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input{display:none}
+.chip label{display:inline-block;padding:10px 18px;background:var(--page-bg);border:1px solid var(--border-hairline);border-radius:100px;cursor:pointer;font-size:0.85rem;font-weight:400;color:var(--text-body);transition:all 0.2s;margin:0}
+.chip input:checked+label{background:var(--green-soft);border-color:var(--green);color:var(--green);font-weight:600}
+
+/* Spacer before submit */
+.submit-section{text-align:center;padding:16px 0 100px}
+.submit-section .btn{font-size:1rem;padding:18px 56px}
+
+/* Button */
+.btn{display:inline-block;font-family:var(--font-body);font-weight:600;font-size:0.95rem;padding:14px 32px;border-radius:8px;cursor:pointer;border:0;transition:all 0.2s;text-decoration:none}
+.btn-primary{background:var(--teal);color:var(--white)}
+.btn-primary:hover{background:var(--teal-hover);transform:translateY(-1px);box-shadow:0 4px 16px rgba(23,68,69,0.25)}
+.btn-primary:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+
+/* Success */
+.success{display:none;text-align:center;padding:120px 0;position:relative;overflow:hidden}
+.success-content{position:relative;z-index:1}
+.success-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(13,143,100,0.12) 0%,transparent 70%);pointer-events:none}
+.success-icon{width:72px;height:72px;border-radius:50%;background:rgba(13,143,100,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;animation:successPopIn 0.6s cubic-bezier(0.16,1,0.3,1) forwards}
+@keyframes successPopIn{0%{transform:scale(0);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.success .kicker{margin-bottom:8px}
+.success h2{font-size:2rem;margin-bottom:12px}
+.success h2 span{color:var(--teal)}
+.success p{font-size:1rem;max-width:440px;margin:0 auto}
+.success-line{width:40px;height:2px;background:var(--teal);margin:28px auto}
+.success-note{font-size:0.9rem!important;color:var(--text-muted)!important;max-width:480px!important}
+
+/* Error */
+.error-msg{display:none;background:rgba(248,227,222,0.9);backdrop-filter:blur(4px);border:1px solid #c23b22;color:#a91a0a;padding:14px 18px;border-radius:8px;font-size:0.9rem;margin-bottom:20px}
+
+.fog{position:fixed;bottom:0;left:0;right:0;height:200px;background:linear-gradient(transparent,var(--page-bg));z-index:2;pointer-events:none}
+.foot{text-align:center;padding:40px 0;color:var(--text-muted);font-size:0.75rem;border-top:1px solid var(--border-hairline)}
+.foot span{color:var(--teal)}
+
+@media(prefers-reduced-motion){.hero-net{display:none}.section{opacity:1;transform:none}}
+@media(max-width:700px){
+  body{padding:0 16px}
+  .hero{padding:60px 0 48px}
+  .hero h1{font-size:clamp(1.6rem,6vw,2rem)}
+  .hero p{font-size:0.95rem}
+  .section{padding:24px}
+  .personality-grid{grid-template-columns:1fr}
+}
+</style>
+<!-- Microsoft Clarity -->
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "xg3xx2k35l");
+</script>
+</head>
+<body>
+
+<svg class="hero-net" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <g class="net-line" stroke-width="1">
+    <line x1="0" y1="160" x2="1440" y2="120"/>
+    <line x1="0" y1="420" x2="1440" y2="480"/>
+    <line x1="0" y1="720" x2="1440" y2="680"/>
+    <line x1="180" y1="0" x2="260" y2="900"/>
+    <line x1="620" y1="0" x2="560" y2="900"/>
+    <line x1="1180" y1="0" x2="1100" y2="900"/>
+  </g>
+  <g class="net-path" stroke-width="1.2">
+    <path d="M 180 150 C 420 60, 680 220, 1100 140"/>
+    <path d="M 260 640 C 560 720, 820 500, 1100 560"/>
+    <path d="M 120 380 C 340 460, 600 340, 900 400"/>
+  </g>
+  <g class="net-node">
+    <circle cx="180" cy="150" r="2.8"/>
+    <circle cx="1100" cy="140" r="2.8"/>
+    <circle cx="260" cy="640" r="2.8"/>
+    <circle cx="1100" cy="560" r="2.8"/>
+    <circle cx="900" cy="400" r="2.4"/>
+    <circle cx="420" cy="260" r="2.4"/>
+    <circle cx="720" cy="520" r="2.4"/>
+    <circle cx="140" cy="500" r="2"/>
+    <circle cx="1280" cy="340" r="2.4"/>
+  </g>
+  <g class="net-node-accent">
+    <circle cx="180" cy="150" r="3.6">
+      <animate attributeName="opacity" values="1;0.2;1" dur="3.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1100" cy="560" r="3.6">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="4.4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="560" cy="100" r="3.6">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="3.2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  <g>
+    <circle r="3" class="net-pulse">
+      <animateMotion dur="7s" repeatCount="indefinite" path="M 180 150 C 420 60, 680 220, 1100 140"/>
+      <animate attributeName="opacity" values="0;1;1;0" dur="7s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="3" class="net-pulse">
+      <animateMotion dur="8.5s" repeatCount="indefinite" path="M 260 640 C 560 720, 820 500, 1100 560"/>
+      <animate attributeName="opacity" values="0;1;1;0" dur="8.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="2.4" class="net-pulse">
+      <animateMotion dur="6.5s" repeatCount="indefinite" path="M 120 380 C 340 460, 600 340, 900 400"/>
+      <animate attributeName="opacity" values="0;1;1;0" dur="6.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>
+
+<div id="loading-overlay">
+  <img src="https://snowark.com.au/assets/logos/Snowark-Icon.png" alt="Snowark" style="width:48px;height:48px;margin-bottom:24px;opacity:0" id="loadingIcon">
+  <div class="loading-tag" id="loadingTag">Preparing your experience</div>
+  <div class="loading-dot" id="loadingDot"></div>
+</div>
+
+<div class="progress-wrap" id="progressWrap">
+  <img src="https://snowark.com.au/assets/logos/SnowArk-Type-Primary.png" alt="Snowark" style="height:18px;opacity:0.7;display:block;margin-bottom:8px;">
+  <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
+  <div class="progress-text" id="progressText">Getting started</div>
+</div>
+
+<section class="hero">
+  <div class="hero-tag">BUILD YOUR AGENT</div>
+  <h1>Let's build the AI that<br>runs your business.</h1>
+  <p>Eleven questions. Ten minutes. Answer these and you're one step away from a calm, capable agent that knows your business, handles the busywork, and never sleeps.</p>
+  <div class="hero-line"></div>
+</section>
+
+<form id="onboardingForm">
+
+<!-- 1: Business -->
+<div class="section" data-section="1">
+  <div class="section-header"><span class="section-num">1</span><h2>Your Business</h2></div>
+  <p class="section-intro">We need to understand what you do so your agent can talk about it intelligently.</p>
+  <div class="field">
+    <label for="client_name">Your name</label>
+    <input type="text" id="client_name" name="client_name" required>
+  </div>
+  <div class="field">
+    <label for="business_description">What does your business do? Describe it as you would to a mate.</label>
+    <textarea id="business_description" name="business_description" required></textarea>
+  </div>
+  <div class="field">
+    <label for="customers">Who are your customers?</label>
+    <input type="text" id="customers" name="customers">
+  </div>
+  <div class="field">
+    <label for="biggest_time_eater">What's the one thing eating your time that you most want off your plate?</label>
+    <textarea id="biggest_time_eater" name="biggest_time_eater"></textarea>
+  </div>
+</div>
+
+<!-- 2: Name -->
+<div class="section" data-section="2">
+  <div class="section-header"><span class="section-num">2</span><h2>Name Your Agent</h2></div>
+  <p class="section-intro">Every great agent has a name. It gives it an identity: something you can trust and delegate to.</p>
+  <div class="field">
+    <label for="agent_name">What will yours be called?</label>
+    <input type="text" id="agent_name" name="agent_name" placeholder="e.g. Winston, Atlas, Mercury" required>
+  </div>
+</div>
+
+<!-- 3: Mission -->
+<div class="section" data-section="3">
+  <div class="section-header"><span class="section-num">3</span><h2>Its Mission</h2></div>
+  <p class="section-intro">One sentence that captures what it's here to do. This becomes its north star.</p>
+  <div class="field">
+    <label for="agent_mission">Finish this sentence: "Your job is to..."</label>
+    <textarea id="agent_mission" name="agent_mission" placeholder="e.g. keep my pipeline full and my evenings free" required></textarea>
+  </div>
+</div>
+
+<!-- 4: Personality Type -->
+<div class="section" data-section="4">
+  <div class="section-header"><span class="section-num">4</span><h2>Choose Its Personality</h2></div>
+  <p class="section-intro">Every agent has a character. Pick the one that feels right; you can fine-tune it next.</p>
+  <div class="personality-grid" id="personalityGrid">
+    <label class="personality-card" data-value="The Butler">
+      <input type="radio" name="personality_type" value="The Butler">
+      <div class="pc-name">The Butler</div>
+      <div class="pc-tagline">Refined, understated, hyper-competent. Anticipates needs before you voice them.</div>
+      <div class="pc-check">&#10003;</div>
+    </label>
+    <label class="personality-card" data-value="The Analyst">
+      <input type="radio" name="personality_type" value="The Analyst">
+      <div class="pc-name">The Analyst</div>
+      <div class="pc-tagline">Precise, data-driven, thorough. Every answer backed by evidence.</div>
+      <div class="pc-check">&#10003;</div>
+    </label>
+    <label class="personality-card" data-value="The Partner">
+      <input type="radio" name="personality_type" value="The Partner">
+      <div class="pc-name">The Partner</div>
+      <div class="pc-tagline">Warm, collaborative, invested. Like a co-founder who actually replies.</div>
+      <div class="pc-check">&#10003;</div>
+    </label>
+    <label class="personality-card" data-value="The Guardian">
+      <input type="radio" name="personality_type" value="The Guardian">
+      <div class="pc-name">The Guardian</div>
+      <div class="pc-tagline">Protective, vigilant, no-nonsense. Nothing slips through the cracks.</div>
+      <div class="pc-check">&#10003;</div>
+    </label>
+    <label class="personality-card" data-value="Custom" style="grid-column:1/-1">
+      <input type="radio" name="personality_type" value="Custom">
+      <div class="pc-name">Something else entirely</div>
+      <div class="pc-tagline">Describe the vibe and we'll build it from scratch.</div>
+      <div class="pc-check">&#10003;</div>
+    </label>
+  </div>
+  <div class="field" id="customPersonalityField" style="display:none;margin-top:16px">
+    <label for="custom_personality">Describe the personality you want</label>
+    <textarea id="custom_personality" name="custom_personality" placeholder="e.g. Like a wise old mechanic who's seen it all, or a sharp-eyed proofreader who misses nothing..."></textarea>
+  </div>
+</div>
+
+<!-- 5: Voice Fine-Tuning -->
+<div class="section" data-section="5">
+  <div class="section-header"><span class="section-num">5</span><h2>Fine-Tune Its Voice</h2></div>
+  <p class="section-intro">Dial in the details. Your agent's personality sets the direction; this locks in the specifics.</p>
+  <div class="field">
+    <label>Formality</label>
+    <div class="radio-group">
+      <div class="radio-option"><input type="radio" name="formality" value="Suit and tie" id="f1"><label for="f1">Suit &amp; tie</label></div>
+      <div class="radio-option"><input type="radio" name="formality" value="Smart casual" id="f2"><label for="f2">Smart casual</label></div>
+      <div class="radio-option"><input type="radio" name="formality" value="Relaxed and direct" id="f3"><label for="f3">Relaxed</label></div>
+    </div>
+  </div>
+  <div class="field">
+    <label>Response length</label>
+    <div class="radio-group">
+      <div class="radio-option"><input type="radio" name="response_length" value="Short and sharp" id="r1"><label for="r1">Short &amp; sharp</label></div>
+      <div class="radio-option"><input type="radio" name="response_length" value="Detailed and thorough" id="r2"><label for="r2">Detailed</label></div>
+    </div>
+  </div>
+  <div class="field">
+    <label>Warmth</label>
+    <div class="radio-group">
+      <div class="radio-option"><input type="radio" name="warmth" value="All business" id="w1"><label for="w1">All business</label></div>
+      <div class="radio-option"><input type="radio" name="warmth" value="Friendly" id="w2"><label for="w2">Friendly</label></div>
+      <div class="radio-option"><input type="radio" name="warmth" value="Full of personality" id="w3"><label for="w3">Personality</label></div>
+    </div>
+  </div>
+  <div class="field">
+    <label>Spelling preference</label>
+    <div class="radio-group">
+      <div class="radio-option"><input type="radio" name="spelling" value="British/Australian" id="s1"><label for="s1">British / Aus</label></div>
+      <div class="radio-option"><input type="radio" name="spelling" value="American" id="s2"><label for="s2">American</label></div>
+    </div>
+  </div>
+  <div class="field">
+    <label for="loved_phrases">Words or phrases you love and want it to use?</label>
+    <textarea id="loved_phrases" name="loved_phrases"></textarea>
+  </div>
+  <div class="field">
+    <label for="banned_phrases">Words that would make you cringe if a customer read them? We'll ban these.</label>
+    <textarea id="banned_phrases" name="banned_phrases"></textarea>
+  </div>
+</div>
+
+<!-- 6: Signoff -->
+<div class="section" data-section="6">
+  <div class="section-header"><span class="section-num">6</span><h2>Signing Off</h2></div>
+  <p class="section-intro">How your agent introduces itself. This appears in every message.</p>
+  <div class="field">
+    <label for="signoff">How should your agent sign its messages?</label>
+    <input type="text" id="signoff" name="signoff" placeholder='e.g. "Winston (Josh&apos;s assistant)"'>
+  </div>
+</div>
+
+<!-- 7: Tech Stack -->
+<div class="section" data-section="7">
+  <div class="section-header"><span class="section-num">7</span><h2>Your Tech Stack</h2></div>
+  <p class="section-intro">What tools do you use to run the business? Knowing this helps us connect your agent to the right places.</p>
+  <div class="field">
+    <label>Email provider</label>
+    <div class="chip-group">
+      <div class="chip"><input type="checkbox" name="stack_email" value="Google Workspace" id="se1"><label for="se1">Google Workspace</label></div>
+      <div class="chip"><input type="checkbox" name="stack_email" value="Microsoft 365" id="se2"><label for="se2">Microsoft 365</label></div>
+      <div class="chip"><input type="checkbox" name="stack_email" value="Other" id="se3"><label for="se3">Other</label></div>
+    </div>
+  </div>
+  <div class="field">
+    <label>Website platform</label>
+    <div class="chip-group">
+      <div class="chip"><input type="checkbox" name="stack_website" value="Shopify" id="sw1"><label for="sw1">Shopify</label></div>
+      <div class="chip"><input type="checkbox" name="stack_website" value="WordPress" id="sw2"><label for="sw2">WordPress</label></div>
+      <div class="chip"><input type="checkbox" name="stack_website" value="Squarespace" id="sw3"><label for="sw3">Squarespace</label></div>
+      <div class="chip"><input type="checkbox" name="stack_website" value="Custom" id="sw4"><label for="sw4">Custom</label></div>
+      <div class="chip"><input type="checkbox" name="stack_website" value="Other" id="sw5"><label for="sw5">Other</label></div>
+    </div>
+  </div>
+  <div class="field">
+    <label>Project management / CRM</label>
+    <div class="chip-group">
+      <div class="chip"><input type="checkbox" name="stack_pm" value="Asana" id="sp1"><label for="sp1">Asana</label></div>
+      <div class="chip"><input type="checkbox" name="stack_pm" value="Trello" id="sp2"><label for="sp2">Trello</label></div>
+      <div class="chip"><input type="checkbox" name="stack_pm" value="Notion" id="sp3"><label for="sp3">Notion</label></div>
+      <div class="chip"><input type="checkbox" name="stack_pm" value="Monday.com" id="sp4"><label for="sp4">Monday</label></div>
+      <div class="chip"><input type="checkbox" name="stack_pm" value="HubSpot" id="sp5"><label for="sp5">HubSpot</label></div>
+      <div class="chip"><input type="checkbox" name="stack_pm" value="Salesforce" id="sp6"><label for="sp6">Salesforce</label></div>
+      <div class="chip"><input type="checkbox" name="stack_pm" value="Other" id="sp7"><label for="sp7">Other</label></div>
+    </div>
+  </div>
+  <div class="field">
+    <label>Accounting</label>
+    <div class="chip-group">
+      <div class="chip"><input type="checkbox" name="stack_accounting" value="Xero" id="sa1"><label for="sa1">Xero</label></div>
+      <div class="chip"><input type="checkbox" name="stack_accounting" value="MYOB" id="sa2"><label for="sa2">MYOB</label></div>
+      <div class="chip"><input type="checkbox" name="stack_accounting" value="QuickBooks" id="sa3"><label for="sa3">QuickBooks</label></div>
+      <div class="chip"><input type="checkbox" name="stack_accounting" value="Other" id="sa4"><label for="sa4">Other</label></div>
+    </div>
+  </div>
+  <div class="field">
+    <label for="stack_notes">Anything else we should know about your tools or systems?</label>
+    <textarea id="stack_notes" name="stack_notes" placeholder="e.g. We use Stripe for payments, Calendly for bookings..."></textarea>
+  </div>
+</div>
+
+<!-- 8: Hard Nos (NEW) -->
+<div class="section" data-section="8">
+  <div class="section-header"><span class="section-num">8</span><h2>Hard Nos</h2></div>
+  <p class="section-intro">Three things your agent must never do or say. These are red lines. Non-negotiable.</p>
+  <div class="field">
+    <label for="hard_no_1">Hard no #1</label>
+    <textarea id="hard_no_1" name="hard_no_1" placeholder="e.g. Never mention competitor X by name. Never claim metrics I haven't shared. Never use the word 'disrupt'."></textarea>
+  </div>
+  <div class="field">
+    <label for="hard_no_2">Hard no #2</label>
+    <textarea id="hard_no_2" name="hard_no_2" placeholder="e.g. Never email clients without my review first."></textarea>
+  </div>
+  <div class="field">
+    <label for="hard_no_3">Hard no #3</label>
+    <textarea id="hard_no_3" name="hard_no_3" placeholder="e.g. Never make pricing promises or negotiate on my behalf."></textarea>
+  </div>
+</div>
+
+<!-- 9: Visual Brand -->
+<div class="section" data-section="9">
+  <div class="section-header"><span class="section-num">9</span><h2>Visual Brand</h2></div>
+  <p class="section-intro">Your agent can produce designs, pages, and decks in your brand. Share what you have; skip anything you don't.</p>
+  <div class="field">
+    <label for="brand_colors">Brand colours (hex codes or describe them)</label>
+    <textarea id="brand_colors" name="brand_colors" placeholder='e.g. "#174445 dark teal and #0d8f64 green" or "dark navy with warm orange accents"'></textarea>
+  </div>
+  <div class="field">
+    <label for="brand_fonts">Fonts you use, or the vibe you prefer</label>
+    <input type="text" id="brand_fonts" name="brand_fonts" placeholder='e.g. "Clean sans-serif" or "Editorial with a serif headline"'>
+  </div>
+  <div class="field">
+    <label for="brand_vibe">How should things look and feel?</label>
+    <input type="text" id="brand_vibe" name="brand_vibe" placeholder='e.g. "Warm and editorial, like a design magazine"'>
+  </div>
+  <div class="field">
+    <label for="brand_notes">Website, style guide, or brand assets we should reference? (URLs welcome)</label>
+    <textarea id="brand_notes" name="brand_notes"></textarea>
+  </div>
+</div>
+
+<!-- 10: Not In Scope (NEW) -->
+<div class="section" data-section="10">
+  <div class="section-header"><span class="section-num">10</span><h2>Not In Scope</h2></div>
+  <p class="section-intro">What's explicitly off the table? The shiny distractions you've already decided to say no to. This keeps your agent focused on what matters.</p>
+  <div class="field">
+    <label for="not_in_scope_1">Not in scope #1</label>
+    <textarea id="not_in_scope_1" name="not_in_scope_1" placeholder="e.g. We're not doing social media content right now; that's a Q3 project."></textarea>
+  </div>
+  <div class="field">
+    <label for="not_in_scope_2">Not in scope #2</label>
+    <textarea id="not_in_scope_2" name="not_in_scope_2" placeholder="e.g. Don't suggest video production; we've tried it and it's not our channel."></textarea>
+  </div>
+  <div class="field">
+    <label for="not_in_scope_3">Not in scope #3</label>
+    <textarea id="not_in_scope_3" name="not_in_scope_3"></textarea>
+  </div>
+</div>
+
+<!-- 11: Rhythm (NEW - expanded from Anything Else) -->
+<div class="section" data-section="11">
+  <div class="section-header"><span class="section-num">11</span><h2>Your Rhythm</h2></div>
+  <p class="section-intro">When and how you work. So your agent knows when to surface things, and when to leave you alone.</p>
+  <div class="field">
+    <label for="deep_work_window">Deep work window</label>
+    <input type="text" id="deep_work_window" name="deep_work_window" placeholder="e.g. 6am–11am, don't interrupt during this block">
+    <p class="hint">When you focus best. Your agent will batch non-urgent items outside this window.</p>
+  </div>
+  <div class="field">
+    <label for="no_meeting_days">No-meeting days</label>
+    <input type="text" id="no_meeting_days" name="no_meeting_days" placeholder="e.g. Wednesdays and Fridays">
+  </div>
+  <div class="field">
+    <label for="weekend_rule">Weekend rule</label>
+    <input type="text" id="weekend_rule" name="weekend_rule" placeholder="e.g. No pings on weekends unless the building is on fire">
+  </div>
+  <div class="field">
+    <label for="email_batches">When do you check email?</label>
+    <input type="text" id="email_batches" name="email_batches" placeholder="e.g. 9am, 1pm, 4pm; queue everything else">
+  </div>
+  <div class="field">
+    <label for="other_notes">Anything else your agent should know from day one?</label>
+    <textarea id="other_notes" name="other_notes" placeholder="How you work, what you worry about, what great service means in your world..."></textarea>
+  </div>
+</div>
+
+<div class="error-msg" id="errorMsg"></div>
+
+<div class="submit-section">
+  <button type="submit" class="btn btn-primary" id="submitBtn">Deploy My Agent</button>
+</div>
+
+</form>
+
+<div class="success" id="successState">
+  <div class="success-glow"></div>
+  <div class="success-content">
+    <div class="success-icon">
+      <img src="https://snowark.com.au/assets/logos/Snowark-Icon.png" alt="Snowark" style="width:40px;height:40px;">
+    </div>
+    <div class="kicker">YOUR AGENT IS BEING BUILT</div>
+    <h2>Meet <span id="successAgentName"></span></h2>
+    <p id="successDescription"></p>
+    <div class="success-line"></div>
+    <p class="success-note">We'll be in touch within 24 hours to introduce you. Your agent will be ready to work from the first message: calm, competent, and built for your business.</p>
+  </div>
+</div>
+
+<div class="fog"></div>
+<footer class="foot"><img src="https://snowark.com.au/assets/logos/Snowark-Icon.png" alt="Snowark" style="height:14px;vertical-align:middle;margin-right:4px;"><span>Snowark</span> Consulting</footer>
+
+<script type="module">
+// ── Loading overlay ──
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingIcon = document.getElementById('loadingIcon');
+const loadingTag = document.getElementById('loadingTag');
+const loadingDot = document.getElementById('loadingDot');
+setTimeout(() => {
+  gsap.to(loadingIcon, {opacity: 1, duration: 0.8, ease: 'power2.out'});
+  gsap.to(loadingTag, {opacity: 1, duration: 0.6, delay: 0.3, ease: 'power2.out'});
+  gsap.to(loadingDot, {opacity: 1, duration: 0.6, delay: 0.5, ease: 'power2.out'});
+}, 300);
+setTimeout(() => {
+  loadingOverlay.classList.add('hidden');
+  setTimeout(() => loadingOverlay.style.display = 'none', 800);
+}, 2200);
+
+// ── FORM LOGIC ──
+
+const totalSections = 11;
+const sectionSeen = new Set();
+const form = document.getElementById('onboardingForm');
+const submitBtn = document.getElementById('submitBtn');
+const errorMsg = document.getElementById('errorMsg');
+const successState = document.getElementById('successState');
+const progressBar = document.getElementById('progressBar');
+const progressText = document.getElementById('progressText');
+const progressWrap = document.getElementById('progressWrap');
+
+// Scroll tracking
+const sections = document.querySelectorAll('.section');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      const num = parseInt(entry.target.dataset.section);
+      if (num && !sectionSeen.has(num)) {
+        sectionSeen.add(num);
+        updateProgress();
+      }
+    }
+  });
+}, { threshold: 0.3 });
+
+sections.forEach(s => observer.observe(s));
+
+// Progress bar
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 60) {
+    progressWrap.classList.add('scrolled');
+  } else {
+    progressWrap.classList.remove('scrolled');
+  }
+});
+
+function updateProgress() {
+  const seen = sectionSeen.size;
+  const pct = Math.round((seen / totalSections) * 100);
+  progressBar.style.width = pct + '%';
+  progressText.textContent = `Section ${seen} of ${totalSections}`;
+  if (seen >= totalSections) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Deploy My Agent';
+  }
+}
+
+// Personality card selection
+document.querySelectorAll('.personality-card input').forEach(radio => {
+  radio.addEventListener('change', function() {
+    document.querySelectorAll('.personality-card').forEach(c => c.classList.remove('selected'));
+    if (this.checked) this.closest('.personality-card').classList.add('selected');
+    document.getElementById('customPersonalityField').style.display = this.value === 'Custom' ? 'block' : 'none';
+  });
+});
+
+// Supabase config
+const SUPABASE_URL = 'https://fwnqlryktisglebhmfeb.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_BfWyBmPTdmr_WW92HI3Yew_1rvSkGpZ';
+
+// Multi-value helpers
+function getCheckboxValues(name) {
+  const checked = document.querySelectorAll(`input[name="${name}"]:checked`);
+  return Array.from(checked).map(cb => cb.value).join(', ');
+}
+
+function getRadioValue(name) {
+  const checked = document.querySelector(`input[name="${name}"]:checked`);
+  return checked ? checked.value : '';
+}
+
+// Form submission
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  if (sectionSeen.size < totalSections) {
+    errorMsg.style.display = 'block';
+    errorMsg.textContent = `Please scroll through all ${totalSections} sections before submitting. You've seen ${sectionSeen.size}.`;
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Deploying...';
+  errorMsg.style.display = 'none';
+
+  const payload = {
+    client_name: document.getElementById('client_name').value.trim(),
+    business_description: document.getElementById('business_description').value.trim(),
+    customers: document.getElementById('customers').value.trim(),
+    biggest_time_eater: document.getElementById('biggest_time_eater').value.trim(),
+    agent_name: document.getElementById('agent_name').value.trim(),
+    agent_mission: document.getElementById('agent_mission').value.trim(),
+    personality_type: getRadioValue('personality_type'),
+    custom_personality: document.getElementById('custom_personality').value.trim(),
+    formality: getRadioValue('formality'),
+    response_length: getRadioValue('response_length'),
+    warmth: getRadioValue('warmth'),
+    spelling: getRadioValue('spelling'),
+    loved_phrases: document.getElementById('loved_phrases').value.trim(),
+    banned_phrases: document.getElementById('banned_phrases').value.trim(),
+    signoff: document.getElementById('signoff').value.trim(),
+    stack_email: getCheckboxValues('stack_email'),
+    stack_website: getCheckboxValues('stack_website'),
+    stack_pm: getCheckboxValues('stack_pm'),
+    stack_accounting: getCheckboxValues('stack_accounting'),
+    stack_notes: document.getElementById('stack_notes').value.trim(),
+    hard_no_1: document.getElementById('hard_no_1').value.trim(),
+    hard_no_2: document.getElementById('hard_no_2').value.trim(),
+    hard_no_3: document.getElementById('hard_no_3').value.trim(),
+    brand_colors: document.getElementById('brand_colors').value.trim(),
+    brand_fonts: document.getElementById('brand_fonts').value.trim(),
+    brand_vibe: document.getElementById('brand_vibe').value.trim(),
+    brand_notes: document.getElementById('brand_notes').value.trim(),
+    not_in_scope_1: document.getElementById('not_in_scope_1').value.trim(),
+    not_in_scope_2: document.getElementById('not_in_scope_2').value.trim(),
+    not_in_scope_3: document.getElementById('not_in_scope_3').value.trim(),
+    deep_work_window: document.getElementById('deep_work_window').value.trim(),
+    no_meeting_days: document.getElementById('no_meeting_days').value.trim(),
+    weekend_rule: document.getElementById('weekend_rule').value.trim(),
+    email_batches: document.getElementById('email_batches').value.trim(),
+    other_notes: document.getElementById('other_notes').value.trim(),
+    submitted_at: new Date().toISOString()
+  };
+
+  try {
+    const resp = await fetch(`${SUPABASE_URL}/rest/v1/client_responses`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!resp.ok) {
+      const errText = await resp.text();
+      throw new Error(`Supabase returned ${resp.status}: ${errText}`);
+    }
+
+    // Success
+    document.getElementById('successAgentName').textContent = payload.agent_name || 'Your Agent';
+    document.getElementById('successDescription').textContent = payload.agent_mission
+      ? `"${payload.agent_mission}"`
+      : 'Ready to handle the busywork so you can focus on what matters.';
+
+    document.querySelector('form').style.display = 'none';
+    document.querySelector('.submit-section').style.display = 'none';
+    document.querySelector('.fog').style.display = 'none';
+    successState.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  } catch (err) {
+    console.error('Submit error:', err);
+    errorMsg.style.display = 'block';
+    errorMsg.textContent = 'Something went wrong submitting the form. Please try again, or email us at hello@snowark.com.au.';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Deploy My Agent';
+  }
+});
+</script>
+</body>
+</html>

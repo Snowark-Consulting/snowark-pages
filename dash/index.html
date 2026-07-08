@@ -1,353 +1,353 @@
-1|<!DOCTYPE html>
-2|<html lang="en">
-3|<head>
-4|<meta charset="UTF-8">
-5|<meta name="viewport" content="width=device-width, initial-scale=1.0">
-6|<title>Snowark — Agent Dashboard</title>
-7|<link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono&display=swap" rel="stylesheet">
-8|<style>
-9|  :root {
-10|    --teal: #174445;
-11|    --teal-rgb: 23, 68, 69;
-12|    --green: #0d8f64;
-13|    --green-rgb: 13, 143, 100;
-14|    --warm: #e9e7e3;
-15|    --white: #FFFFFF;
-16|    --black: #000000;
-17|    --font-heading: 'Cambo', Georgia, 'Times New Roman', serif;
-18|    --font-body: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-19|    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
-20|  }
-21|  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-22|  body {
-23|    font-family: var(--font-body);
-24|    background: var(--warm);
-25|    color: var(--black);
-26|    line-height: 1.6;
-27|    -webkit-font-smoothing: antialiased;
-28|  }
-29|
-30|  /* Header */
-31|  .header {
-32|    background: var(--teal);
-33|    padding: 28px 24px 24px;
-34|    text-align: center;
-35|  }
-36|  .header-logo {
-37|    font-family: var(--font-heading);
-38|    font-size: 1.6rem;
-39|    color: var(--white);
-40|    letter-spacing: 0.02em;
-41|  }
-42|  .header-client {
-43|    font-size: 0.9rem;
-44|    color: rgba(255,255,255,0.7);
-45|    margin-top: 4px;
-46|  }
-47|  .header-updated {
-48|    display: inline-flex;
-49|    align-items: center;
-50|    gap: 16px;
-51|    margin-top: 12px;
-52|    font-size: 0.8rem;
-53|    color: rgba(255,255,255,0.5);
-54|  }
-55|  .header-graph-link {
-56|    color: var(--green);
-57|    text-decoration: none;
-58|    font-weight: 700;
-59|    padding: 4px 10px;
-60|    border: 1px solid rgba(13, 143, 100, 0.3);
-61|    border-radius: 6px;
-62|    transition: background 0.2s;
-63|    white-space: nowrap;
-64|  }
-65|  .header-graph-link:hover { background: rgba(13, 143, 100, 0.15); }
-66|  .pulse {
-67|    width: 8px; height: 8px;
-68|    border-radius: 50%;
-69|    background: var(--green);
-70|    display: inline-block;
-71|  }
-72|  .pulse.stale { background: #c4a42a; }
-73|  .pulse.offline { background: #c44a4a; }
-74|
-75|  /* Container */
-76|  .container {
-77|    max-width: 780px;
-78|    margin: 0 auto;
-79|    padding: 24px 20px 60px;
-80|  }
-81|
-82|  /* Panel cards */
-83|  .panel {
-84|    background: var(--white);
-85|    border-radius: 12px;
-86|    margin-bottom: 20px;
-87|    overflow: hidden;
-88|    border: 1px solid rgba(0,0,0,0.06);
-89|  }
-90|  .panel-header {
-91|    padding: 20px 24px 0;
-92|    font-family: var(--font-heading);
-93|    font-size: 1.3rem;
-94|    color: var(--teal);
-95|  }
-96|  .panel-body {
-97|    padding: 16px 24px 24px;
-98|  }
-99|
-100|  /* Onboarding stages */
-101|  .stages { display: flex; flex-direction: column; gap: 0; }
-102|  .stage {
-103|    display: flex;
-104|    align-items: flex-start;
-105|    gap: 14px;
-106|    padding: 14px 0;
-107|    border-bottom: 1px solid rgba(0,0,0,0.05);
-108|  }
-109|  .stage:last-child { border-bottom: none; }
-110|  .stage-icon {
-111|    width: 32px; height: 32px;
-112|    border-radius: 50%;
-113|    flex-shrink: 0;
-114|    display: flex;
-115|    align-items: center;
-116|    justify-content: center;
-117|    font-size: 0.85rem;
-118|    font-weight: 700;
-119|  }
-120|  .stage.complete .stage-icon { background: var(--green); color: #fff; }
-121|  .stage.in_progress .stage-icon { background: rgba(var(--green-rgb), 0.15); color: var(--green); border: 2px solid var(--green); }
-122|  .stage.pending .stage-icon { background: rgba(0,0,0,0.05); color: rgba(0,0,0,0.3); }
-123|  .stage-info { flex: 1; min-width: 0; }
-124|  .stage-name { font-weight: 700; font-size: 0.95rem; }
-125|  .stage-detail { font-size: 0.82rem; color: rgba(0,0,0,0.55); margin-top: 2px; }
-126|  .stage-badge {
-127|    font-size: 0.72rem;
-128|    font-weight: 700;
-129|    padding: 3px 10px;
-130|    border-radius: 20px;
-131|    white-space: nowrap;
-132|    align-self: center;
-133|  }
-134|  .stage.complete .stage-badge { background: rgba(var(--green-rgb), 0.1); color: var(--green); }
-135|  .stage.in_progress .stage-badge { background: rgba(var(--green-rgb), 0.08); color: var(--green); }
-136|  .stage.pending .stage-badge { background: rgba(0,0,0,0.04); color: rgba(0,0,0,0.4); }
-137|
-138|  /* Progress bar */
-139|  .progress-bar-wrap {
-140|    padding: 16px 24px;
-141|    background: rgba(var(--teal-rgb), 0.03);
-142|    border-bottom: 1px solid rgba(0,0,0,0.05);
-143|  }
-144|  .progress-label {
-145|    font-size: 0.8rem;
-146|    color: rgba(0,0,0,0.5);
-147|    margin-bottom: 6px;
-148|    display: flex;
-149|    justify-content: space-between;
-150|  }
-151|  .progress-track {
-152|    height: 6px;
-153|    background: rgba(0,0,0,0.06);
-154|    border-radius: 3px;
-155|    overflow: hidden;
-156|  }
-157|  .progress-fill {
-158|    height: 100%;
-159|    background: var(--green);
-160|    border-radius: 3px;
-161|    transition: width 0.5s ease;
-162|  }
-163|
-164|  /* Activity feed */
-165|  .activity-item {
-166|    display: flex;
-167|    gap: 12px;
-168|    padding: 10px 0;
-169|    border-bottom: 1px solid rgba(0,0,0,0.04);
-170|    font-size: 0.9rem;
-171|  }
-172|  .activity-item:last-child { border-bottom: none; }
-173|  .activity-date {
-174|    font-family: var(--font-mono);
-175|    font-size: 0.75rem;
-176|    color: rgba(0,0,0,0.4);
-177|    white-space: nowrap;
-178|    min-width: 70px;
-179|    padding-top: 2px;
-180|  }
-181|  .activity-desc { flex: 1; }
-182|  .activity-cat {
-183|    font-size: 0.7rem;
-184|    font-weight: 700;
-185|    text-transform: uppercase;
-186|    letter-spacing: 0.04em;
-187|    color: var(--teal);
-188|    background: rgba(var(--teal-rgb), 0.07);
-189|    padding: 2px 8px;
-190|    border-radius: 4px;
-191|    white-space: nowrap;
-192|  }
-193|
-194|  /* Counter row */
-195|  .counter-row {
-196|    display: flex;
-197|    gap: 16px;
-198|    margin-bottom: 20px;
-199|  }
-200|  .counter-card {
-201|    flex: 1;
-202|    background: rgba(var(--teal-rgb), 0.04);
-203|    border-radius: 10px;
-204|    padding: 16px;
-205|    text-align: center;
-206|  }
-207|  .counter-num {
-208|    font-family: var(--font-heading);
-209|    font-size: 2rem;
-210|    color: var(--teal);
-211|    line-height: 1;
-212|  }
-213|  .counter-label {
-214|    font-size: 0.78rem;
-215|    color: rgba(0,0,0,0.5);
-216|    margin-top: 4px;
-217|  }
-218|
-219|  /* Health */
-220|  .health-row {
-221|    display: flex;
-222|    gap: 12px;
-223|    flex-wrap: wrap;
-224|  }
-225|  .health-card {
-226|    flex: 1;
-227|    min-width: 140px;
-228|    background: rgba(var(--teal-rgb), 0.04);
-229|    border-radius: 10px;
-230|    padding: 14px;
-231|  }
-232|  .health-label {
-233|    font-size: 0.75rem;
-234|    color: rgba(0,0,0,0.5);
-235|    text-transform: uppercase;
-236|    letter-spacing: 0.04em;
-237|    margin-bottom: 4px;
-238|  }
-239|  .health-value {
-240|    font-weight: 700;
-241|    font-size: 0.9rem;
-242|  }
-243|  .dot-ok { color: var(--green); }
-244|  .dot-warn { color: #c4a42a; }
-245|  .dot-off { color: #c44a4a; }
-246|
-247|  /* Footer */
-248|  .footer {
-249|    text-align: center;
-250|    padding: 32px 24px;
-251|    font-size: 0.78rem;
-252|    color: rgba(0,0,0,0.35);
-253|  }
-254|  .footer a { color: rgba(0,0,0,0.5); }
-255|
-256|  /* Loading / error states */
-257|  .loading { text-align: center; padding: 40px; color: rgba(0,0,0,0.4); }
-258|  .error-state { text-align: center; padding: 40px; color: #c44a4a; }
-259|
-260|  /* Capabilities */
-261|  .capability-row {
-262|    display: flex;
-263|    gap: 16px;
-264|    margin-bottom: 20px;
-265|  }
-266|  .skill-stat-card {
-267|    flex: 1;
-268|    background: linear-gradient(135deg, rgba(var(--teal-rgb), 0.06), rgba(var(--green-rgb), 0.06));
-269|    border-radius: 10px;
-270|    padding: 18px 16px;
-271|    text-align: center;
-272|    border: 1px solid rgba(var(--green-rgb), 0.12);
-273|  }
-274|  .skill-stat-num {
-275|    font-family: var(--font-heading);
-276|    font-size: 2.2rem;
-277|    color: var(--teal);
-278|    line-height: 1;
-279|  }
-280|  .skill-stat-num .accent { color: var(--green); }
-281|  .skill-stat-label {
-282|    font-size: 0.78rem;
-283|    color: rgba(0,0,0,0.5);
-284|    margin-top: 4px;
-285|  }
-286|  .tip-box {
-287|    background: linear-gradient(135deg, rgba(var(--teal-rgb), 0.92), rgba(var(--teal-rgb), 0.85));
-288|    border-radius: 10px;
-289|    padding: 18px 20px;
-290|    position: relative;
-291|    min-height: 80px;
-292|    display: flex;
-293|    align-items: center;
-294|    overflow: hidden;
-295|  }
-296|  .tip-box::before {
-297|    content: '💡';
-298|    position: absolute;
-299|    left: 16px;
-300|    top: 50%;
-301|    transform: translateY(-50%);
-302|    font-size: 1.4rem;
-303|    opacity: 0.5;
-304|  }
-305|  .tip-content {
-306|    padding-left: 40px;
-307|    width: 100%;
-308|  }
-309|  .tip-label {
-310|    font-size: 0.7rem;
-311|    text-transform: uppercase;
-312|    letter-spacing: 0.06em;
-313|    color: rgba(255,255,255,0.5);
-314|    margin-bottom: 4px;
-315|  }
-316|  .tip-text {
-317|    font-family: var(--font-body);
-318|    font-size: 0.95rem;
-319|    color: rgba(255,255,255,0.92);
-320|    line-height: 1.5;
-321|  }
-322|  .tip-text em {
-323|    font-style: normal;
-324|    color: #5ce0b8;
-325|    font-weight: 700;
-326|  }
-327|  .tip-dots {
-328|    display: flex;
-329|    gap: 6px;
-330|    justify-content: center;
-331|    margin-top: 10px;
-332|  }
-333|  .tip-dot {
-334|    width: 6px; height: 6px;
-335|    border-radius: 50%;
-336|    background: rgba(255,255,255,0.2);
-337|    transition: background 0.4s ease;
-338|  }
-339|  .tip-dot.active { background: rgba(255,255,255,0.8); }
-340|
-341|  @media (max-width: 600px) {
-342|    .container { padding: 16px 12px 40px; }
-343|    .panel-header { padding: 16px 16px 0; }
-344|    .panel-body { padding: 12px 16px 20px; }
-345|    .counter-row { flex-direction: column; gap: 10px; }
-346|    .health-row { flex-direction: column; }
-347|    .stage-badge { font-size: 0.68rem; padding: 2px 8px; }
-348|  }
-349|</style>
-350|  <!-- Microsoft Clarity -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snowark ,  Agent Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #174445;
+    --teal-rgb: 23, 68, 69;
+    --green: #0d8f64;
+    --green-rgb: 13, 143, 100;
+    --warm: #e9e7e3;
+    --white: #FFFFFF;
+    --black: #000000;
+    --font-heading: 'Cambo', Georgia, 'Times New Roman', serif;
+    --font-body: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    background: var(--warm);
+    color: var(--black);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Header */
+  .header {
+    background: var(--teal);
+    padding: 28px 24px 24px;
+    text-align: center;
+  }
+  .header-logo {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    color: var(--white);
+    letter-spacing: 0.02em;
+  }
+  .header-client {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+    margin-top: 4px;
+  }
+  .header-updated {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+  }
+  .header-graph-link {
+    color: var(--green);
+    text-decoration: none;
+    font-weight: 700;
+    padding: 4px 10px;
+    border: 1px solid rgba(13, 143, 100, 0.3);
+    border-radius: 6px;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .header-graph-link:hover { background: rgba(13, 143, 100, 0.15); }
+  .pulse {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    display: inline-block;
+  }
+  .pulse.stale { background: #c4a42a; }
+  .pulse.offline { background: #c44a4a; }
+
+  /* Container */
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  /* Panel cards */
+  .panel {
+    background: var(--white);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .panel-header {
+    padding: 20px 24px 0;
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    color: var(--teal);
+  }
+  .panel-body {
+    padding: 16px 24px 24px;
+  }
+
+  /* Onboarding stages */
+  .stages { display: flex; flex-direction: column; gap: 0; }
+  .stage {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .stage:last-child { border-bottom: none; }
+  .stage-icon {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+  .stage.complete .stage-icon { background: var(--green); color: #fff; }
+  .stage.in_progress .stage-icon { background: rgba(var(--green-rgb), 0.15); color: var(--green); border: 2px solid var(--green); }
+  .stage.pending .stage-icon { background: rgba(0,0,0,0.05); color: rgba(0,0,0,0.3); }
+  .stage-info { flex: 1; min-width: 0; }
+  .stage-name { font-weight: 700; font-size: 0.95rem; }
+  .stage-detail { font-size: 0.82rem; color: rgba(0,0,0,0.55); margin-top: 2px; }
+  .stage-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    align-self: center;
+  }
+  .stage.complete .stage-badge { background: rgba(var(--green-rgb), 0.1); color: var(--green); }
+  .stage.in_progress .stage-badge { background: rgba(var(--green-rgb), 0.08); color: var(--green); }
+  .stage.pending .stage-badge { background: rgba(0,0,0,0.04); color: rgba(0,0,0,0.4); }
+
+  /* Progress bar */
+  .progress-bar-wrap {
+    padding: 16px 24px;
+    background: rgba(var(--teal-rgb), 0.03);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .progress-label {
+    font-size: 0.8rem;
+    color: rgba(0,0,0,0.5);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .progress-track {
+    height: 6px;
+    background: rgba(0,0,0,0.06);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+
+  /* Activity feed */
+  .activity-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    font-size: 0.9rem;
+  }
+  .activity-item:last-child { border-bottom: none; }
+  .activity-date {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: rgba(0,0,0,0.4);
+    white-space: nowrap;
+    min-width: 70px;
+    padding-top: 2px;
+  }
+  .activity-desc { flex: 1; }
+  .activity-cat {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--teal);
+    background: rgba(var(--teal-rgb), 0.07);
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  /* Counter row */
+  .counter-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .counter-card {
+    flex: 1;
+    background: rgba(var(--teal-rgb), 0.04);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .counter-num {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--teal);
+    line-height: 1;
+  }
+  .counter-label {
+    font-size: 0.78rem;
+    color: rgba(0,0,0,0.5);
+    margin-top: 4px;
+  }
+
+  /* Health */
+  .health-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .health-card {
+    flex: 1;
+    min-width: 140px;
+    background: rgba(var(--teal-rgb), 0.04);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .health-label {
+    font-size: 0.75rem;
+    color: rgba(0,0,0,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+  }
+  .health-value {
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .dot-ok { color: var(--green); }
+  .dot-warn { color: #c4a42a; }
+  .dot-off { color: #c44a4a; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 0.78rem;
+    color: rgba(0,0,0,0.35);
+  }
+  .footer a { color: rgba(0,0,0,0.5); }
+
+  /* Loading / error states */
+  .loading { text-align: center; padding: 40px; color: rgba(0,0,0,0.4); }
+  .error-state { text-align: center; padding: 40px; color: #c44a4a; }
+
+  /* Capabilities */
+  .capability-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .skill-stat-card {
+    flex: 1;
+    background: linear-gradient(135deg, rgba(var(--teal-rgb), 0.06), rgba(var(--green-rgb), 0.06));
+    border-radius: 10px;
+    padding: 18px 16px;
+    text-align: center;
+    border: 1px solid rgba(var(--green-rgb), 0.12);
+  }
+  .skill-stat-num {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    color: var(--teal);
+    line-height: 1;
+  }
+  .skill-stat-num .accent { color: var(--green); }
+  .skill-stat-label {
+    font-size: 0.78rem;
+    color: rgba(0,0,0,0.5);
+    margin-top: 4px;
+  }
+  .tip-box {
+    background: linear-gradient(135deg, rgba(var(--teal-rgb), 0.92), rgba(var(--teal-rgb), 0.85));
+    border-radius: 10px;
+    padding: 18px 20px;
+    position: relative;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .tip-box::before {
+    content: '💡';
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.4rem;
+    opacity: 0.5;
+  }
+  .tip-content {
+    padding-left: 40px;
+    width: 100%;
+  }
+  .tip-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 4px;
+  }
+  .tip-text {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.92);
+    line-height: 1.5;
+  }
+  .tip-text em {
+    font-style: normal;
+    color: #5ce0b8;
+    font-weight: 700;
+  }
+  .tip-dots {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .tip-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: background 0.4s ease;
+  }
+  .tip-dot.active { background: rgba(255,255,255,0.8); }
+
+  @media (max-width: 600px) {
+    .container { padding: 16px 12px 40px; }
+    .panel-header { padding: 16px 16px 0; }
+    .panel-body { padding: 12px 16px 20px; }
+    .counter-row { flex-direction: column; gap: 10px; }
+    .health-row { flex-direction: column; }
+    .stage-badge { font-size: 0.68rem; padding: 2px 8px; }
+  }
+</style>
+  <!-- Microsoft Clarity -->
   <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -355,156 +355,220 @@
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "xg3xx2k35l");
   </script>
-
 </head>
-351|<body>
-352|
-353|<div class="header">
-354|  <div class="header-logo">Snowark</div>
-355|  <div class="header-client" id="header-client">Loading…</div>
-356|  <div class="header-updated">
-357|    <a href="graph.html" id="graph-link" class="header-graph-link">Knowledge Graph</a>
-358|    <span class="pulse" id="pulse-dot"></span>
-359|    <span id="header-time"></span>
-360|  </div>
-361|</div>
-362|
-363|<div class="container">
-364|
-365|  <!-- Onboarding Progress -->
-366|  <div class="panel">
-367|    <div class="panel-header">Onboarding Progress</div>
-368|    <div class="progress-bar-wrap">
-369|      <div class="progress-label">
-370|        <span id="progress-text">Loading…</span>
-371|        <span id="progress-pct"></span>
-372|      </div>
-373|      <div class="progress-track">
-374|        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
-375|      </div>
-376|    </div>
-377|    <div class="panel-body stages" id="stages"></div>
-378|  </div>
-379|
-380|  <!-- Activity -->
-381|  <div class="panel">
-382|    <div class="panel-header">What Your Agent Is Doing</div>
-383|    <div class="panel-body">
-384|      <div class="counter-row" id="counters"></div>
-385|      <div id="activity-feed"></div>
-386|    </div>
-387|  </div>
-388|
-389|  <!-- Capabilities -->
-390|  <div class="panel">
-391|    <div class="panel-header">What Atlas Can Do For You</div>
-392|    <div class="panel-body">
-393|      <div class="capability-row" id="skill-stats"></div>
-394|      <div class="tip-box" id="tip-box">
-395|        <div class="tip-content">
-396|          <div class="tip-label">Try asking Atlas</div>
-397|          <div class="tip-text" id="tip-text"></div>
-398|          <div class="tip-dots" id="tip-dots"></div>
-399|        </div>
-400|      </div>
-401|    </div>
-402|  </div>
-403|
-404|  <!-- System Health -->
-405|  <div class="panel">
-406|    <div class="panel-header">System Health</div>
-407|    <div class="panel-body">
-408|      <div class="health-row" id="health-cards"></div>
-409|      <div style="margin-top:16px;font-size:0.82rem;color:rgba(0,0,0,0.45);" id="cron-list"></div>
-410|    </div>
-411|  </div>
-412|
-413|</div>
-414|
-415|<div class="footer">
-416|  Powered by <a href="https://snowark.ai">Snowark Consulting</a>
-417|  &middot; Data refreshes automatically
-418|</div>
-419|
-420|<script>
-421|(async function() {
-422|  const params = new URLSearchParams(window.location.search);
-423|  const client = params.get('client') || 'atlas';
-424|  const DATA_URL = `data/${client}.json`;
-425|  document.getElementById('graph-link').href = `graph.html?client=${client}`;
-426|
-427|  function timeAgo(iso) {
-428|    const diff = (Date.now() - new Date(iso).getTime()) / 1000;
-429|    if (diff < 60) return 'just now';
-430|    if (diff < 3600) return Math.floor(diff/60) + 'm ago';
-431|    if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
-432|    return Math.floor(diff/86400) + 'd ago';
-433|  }
-434|
-435|  function statusIcon(status) {
-436|    if (status === 'ok' || status === 'complete') return '<span class="dot-ok">●</span>';
-437|    if (status === 'in_progress' || status === 'pending_first') return '<span class="dot-warn">●</span>';
-438|    return '<span class="dot-off">●</span>';
-439|  }
-440|
-441|  async function load() {
-442|    try {
-443|      const resp = await fetch(DATA_URL + '?t=' + Date.now());
-444|      if (!resp.ok) throw new Error('HTTP ' + resp.status);
-445|      const d = await resp.json();
-446|
-447|      // Header
-448|      document.getElementById('header-client').textContent =
-449|        d.client.agent + ' · ' + d.client.business;
-450|      document.getElementById('header-time').textContent =
-451|        'Updated ' + timeAgo(d.last_updated);
-452|
-453|      const age = (Date.now() - new Date(d.last_updated).getTime()) / 1000;
-454|      const dot = document.getElementById('pulse-dot');
-455|      if (age > 3600) { dot.className = 'pulse offline'; }
-456|      else if (age > 300) { dot.className = 'pulse stale'; }
-457|      else { dot.className = 'pulse'; }
-458|
-459|      // Onboarding progress
-460|      const stages = d.onboarding.stages;
-461|      const complete = stages.filter(s => s.status === 'complete').length;
-462|      const total = stages.length;
-463|      const pct = Math.round((complete / total) * 100);
-464|      document.getElementById('progress-text').textContent =
-465|        complete + ' of ' + total + ' stages complete';
-466|      document.getElementById('progress-pct').textContent = pct + '%';
-467|      document.getElementById('progress-fill').style.width = pct + '%';
-468|
-469|      const stageHTML = stages.map(s =>
-470|        '<div class="stage ' + s.status + '">' +
-471|        '<div class="stage-icon">' + (s.status === 'complete' ? '✓' : s.status === 'in_progress' ? '→' : '·') + '</div>' +
-472|        '<div class="stage-info"><div class="stage-name">' + s.name + '</div>' +
-473|        '<div class="stage-detail">' + s.detail + '</div></div>' +
-474|        '<div class="stage-badge">' + (s.status === 'complete' ? 'Done' : s.status === 'in_progress' ? 'In progress' : 'To do') + '</div>' +
-475|        '</div>'
-476|      ).join('');
-477|      document.getElementById('stages').innerHTML = stageHTML;
-478|
-479|      // Counters
-480|      const a = d.activity;
-481|      document.getElementById('counters').innerHTML =
-482|        '<div class="counter-card"><div class="counter-num">' + a.tasks_completed + '</div><div class="counter-label">Tasks completed</div></div>' +
-483|        '<div class="counter-card"><div class="counter-num">~' + a.hours_saved_estimate + 'h</div><div class="counter-label">Estimated time saved</div></div>';
-484|
-485|      // Activity feed
-486|      const feedHTML = a.recent.map(item =>
-487|        '<div class="activity-item">' +
-488|        '<div class="activity-date">' + item.date + '</div>' +
-489|        '<div class="activity-desc">' + item.task + '</div>' +
-490|        '<div class="activity-cat">' + item.category + '</div>' +
-491|        '</div>'
-492|      ).join('');
-493|      document.getElementById('activity-feed').innerHTML = feedHTML;
-494|
-495|      // Capabilities
-496|      const cap = d.capabilities;
-497|      document.getElementById('skill-stats').innerHTML =
-498|        '<div class="skill-stat-card"><div class="skill-stat-num">' + cap.skills_count + '</div><div class="skill-stat-label">Skills loaded</div></div>' +
-499|        '<div class="skill-stat-card"><div class="skill-stat-num"><span class="accent">' + cap.categories_count + '</span></div><div class="skill-stat-label">Capability areas</div></div>' +
-500|        '<div class="skill-stat-card"><div class="skill-stat-num">' + cap.tips.length + '</div><div class="skill-stat-label">Things to try</div></div>';
-501|
+<body>
+
+<div class="header">
+  <div class="header-logo">Snowark</div>
+  <div class="header-client" id="header-client">Loading…</div>
+  <div class="header-updated">
+    <a href="graph.html" id="graph-link" class="header-graph-link">Knowledge Graph</a>
+    <span class="pulse" id="pulse-dot"></span>
+    <span id="header-time"></span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Onboarding Progress -->
+  <div class="panel">
+    <div class="panel-header">Onboarding Progress</div>
+    <div class="progress-bar-wrap">
+      <div class="progress-label">
+        <span id="progress-text">Loading…</span>
+        <span id="progress-pct"></span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="panel-body stages" id="stages"></div>
+  </div>
+
+  <!-- Activity -->
+  <div class="panel">
+    <div class="panel-header">What Your Agent Is Doing</div>
+    <div class="panel-body">
+      <div class="counter-row" id="counters"></div>
+      <div id="activity-feed"></div>
+    </div>
+  </div>
+
+  <!-- Capabilities -->
+  <div class="panel">
+    <div class="panel-header">What Atlas Can Do For You</div>
+    <div class="panel-body">
+      <div class="capability-row" id="skill-stats"></div>
+      <div class="tip-box" id="tip-box">
+        <div class="tip-content">
+          <div class="tip-label">Try asking Atlas</div>
+          <div class="tip-text" id="tip-text"></div>
+          <div class="tip-dots" id="tip-dots"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- System Health -->
+  <div class="panel">
+    <div class="panel-header">System Health</div>
+    <div class="panel-body">
+      <div class="health-row" id="health-cards"></div>
+      <div style="margin-top:16px;font-size:0.82rem;color:rgba(0,0,0,0.45);" id="cron-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Powered by <a href="https://snowark.ai">Snowark Consulting</a>
+  &middot; Data refreshes automatically
+</div>
+
+<script>
+(async function() {
+  const params = new URLSearchParams(window.location.search);
+  const client = params.get('client') || 'atlas';
+  const DATA_URL = `data/${client}.json`;
+  document.getElementById('graph-link').href = `graph.html?client=${client}`;
+
+  function timeAgo(iso) {
+    const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+    if (diff < 60) return 'just now';
+    if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+    return Math.floor(diff/86400) + 'd ago';
+  }
+
+  function statusIcon(status) {
+    if (status === 'ok' || status === 'complete') return '<span class="dot-ok">●</span>';
+    if (status === 'in_progress' || status === 'pending_first') return '<span class="dot-warn">●</span>';
+    return '<span class="dot-off">●</span>';
+  }
+
+  async function load() {
+    try {
+      const resp = await fetch(DATA_URL + '?t=' + Date.now());
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const d = await resp.json();
+
+      // Header
+      document.getElementById('header-client').textContent =
+        d.client.agent + ' · ' + d.client.business;
+      document.getElementById('header-time').textContent =
+        'Updated ' + timeAgo(d.last_updated);
+
+      const age = (Date.now() - new Date(d.last_updated).getTime()) / 1000;
+      const dot = document.getElementById('pulse-dot');
+      if (age > 3600) { dot.className = 'pulse offline'; }
+      else if (age > 300) { dot.className = 'pulse stale'; }
+      else { dot.className = 'pulse'; }
+
+      // Onboarding progress
+      const stages = d.onboarding.stages;
+      const complete = stages.filter(s => s.status === 'complete').length;
+      const total = stages.length;
+      const pct = Math.round((complete / total) * 100);
+      document.getElementById('progress-text').textContent =
+        complete + ' of ' + total + ' stages complete';
+      document.getElementById('progress-pct').textContent = pct + '%';
+      document.getElementById('progress-fill').style.width = pct + '%';
+
+      const stageHTML = stages.map(s =>
+        '<div class="stage ' + s.status + '">' +
+        '<div class="stage-icon">' + (s.status === 'complete' ? '✓' : s.status === 'in_progress' ? '→' : '·') + '</div>' +
+        '<div class="stage-info"><div class="stage-name">' + s.name + '</div>' +
+        '<div class="stage-detail">' + s.detail + '</div></div>' +
+        '<div class="stage-badge">' + (s.status === 'complete' ? 'Done' : s.status === 'in_progress' ? 'In progress' : 'To do') + '</div>' +
+        '</div>'
+      ).join('');
+      document.getElementById('stages').innerHTML = stageHTML;
+
+      // Counters
+      const a = d.activity;
+      document.getElementById('counters').innerHTML =
+        '<div class="counter-card"><div class="counter-num">' + a.tasks_completed + '</div><div class="counter-label">Tasks completed</div></div>' +
+        '<div class="counter-card"><div class="counter-num">~' + a.hours_saved_estimate + 'h</div><div class="counter-label">Estimated time saved</div></div>';
+
+      // Activity feed
+      const feedHTML = a.recent.map(item =>
+        '<div class="activity-item">' +
+        '<div class="activity-date">' + item.date + '</div>' +
+        '<div class="activity-desc">' + item.task + '</div>' +
+        '<div class="activity-cat">' + item.category + '</div>' +
+        '</div>'
+      ).join('');
+      document.getElementById('activity-feed').innerHTML = feedHTML;
+
+      // Capabilities
+      const cap = d.capabilities;
+      document.getElementById('skill-stats').innerHTML =
+        '<div class="skill-stat-card"><div class="skill-stat-num">' + cap.skills_count + '</div><div class="skill-stat-label">Skills loaded</div></div>' +
+        '<div class="skill-stat-card"><div class="skill-stat-num"><span class="accent">' + cap.categories_count + '</span></div><div class="skill-stat-label">Capability areas</div></div>' +
+        '<div class="skill-stat-card"><div class="skill-stat-num">' + cap.tips.length + '</div><div class="skill-stat-label">Things to try</div></div>';
+
+      // Rotating tips
+      let tipIndex = 0;
+      const tips = cap.tips;
+      const tipText = document.getElementById('tip-text');
+      const tipDots = document.getElementById('tip-dots');
+
+      // Build dots
+      tipDots.innerHTML = tips.map((_, i) =>
+        '<div class="tip-dot' + (i === 0 ? ' active' : '') + '"></div>'
+      ).join('');
+
+      function showTip(i) {
+        tipText.innerHTML = tips[i];
+        tipDots.querySelectorAll('.tip-dot').forEach((d, j) => {
+          d.className = 'tip-dot' + (j === i ? ' active' : '');
+        });
+      }
+      showTip(0);
+
+      setInterval(() => {
+        tipIndex = (tipIndex + 1) % tips.length;
+        showTip(tipIndex);
+      }, 5000);
+
+      // Health cards
+      const h = d.health;
+      const hc = document.getElementById('health-cards');
+      hc.innerHTML =
+        '<div class="health-card">' +
+        '<div class="health-label">Agent status</div>' +
+        '<div class="health-value">' + statusIcon('ok') + ' ' + h.agent.status + '</div>' +
+        '</div>' +
+        '<div class="health-card">' +
+        '<div class="health-label">Uptime</div>' +
+        '<div class="health-value">' + h.agent.uptime_hours + 'h</div>' +
+        '</div>' +
+        '<div class="health-card">' +
+        '<div class="health-label">Last backup</div>' +
+        '<div class="health-value">' + timeAgo(h.backup.last) + '</div>' +
+        '</div>' +
+        '<div class="health-card">' +
+        '<div class="health-label">Model</div>' +
+        '<div class="health-value" style="font-size:0.8rem;">' + h.model + '</div>' +
+        '</div>';
+
+      // Cron list
+      const cronHTML = h.crons.map(c =>
+        '<div style="display:flex;gap:8px;align-items:center;padding:3px 0;">' +
+        statusIcon(c.status) + ' ' + c.name + ' ,  next: ' + c.next +
+        '</div>'
+      ).join('');
+      document.getElementById('cron-list').innerHTML = cronHTML;
+
+    } catch(e) {
+      document.body.innerHTML = '<div style="text-align:center;padding:80px 20px;font-family:sans-serif;"><h2 style="color:#174445;">Snowark</h2><p style="color:rgba(0,0,0,0.5);margin-top:12px;">Dashboard loading ,  data will appear shortly.</p><p style="color:rgba(0,0,0,0.35);font-size:0.85rem;">' + e.message + '</p></div>';
+    }
+  }
+
+  await load();
+  setInterval(load, 30000);
+})();
+</script>
+
+</body>
+</html>
