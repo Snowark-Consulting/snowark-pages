@@ -1796,7 +1796,7 @@
         <canvas id="brain-canvas"></canvas>
       </div>
 
-      <p class="dk-close">That is what fuels value from week one. Not an off-the-shelf chatbot. A structure honed across multiple businesses, earning its keep before it ever touches yours.</p>
+      <p class="dk-close">This is your AI chief of staff's brain on day one. Every point is something it understands: a platform, a workflow, a constraint. The threads are relationships it has mapped. That interconnected context lets it make decisions across your whole business, not answer one question at a time.</p>
     </div>
   </div>
 </section>
@@ -2608,7 +2608,7 @@
 
     var cx = W / 2, cy = H / 2;
 
-    // Layer 1: bright foreground — varied orbital radii, mixed depth
+    // Layer 1: bright foreground, varied orbital radii, mixed depth
     for (var i = 0; i < 18; i++) {
       var angle = Math.random() * Math.PI * 2;
       var dist = centerRand(Math.min(W, H) * 0.38);
@@ -2627,7 +2627,7 @@
       });
     }
 
-    // Layer 2: mid-depth — wider spread, deeper orbits
+    // Layer 2: mid-depth, wider spread, deeper orbits
     for (var i = 0; i < 16; i++) {
       var angle = Math.random() * Math.PI * 2;
       var dist = 0.15 + Math.random() * 0.42;
@@ -2648,7 +2648,7 @@
       });
     }
 
-    // Layer 3: background — wide halo, far depth
+    // Layer 3: background, wide halo, far depth
     for (var i = 0; i < 22; i++) {
       var angle = Math.random() * Math.PI * 2;
       var dist = 0.35 + Math.random() * 0.5;
@@ -2706,7 +2706,7 @@
       ctx.stroke();
     });
 
-    // Nodes — sort by depth (far first, near last)
+    // Nodes, sorted by depth (far first, near last)
     var sorted = nodes.slice().sort(function(a, b) { return (a._depth||0) - (b._depth||0); });
     sorted.forEach(function(n) {
       var alpha = n.baseAlpha * (0.75 + 0.25 * Math.sin(time * n.speed + n.phase));
