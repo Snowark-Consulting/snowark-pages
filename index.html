@@ -99,6 +99,43 @@
 
     .lead { font-size: 1.15rem; line-height: 1.7; margin-top: 24px; }
 
+    /* ══════════════ Definition: AI chief of staff ══════════════ */
+    .definition { padding: 140px 0 100px; }
+    .def-word {
+      font-family: var(--font-heading);
+      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+      color: #0e2929;
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+    .def-pronunciation {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: rgba(14, 41, 41, 0.42);
+      margin-bottom: 48px;
+    }
+    .def-pos {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.95rem;
+      color: rgba(14, 41, 41, 0.5);
+      margin-bottom: 36px;
+    }
+    .def-senses { display: flex; flex-direction: column; gap: 36px; max-width: 720px; }
+    .def-sense {
+      font-family: var(--font-body);
+      font-size: 1.08rem;
+      line-height: 1.7;
+      color: rgba(14, 41, 41, 0.82);
+    }
+    .def-sense strong { color: #0e2929; font-weight: 700; }
+    .def-num {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      color: var(--green);
+      margin-right: 8px;
+    }
+
     /* Light card default; dark-sec overrides */
     .glass {
       background: var(--white);
@@ -1246,7 +1283,23 @@
   <div class="scroll-cue" aria-hidden="true"></div>
 </section>
 
-<!-- ═══════════════ 1b. STACK MARQUEE ═══════════════ -->
+<!-- ═══════════════ 1b. AI CHIEF OF STAFF (definition) ═══════════════ -->
+<section class="definition" id="definition">
+  <div class="container">
+    <div class="narrow">
+      <div class="def-word reveal">AI chief of staff</div>
+      <div class="def-pronunciation reveal">/ˌeɪˌaɪ tʃiːf əv stɑːf/</div>
+      <div class="def-pos reveal">noun</div>
+      <div class="def-senses">
+        <div class="def-sense reveal"><span class="def-num">1</span><strong>Protects attention.</strong> Filters signal from noise. Triages the inbox, surfaces what matters, handles the rest silently.</div>
+        <div class="def-sense reveal"><span class="def-num">2</span><strong>Drives execution.</strong> Chases quotes, briefs meetings, builds dashboards, ships pages. The operational layer that keeps a business moving.</div>
+        <div class="def-sense reveal"><span class="def-num">3</span><strong>Catches what falls.</strong> The thousand micro-decisions that don't need the founder's judgment but do need someone's. Nothing slips.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 1c. STACK MARQUEE ═══════════════ -->
 <section class="stack-marquee" aria-label="Platforms your agent connects to">
   <p class="eyebrow">Connects to the tools you already run</p>
   <div class="m-row left">
