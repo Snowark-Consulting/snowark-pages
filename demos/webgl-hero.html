@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snowark | Your AI business partner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal: #174445;
+      --green: #0d8f64;
+      --warm: #e9e7e3;
+      --green-lift: #4cc296;
+      --heading-ink: #0e2929;
+      --font-heading: 'Cambo', Georgia, serif;
+      --font-body: 'Lato', -apple-system, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: linear-gradient(180deg, #0d2d2e 0%, #123a3b 40%, #0f3031 70%, #0d2d2e 100%);
+    }
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    /* Static fallback: visible before JS loads and when JS is disabled */
+    .hero-fallback {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.15;
+    }
+    .hero-fallback svg { width: 100%; height: 100%; max-width: 800px; }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 720px;
+      padding: 40px 24px;
+    }
+    .hero-content h1 {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: clamp(2.2rem, 5.5vw, 4rem);
+      line-height: 1.08;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .hero-content p {
+      color: rgba(233,231,227,0.78);
+      font-size: 1.1rem;
+      max-width: 560px;
+      margin: 0 auto 32px;
+    }
+    .hero-content .badge {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--green-lift);
+      margin-bottom: 16px;
+      padding: 6px 16px;
+      border: 1px solid rgba(76,194,150,0.3);
+      border-radius: 100px;
+    }
+    .hero-content .btn {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .hero-content .btn:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.35); }
+
+    /* ── Feature strip ── */
+    .feature-strip {
+      background: #fff;
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .feature-strip h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      color: var(--heading-ink);
+      margin-bottom: 40px;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 32px;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+    .feature-card {
+      background: var(--warm);
+      border-radius: 12px;
+      padding: 32px 24px;
+      text-align: left;
+    }
+    .feature-card .eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+    .feature-card h3 {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--heading-ink);
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      color: rgba(0,0,0,0.65);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (prefers-reduced-motion) {
+      #hero-canvas { display: none; }
+      .hero-fallback { opacity: 0.25; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     HERO: WebGL 3D geometric network
+     ══════════════════════════════════════════════ -->
+<section class="hero">
+  <!-- Static SVG fallback (visible with JS disabled or reduced-motion) -->
+  <noscript>
+    <div class="hero-fallback">
+      <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+        <defs><radialGradient id="fg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#0d8f64" stop-opacity="0.4"/><stop offset="100%" stop-color="#0d8f64" stop-opacity="0"/></radialGradient></defs>
+        <rect width="800" height="600" fill="url(#fg)"/>
+        <g stroke="white" stroke-width="0.8" opacity="0.15"><line x1="0" y1="150" x2="800" y2="150"/><line x1="0" y1="300" x2="800" y2="300"/><line x1="0" y1="450" x2="800" y2="450"/><line x1="200" y1="0" x2="200" y2="600"/><line x1="400" y1="0" x2="400" y2="600"/><line x1="600" y1="0" x2="600" y2="600"/></g>
+        <g fill="white" opacity="0.35"><circle cx="200" cy="150" r="4"/><circle cx="400" cy="150" r="5"/><circle cx="600" cy="150" r="4"/><circle cx="200" cy="300" r="5"/><circle cx="400" cy="300" r="6"/><circle cx="600" cy="300" r="5"/><circle cx="200" cy="450" r="4"/><circle cx="400" cy="450" r="5"/><circle cx="600" cy="450" r="4"/></g>
+        <g fill="#0d8f64" opacity="0.5"><circle cx="400" cy="300" r="5"/><circle cx="200" cy="150" r="4"/><circle cx="600" cy="450" r="4"/></g>
+      </svg>
+    </div>
+  </noscript>
+  <div class="hero-fallback" id="hero-fallback" aria-hidden="true">
+    <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+      <defs><radialGradient id="fg2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#0d8f64" stop-opacity="0.4"/><stop offset="100%" stop-color="#0d8f64" stop-opacity="0"/></radialGradient></defs>
+      <rect width="800" height="600" fill="url(#fg2)"/>
+      <g stroke="white" stroke-width="0.8" opacity="0.15"><line x1="0" y1="150" x2="800" y2="150"/><line x1="0" y1="300" x2="800" y2="300"/><line x1="0" y1="450" x2="800" y2="450"/><line x1="200" y1="0" x2="200" y2="600"/><line x1="400" y1="0" x2="400" y2="600"/><line x1="600" y1="0" x2="600" y2="600"/></g>
+      <g fill="white" opacity="0.35"><circle cx="200" cy="150" r="4"/><circle cx="400" cy="150" r="5"/><circle cx="600" cy="150" r="4"/><circle cx="200" cy="300" r="5"/><circle cx="400" cy="300" r="6"/><circle cx="600" cy="300" r="5"/><circle cx="200" cy="450" r="4"/><circle cx="400" cy="450" r="5"/><circle cx="600" cy="450" r="4"/></g>
+      <g fill="#0d8f64" opacity="0.5"><circle cx="400" cy="300" r="5"/><circle cx="200" cy="150" r="4"/><circle cx="600" cy="450" r="4"/></g>
+    </svg>
+  </div>
+  <canvas id="hero-canvas"></canvas>
+
+  <div class="hero-content">
+    <div class="badge">WebGL Prototype</div>
+    <h1>Your AI business partner,<br>deployed in days</h1>
+    <p>A persistent, context-rich agent that connects to your tools, learns how you operate, and gets to work. Operations handled, costs cut, growth compounding.</p>
+    <a href="#" class="btn">Let's talk</a>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     Feature cards (scroll past the hero to see it)
+     ══════════════════════════════════════════════ -->
+<section class="feature-strip">
+  <h2>What the model represents</h2>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="eyebrow">Core</div>
+      <h3>The agent</h3>
+      <p>A wireframe icosahedron at the centre — solid, transparent, always processing. The shape you build around.</p>
+    </div>
+    <div class="feature-card">
+      <div class="eyebrow">Orbit</div>
+      <h3>Your tools</h3>
+      <p>Two rings of nodes representing the platforms your agent connects to. 18+ platforms, one agent.</p>
+    </div>
+    <div class="feature-card">
+      <div class="eyebrow">Pulses</div>
+      <h3>Context flowing</h3>
+      <p>Green particles traveling along connections — data, decisions, insights moving between your agent and your stack.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     THRE.JS SCENE
+     ══════════════════════════════════════════════ -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+// ── Scene setup ──
+const canvas = document.getElementById('hero-canvas');
+const hero = document.querySelector('.hero');
+const fallback = document.getElementById('hero-fallback');
+
+// Respect reduced motion
+const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+if (mq.matches) {
+  canvas.style.display = 'none';
+  fallback.style.opacity = '0.25';
+  throw new Error('Reduced motion — using static fallback');
+}
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x000000, 0);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+camera.position.z = 18;
+
+// ── Lighting ──
+scene.add(new THREE.AmbientLight(0x2a7f80, 0.6));
+const keyLight = new THREE.PointLight(0xffffff, 1.2, 30);
+keyLight.position.set(5, 3, 8);
+scene.add(keyLight);
+const accentLight = new THREE.PointLight(0x0d8f64, 1.5, 20);
+accentLight.position.set(-6, -2, 4);
+scene.add(accentLight);
+
+// ── Core: Wireframe icosahedron (the agent) ──
+const coreGeo = new THREE.IcosahedronGeometry(2.2, 2);
+const coreMat = new THREE.MeshPhysicalMaterial({
+  color: 0x2a7f80,
+  metalness: 0.1,
+  roughness: 0.3,
+  transparent: true,
+  opacity: 0.75,
+  wireframe: false,
+});
+const core = new THREE.Mesh(coreGeo, coreMat);
+
+// Wireframe overlay
+const wireGeo = new THREE.IcosahedronGeometry(2.25, 2);
+const wireMat = new THREE.MeshBasicMaterial({
+  color: 0xffffff,
+  wireframe: true,
+  transparent: true,
+  opacity: 0.12,
+});
+const wireframe = new THREE.Mesh(wireGeo, wireMat);
+core.add(wireframe);
+scene.add(core);
+
+// ── Inner glow sphere ──
+const glowGeo = new THREE.SphereGeometry(1.0, 32, 32);
+const glowMat = new THREE.ShaderMaterial({
+  uniforms: {
+    uTime: { value: 0 },
+    uColor: { value: new THREE.Color('#4cc296') },
+  },
+  vertexShader: /* glsl */ `
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    void main() {
+      vNormal = normalize(normalMatrix * normal);
+      vPosition = position;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  fragmentShader: /* glsl */ `
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    uniform float uTime;
+    uniform vec3 uColor;
+    void main() {
+      float intensity = pow(0.65 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.5);
+      float pulse = 0.85 + 0.15 * sin(uTime * 0.002 + vPosition.y * 1.5);
+      gl_FragColor = vec4(uColor, intensity * 0.55 * pulse);
+    }
+  `,
+  transparent: true,
+  depthWrite: false,
+});
+const glowSphere = new THREE.Mesh(glowGeo, glowMat);
+scene.add(glowSphere);
+
+// ── Orbiting nodes (two rings) ──
+const orbitNodes = [];
+const innerRing = [];
+const outerRing = [];
+const innerCount = 8;
+const outerCount = 12;
+const innerRadius = 4.5;
+const outerRadius = 7.0;
+
+function createNode(color = 0xffffff, size = 0.12) {
+  const geo = new THREE.SphereGeometry(size, 16, 16);
+  const mat = new THREE.MeshStandardMaterial({
+    color,
+    roughness: 0.2,
+    metalness: 0.1,
+    emissive: color,
+    emissiveIntensity: 0.3,
+  });
+  return new THREE.Mesh(geo, mat);
+}
+
+// Inner ring (white, smaller)
+for (let i = 0; i < innerCount; i++) {
+  const angle = (Math.PI * 2 * i) / innerCount;
+  const node = createNode(0xffffff, 0.1);
+  node.userData = { angle, radius: innerRadius, baseY: 0, ring: 'inner' };
+  innerRing.push(node);
+  orbitNodes.push(node);
+  scene.add(node);
+}
+
+// Outer ring (teal-soft, slightly larger)
+for (let i = 0; i < outerCount; i++) {
+  const angle = (Math.PI * 2 * i) / outerCount + (Math.PI / outerCount) * 0.5; // offset from inner
+  const node = createNode(0x7fb8b9, 0.11);
+  node.userData = { angle, radius: outerRadius, baseY: 0, ring: 'outer' };
+  outerRing.push(node);
+  orbitNodes.push(node);
+  scene.add(node);
+}
+
+// ── Green accent nodes (3, on the outer ring, spaced) ──
+const accentNodes = [];
+const accentIndices = [2, 6, 10]; // evenly spaced
+for (const idx of accentIndices) {
+  const angle = outerRing[idx].userData.angle;
+  const node = createNode(0x4cc296, 0.16);
+  node.userData = { angle, radius: outerRadius, baseY: 0, ring: 'accent' };
+  accentNodes.push(node);
+  orbitNodes.push(node);
+  scene.add(node);
+}
+
+// ── Connection lines from core to each node ──
+const connectionLines = [];
+function createConnectionLine() {
+  const geo = new THREE.BufferGeometry();
+  const positions = new Float32Array([0, 0, 0, 0, 0, 0]);
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const mat = new THREE.LineBasicMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0.12,
+    depthWrite: false,
+  });
+  return { line: new THREE.Line(geo, mat), positions };
+}
+
+orbitNodes.forEach(() => {
+  const conn = createConnectionLine();
+  connectionLines.push(conn);
+  scene.add(conn.line);
+});
+
+// ── Particle pulses along connections ──
+const particles = [];
+const maxParticles = 30;
+const particleGeo = new THREE.SphereGeometry(0.04, 8, 8);
+const particleMat = new THREE.MeshBasicMaterial({
+  color: 0x4cc296,
+  transparent: true,
+  opacity: 0.9,
+  depthWrite: false,
+});
+
+function spawnParticle() {
+  const targetNode = orbitNodes[Math.floor(Math.random() * orbitNodes.length)];
+  const particle = new THREE.Mesh(particleGeo, particleMat.clone());
+  particle.userData = {
+    progress: 0,
+    speed: 0.003 + Math.random() * 0.006,
+    targetNode,
+    fromCore: Math.random() > 0.5,
+  };
+  scene.add(particle);
+  particles.push(particle);
+
+  // Remove old particles
+  while (particles.length > maxParticles) {
+    const old = particles.shift();
+    scene.remove(old);
+    old.material.dispose();
+  }
+}
+
+// ── Resize handler ──
+function resize() {
+  const rect = hero.getBoundingClientRect();
+  const w = rect.width;
+  const h = rect.height;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / Math.max(h, 1);
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', resize);
+resize();
+
+// ── Mouse parallax ──
+let mouseX = 0, mouseY = 0;
+let targetMX = 0, targetMY = 0;
+hero.addEventListener('mousemove', (e) => {
+  const rect = hero.getBoundingClientRect();
+  targetMX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+  targetMY = -((e.clientY - rect.top) / rect.height - 0.5) * 2;
+});
+hero.addEventListener('mouseleave', () => { targetMX = 0; targetMY = 0; });
+
+// ── Animation loop ──
+const clock = new THREE.Clock();
+let assemblyProgress = 0; // 0→1 on page load
+
+function animate(timestamp) {
+  requestAnimationFrame(animate);
+
+  const dt = Math.min(clock.getDelta(), 0.1);
+  const elapsed = timestamp;
+
+  // Smooth assembly on load
+  assemblyProgress = Math.min(1, assemblyProgress + dt * 0.8);
+
+  // Smooth mouse
+  mouseX += (targetMX - mouseX) * 0.04;
+  mouseY += (targetMY - mouseY) * 0.04;
+
+  // Rotate core
+  const coreSpeed = 0.15;
+  core.rotation.x += dt * coreSpeed * 0.5;
+  core.rotation.y += dt * coreSpeed;
+  core.rotation.z += dt * coreSpeed * 0.3;
+  glowSphere.rotation.copy(core.rotation);
+
+  // Update glow uniform
+  glowMat.uniforms.uTime.value = elapsed;
+
+  // Position orbiting nodes
+  orbitNodes.forEach((node) => {
+    const { angle, radius, baseY } = node.userData;
+    // Slow orbit rotation
+    const orbitSpeed = node.userData.ring === 'outer' ? 0.12 : 0.18;
+    const currentAngle = angle + elapsed * 0.0003 * orbitSpeed;
+
+    const assembledX = Math.cos(currentAngle) * radius;
+    const assembledZ = Math.sin(currentAngle) * radius;
+    const assembledY = baseY + Math.sin(currentAngle * 2 + angle) * 0.4;
+
+    // Start position: scattered outward
+    const scatterAngle = angle * 3;
+    const scatterX = Math.cos(scatterAngle) * radius * 2.5;
+    const scatterY = (Math.random() - 0.5) * 8;
+    const scatterZ = Math.sin(scatterAngle) * radius * 2.5;
+
+    // Lerp from scattered to assembled
+    const p = assemblyProgress;
+    node.position.x = scatterX + (assembledX - scatterX) * easeOutCubic(p);
+    node.position.y = scatterY + (assembledY - scatterY) * easeOutCubic(p);
+    node.position.z = scatterZ + (assembledZ - scatterZ) * easeOutCubic(p);
+  });
+
+  // Update connection lines
+  connectionLines.forEach((conn, i) => {
+    if (i >= orbitNodes.length) return;
+    const node = orbitNodes[i];
+    conn.positions[3] = node.position.x;
+    conn.positions[4] = node.position.y;
+    conn.positions[5] = node.position.z;
+    conn.line.geometry.attributes.position.needsUpdate = true;
+  });
+
+  // Spawn particles
+  if (assemblyProgress > 0.5 && Math.random() < 0.15) {
+    spawnParticle();
+  }
+
+  // Animate particles
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.userData.progress += p.userData.speed;
+
+    if (p.userData.progress >= 1) {
+      scene.remove(p);
+      p.material.dispose();
+      particles.splice(i, 1);
+      continue;
+    }
+
+    const t = p.userData.progress;
+    const node = p.userData.targetNode;
+    const start = p.userData.fromCore ? new THREE.Vector3(0, 0, 0) : node.position.clone();
+    const end = p.userData.fromCore ? node.position.clone() : new THREE.Vector3(0, 0, 0);
+
+    p.position.lerpVectors(start, end, t);
+    p.material.opacity = t < 0.1 ? t * 10 : t > 0.8 ? (1 - t) * 5 : 1;
+  }
+
+  // Camera parallax
+  camera.position.x = mouseX * 2.5;
+  camera.position.y = mouseY * 1.5;
+  camera.lookAt(0, 0, 0);
+
+  renderer.render(scene, camera);
+
+  // Hide fallback once WebGL is running
+  if (assemblyProgress > 0.2 && fallback.style.display !== 'none') {
+    fallback.style.display = 'none';
+  }
+}
+
+function easeOutCubic(t) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
+// Start
+requestAnimationFrame(animate);
+</script>
+
+</body>
+</html>
