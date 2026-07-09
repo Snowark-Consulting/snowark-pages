@@ -1189,9 +1189,9 @@
       border-radius: 20px;
       overflow: hidden;
       background: #081416;
-      border: 2px solid rgba(42,127,128,0.3);
+      border: 2px solid rgba(42,127,128,0.35);
       box-shadow:
-        inset 0 0 100px rgba(13,143,100,0.1),
+        inset 0 0 100px rgba(13,143,100,0.12),
         0 0 0 8px rgba(8,20,22,0.6),
         0 0 0 9px rgba(42,127,128,0.12),
         0 4px 40px rgba(8,20,22,0.5);
@@ -1201,18 +1201,9 @@
       position: absolute;
       inset: 4px;
       border-radius: 14px;
-      border: 1px solid rgba(233,231,227,0.06);
+      border: 1px solid rgba(233,231,227,0.08);
       pointer-events: none;
       z-index: 2;
-    }
-    .brain-graph::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 20px;
-      background: radial-gradient(ellipse at center, transparent 65%, rgba(8,20,22,0.35) 100%);
-      pointer-events: none;
-      z-index: 1;
     }
     .brain-graph canvas {
       width: 100%;
@@ -2660,9 +2651,9 @@
         if (Math.abs(a.z - b.z) > 0.2) return;
         var dx = a.x - b.x, dy = a.y - b.y;
         var dist = Math.sqrt(dx*dx + dy*dy);
-        var maxDist = a.z < 0.3 ? 130 : 200;
+        var maxDist = a.z < 0.3 ? 150 : 220;
         if (dist < maxDist) {
-          links.push({ a: ai, b: bi, alpha: (1 - dist/maxDist) * 0.18 * (1 - a.z) });
+          links.push({ a: ai, b: bi, alpha: (1 - dist/maxDist) * 0.35 * (1 - a.z) });
         }
       });
     });
@@ -2672,9 +2663,9 @@
     ctx.clearRect(0, 0, W, H);
 
     // Subtle ambient glow at centre
-    var ambGrd = ctx.createRadialGradient(W/2, H/2, W*0.05, W/2, H/2, W*0.45);
-    ambGrd.addColorStop(0, rgba(GREEN_LIFT, 0.1));
-    ambGrd.addColorStop(0.5, rgba(GREEN, 0.04));
+    var ambGrd = ctx.createRadialGradient(W/2, H/2, W*0.03, W/2, H/2, W*0.5);
+    ambGrd.addColorStop(0, rgba(GREEN_LIFT, 0.15));
+    ambGrd.addColorStop(0.4, rgba(GREEN, 0.06));
     ambGrd.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = ambGrd;
     ctx.fillRect(0, 0, W, H);
@@ -2685,8 +2676,8 @@
       ctx.beginPath();
       ctx.moveTo(a.x, a.y);
       ctx.lineTo(b.x, b.y);
-      ctx.strokeStyle = rgba(MIST, l.alpha * 0.55);
-      ctx.lineWidth = 0.5;
+      ctx.strokeStyle = rgba(MIST, l.alpha * 0.7);
+      ctx.lineWidth = 0.6;
       ctx.stroke();
     });
 
