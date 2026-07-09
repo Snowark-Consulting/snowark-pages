@@ -1139,6 +1139,115 @@
     .letter-sig img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
     .letter-sig .name { font-family: var(--font-heading); font-size: 1.15rem; color: #0e2929; display: block; }
     .letter-sig .role { display: block; font-size: 0.8rem; color: rgba(14, 41, 41, 0.6); margin-top: 2px; }
+
+    /* ══════════════ Deploy Kit ══════════════ */
+    .deploy-kit { position: relative; overflow: hidden; }
+    .brain-net {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .brain-net .bn { transition: transform 8s ease-in-out; }
+    .brain-net .bn.n1 { animation: drift1 14s ease-in-out infinite; }
+    .brain-net .bn.n2 { animation: drift2 16s ease-in-out infinite; }
+    .brain-net .bn.n3 { animation: drift3 13s ease-in-out infinite; }
+    .brain-net .bn.n4 { animation: drift4 18s ease-in-out infinite; }
+    .brain-net .bn.n5 { animation: drift1 15s ease-in-out infinite; }
+    .brain-net .bn.n6 { animation: drift2 17s ease-in-out infinite; }
+    .brain-net .bn.n7 { animation: drift3 12s ease-in-out infinite; }
+    .brain-net .bn.n8 { animation: drift4 19s ease-in-out infinite; }
+    .brain-net .bn.n9 { animation: drift1 16s ease-in-out infinite; }
+    .brain-net .bn.n10 { animation: drift2 14s ease-in-out infinite; }
+    .brain-net .bn.n11 { animation: drift3 20s ease-in-out infinite; }
+    .brain-net .bn.n12 { animation: drift4 15s ease-in-out infinite; }
+    .brain-net .bn.n13 { animation: drift1 17s ease-in-out infinite; }
+    .brain-net .bn.n14 { animation: drift2 13s ease-in-out infinite; }
+    .brain-net .bn.n15 { animation: drift3 18s ease-in-out infinite; }
+    .brain-net .bn.n16 { animation: drift4 14s ease-in-out infinite; }
+    .brain-net .bn.n17 { animation: drift1 12s ease-in-out infinite; }
+    .brain-net .bn.n18 { animation: drift2 19s ease-in-out infinite; }
+    .brain-net .bn.n19 { animation: drift3 15s ease-in-out infinite; }
+    .brain-net .bn.n20 { animation: drift4 16s ease-in-out infinite; }
+    .brain-net .bn.n21 { animation: drift1 14s ease-in-out infinite; }
+    .brain-net .bn.n22 { animation: drift2 18s ease-in-out infinite; }
+    .brain-net .bn.n23 { animation: drift3 13s ease-in-out infinite; }
+    .brain-net .bn.n24 { animation: drift4 17s ease-in-out infinite; }
+    .brain-net .bn.n25 { animation: drift1 19s ease-in-out infinite; }
+    .brain-net .bn.n26 { animation: drift2 12s ease-in-out infinite; }
+    .brain-net .bn.n27 { animation: drift3 16s ease-in-out infinite; }
+    .brain-net .bn.n28 { animation: drift4 18s ease-in-out infinite; }
+    .brain-net .bn.n1g { animation: drift1 14s ease-in-out infinite; }
+    .brain-net .bn.n3g { animation: drift2 15s ease-in-out infinite; }
+    .brain-net .bn.n4g { animation: drift3 17s ease-in-out infinite; }
+    @keyframes drift1 {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(6px, -8px); }
+      50% { transform: translate(-4px, -12px); }
+      75% { transform: translate(-8px, 4px); }
+    }
+    @keyframes drift2 {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(-7px, 5px); }
+      50% { transform: translate(-10px, -3px); }
+      75% { transform: translate(3px, 9px); }
+    }
+    @keyframes drift3 {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(8px, 3px); }
+      50% { transform: translate(2px, 10px); }
+      75% { transform: translate(-5px, -6px); }
+    }
+    @keyframes drift4 {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(-4px, -6px); }
+      50% { transform: translate(7px, -2px); }
+      75% { transform: translate(3px, 7px); }
+    }
+    .deploy-kit > .container { position: relative; z-index: 1; }
+    .dk-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 28px;
+      margin-top: 56px;
+    }
+    .dk-card {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0,0,0,0.05);
+      border-radius: 14px;
+      padding: 32px 28px;
+      position: relative;
+    }
+    .dk-icon { margin-bottom: 18px; width: 40px; height: 40px; }
+    .dk-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      color: #0e2929;
+      margin-bottom: 10px;
+      font-weight: 400;
+    }
+    .dk-card p {
+      font-size: 0.93rem;
+      line-height: 1.65;
+      color: rgba(14, 41, 41, 0.72);
+      max-width: none;
+    }
+    .dk-close {
+      max-width: 680px;
+      margin: 48px auto 0;
+      text-align: center;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: rgba(14, 41, 41, 0.65);
+      font-style: italic;
+    }
+    @media (max-width: 900px) {
+      .dk-grid { grid-template-columns: 1fr; gap: 20px; }
+    }
     @media (max-width: 900px) {
       .returns-grid { grid-template-columns: 1fr; }
       .fit-cols { grid-template-columns: 1fr; }
@@ -1582,6 +1691,115 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 6b. DEPLOY KIT ═══════════════ -->
+<section class="deploy-kit" id="deploy-kit">
+  <svg class="brain-net" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <radialGradient id="node-glow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="var(--green)" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="var(--green)" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <!-- Connections -->
+    <g stroke="rgba(14,41,41,0.07)" stroke-width="0.7" class="brain-links">
+      <line x1="180" y1="140" x2="340" y2="90"/>
+      <line x1="180" y1="140" x2="120" y2="280"/>
+      <line x1="180" y1="140" x2="310" y2="300"/>
+      <line x1="340" y1="90" x2="520" y2="60"/>
+      <line x1="340" y1="90" x2="500" y2="200"/>
+      <line x1="520" y1="60" x2="680" y2="120"/>
+      <line x1="520" y1="60" x2="640" y2="260"/>
+      <line x1="680" y1="120" x2="840" y2="80"/>
+      <line x1="680" y1="120" x2="760" y2="280"/>
+      <line x1="840" y1="80" x2="1000" y2="150"/>
+      <line x1="840" y1="80" x2="960" y2="300"/>
+      <line x1="1000" y1="150" x2="1100" y2="280"/>
+      <line x1="310" y1="300" x2="500" y2="380"/>
+      <line x1="310" y1="300" x2="140" y2="420"/>
+      <line x1="500" y1="380" x2="640" y2="440"/>
+      <line x1="500" y1="380" x2="420" y2="520"/>
+      <line x1="640" y1="440" x2="760" y2="480"/>
+      <line x1="640" y1="440" x2="580" y2="560"/>
+      <line x1="760" y1="480" x2="900" y2="440"/>
+      <line x1="760" y1="480" x2="820" y2="580"/>
+      <line x1="900" y1="440" x2="1050" y2="420"/>
+      <line x1="120" y1="280" x2="70" y2="420"/>
+      <line x1="140" y1="420" x2="250" y2="540"/>
+      <line x1="250" y1="540" x2="420" y2="520"/>
+      <line x1="420" y1="520" x2="580" y2="560"/>
+      <line x1="580" y1="560" x2="700" y2="540"/>
+      <line x1="820" y1="580" x2="960" y2="540"/>
+      <line x1="960" y1="540" x2="1080" y2="560"/>
+      <line x1="500" y1="200" x2="640" y2="260"/>
+      <line x1="200" y1="380" x2="310" y2="300"/>
+      <line x1="900" y1="300" x2="1000" y2="150"/>
+    </g>
+    <!-- Nodes -->
+    <g>
+      <!-- Large hubs (white/teal) -->
+      <circle cx="180" cy="140" r="7" fill="var(--teal)" class="bn n1"><animate attributeName="opacity" values="0.7;1;0.7" dur="5.2s" repeatCount="indefinite"/></circle>
+      <circle cx="520" cy="60" r="6" fill="rgba(233,231,227,0.9)" class="bn n2"/>
+      <circle cx="310" cy="300" r="6.5" fill="var(--green)" class="bn n3"><animate attributeName="opacity" values="0.6;1;0.6" dur="4.8s" repeatCount="indefinite"/></circle>
+      <circle cx="640" cy="440" r="5.5" fill="var(--teal)" class="bn n4"/>
+      <circle cx="900" cy="440" r="6" fill="rgba(233,231,227,0.85)" class="bn n5"><animate attributeName="opacity" values="0.65;1;0.65" dur="6.1s" repeatCount="indefinite"/></circle>
+      <circle cx="420" cy="520" r="5" fill="var(--green)" class="bn n6"/>
+      <circle cx="680" cy="120" r="5.5" fill="var(--teal)" class="bn n7"/>
+      <!-- Medium nodes -->
+      <circle cx="340" cy="90" r="3.5" fill="rgba(14,41,41,0.5)" class="bn n8"/>
+      <circle cx="120" cy="280" r="4" fill="rgba(14,41,41,0.45)" class="bn n9"/>
+      <circle cx="500" cy="200" r="3.5" fill="var(--green)" class="bn n10"/>
+      <circle cx="500" cy="380" r="4" fill="rgba(14,41,41,0.5)" class="bn n11"/>
+      <circle cx="760" cy="280" r="3" fill="rgba(14,41,41,0.4)" class="bn n12"/>
+      <circle cx="760" cy="480" r="4" fill="var(--teal)" class="bn n13"/>
+      <circle cx="840" cy="80" r="3.5" fill="rgba(14,41,41,0.5)" class="bn n14"/>
+      <circle cx="1000" cy="150" r="4" fill="rgba(233,231,227,0.7)" class="bn n15"/>
+      <circle cx="960" cy="300" r="3" fill="rgba(14,41,41,0.4)" class="bn n16"/>
+      <circle cx="1100" cy="280" r="3.5" fill="var(--green)" class="bn n17"/>
+      <circle cx="1050" cy="420" r="3" fill="rgba(14,41,41,0.45)" class="bn n18"/>
+      <circle cx="580" cy="560" r="4" fill="rgba(14,41,41,0.5)" class="bn n19"/>
+      <circle cx="820" cy="580" r="3" fill="rgba(14,41,41,0.4)" class="bn n20"/>
+      <circle cx="960" cy="540" r="3.5" fill="var(--teal)" class="bn n21"/>
+      <!-- Small peripheral nodes -->
+      <circle cx="70" cy="420" r="2" fill="rgba(14,41,41,0.3)" class="bn n22"/>
+      <circle cx="140" cy="420" r="2.5" fill="rgba(14,41,41,0.35)" class="bn n23"/>
+      <circle cx="250" cy="540" r="2" fill="rgba(14,41,41,0.3)" class="bn n24"/>
+      <circle cx="200" cy="380" r="2.5" fill="rgba(14,41,41,0.35)" class="bn n25"/>
+      <circle cx="640" cy="260" r="2.5" fill="rgba(14,41,41,0.35)" class="bn n26"/>
+      <circle cx="700" cy="540" r="2" fill="rgba(14,41,41,0.3)" class="bn n27"/>
+      <circle cx="1080" cy="560" r="2" fill="rgba(14,41,41,0.3)" class="bn n28"/>
+      <!-- Glow rings on major hubs -->
+      <circle cx="180" cy="140" r="16" fill="url(#node-glow)" class="bn n1g"><animate attributeName="opacity" values="0.5;1;0.5" dur="5.2s" repeatCount="indefinite"/></circle>
+      <circle cx="310" cy="300" r="14" fill="url(#node-glow)" class="bn n3g"><animate attributeName="opacity" values="0.4;0.9;0.4" dur="4.8s" repeatCount="indefinite"/></circle>
+      <circle cx="640" cy="440" r="12" fill="url(#node-glow)" class="bn n4g"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="6.5s" repeatCount="indefinite"/></circle>
+    </g>
+  </svg>
+  <div class="container">
+    <p class="eyebrow reveal">How it works from day one</p>
+    <h2 class="reveal">A deploy kit, not a blank slate.</h2>
+    <p class="lead reveal">Every agent I deploy runs on the same operating system. Over 6 months and multiple deployments, I have refined the structure that gives an agent its map, the instructions that tell it how to use your tools, and the learnings that keep it from repeating mistakes its predecessors already made. This is the IP I bring.</p>
+
+    <div class="dk-grid">
+      <div class="dk-card reveal">
+        <div class="dk-icon" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="12" r="3" fill="var(--green)"/><circle cx="12" cy="24" r="2.5" fill="var(--teal)"/><circle cx="28" cy="26" r="2" fill="rgba(14,41,41,0.5)"/><circle cx="20" cy="32" r="2" fill="rgba(14,41,41,0.35)"/><path d="M20 15 L12 24 M20 15 L28 26 M12 24 L20 32 M28 26 L20 32" stroke="rgba(14,41,41,0.15)" stroke-width="0.8"/></svg></div>
+        <h3>The map</h3>
+        <p>A pre-built understanding of business structure: the constraints, the platforms, the workflows that repeat. Your agent doesn't start from zero. It knows what to look for.</p>
+      </div>
+      <div class="dk-card reveal">
+        <div class="dk-icon" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="24" rx="3" stroke="var(--green)" stroke-width="1.2" fill="none"/><path d="M8 16 L32 16" stroke="var(--green)" stroke-width="0.7" opacity="0.4"/><path d="M14 8 L14 32" stroke="var(--teal)" stroke-width="0.7" opacity="0.4"/><circle cx="22" cy="12" r="2.5" fill="var(--teal)"/><path d="M14 22 L24 22 M14 26 L20 26" stroke="rgba(14,41,41,0.3)" stroke-width="1" stroke-linecap="round"/></svg></div>
+        <h3>The instructions</h3>
+        <p>Hard-won patterns for working inside your actual stack. How to triage a Shopify order. When to flag a Meta campaign. Where to look in Xero. Not integrations. Institutional knowledge.</p>
+      </div>
+      <div class="dk-card reveal">
+        <div class="dk-icon" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M8 28 L20 12 L32 28" stroke="var(--green)" stroke-width="1" fill="none"/><circle cx="12" cy="14" r="2" fill="rgba(14,41,41,0.2)"/><circle cx="28" cy="18" r="2" fill="rgba(14,41,41,0.2)"/><circle cx="14" cy="24" r="2.5" fill="var(--teal)"/><circle cx="26" cy="22" r="3" fill="var(--green)"/><path d="M14 24 L26 22" stroke="var(--green)" stroke-width="0.5" opacity="0.6"/></svg></div>
+        <h3>The learnings</h3>
+        <p>Every agent I deploy contributes back. When one discovers a better way to handle a recurring problem, the kit updates. The next agent deploys smarter than the last.</p>
+      </div>
+    </div>
+
+    <p class="dk-close reveal">That is what fuels value from week one. Not an off-the-shelf chatbot. A structure honed across multiple businesses, earning its keep before it ever touches yours.</p>
   </div>
 </section>
 
