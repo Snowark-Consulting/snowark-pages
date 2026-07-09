@@ -1185,12 +1185,43 @@
       margin: 48px auto 0;
       max-width: 700px;
       width: 100%;
-      border-radius: 16px;
+      position: relative;
+      border-radius: 20px;
       overflow: hidden;
-      background: linear-gradient(180deg, #0d1f20 0%, #0b2021 50%, #0e2628 100%);
-      box-shadow: inset 0 0 80px rgba(13,143,100,0.08);
+      background: #081416;
+      border: 2px solid rgba(42,127,128,0.3);
+      box-shadow:
+        inset 0 0 100px rgba(13,143,100,0.1),
+        0 0 0 8px rgba(8,20,22,0.6),
+        0 0 0 9px rgba(42,127,128,0.12),
+        0 4px 40px rgba(8,20,22,0.5);
     }
-    .brain-graph canvas { width: 100%; height: auto; display: block; aspect-ratio: 2.5/1; }
+    .brain-graph::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(233,231,227,0.06);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .brain-graph::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      background: radial-gradient(ellipse at center, transparent 55%, rgba(8,20,22,0.6) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .brain-graph canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      aspect-ratio: 2.5/1;
+      position: relative;
+      z-index: 0;
+    }
     .dk-close {
       max-width: 640px;
       margin: 32px auto 0;
@@ -2533,12 +2564,14 @@
   var nodes = [], links = [];
   var mouseX = 0.5, mouseY = 0.5, targetMX = 0.5, targetMY = 0.5;
   var time = 0;
+  var running = false;
 
-  // Colours
-  var TEAL = [23,68,69];
-  var GREEN = [13,143,100];
-  var MIST = [233,231,227];
-  var DIM = [14,41,41];
+  // Brighter brand palette
+  var GREEN = [13,143,100];       // #0d8f64
+  var GREEN_LIFT = [76,194,150];  // #4cc296
+  var TEAL_LIFT = [42,127,128];   // #2a7f80
+  var MIST = [233,231,227];       // #e9e7e3
+  var WHITE = [255,255,255];
 
   function rgba(rgb, a) { return 'rgba('+rgb.join(',')+','+a+')'; }
 
@@ -2546,6 +2579,7 @@
     var rect = canvas.parentNode.getBoundingClientRect();
     W = rect.width;
     H = Math.round(W / 2.5);
+    if (H < 1) H = 280;
     canvas.width = W * dpr;
     canvas.height = H * dpr;
     canvas.style.width = W + 'px';
@@ -2553,43 +2587,82 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
+  // Gaussian-ish random: bias toward center
+  function centerRand(range) {
+    return (Math.random() + Math.random() + Math.random()) / 3 * range;
+  }
+
   function init() {
     resize();
     nodes = [];
     links = [];
 
-    // Create nodes at 3 depth layers
-    var layers = [
-      { z: 0, count: 14, rMin: 2, rMax: 5, alpha: 0.85, colors: [TEAL, GREEN, MIST] },
-      { z: 0.5, count: 10, rMin: 1.5, rMax: 3.5, alpha: 0.5, colors: [TEAL, DIM] },
-      { z: 0.8, count: 10, rMin: 1, rMax: 2.5, alpha: 0.3, colors: [DIM, TEAL] }
-    ];
+    var cx = W / 2, cy = H / 2;
 
-    layers.forEach(function(l) {
-      for (var i = 0; i < l.count; i++) {
-        nodes.push({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          z: l.z,
-          r: l.rMin + Math.random() * (l.rMax - l.rMin),
-          baseAlpha: l.alpha,
-          color: l.colors[Math.floor(Math.random() * l.colors.length)],
-          phase: Math.random() * Math.PI * 2,
-          speed: 0.3 + Math.random() * 0.7
-        });
-      }
-    });
+    // Layer 1: bright foreground — clustered toward centre
+    for (var i = 0; i < 18; i++) {
+      var angle = Math.random() * Math.PI * 2;
+      var dist = centerRand(Math.min(W, H) * 0.38);
+      nodes.push({
+        x: cx + Math.cos(angle) * dist,
+        y: cy + Math.sin(angle) * dist * 0.6,
+        ox: cx + Math.cos(angle) * dist,
+        oy: cy + Math.sin(angle) * dist * 0.6,
+        z: 0,
+        r: 2.2 + Math.random() * 3.8,
+        baseAlpha: 0.7 + Math.random() * 0.3,
+        color: Math.random() < 0.5 ? GREEN_LIFT : MIST,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.2 + Math.random() * 0.6
+      });
+    }
 
-    // Create links within same depth layer
+    // Layer 2: mid-depth — wider spread
+    for (var i = 0; i < 14; i++) {
+      var angle = Math.random() * Math.PI * 2;
+      var dist = 0.15 + Math.random() * 0.42;
+      nodes.push({
+        x: cx + Math.cos(angle) * dist * W * 0.5,
+        y: cy + Math.sin(angle) * dist * H * 0.5,
+        ox: cx + Math.cos(angle) * dist * W * 0.5,
+        oy: cy + Math.sin(angle) * dist * H * 0.5,
+        z: 0.5,
+        r: 1.5 + Math.random() * 2.5,
+        baseAlpha: 0.35 + Math.random() * 0.25,
+        color: Math.random() < 0.6 ? TEAL_LIFT : GREEN,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.15 + Math.random() * 0.4
+      });
+    }
+
+    // Layer 3: background — wide halo
+    for (var i = 0; i < 20; i++) {
+      var angle = Math.random() * Math.PI * 2;
+      var dist = 0.35 + Math.random() * 0.5;
+      nodes.push({
+        x: cx + Math.cos(angle) * dist * W * 0.5,
+        y: cy + Math.sin(angle) * dist * H * 0.5,
+        ox: cx + Math.cos(angle) * dist * W * 0.5,
+        oy: cy + Math.sin(angle) * dist * H * 0.5,
+        z: 0.85,
+        r: 1 + Math.random() * 1.8,
+        baseAlpha: 0.15 + Math.random() * 0.15,
+        color: TEAL_LIFT,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.1 + Math.random() * 0.3
+      });
+    }
+
+    // Links: connect nearby nodes within same layer
     nodes.forEach(function(a, ai) {
       nodes.forEach(function(b, bi) {
         if (bi <= ai) return;
-        if (Math.abs(a.z - b.z) > 0.15) return;
+        if (Math.abs(a.z - b.z) > 0.2) return;
         var dx = a.x - b.x, dy = a.y - b.y;
         var dist = Math.sqrt(dx*dx + dy*dy);
-        var maxDist = a.z < 0.3 ? 160 : 200;
+        var maxDist = a.z < 0.3 ? 130 : 200;
         if (dist < maxDist) {
-          links.push({ a: ai, b: bi, alpha: (1 - dist/maxDist) * 0.25 * (1 - a.z) });
+          links.push({ a: ai, b: bi, alpha: (1 - dist/maxDist) * 0.18 * (1 - a.z) });
         }
       });
     });
@@ -2598,38 +2671,54 @@
   function draw() {
     ctx.clearRect(0, 0, W, H);
 
-    // Draw links
+    // Subtle ambient glow at centre
+    var ambGrd = ctx.createRadialGradient(W/2, H/2, W*0.05, W/2, H/2, W*0.45);
+    ambGrd.addColorStop(0, rgba(GREEN, 0.06));
+    ambGrd.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = ambGrd;
+    ctx.fillRect(0, 0, W, H);
+
+    // Links
     links.forEach(function(l) {
       var a = nodes[l.a], b = nodes[l.b];
-      var za = 1 - a.z * 0.7;
-      var zb = 1 - b.z * 0.7;
       ctx.beginPath();
       ctx.moveTo(a.x, a.y);
       ctx.lineTo(b.x, b.y);
-      ctx.strokeStyle = rgba(MIST, l.alpha * 0.5);
-      ctx.lineWidth = 0.5;
+      ctx.strokeStyle = rgba(MIST, l.alpha * 0.4);
+      ctx.lineWidth = 0.4;
       ctx.stroke();
     });
 
-    // Draw nodes (sorted by z for depth order)
+    // Nodes — back to front
     var sorted = nodes.slice().sort(function(a, b) { return a.z - b.z; });
     sorted.forEach(function(n) {
-      // Glow for foreground nodes
-      if (n.z < 0.2 && n.r > 3) {
-        var grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 3.5);
-        grd.addColorStop(0, rgba(GREEN, 0.2));
-        grd.addColorStop(0.5, rgba(GREEN, 0.05));
+      var alpha = n.baseAlpha * (0.75 + 0.25 * Math.sin(time * n.speed + n.phase));
+
+      // Glow for foreground
+      if (n.z < 0.2 && n.r > 2.5) {
+        var grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 4);
+        grd.addColorStop(0, rgba(GREEN_LIFT, 0.25));
+        grd.addColorStop(0.4, rgba(GREEN, 0.08));
         grd.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r * 3.5, 0, Math.PI * 2);
+        ctx.arc(n.x, n.y, n.r * 4, 0, Math.PI * 2);
         ctx.fillStyle = grd;
         ctx.fill();
       }
 
+      // Node body
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-      ctx.fillStyle = rgba(n.color, n.baseAlpha * (0.7 + 0.3 * Math.sin(time * n.speed + n.phase)));
+      ctx.fillStyle = rgba(n.color, alpha);
       ctx.fill();
+
+      // Bright inner core for foreground
+      if (n.z < 0.2) {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r * 0.45, 0, Math.PI * 2);
+        ctx.fillStyle = rgba(WHITE, alpha * 0.5);
+        ctx.fill();
+      }
     });
   }
 
@@ -2639,29 +2728,21 @@
     targetMY = mouseY;
 
     nodes.forEach(function(n) {
-      // Autonomous drift
-      var driftX = Math.sin(time * 0.4 * n.speed + n.phase) * 0.3;
-      var driftY = Math.cos(time * 0.35 * n.speed + n.phase + 1) * 0.3;
+      // Subtle autonomous drift around origin
+      var driftX = Math.sin(time * 0.3 * n.speed + n.phase) * 0.25;
+      var driftY = Math.cos(time * 0.25 * n.speed + n.phase + 1) * 0.25;
 
-      // Parallax based on depth
-      var px = (targetMX - 0.5) * 30 * (1 - n.z);
-      var py = (targetMY - 0.5) * 30 * (1 - n.z);
+      // Parallax
+      var px = (targetMX - 0.5) * 20 * (1 - n.z);
+      var py = (targetMY - 0.5) * 20 * (1 - n.z);
 
-      n.x += driftX + (px - (n._px || n.x)) * 0.05;
-      n.y += driftY + (py - (n._py || n.y)) * 0.05;
-
-      // Wrap
-      if (n.x < -20) n.x = W + 20;
-      if (n.x > W + 20) n.x = -20;
-      if (n.y < -20) n.y = H + 20;
-      if (n.y > H + 20) n.y = -20;
-
-      n._px = n.x;
-      n._py = n.y;
+      n.x += (n.ox + driftX + px - n.x) * 0.04;
+      n.y += (n.oy + driftY + py - n.y) * 0.04;
     });
   }
 
   function loop(ts) {
+    if (!running) return;
     var dt = Math.min((ts - (loop._last || ts)) / 1000, 0.1);
     loop._last = ts;
     update(dt);
@@ -2678,12 +2759,14 @@
 
   window.addEventListener('resize', function() { resize(); init(); });
 
-  // Start when visible
+  // Start when visible, stop when not
   var obs = new IntersectionObserver(function(entries) {
-    if (entries[0].isIntersecting) {
+    if (entries[0].isIntersecting && !running) {
       init();
+      running = true;
       requestAnimationFrame(loop);
-      obs.disconnect();
+    } else if (!entries[0].isIntersecting && running) {
+      running = false;
     }
   }, { threshold: 0.1 });
   obs.observe(canvas);
