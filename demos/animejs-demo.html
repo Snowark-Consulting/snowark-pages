@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anime.js + Snowark Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal: #174445;
+      --green: #0d8f64;
+      --warm: #e9e7e3;
+      --ink: #0b2021;
+      --ink-2: #0e2628;
+      --teal-lift: #2a7f80;
+      --teal-soft: #7fb8b9;
+      --green-lift: #4cc296;
+      --heading-ink: #0e2929;
+      --font-heading: 'Cambo', Georgia, serif;
+      --font-body: 'Lato', -apple-system, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: var(--font-body); font-size: 16px; line-height: 1.7; color: #000; background: #fff; scroll-behavior: smooth; }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      background: linear-gradient(180deg, #0d2d2e 0%, #123a3b 50%, #0d2d2e 100%);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 720px;
+      padding: 40px 24px;
+    }
+    .hero-content h1 {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: clamp(2.2rem, 5.5vw, 4rem);
+      line-height: 1.08;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .hero-content p {
+      color: rgba(233,231,227,0.78);
+      font-size: 1.1rem;
+      max-width: 560px;
+      margin: 0 auto 32px;
+    }
+    .hero-content .badge {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--green-lift);
+      margin-bottom: 16px;
+      padding: 6px 16px;
+      border: 1px solid rgba(76,194,150,0.3);
+      border-radius: 100px;
+    }
+    /* anime.js morphing node styles */
+    .morph-node {
+      cursor: default;
+      transition: filter 0.3s;
+    }
+
+    /* ── Feature Section (scroll assembly demo) ── */
+    .scroll-section {
+      position: relative;
+      background: var(--warm);
+      padding: 0;
+    }
+    .scroll-stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .scroll-stage svg {
+      width: 100%;
+      height: 100%;
+      max-width: 800px;
+      max-height: 600px;
+    }
+    .scroll-text-track {
+      position: relative;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .scroll-text-slide {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .scroll-text-slide .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 40px 48px;
+      max-width: 480px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      pointer-events: auto;
+    }
+    .scroll-text-slide .card h3 {
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--heading-ink);
+      margin-bottom: 8px;
+    }
+    .scroll-text-slide .card .eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+    .scroll-text-slide .card p {
+      color: rgba(0,0,0,0.7);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* ── Bottom ── */
+    .footer-cta {
+      background: #fff;
+      text-align: center;
+      padding: 80px 24px;
+    }
+    .footer-cta h2 {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      line-height: 1.15;
+      color: var(--heading-ink);
+      margin-bottom: 12px;
+    }
+    .footer-cta p {
+      color: rgba(0,0,0,0.6);
+      margin-bottom: 24px;
+    }
+
+    @media (prefers-reduced-motion) {
+      .morph-node { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 1: Hero with anime.js morphing nodes
+     ══════════════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <svg id="hero-svg" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <radialGradient id="g1" cx="30%" cy="20%" r="50%">
+        <stop offset="0%" stop-color="#0d8f64" stop-opacity="0.4"/>
+        <stop offset="100%" stop-color="#0d8f64" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="g2" cx="75%" cy="60%" r="40%">
+        <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.2"/>
+        <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="1200" height="600" fill="url(#g1)"/>
+    <rect width="1200" height="600" fill="url(#g2)"/>
+
+    <!-- Grid lines -->
+    <g stroke="white" stroke-width="0.8" opacity="0.15">
+      <line x1="0" y1="120" x2="1200" y2="120"/>
+      <line x1="0" y1="240" x2="1200" y2="240"/>
+      <line x1="0" y1="360" x2="1200" y2="360"/>
+      <line x1="0" y1="480" x2="1200" y2="480"/>
+      <line x1="300" y1="0" x2="300" y2="600"/>
+      <line x1="600" y1="0" x2="600" y2="600"/>
+      <line x1="900" y1="0" x2="900" y2="600"/>
+    </g>
+
+    <!-- Connection paths -->
+    <g id="paths-group" stroke="white" stroke-width="0.8" opacity="0.12" fill="none">
+      <path d="M200,120 Q325,180 450,240"/>
+      <path d="M450,240 Q575,300 700,120"/>
+      <path d="M700,120 Q825,240 950,360"/>
+      <path d="M150,360 Q250,420 350,480"/>
+      <path d="M350,480 Q450,420 550,480"/>
+      <path d="M550,480 Q600,420 650,360"/>
+      <path d="M850,240 Q900,300 950,360"/>
+      <path d="M450,240 Q500,360 550,480"/>
+      <path d="M650,360 Q750,360 850,240"/>
+      <path d="M350,480 Q500,300 700,120"/>
+    </g>
+
+    <!-- ══════════════════════════════════════
+         MORPHING NODES (anime.js powered)
+         These nodes subtly morph between circle, hexagon, diamond shapes
+         ══════════════════════════════════════ -->
+    <g id="morph-nodes-group" fill="white" opacity="0.5">
+      <!-- Primary nodes - each has a polygon that anime.js will morph -->
+      <polygon class="morph-node" id="mn1" points="196,120 200,116 204,120 200,124" data-shape="circle" data-cx="200" data-cy="120" data-r="4"/>
+      <polygon class="morph-node" id="mn2" points="445,240 450,235 455,240 450,245" data-shape="circle" data-cx="450" data-cy="240" data-r="5"/>
+      <polygon class="morph-node" id="mn3" points="696,120 700,116 704,120 700,124" data-shape="circle" data-cx="700" data-cy="120" data-r="4"/>
+      <polygon class="morph-node" id="mn4" points="945,360 950,355 955,360 950,365" data-shape="circle" data-cx="950" data-cy="360" data-r="5"/>
+      <polygon class="morph-node" id="mn5" points="146,360 150,356 154,360 150,364" data-shape="circle" data-cx="150" data-cy="360" data-r="4"/>
+      <polygon class="morph-node" id="mn6" points="545,480 550,475 555,480 550,485" data-shape="circle" data-cx="550" data-cy="480" data-r="5"/>
+      <polygon class="morph-node" id="mn7" points="845,240 850,235 855,240 850,245" data-shape="circle" data-cx="850" data-cy="240" data-r="4"/>
+      <polygon class="morph-node" id="mn8" points="345,480 350,475 355,480 350,485" data-shape="circle" data-cx="350" data-cy="480" data-r="5"/>
+      <polygon class="morph-node" id="mn9" points="1046,120 1050,116 1054,120 1050,124" data-shape="circle" data-cx="1050" data-cy="120" data-r="4"/>
+      <polygon class="morph-node" id="mn10" points="646,360 650,355 654,360 650,365" data-shape="circle" data-cx="650" data-cy="360" data-r="4"/>
+    </g>
+
+    <!-- Green accent morphing nodes -->
+    <g id="accent-morph-nodes" fill="#0d8f64" opacity="0.6">
+      <polygon class="morph-node accent" id="ma1" points="445,240 450,235 455,240 450,245" data-shape="circle" data-cx="450" data-cy="240" data-r="5"/>
+      <polygon class="morph-node accent" id="ma2" points="345,480 350,475 355,480 350,485" data-shape="circle" data-cx="350" data-cy="480" data-r="5"/>
+      <polygon class="morph-node accent" id="ma3" points="945,360 950,355 955,360 950,365" data-shape="circle" data-cx="950" data-cy="360" data-r="5"/>
+    </g>
+
+    <!-- Glow effects -->
+    <g id="glow-group">
+      <circle cx="450" cy="240" r="120" fill="url(#g1)"/>
+      <circle cx="350" cy="480" r="100" fill="url(#g1)"/>
+    </g>
+  </svg>
+
+  <div class="hero-content">
+    <div class="badge">Prototype</div>
+    <h1>Your agent deployed in days,<br>not months</h1>
+    <p>A persistent, context-rich business partner that connects to your tools, learns how you operate, and gets to work. We deploy it. We run it. You get your nights back.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 2: Scroll-assembly (anime.js ScrollObserver)
+     ══════════════════════════════════════════════ -->
+<section class="scroll-section" id="scroll-demo">
+  <!-- Fixed SVG canvas layer -->
+  <div class="scroll-stage" id="scroll-stage">
+    <svg id="assembly-svg" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+      <!-- Grid lines -->
+      <g stroke="#174445" stroke-width="0.6" opacity="0.06">
+        <line x1="0" y1="150" x2="800" y2="150"/>
+        <line x1="0" y1="300" x2="800" y2="300"/>
+        <line x1="0" y1="450" x2="800" y2="450"/>
+        <line x1="200" y1="0" x2="200" y2="600"/>
+        <line x1="400" y1="0" x2="400" y2="600"/>
+        <line x1="600" y1="0" x2="600" y2="600"/>
+      </g>
+      <!-- Paths connecting nodes -->
+      <g id="asm-paths" stroke="#0d8f64" stroke-width="1" opacity="0.1" fill="none">
+        <path d="M200,150 Q300,200 400,150"/>
+        <path d="M400,150 Q500,200 600,150"/>
+        <path d="M200,150 Q300,300 400,450"/>
+        <path d="M600,150 Q500,300 400,450"/>
+        <path d="M200,300 Q300,350 400,300"/>
+        <path d="M400,300 Q500,350 600,300"/>
+        <path d="M200,300 Q300,450 400,450"/>
+        <path d="M600,300 Q500,450 400,450"/>
+        <path d="M400,150 Q400,275 400,300"/>
+        <path d="M400,300 Q400,375 400,450"/>
+      </g>
+      <!-- Assembly nodes - scattered initially, assemble as you scroll -->
+      <g id="asm-nodes" fill="#174445">
+        <!-- Row 1 -->
+        <circle id="an1" cx="200" cy="150" r="6"/>
+        <circle id="an2" cx="300" cy="150" r="5"/>
+        <circle id="an3" cx="400" cy="150" r="7"/>
+        <circle id="an4" cx="500" cy="150" r="5"/>
+        <circle id="an5" cx="600" cy="150" r="6"/>
+        <!-- Row 2 -->
+        <circle id="an6" cx="200" cy="300" r="5"/>
+        <circle id="an7" cx="300" cy="300" r="4"/>
+        <circle id="an8" cx="400" cy="300" r="6"/>
+        <circle id="an9" cx="500" cy="300" r="4"/>
+        <circle id="an10" cx="600" cy="300" r="5"/>
+        <!-- Row 3 -->
+        <circle id="an11" cx="200" cy="450" r="6"/>
+        <circle id="an12" cx="300" cy="450" r="5"/>
+        <circle id="an13" cx="400" cy="450" r="7"/>
+        <circle id="an14" cx="500" cy="450" r="5"/>
+        <circle id="an15" cx="600" cy="450" r="6"/>
+      </g>
+      <!-- Green accent node (center, assembles last) -->
+      <g id="asm-accent" fill="#0d8f64">
+        <circle id="an-center" cx="400" cy="300" r="8" opacity="0"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Scrolling text track (behind the fixed SVG) -->
+  <div class="scroll-text-track" id="text-track">
+    <div class="scroll-text-slide" data-step="0">
+      <div class="card">
+        <div class="eyebrow">Step one</div>
+        <h3>Map your operations</h3>
+        <p>We learn your workflows, your tools, and where the friction lives. We research your stack before we even meet.</p>
+      </div>
+    </div>
+    <div class="scroll-text-slide" data-step="1">
+      <div class="card">
+        <div class="eyebrow">Step two</div>
+        <h3>Configure your agent</h3>
+        <p>Your agent is wired into your tools, trained on your context, and calibrated to how you actually work.</p>
+      </div>
+    </div>
+    <div class="scroll-text-slide" data-step="2">
+      <div class="card">
+        <div class="eyebrow">Step three</div>
+        <h3>Run and refine</h3>
+        <p>Operations handled, costs cut, growth compounding. We run the agent. You get your nights back.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     Bottom CTA
+     ══════════════════════════════════════════════ -->
+<section class="footer-cta">
+  <h2>This is what anime.js brings to Snowark</h2>
+  <p>SVG morphing (free), scroll-assembly patterns, spring physics. All without replacing GSAP.</p>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SCRIPTS
+     ══════════════════════════════════════════════ -->
+<script type="module">
+  // ── Import anime.js modules ──
+  import { animate, stagger, createTimer, createTimeline } from 'https://cdn.jsdelivr.net/npm/animejs@4.5.0/+esm';
+  import { spring } from 'https://cdn.jsdelivr.net/npm/animejs@4.5.0/easings/spring/+esm';
+
+  // ═══════════════════════════════════════════
+  // 1. HERO: Morphing nodes (continuous autonomous cycle)
+  // ═══════════════════════════════════════════
+
+  // Helper: generate polygon points for a shape centered at (cx, cy)
+  function circlePoints(cx, cy, r, segments = 12) {
+    const pts = [];
+    for (let i = 0; i < segments; i++) {
+      const angle = (Math.PI * 2 * i) / segments;
+      pts.push(`${(cx + Math.cos(angle) * r).toFixed(1)},${(cy + Math.sin(angle) * r).toFixed(1)}`);
+    }
+    return pts.join(' ');
+  }
+
+  function hexPoints(cx, cy, r) {
+    const pts = [];
+    for (let i = 0; i < 6; i++) {
+      const angle = (Math.PI * 2 * i) / 6 - Math.PI / 6;
+      pts.push(`${(cx + Math.cos(angle) * r).toFixed(1)},${(cy + Math.sin(angle) * r).toFixed(1)}`);
+    }
+    return pts.join(' ');
+  }
+
+  function diamondPoints(cx, cy, r) {
+    return `${cx},${cy - r} ${cx + r},${cy} ${cx},${cy + r} ${cx - r},${cy}`;
+  }
+
+  // Each morphing node cycles: circle → hexagon → diamond → circle
+  const morphNodes = document.querySelectorAll('.morph-node');
+  const morphShapes = ['circle', 'hexagon', 'diamond', 'circle'];
+
+  morphNodes.forEach((node, i) => {
+    const cx = parseFloat(node.dataset.cx);
+    const cy = parseFloat(node.dataset.cy);
+    const r = parseFloat(node.dataset.r);
+    const shapes = {
+      circle: circlePoints(cx, cy, r),
+      hexagon: hexPoints(cx, cy, r),
+      diamond: diamondPoints(cx, cy, r)
+    };
+
+    let currentShape = 0;
+
+    function morphNext() {
+      currentShape = (currentShape + 1) % morphShapes.length;
+      const target = morphShapes[currentShape];
+      const duration = 3000 + Math.random() * 2000; // 3-5s per morph
+
+      animate(node, {
+        points: shapes[target],
+        duration,
+        ease: 'inOut(3)',
+        onComplete: () => {
+          // Pause before next morph
+          setTimeout(morphNext, 800 + Math.random() * 1500);
+        }
+      });
+    }
+
+    // Staggered start
+    setTimeout(morphNext, i * 400);
+  });
+
+  // ═══════════════════════════════════════════
+  // 2. SCROLL ASSEMBLY: Nodes assemble as you scroll
+  // ═══════════════════════════════════════════
+
+  const asmNodes = document.querySelectorAll('#asm-nodes circle');
+  const asmAccent = document.querySelector('#an-center');
+  const asmPaths = document.querySelectorAll('#asm-paths path');
+
+  // Initial state: nodes scattered outward
+  // They'll animate INWARD (from scattered) as scroll progresses
+  animate(asmNodes, {
+    scale: [0.15, 1],
+    opacity: [0.2, 1],
+    duration: 1000,
+    ease: 'out(3)',
+    autoplay: false
+  });
+
+  // Paths draw in
+  animate(asmPaths, {
+    strokeDashoffset: [anime => anime.setDashoffset, 0],
+    opacity: [0.02, 0.15],
+    duration: 1000,
+    ease: 'inOut(2)',
+    autoplay: false
+  });
+
+  // Center accent node appears last
+  animate(asmAccent, {
+    scale: [0, 1.3, 1],
+    opacity: [0, 0.8, 0.7],
+    duration: 800,
+    ease: spring(1, 100, 10),
+    autoplay: false
+  });
+
+  // Track scroll position within the scroll-demo section
+  const scrollSection = document.getElementById('scroll-demo');
+  const textTrack = document.getElementById('text-track');
+
+  function updateScrollAssembly() {
+    const rect = scrollSection.getBoundingClientRect();
+    const sectionTop = rect.top;
+    const sectionHeight = rect.height;
+    const viewportH = window.innerHeight;
+
+    // Progress: 0 when section enters viewport, 1 when fully scrolled through
+    const totalScroll = sectionHeight - viewportH;
+    if (totalScroll <= 0) return;
+
+    const progress = Math.max(0, Math.min(1, -sectionTop / totalScroll));
+
+    // Phase 1 (0-33%): Nodes start assembling
+    const nodeProgress = Math.max(0, Math.min(1, progress / 0.5));
+
+    asmNodes.forEach((node, i) => {
+      // Stagger: center nodes assemble first
+      const staggerAmount = stagger(i, { grid: [5, 3], from: 'center' });
+      const nodeP = Math.max(0, Math.min(1, (nodeProgress - staggerAmount * 0.5) * 2));
+      node.style.transform = `scale(${0.15 + nodeP * 0.85})`;
+      node.style.opacity = 0.2 + nodeP * 0.8;
+    });
+
+    // Paths draw in during phase 1
+    asmPaths.forEach(path => {
+      path.style.opacity = 0.02 + nodeProgress * 0.13;
+    });
+
+    // Phase 2 (50-70%): Center accent pulse
+    const accentProgress = Math.max(0, Math.min(1, (progress - 0.5) / 0.2));
+    asmAccent.style.opacity = accentProgress * 0.7;
+    asmAccent.style.transform = `scale(${accentProgress})`;
+
+    // Phase 3 (70-100%): Subtle breathing on full assembly
+    if (progress > 0.7) {
+      const breathe = 1 + Math.sin(progress * 20) * 0.02;
+      asmAccent.style.transform = `scale(${breathe})`;
+    }
+  }
+
+  window.addEventListener('scroll', updateScrollAssembly, { passive: true });
+  updateScrollAssembly();
+</script>
+
+</body>
+</html>
