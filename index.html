@@ -1185,8 +1185,12 @@
       margin: 48px auto 0;
       max-width: 700px;
       width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #0d1f20 0%, #0b2021 50%, #0e2628 100%);
+      box-shadow: inset 0 0 80px rgba(13,143,100,0.08);
     }
-    .brain-graph svg { width: 100%; height: auto; display: block; }
+    .brain-graph canvas { width: 100%; height: auto; display: block; aspect-ratio: 2.5/1; }
     .dk-close {
       max-width: 640px;
       margin: 32px auto 0;
@@ -1203,6 +1207,7 @@
     }
 
     /* ══════════════ Pricing ══════════════ */
+    .pricing-single { max-width: 640px; margin: 48px auto 0; }
     .pricing-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1767,68 +1772,7 @@
       </div>
 
       <div class="brain-graph" aria-hidden="true">
-        <svg viewBox="0 0 800 320" preserveAspectRatio="xMidYMid meet">
-          <defs>
-            <radialGradient id="bn-glow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="var(--green)" stop-opacity="0.25"/>
-              <stop offset="100%" stop-color="var(--green)" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <!-- Connections -->
-          <g stroke="rgba(14,41,41,0.1)" stroke-width="0.6">
-            <line x1="180" y1="100" x2="280" y2="60"/>
-            <line x1="180" y1="100" x2="140" y2="180"/>
-            <line x1="180" y1="100" x2="270" y2="190"/>
-            <line x1="280" y1="60" x2="400" y2="50"/>
-            <line x1="280" y1="60" x2="390" y2="150"/>
-            <line x1="400" y1="50" x2="520" y2="90"/>
-            <line x1="400" y1="50" x2="510" y2="200"/>
-            <line x1="520" y1="90" x2="620" y2="70"/>
-            <line x1="520" y1="90" x2="600" y2="190"/>
-            <line x1="270" y1="190" x2="390" y2="260"/>
-            <line x1="270" y1="190" x2="140" y2="270"/>
-            <line x1="390" y1="260" x2="510" y2="290"/>
-            <line x1="390" y1="260" x2="340" y2="310"/>
-            <line x1="510" y1="290" x2="600" y2="300"/>
-            <line x1="140" y1="180" x2="80" y2="260"/>
-            <line x1="390" y1="150" x2="510" y2="200"/>
-            <line x1="620" y1="70" x2="720" y2="120"/>
-            <line x1="620" y1="70" x2="690" y2="200"/>
-            <line x1="720" y1="120" x2="760" y2="200"/>
-          </g>
-          <!-- Nodes -->
-          <g>
-            <circle cx="180" cy="100" r="6" fill="var(--teal)" class="bn-hub"><animate attributeName="opacity" values="0.7;1;0.7" dur="5s" repeatCount="indefinite"/></circle>
-            <circle cx="180" cy="100" r="14" fill="url(#bn-glow)" class="bn-hub"><animate attributeName="opacity" values="0.5;1;0.5" dur="5s" repeatCount="indefinite"/></circle>
-            <circle cx="400" cy="50" r="5" fill="rgba(233,231,227,0.9)"/>
-            <circle cx="270" cy="190" r="5.5" fill="var(--green)"><animate attributeName="opacity" values="0.6;1;0.6" dur="4.5s" repeatCount="indefinite"/></circle>
-            <circle cx="520" cy="90" r="4.5" fill="var(--teal)"/>
-            <circle cx="390" cy="260" r="4" fill="var(--green)"/>
-            <circle cx="620" cy="70" r="4.5" fill="rgba(233,231,227,0.8)"/>
-            <circle cx="510" cy="290" r="4" fill="var(--teal)"/>
-            <circle cx="720" cy="120" r="3.5" fill="rgba(14,41,41,0.5)"/>
-            <circle cx="280" cy="60" r="3" fill="rgba(14,41,41,0.45)"/>
-            <circle cx="140" cy="180" r="3" fill="rgba(14,41,41,0.4)"/>
-            <circle cx="390" cy="150" r="3" fill="var(--green)"/>
-            <circle cx="510" cy="200" r="3" fill="rgba(14,41,41,0.45)"/>
-            <circle cx="600" cy="190" r="3" fill="rgba(14,41,41,0.4)"/>
-            <circle cx="140" cy="270" r="2.5" fill="rgba(14,41,41,0.35)"/>
-            <circle cx="340" cy="310" r="2.5" fill="rgba(14,41,41,0.35)"/>
-            <circle cx="600" cy="300" r="2.5" fill="rgba(14,41,41,0.35)"/>
-            <circle cx="80" cy="260" r="2" fill="rgba(14,41,41,0.3)"/>
-            <circle cx="690" cy="200" r="2" fill="rgba(14,41,41,0.3)"/>
-            <circle cx="760" cy="200" r="2" fill="rgba(14,41,41,0.3)"/>
-            <!-- Small peripheral -->
-            <circle cx="230" cy="40" r="1.5" fill="rgba(14,41,41,0.25)"/>
-            <circle cx="100" cy="120" r="1.5" fill="rgba(14,41,41,0.25)"/>
-            <circle cx="330" cy="130" r="1.5" fill="rgba(14,41,41,0.25)"/>
-            <circle cx="460" cy="230" r="1.5" fill="rgba(14,41,41,0.25)"/>
-            <circle cx="210" cy="260" r="1.5" fill="rgba(14,41,41,0.25)"/>
-            <circle cx="560" cy="260" r="1.5" fill="rgba(14,41,41,0.25)"/>
-            <circle cx="660" cy="140" r="1.5" fill="rgba(14,41,41,0.25)"/>
-            <circle cx="740" cy="240" r="1.5" fill="rgba(14,41,41,0.25)"/>
-          </g>
-        </svg>
+        <canvas id="brain-canvas"></canvas>
       </div>
 
       <p class="dk-close">That is what fuels value from week one. Not an off-the-shelf chatbot. A structure honed across multiple businesses, earning its keep before it ever touches yours.</p>
@@ -1881,7 +1825,7 @@
 <section id="returns" class="warm">
   <div class="container">
     <p class="eyebrow reveal">Where the value lands</p>
-    <h2 class="reveal">An agent earns its keep three ways.</h2>
+    <h2 class="reveal">An AI chief of staff earns its keep three ways.</h2>
     <p class="lead reveal">Admin relief is the obvious one. It’s also the smallest. A well-placed agent works all three at once.</p>
     <div class="returns-grid">
       <div class="return-card glass spot reveal">
@@ -1963,7 +1907,7 @@
     <p class="proof-context reveal">Every placement is its own agent, with its own memory and its own context. What they share is the infrastructure proven at AFS Group across Shopify, HubSpot, GA4, Meta Ads, Google Ads, Asana, NetSuite, and more. Built by someone who runs P&amp;Ls, not by someone who sells AI.</p>
 
     <div class="proof-cta reveal">
-      <a href="#contact" class="btn btn-primary">Place my agent</a>
+      <a href="#contact" class="btn btn-primary">Place my AI chief of staff</a>
     </div>
   </div>
 </section>
@@ -2000,43 +1944,25 @@
 <section id="pricing">
   <div class="container">
     <p class="eyebrow reveal">Investment</p>
-    <h2 class="reveal">Two ways to work together.</h2>
-    <p class="lead reveal">I don't publish set prices. Every business is at a different stage, with different constraints. Have a conversation first. You'll get a proper number, in writing, within 48 hours. Here's how it works.</p>
+    <h2 class="reveal">How we work together.</h2>
+    <p class="lead reveal">Pricing is based on a needs analysis. Every business is at a different stage, with different constraints. I don't publish set rates, but here's how the engagement works.</p>
 
-    <div class="pricing-grid">
-      <div class="price-card reveal">
-        <p class="price-tag">One-off</p>
-        <p class="price-model">Diagnostic audit</p>
-        <p class="price-range">From $2,500 AUD</p>
-        <p class="price-desc">A focused engagement that maps your operations, identifies the single biggest constraint on your growth, and delivers a written brief with a deployment plan. You walk away with clarity whether we work together further or not.</p>
-        <p class="price-best">Best for: Businesses that know AI can help but aren't sure where to point it. Also for founders who want to test the working relationship before committing to a retainer.</p>
+    <div class="pricing-single reveal">
+      <div class="price-card">
+        <p class="price-model">Fractional AI chief of staff</p>
+        <p class="price-desc">Every engagement begins with an audit: I map your operations, identify the single biggest constraint on your growth, and deliver a written deployment brief. From there, I deploy and operate an agent inside your business month to month, widening its capability as its context builds.</p>
         <ul class="price-list">
-          <li>Full stack and workflow audit</li>
-          <li>Constraint analysis (awareness, conversion, or operations)</li>
-          <li>Written deployment brief with recommendations</li>
-          <li>90-minute readout call</li>
-        </ul>
-        <a href="#contact" class="btn btn-primary" style="margin-top:24px;">Book a chat</a>
-      </div>
-      <div class="price-card price-featured reveal">
-        <p class="price-badge">Most common</p>
-        <p class="price-tag">Monthly</p>
-        <p class="price-model">Fractional agent</p>
-        <p class="price-range">From $3,500 AUD / month</p>
-        <p class="price-desc">I deploy and operate an AI chief of staff inside your business. It connects to your tools, learns your context, and goes to work on the highest-leverage constraint. I run it month to month, widening its capability as its context builds.</p>
-        <p class="price-best">Best for: Established businesses ready to offload the operational layer. You stay at altitude. The agent handles the rest.</p>
-        <ul class="price-list">
-          <li>Full agent deployment on dedicated infrastructure</li>
-          <li>Connected to your existing tools and platforms</li>
+          <li>Full stack and workflow audit to kick things off</li>
+          <li>Agent deployed on dedicated infrastructure, connected to your tools</li>
           <li>Morning briefings, triage, chase-ups, dashboards</li>
           <li>Monthly strategy session to point at the next constraint</li>
           <li>All IP, documentation, and infrastructure: yours to keep</li>
         </ul>
-        <a href="#contact" class="btn btn-primary" style="margin-top:24px;">Start the conversation</a>
+        <a href="#contact" class="btn btn-primary" style="margin-top:28px;">Book a chat</a>
       </div>
     </div>
 
-    <p class="no-lock reveal" style="text-align:center;margin-top:56px;font-size:0.95rem;color:rgba(14,41,41,0.6);max-width:600px;margin-left:auto;margin-right:auto;">Month to month. No lock-in contracts. If it's not making your business better, you shouldn't have to stick around out of obligation. Everything I build stays with you either way.</p>
+    <p class="no-lock reveal" style="text-align:center;margin-top:48px;font-size:0.95rem;color:rgba(14,41,41,0.6);max-width:560px;margin-left:auto;margin-right:auto;">Month to month. No lock-in contracts. If it's not making your business better, you shouldn't have to stick around out of obligation. Everything I build stays with you either way.</p>
   </div>
 </section>
 
@@ -2596,6 +2522,172 @@
       });
     });
   })();
+</script>
+
+<script>
+(function(){
+  var canvas = document.getElementById('brain-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W, H, dpr = window.devicePixelRatio || 1;
+  var nodes = [], links = [];
+  var mouseX = 0.5, mouseY = 0.5, targetMX = 0.5, targetMY = 0.5;
+  var time = 0;
+
+  // Colours
+  var TEAL = [23,68,69];
+  var GREEN = [13,143,100];
+  var MIST = [233,231,227];
+  var DIM = [14,41,41];
+
+  function rgba(rgb, a) { return 'rgba('+rgb.join(',')+','+a+')'; }
+
+  function resize() {
+    var rect = canvas.parentNode.getBoundingClientRect();
+    W = rect.width;
+    H = Math.round(W / 2.5);
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function init() {
+    resize();
+    nodes = [];
+    links = [];
+
+    // Create nodes at 3 depth layers
+    var layers = [
+      { z: 0, count: 14, rMin: 2, rMax: 5, alpha: 0.85, colors: [TEAL, GREEN, MIST] },
+      { z: 0.5, count: 10, rMin: 1.5, rMax: 3.5, alpha: 0.5, colors: [TEAL, DIM] },
+      { z: 0.8, count: 10, rMin: 1, rMax: 2.5, alpha: 0.3, colors: [DIM, TEAL] }
+    ];
+
+    layers.forEach(function(l) {
+      for (var i = 0; i < l.count; i++) {
+        nodes.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          z: l.z,
+          r: l.rMin + Math.random() * (l.rMax - l.rMin),
+          baseAlpha: l.alpha,
+          color: l.colors[Math.floor(Math.random() * l.colors.length)],
+          phase: Math.random() * Math.PI * 2,
+          speed: 0.3 + Math.random() * 0.7
+        });
+      }
+    });
+
+    // Create links within same depth layer
+    nodes.forEach(function(a, ai) {
+      nodes.forEach(function(b, bi) {
+        if (bi <= ai) return;
+        if (Math.abs(a.z - b.z) > 0.15) return;
+        var dx = a.x - b.x, dy = a.y - b.y;
+        var dist = Math.sqrt(dx*dx + dy*dy);
+        var maxDist = a.z < 0.3 ? 160 : 200;
+        if (dist < maxDist) {
+          links.push({ a: ai, b: bi, alpha: (1 - dist/maxDist) * 0.25 * (1 - a.z) });
+        }
+      });
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Draw links
+    links.forEach(function(l) {
+      var a = nodes[l.a], b = nodes[l.b];
+      var za = 1 - a.z * 0.7;
+      var zb = 1 - b.z * 0.7;
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.strokeStyle = rgba(MIST, l.alpha * 0.5);
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    });
+
+    // Draw nodes (sorted by z for depth order)
+    var sorted = nodes.slice().sort(function(a, b) { return a.z - b.z; });
+    sorted.forEach(function(n) {
+      // Glow for foreground nodes
+      if (n.z < 0.2 && n.r > 3) {
+        var grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 3.5);
+        grd.addColorStop(0, rgba(GREEN, 0.2));
+        grd.addColorStop(0.5, rgba(GREEN, 0.05));
+        grd.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r * 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = grd;
+        ctx.fill();
+      }
+
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = rgba(n.color, n.baseAlpha * (0.7 + 0.3 * Math.sin(time * n.speed + n.phase)));
+      ctx.fill();
+    });
+  }
+
+  function update(dt) {
+    time += dt;
+    targetMX = mouseX;
+    targetMY = mouseY;
+
+    nodes.forEach(function(n) {
+      // Autonomous drift
+      var driftX = Math.sin(time * 0.4 * n.speed + n.phase) * 0.3;
+      var driftY = Math.cos(time * 0.35 * n.speed + n.phase + 1) * 0.3;
+
+      // Parallax based on depth
+      var px = (targetMX - 0.5) * 30 * (1 - n.z);
+      var py = (targetMY - 0.5) * 30 * (1 - n.z);
+
+      n.x += driftX + (px - (n._px || n.x)) * 0.05;
+      n.y += driftY + (py - (n._py || n.y)) * 0.05;
+
+      // Wrap
+      if (n.x < -20) n.x = W + 20;
+      if (n.x > W + 20) n.x = -20;
+      if (n.y < -20) n.y = H + 20;
+      if (n.y > H + 20) n.y = -20;
+
+      n._px = n.x;
+      n._py = n.y;
+    });
+  }
+
+  function loop(ts) {
+    var dt = Math.min((ts - (loop._last || ts)) / 1000, 0.1);
+    loop._last = ts;
+    update(dt);
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  // Mouse tracking
+  document.addEventListener('mousemove', function(e) {
+    var rect = canvas.getBoundingClientRect();
+    mouseX = (e.clientX - rect.left) / rect.width;
+    mouseY = (e.clientY - rect.top) / rect.height;
+  });
+
+  window.addEventListener('resize', function() { resize(); init(); });
+
+  // Start when visible
+  var obs = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting) {
+      init();
+      requestAnimationFrame(loop);
+      obs.disconnect();
+    }
+  }, { threshold: 0.1 });
+  obs.observe(canvas);
+})();
 </script>
 
 </body>
