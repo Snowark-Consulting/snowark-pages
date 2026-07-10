@@ -1225,6 +1225,7 @@
       .dk-grid { grid-template-columns: 1fr; gap: 16px; }
       .dk-sub { margin-top: 52px; padding-top: 40px; }
       .brain-graph { margin-top: 36px; }
+      .brain-graph canvas { aspect-ratio: 2 / 1; }
     }
 
     /* ══════════════ Pricing ══════════════ */
@@ -2499,7 +2500,7 @@
   function resize() {
     var rect = canvas.parentNode.getBoundingClientRect();
     W = rect.width;
-    H = Math.round(W / 3.2);
+    H = rect.height;
     if (H < 1) H = 280;
     canvas.width = W * dpr;
     canvas.height = H * dpr;
