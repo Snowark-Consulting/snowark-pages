@@ -856,7 +856,23 @@
     }
     .testimonial .attribution { margin-top: 28px; font-size: 0.9rem; color: rgba(20, 30, 30, 0.55); }
     .testimonial .attribution strong { color: #0e2929; }
-    .testimonial-logo { display: block; margin-top: 18px; opacity: 0.7; }
+    .testimonial-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px; height: 56px;
+      margin-top: 18px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 1px 6px rgba(14,41,41,0.06);
+      overflow: hidden;
+    }
+    .testimonial-logo img {
+      width: 70%;
+      height: auto;
+      object-fit: contain;
+    }
     .ownership-note {
       margin: 40px auto 0;
       text-align: center;
@@ -1767,7 +1783,9 @@
         <p>The more context our agent gets, the less it feels like an automation platform and the more it feels like a genuine business partner that understands how I think and why decisions get made.</p>
       </blockquote>
       <p class="attribution"><strong>James</strong>, Not Forgotten Systems</p>
-      <img src="assets/notforgotten-logo.png" alt="Not Forgotten Systems" class="testimonial-logo" width="130" height="77" loading="lazy">
+      <div class="testimonial-logo">
+        <img src="assets/notforgotten-logo.png" alt="Not Forgotten Systems" width="130" height="77" loading="lazy">
+      </div>
     </div>
 
     <p class="ownership-note reveal">Everything I build stays with you. Your IP, your infrastructure, your agent. I run it while you need me. You own it forever.</p>
