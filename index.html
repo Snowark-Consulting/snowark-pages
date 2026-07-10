@@ -1228,85 +1228,17 @@
     }
 
     /* ══════════════ Pricing ══════════════ */
-    .pricing-single { max-width: 640px; margin: 48px auto 0; }
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 28px;
-      margin-top: 48px;
-    }
-    .price-card {
-      background: var(--white);
-      border: 1px solid rgba(0,0,0,0.06);
-      border-radius: 16px;
-      padding: 36px 32px;
-      box-shadow: 0 2px 12px rgba(14,41,41,0.04);
-      display: flex;
-      flex-direction: column;
-    }
-    .price-featured {
-      border-color: var(--green);
-      box-shadow: 0 4px 24px rgba(13,143,100,0.1);
-      position: relative;
-    }
-    .price-badge {
-      position: absolute;
-      top: -13px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--green);
-      color: var(--white);
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 5px 16px;
-      border-radius: 999px;
-      white-space: nowrap;
-    }
-    .price-tag {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--green);
-      margin-bottom: 8px;
-    }
-    .price-model {
-      font-family: var(--font-heading);
-      font-size: 1.7rem;
-      color: #0e2929;
-      line-height: 1.15;
-      margin-bottom: 8px;
-    }
-    .price-range {
-      font-size: 0.95rem;
-      color: rgba(14,41,41,0.55);
-      margin-bottom: 20px;
-    }
-    .price-desc {
-      font-size: 0.93rem;
-      line-height: 1.65;
-      color: rgba(14,41,41,0.72);
-      margin-bottom: 16px;
-    }
-    .price-best {
-      font-size: 0.85rem;
-      line-height: 1.55;
-      color: rgba(14,41,41,0.55);
-      font-style: italic;
-      margin-bottom: 20px;
-    }
     .price-list {
       list-style: none;
       padding: 0;
-      margin: 0 0 auto;
+      margin: 24px 0 0;
       display: flex;
       flex-direction: column;
       gap: 10px;
+      max-width: 540px;
     }
     .price-list li {
-      font-size: 0.9rem;
+      font-size: 0.93rem;
       color: rgba(14,41,41,0.72);
       padding-left: 22px;
       position: relative;
@@ -1321,10 +1253,6 @@
       border-radius: 50%;
       background: var(--green);
       opacity: 0.5;
-    }
-    @media (max-width: 700px) {
-      .pricing-grid { grid-template-columns: 1fr; gap: 20px; }
-      .price-card { padding: 28px 24px; }
     }
     @media (max-width: 900px) {
       .returns-grid { grid-template-columns: 1fr; }
@@ -1969,20 +1897,16 @@
     <h2 class="reveal">How we work together.</h2>
     <p class="lead reveal">Pricing is based on a needs analysis. Every business is at a different stage, with different constraints. I don't publish set rates, but here's how the engagement works.</p>
 
-    <div class="pricing-single reveal">
-      <div class="price-card">
-        <p class="price-model">Fractional AI chief of staff</p>
-        <p class="price-desc">Every engagement begins with an audit: I map your operations, identify the single biggest constraint on your growth, and deliver a written deployment brief. From there, I deploy and operate an agent inside your business month to month, widening its capability as its context builds.</p>
-        <ul class="price-list">
-          <li>Full stack and workflow audit to kick things off</li>
-          <li>Agent deployed on dedicated infrastructure, connected to your tools</li>
-          <li>Morning briefings, triage, chase-ups, dashboards</li>
-          <li>Monthly strategy session to point at the next constraint</li>
-          <li>All IP, documentation, and infrastructure: yours to keep</li>
-        </ul>
-        <a href="#contact" class="btn btn-primary" style="margin-top:28px;">Book a chat</a>
-      </div>
-    </div>
+    <h3 class="reveal" style="font-family:var(--font-heading);font-size:1.5rem;color:#0e2929;margin-top:48px;font-weight:400;">Fractional AI chief of staff</h3>
+    <p class="reveal" style="max-width:640px;color:rgba(14,41,41,0.72);margin-top:12px;">Every engagement begins with an audit: I map your operations, identify the single biggest constraint on your growth, and deliver a written deployment brief. From there, I deploy and operate an agent inside your business month to month, widening its capability as its context builds.</p>
+    <ul class="price-list reveal">
+      <li>Full stack and workflow audit to kick things off</li>
+      <li>Agent deployed on dedicated infrastructure, connected to your tools</li>
+      <li>Morning briefings, triage, chase-ups, dashboards</li>
+      <li>Monthly strategy session to point at the next constraint</li>
+      <li>All IP, documentation, and infrastructure: yours to keep</li>
+    </ul>
+    <a href="#contact" class="btn btn-primary reveal" style="margin-top:20px;">Book a chat</a>
 
     <p class="no-lock reveal" style="text-align:center;margin-top:48px;font-size:0.95rem;color:rgba(14,41,41,0.6);max-width:560px;margin-left:auto;margin-right:auto;">Month to month. No lock-in contracts. If it's not making your business better, you shouldn't have to stick around out of obligation. Everything I build stays with you either way.</p>
   </div>
