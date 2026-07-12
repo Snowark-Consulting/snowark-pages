@@ -67,6 +67,50 @@
       0%, 100% { transform: rotate(45deg) translateY(0); }
       50% { transform: rotate(45deg) translateY(6px); }
     }
+
+    /* ── Calendar CTA ──────────────── */
+    .calendar-cta {
+      position: absolute;
+      bottom: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+
+    .calendar-cta.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .calendar-cta button {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 14px 36px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #FFFFFF;
+      background: rgba(13,143,100,0.9);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .calendar-cta button:hover {
+      background: rgba(13,143,100,1);
+      transform: scale(1.03);
+    }
+
+    .calendar-cta button:active {
+      transform: scale(0.98);
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .video-section { height: auto; }
       .video-pin { position: relative; height: auto; }
@@ -83,6 +127,9 @@
         <span>Scroll</span>
         <div class="chevron"></div>
       </div>
+      <div class="calendar-cta" id="calendarCta">
+        <button onclick="addToCalendar()">Add to Calendar</button>
+      </div>
     </div>
   </section>
 
@@ -92,6 +139,7 @@
     var canvas = document.getElementById('frameCanvas');
     var ctx = canvas.getContext('2d');
     var indicator = document.getElementById('scrollIndicator');
+    var calendarCta = document.getElementById('calendarCta');
     var pin = document.getElementById('videoPin');
     var section = document.getElementById('videoSection');
 
@@ -199,6 +247,13 @@
       var fi = Math.round(progress * (TOTAL - 1));
       drawFrame(fi);
       indicator.style.opacity = Math.max(0, 1 - progress / 0.10);
+
+      // Calendar CTA: fade in after 75%, fade out at 95%
+      if (progress > 0.75 && progress < 0.95) {
+        calendarCta.classList.add('visible');
+      } else {
+        calendarCta.classList.remove('visible');
+      }
     });
 
     window.addEventListener('resize', function() {
@@ -206,6 +261,32 @@
       drawFrame(currentFrame);
     });
   })();
+
+  // ── Calendar .ics generator ──
+  function addToCalendar() {
+    var ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Snowark//NoahsBirthday//EN',
+      'BEGIN:VEVENT',
+      'DTSTART;TZID=Australia/Adelaide:20260905T100000',
+      'DTEND;TZID=Australia/Adelaide:20260905T120000',
+      'SUMMARY:Noah\'s 6th Birthday',
+      'LOCATION:Mitcham Reserve',
+      'DESCRIPTION:Noah\'s 6th Birthday Party at Mitcham Reserve\\n\\nSaturday 5 September 2026\\n10:00 am – 12:00 pm',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\\r\\n');
+
+    var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'Noahs-6th-Birthday.ics';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+  }
   </script>
 
 </body>
