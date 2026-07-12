@@ -8,12 +8,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <style>
-    :root {
-      --teal: #174445;
-      --warm: #e9e7e3;
-      --ink: #0b2021;
-    }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     html { scroll-behavior: auto; }
@@ -21,14 +15,14 @@
     body {
       font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 16px;
-      background: var(--ink);
+      background: #0b2021;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
 
     .video-section {
       position: relative;
-      height: 300vh;
+      height: 400vh;
     }
 
     .video-pin {
@@ -39,7 +33,7 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      background: var(--ink);
+      background: #0b2021;
     }
 
     .video-pin canvas {
@@ -49,44 +43,51 @@
       object-fit: cover;
     }
 
-    /* Splash overlay */
-    .splash-overlay {
+    /* ── Splash image ───────────────── */
+    .splash {
       position: absolute;
       inset: 0;
       z-index: 5;
       pointer-events: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
     }
 
-    .splash-overlay img {
+    .splash img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
 
-    /* Scroll indicator */
+    /* ── Scroll indicator ───────────── */
     .scroll-indicator {
       position: absolute;
-      bottom: 80px;
+      bottom: 40px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 8px;
-      z-index: 4;
+      z-index: 10;
       pointer-events: none;
-      opacity: 0;
+      opacity: 1;
+    }
+
+    .scroll-indicator span {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.5);
     }
 
     .scroll-indicator .chevron {
       width: 18px;
       height: 18px;
-      border-right: 2px solid rgba(255,255,255,0.8);
-      border-bottom: 2px solid rgba(255,255,255,0.8);
+      border-right: 2px solid rgba(255,255,255,0.85);
+      border-bottom: 2px solid rgba(255,255,255,0.85);
       transform: rotate(45deg);
       animation: bounce 1.8s ease-in-out infinite;
     }
@@ -101,10 +102,6 @@
       .video-pin { position: relative; height: auto; }
       .scroll-indicator .chevron { animation: none; }
     }
-
-    @media (max-width: 700px) {
-      .scroll-indicator { bottom: 60px; }
-    }
   </style>
 </head>
 <body>
@@ -113,11 +110,12 @@
     <div class="video-pin">
       <canvas id="frameCanvas"></canvas>
 
-      <div class="splash-overlay" id="splashOverlay">
-        <img src="splash.webp" alt="" id="splashImg">
+      <div class="splash" id="splash">
+        <img src="splash.webp" alt="">
       </div>
 
       <div class="scroll-indicator" id="scrollIndicator">
+        <span>Scroll</span>
         <div class="chevron"></div>
       </div>
     </div>
@@ -128,14 +126,15 @@
 
     const TOTAL_FRAMES = 192;
     const canvas = document.getElementById('frameCanvas');
-    const ctx = canvas.getContext('2d');
-    const splashOverlay = document.getElementById('splashOverlay');
+    const ctx = canvas.getContext('2');
+    const splash = document.getElementById('splash');
     const scrollIndicator = document.getElementById('scrollIndicator');
 
     const frames = new Array(TOTAL_FRAMES);
     let loadedCount = 0;
     let currentFrame = 0;
     let scrollTriggerReady = false;
+    let splashHidden = false;
 
     function resize() {
       const pin = canvas.parentElement;
@@ -181,9 +180,6 @@
     }
 
     resize();
-    // Fill canvas black — splash overlay covers it immediately
-    ctx.fillStyle = '#0b2021';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     function pad(n) { return String(n).padStart(3, '0'); }
 
@@ -195,7 +191,6 @@
         if (loadedCount === 1) { resize(); drawFrame(0); }
         if (!scrollTriggerReady && loadedCount >= Math.ceil(TOTAL_FRAMES / 4)) {
           scrollTriggerReady = true;
-          scrollIndicator.style.opacity = '0.5';
           ScrollTrigger.create({
             trigger: '#videoSection',
             start: 'top top', end: 'max',
@@ -204,15 +199,19 @@
               const fi = Math.round(self.progress * (TOTAL_FRAMES - 1));
               drawFrame(fi);
 
-              // Dissolve splash over first 12% of scroll
-              splashOverlay.style.opacity = Math.max(0, 1 - self.progress / 0.12);
+              // Splash disappears instantly on first scroll movement
+              if (!splashHidden && self.progress > 0.001) {
+                splashHidden = true;
+                splash.style.display = 'none';
+              }
 
-              // Fade out scroll indicator once scrolling
-              scrollIndicator.style.opacity = self.progress < 0.02
-                ? 0.5
-                : Math.max(0, 0.5 - self.progress / 0.08);
+              // Scroll indicator fades out as scrolling begins
+              scrollIndicator.style.opacity = Math.max(0, 1 - self.progress / 0.12);
             },
-            onLeave: () => drawFrame(TOTAL_FRAMES - 1)
+            onLeave: () => {
+              drawFrame(TOTAL_FRAMES - 1);
+              if (!splashHidden) { splash.style.display = 'none'; splashHidden = true; }
+            }
           });
         }
       };
@@ -224,7 +223,7 @@
           r.onerror = () => { loadedCount++; };
         }, 1000);
       };
-      img.src = 'frames/' + 'frame_' + pad(i) + '.webp';
+      img.src = 'frames/frame_' + pad(i) + '.webp';
     }
 
     // Staggered: every 4th frame first, then fill
