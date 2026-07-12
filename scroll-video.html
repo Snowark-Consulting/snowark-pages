@@ -62,7 +62,7 @@
       text-align: center;
       z-index: 5;
       pointer-events: none;
-      background: rgba(233,231,227,0.92);
+      background: var(--warm);
     }
 
     .intro-overlay h1 {
@@ -306,6 +306,11 @@
       ctx.clearRect(0, 0, cw, ch);
       ctx.drawImage(frame, sx, sy, sw, sh, 0, 0, cw, ch);
     }
+
+    // Size canvas and fill warm to avoid black screen on load
+    resize();
+    ctx.fillStyle = '#e9e7e3';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     function pad(n) { return String(n).padStart(3, '0'); }
 
