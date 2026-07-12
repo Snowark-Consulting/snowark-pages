@@ -318,19 +318,24 @@
 
   // ── Calendar .ics generator ──
   function addToCalendar() {
-    var ics = [
+    var lines = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
       'PRODID:-//Snowark//NoahsBirthday//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
       'BEGIN:VEVENT',
       'DTSTART;TZID=Australia/Adelaide:20260905T100000',
       'DTEND;TZID=Australia/Adelaide:20260905T120000',
+      'DTSTAMP:20260712T000000Z',
+      'UID:noah-birthday-2026@snowark.com.au',
       'SUMMARY:Noah\'s 6th Birthday',
       'LOCATION:Mitcham Reserve',
       'DESCRIPTION:Noah\'s 6th Birthday Party at Mitcham Reserve\\n\\nSaturday 5 September 2026\\n10:00 am – 12:00 pm',
       'END:VEVENT',
       'END:VCALENDAR'
-    ].join('\\r\\n');
+    ];
+    var ics = lines.join('\r\n');
 
     var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
     var link = document.createElement('a');
