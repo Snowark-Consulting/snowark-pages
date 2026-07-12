@@ -10,9 +10,7 @@
   <style>
     :root {
       --teal: #174445;
-      --green: #0d8f64;
       --warm: #e9e7e3;
-      --white: #FFFFFF;
       --ink: #0b2021;
     }
 
@@ -30,7 +28,7 @@
 
     .video-section {
       position: relative;
-      height: 400vh;
+      height: 300vh;
     }
 
     .video-pin {
@@ -51,83 +49,25 @@
       object-fit: cover;
     }
 
-    /* ── Intro overlay ─────────────── */
-    .intro-overlay {
+    /* Splash overlay */
+    .splash-overlay {
       position: absolute;
       inset: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
       z-index: 5;
       pointer-events: none;
-      background: var(--warm);
-    }
-
-    .intro-overlay h1 {
-      font-family: 'Cambo', Georgia, serif;
-      font-size: clamp(2rem, 5vw, 3.4rem);
-      font-weight: 400;
-      color: var(--teal);
-      line-height: 1.15;
-      max-width: 600px;
-      margin-bottom: 12px;
-    }
-
-    .intro-overlay .sub {
-      font-family: 'Lato', sans-serif;
-      font-size: 1.1rem;
-      color: rgba(0,0,0,0.55);
-      margin-bottom: 32px;
-    }
-
-    .intro-overlay .loading-note {
-      font-family: 'Lato', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--green);
-      opacity: 0.7;
-    }
-
-    .scroll-arrow {
-      margin-top: 32px;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 8px;
-      opacity: 0;
-      transition: opacity 0.6s;
+      justify-content: center;
+      overflow: hidden;
     }
 
-    .scroll-arrow.visible { opacity: 0.5; }
-
-    .scroll-arrow span {
-      font-family: 'Lato', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--teal);
+    .splash-overlay img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
-    .scroll-arrow .chevron {
-      width: 18px;
-      height: 18px;
-      border-right: 2px solid var(--teal);
-      border-bottom: 2px solid var(--teal);
-      transform: rotate(45deg);
-      animation: bob 1.8s ease-in-out infinite;
-    }
-
-    @keyframes bob {
-      0%, 100% { transform: rotate(45deg) translateY(0); }
-      50% { transform: rotate(45deg) translateY(6px); }
-    }
-
-    /* ── Video scroll indicator ────── */
+    /* Scroll indicator */
     .scroll-indicator {
       position: absolute;
       bottom: 80px;
@@ -140,16 +80,6 @@
       z-index: 4;
       pointer-events: none;
       opacity: 0;
-    }
-
-    .scroll-indicator span {
-      font-family: 'Lato', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.8);
-      text-shadow: 0 1px 6px rgba(0,0,0,0.5);
     }
 
     .scroll-indicator .chevron {
@@ -166,52 +96,14 @@
       50% { transform: rotate(45deg) translateY(6px); }
     }
 
-    /* ── Progress overlay ──────────── */
-    .video-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 32px 24px 40px;
-      background: linear-gradient(transparent, rgba(11,32,33,0.85));
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    .video-overlay .progress-bar {
-      width: 100%;
-      height: 3px;
-      background: rgba(255,255,255,0.18);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .video-overlay .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: var(--green);
-      border-radius: 2px;
-    }
-
-    .video-overlay .label {
-      margin-top: 16px;
-      font-family: 'Lato', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(233,231,227,0.7);
-    }
-
     @media (prefers-reduced-motion: reduce) {
       .video-section { height: auto; }
       .video-pin { position: relative; height: auto; }
       .scroll-indicator .chevron { animation: none; }
-      .scroll-arrow .chevron { animation: none; }
     }
 
     @media (max-width: 700px) {
-      .video-overlay { padding: 24px 20px 32px; }
+      .scroll-indicator { bottom: 60px; }
     }
   </style>
 </head>
@@ -221,26 +113,12 @@
     <div class="video-pin">
       <canvas id="frameCanvas"></canvas>
 
-      <div class="intro-overlay" id="introOverlay">
-        <h1>Welcome to Noah's<br>6th Birthday</h1>
-        <p class="sub">Let's go...</p>
-        <p class="loading-note" id="loadingNote">Preparing the reel...</p>
-        <div class="scroll-arrow" id="scrollArrow">
-          <span>Scroll</span>
-          <div class="chevron"></div>
-        </div>
+      <div class="splash-overlay" id="splashOverlay">
+        <img src="splash.webp" alt="" id="splashImg">
       </div>
 
       <div class="scroll-indicator" id="scrollIndicator">
-        <span>Scroll</span>
         <div class="chevron"></div>
-      </div>
-
-      <div class="video-overlay">
-        <div class="progress-bar">
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
-        <div class="label">Scroll position &bull; video frame</div>
       </div>
     </div>
   </section>
@@ -248,17 +126,12 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    const TOTAL_FRAMES = 240;
+    const TOTAL_FRAMES = 192;
     const canvas = document.getElementById('frameCanvas');
     const ctx = canvas.getContext('2d');
-    const progressFill = document.getElementById('progressFill');
-    const introOverlay = document.getElementById('introOverlay');
-    const loadingNote = document.getElementById('loadingNote');
-    const scrollArrow = document.getElementById('scrollArrow');
+    const splashOverlay = document.getElementById('splashOverlay');
     const scrollIndicator = document.getElementById('scrollIndicator');
 
-    const isMobile = window.innerWidth < 768;
-    const framesDir = isMobile ? 'frames-mobile/' : 'frames/';
     const frames = new Array(TOTAL_FRAMES);
     let loadedCount = 0;
     let currentFrame = 0;
@@ -307,9 +180,9 @@
       ctx.drawImage(frame, sx, sy, sw, sh, 0, 0, cw, ch);
     }
 
-    // Size canvas and fill warm to avoid black screen on load
     resize();
-    ctx.fillStyle = '#e9e7e3';
+    // Fill canvas black — splash overlay covers it immediately
+    ctx.fillStyle = '#0b2021';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     function pad(n) { return String(n).padStart(3, '0'); }
@@ -322,8 +195,7 @@
         if (loadedCount === 1) { resize(); drawFrame(0); }
         if (!scrollTriggerReady && loadedCount >= Math.ceil(TOTAL_FRAMES / 4)) {
           scrollTriggerReady = true;
-          loadingNote.style.display = 'none';
-          scrollArrow.classList.add('visible');
+          scrollIndicator.style.opacity = '0.5';
           ScrollTrigger.create({
             trigger: '#videoSection',
             start: 'top top', end: 'max',
@@ -331,15 +203,14 @@
             onUpdate: (self) => {
               const fi = Math.round(self.progress * (TOTAL_FRAMES - 1));
               drawFrame(fi);
-              progressFill.style.width = (self.progress * 100) + '%';
 
-              // Dissolve intro overlay over first 15% of scroll
-              introOverlay.style.opacity = Math.max(0, 1 - self.progress / 0.15);
+              // Dissolve splash over first 12% of scroll
+              splashOverlay.style.opacity = Math.max(0, 1 - self.progress / 0.12);
 
-              // Fade in video scroll indicator after intro dissolves
-              scrollIndicator.style.opacity = self.progress > 0.08
-                ? Math.min(1, (self.progress - 0.08) / 0.12)
-                : 0;
+              // Fade out scroll indicator once scrolling
+              scrollIndicator.style.opacity = self.progress < 0.02
+                ? 0.5
+                : Math.max(0, 0.5 - self.progress / 0.08);
             },
             onLeave: () => drawFrame(TOTAL_FRAMES - 1)
           });
@@ -353,7 +224,7 @@
           r.onerror = () => { loadedCount++; };
         }, 1000);
       };
-      img.src = framesDir + 'frame_' + pad(i) + '.webp';
+      img.src = 'frames/' + 'frame_' + pad(i) + '.webp';
     }
 
     // Staggered: every 4th frame first, then fill
