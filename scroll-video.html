@@ -105,6 +105,60 @@
       pointer-events: none;
     }
 
+    /* ── Birthday banner ───────────── */
+    .birthday-banner {
+      position: absolute;
+      top: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Cambo', Georgia, serif;
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      color: #FFFFFF;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+      z-index: 4;
+      pointer-events: none;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    /* ── Scroll indicator ──────────── */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    .scroll-indicator span {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+    }
+
+    .scroll-indicator .chevron {
+      width: 18px;
+      height: 18px;
+      border-right: 2px solid rgba(255,255,255,0.8);
+      border-bottom: 2px solid rgba(255,255,255,0.8);
+      transform: rotate(45deg);
+      animation: bounce 1.8s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50% { transform: rotate(45deg) translateY(6px); }
+    }
+
     /* ── Outro ─────────────────────── */
     .outro {
       min-height: 100vh;
@@ -166,6 +220,7 @@
     @media (prefers-reduced-motion: reduce) {
       .canvas-section { height: auto; }
       .canvas-pin { position: relative; height: auto; }
+      .scroll-indicator .chevron { animation: none; }
     }
 
     /* ── Mobile ────────────────────── */
@@ -180,7 +235,12 @@
   <section class="canvas-section" id="canvasSection">
     <div class="canvas-pin">
       <canvas id="frameCanvas"></canvas>
-      <div class="loading-indicator" id="loadingIndicator">Loading frames...</div>
+      <div class="birthday-banner" id="birthdayBanner">Noah's Birthday</div>
+      <div class="loading-indicator" id="loadingIndicator">Loading...</div>
+      <div class="scroll-indicator" id="scrollIndicator">
+        <span>Scroll</span>
+        <div class="chevron"></div>
+      </div>
       <div class="canvas-overlay">
         <div class="progress-bar">
           <div class="progress-fill" id="progressFill"></div>
@@ -208,6 +268,8 @@
     const ctx = canvas.getContext('2d');
     const progressFill = document.getElementById('progressFill');
     const loadingEl = document.getElementById('loadingIndicator');
+    const birthdayBanner = document.getElementById('birthdayBanner');
+    const scrollIndicator = document.getElementById('scrollIndicator');
     const frames = new Array(TOTAL_FRAMES);
     let loadedCount = 0;
     let currentFrame = 0;
@@ -352,6 +414,11 @@
             drawFrame(frameIndex);
           }
           progressFill.style.width = (self.progress * 100) + '%';
+
+          // Banner fades out over first 12% of scroll
+          birthdayBanner.style.opacity = Math.max(0, 1 - self.progress / 0.12);
+          // Scroll indicator fades out over first 18% of scroll
+          scrollIndicator.style.opacity = Math.max(0, 1 - self.progress / 0.18);
         }
       });
     }
