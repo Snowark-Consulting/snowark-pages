@@ -319,11 +319,11 @@
       img.src = framesDir + 'frame_' + pad(i) + '.jpg';
     }
 
-    // Load in staggered passes: every 3rd frame, then fill gaps
+    // Load in staggered passes: every 5th frame first (faster), then fill gaps
     const pass1 = [];
     const pass2 = [];
     for (let i = 0; i < TOTAL_FRAMES; i++) {
-      if (i % 3 === 0) {
+      if (i % 5 === 0) {
         pass1.push(i);
       } else {
         pass2.push(i);
@@ -332,12 +332,12 @@
     pass1.forEach(preloadFrame);
     setTimeout(() => { pass2.forEach(preloadFrame); }, 50);
 
-    // ── ScrollTrigger — activates after first pass (every 3rd frame) ──
+    // ── ScrollTrigger — activates after first pass (every 5th frame) ──
     function initScrollTrigger() {
       ScrollTrigger.create({
         trigger: '#canvasSection',
         start: 'top top',
-        end: 'bottom bottom',
+        end: 'max',
         scrub: 0.5,
         pin: true,
         onUpdate: (self) => {
@@ -351,6 +351,10 @@
           birthdayBanner.style.opacity = Math.max(0, 1 - self.progress / 0.12);
           // Scroll indicator fades out over first 18% of scroll
           scrollIndicator.style.opacity = Math.max(0, 1 - self.progress / 0.18);
+        },
+        onLeave: () => {
+          // Force final frame on pin release
+          if (frames[TOTAL_FRAMES - 1]) drawFrame(TOTAL_FRAMES - 1);
         }
       });
     }
