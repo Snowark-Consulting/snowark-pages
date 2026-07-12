@@ -99,6 +99,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      white-space: nowrap;
 
       /* Clay gradient — lighter top catches light, darker bottom = depth */
       background: linear-gradient(
@@ -147,6 +148,18 @@
       .video-section { height: auto; }
       .video-pin { position: relative; height: auto; }
       .scroll-indicator .chevron { animation: none; }
+    }
+
+    @media (max-width: 480px) {
+      .calendar-cta button {
+        font-size: 0.82rem;
+        padding: 12px 28px;
+        gap: 8px;
+      }
+      .cal-icon {
+        width: 18px;
+        height: 18px;
+      }
     }
   </style>
 </head>
