@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scroll-Controlled Video | Snowark</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    :root {
+      --teal: #174445;
+      --green: #0d8f64;
+      --warm: #e9e7e3;
+      --white: #FFFFFF;
+      --ink: #0b2021;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: auto; }
+
+    body {
+      font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #000;
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Intro ─────────────────────── */
+    .intro {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 80px 24px;
+      background: var(--warm);
+    }
+
+    .intro h1 {
+      font-family: 'Cambo', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 400;
+      color: var(--teal);
+      line-height: 1.15;
+      max-width: 640px;
+      margin-bottom: 16px;
+    }
+
+    .intro p {
+      font-size: 1.1rem;
+      color: rgba(0,0,0,0.65);
+      max-width: 480px;
+    }
+
+    .scroll-hint {
+      margin-top: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.5;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .scroll-hint .arrow {
+      width: 24px;
+      height: 24px;
+      border-right: 2px solid var(--teal);
+      border-bottom: 2px solid var(--teal);
+      transform: rotate(45deg);
+      animation: bob 1.6s ease-in-out infinite;
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50% { transform: rotate(45deg) translateY(6px); }
+    }
+
+    /* ── Video section ─────────────── */
+    .video-section {
+      position: relative;
+      height: 400vh;
+      background: var(--ink);
+    }
+
+    .video-pin {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .video-pin video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .video-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 32px 24px 40px;
+      background: linear-gradient(transparent, rgba(11,32,33,0.85));
+      pointer-events: none;
+    }
+
+    .video-overlay .progress-bar {
+      width: 100%;
+      height: 3px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .video-overlay .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--green);
+      border-radius: 2px;
+      transition: none;
+    }
+
+    .video-overlay .label {
+      margin-top: 16px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(233,231,227,0.7);
+    }
+
+    /* ── Outro ─────────────────────── */
+    .outro {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 80px 24px;
+      background: var(--white);
+    }
+
+    .outro h2 {
+      font-family: 'Cambo', Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 400;
+      color: var(--teal);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .outro p {
+      font-size: 1rem;
+      color: rgba(0,0,0,0.6);
+      max-width: 420px;
+    }
+
+    .outro a {
+      display: inline-block;
+      margin-top: 32px;
+      padding: 14px 36px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--white);
+      background: var(--teal);
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .outro a:hover { background: var(--green); }
+
+    /* ── Brand bar ─────────────────── */
+    .brand-bar {
+      padding: 24px;
+      text-align: center;
+      background: var(--warm);
+    }
+
+    .brand-bar a {
+      font-family: 'Cambo', Georgia, serif;
+      font-size: 1.1rem;
+      color: var(--teal);
+      text-decoration: none;
+    }
+
+    /* ── Prefers reduced motion ────── */
+    @media (prefers-reduced-motion: reduce) {
+      .video-section { height: auto; }
+      .video-pin { position: relative; height: auto; }
+      .scroll-hint .arrow { animation: none; }
+    }
+
+    /* ── Mobile ────────────────────── */
+    @media (max-width: 700px) {
+      .intro { padding: 60px 20px; }
+      .intro h1 { font-size: clamp(1.6rem, 7vw, 2rem); }
+      .outro { padding: 60px 20px; }
+      .video-overlay { padding: 24px 20px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Intro ──────────────────────────── -->
+  <section class="intro">
+    <h1>Scroll to control the video</h1>
+    <p>Every frame is tied to your scroll position. Scroll down to play forward, scroll up to rewind.</p>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="arrow"></div>
+    </div>
+  </section>
+
+  <!-- ── Video ──────────────────────────── -->
+  <section class="video-section" id="videoSection">
+    <div class="video-pin">
+      <video src="scroll-video.mp4" preload="auto" muted playsinline></video>
+      <div class="video-overlay">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="label">Scroll position &bull; video frame</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Outro ──────────────────────────── -->
+  <section class="outro">
+    <h2>The video is complete</h2>
+    <p>You just scrubbed through every frame by scrolling. GSAP ScrollTrigger pinned the video and mapped scroll progress to playback position.</p>
+    <a href="https://snowark.com.au">Built by Snowark</a>
+  </section>
+
+  <div class="brand-bar">
+    <a href="https://snowark.com.au">Snowark</a>
+  </div>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    const video = document.querySelector('video');
+    const progressFill = document.getElementById('progressFill');
+
+    video.addEventListener('loadedmetadata', () => {
+      // Tween video currentTime across the scroll range
+      gsap.to(video, {
+        currentTime: video.duration,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#videoSection',
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.5,
+          pin: true,
+          onUpdate: (self) => {
+            progressFill.style.width = (self.progress * 100) + '%';
+          }
+        }
+      });
+    });
+
+    // Fallback: if metadata already loaded (cached)
+    if (video.readyState >= 1) {
+      video.dispatchEvent(new Event('loadedmetadata'));
+    }
+  </script>
+
+</body>
+</html>
