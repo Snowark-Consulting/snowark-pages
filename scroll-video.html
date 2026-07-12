@@ -204,7 +204,7 @@
 
     video.src = videoSrc;
 
-    video.addEventListener('loadedmetadata', () => {
+    video.addEventListener('canplaythrough', () => {
       loadingEl.style.display = 'none';
       video.currentTime = 0;
 
@@ -228,8 +228,8 @@
     });
 
     // Fallback if metadata already loaded (cached)
-    if (video.readyState >= 1) {
-      video.dispatchEvent(new Event('loadedmetadata'));
+    if (video.readyState >= 3) {
+      video.dispatchEvent(new Event('canplaythrough'));
     }
   </script>
 
