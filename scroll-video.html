@@ -30,62 +30,6 @@
       overflow-x: hidden;
     }
 
-    /* ── Intro ─────────────────────── */
-    .intro {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 80px 24px;
-      background: var(--warm);
-    }
-
-    .intro h1 {
-      font-family: 'Cambo', Georgia, serif;
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      font-weight: 400;
-      color: var(--teal);
-      line-height: 1.15;
-      max-width: 640px;
-      margin-bottom: 16px;
-    }
-
-    .intro p {
-      font-size: 1.1rem;
-      color: rgba(0,0,0,0.65);
-      max-width: 480px;
-    }
-
-    .scroll-hint {
-      margin-top: 48px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      opacity: 0.5;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--teal);
-    }
-
-    .scroll-hint .arrow {
-      width: 24px;
-      height: 24px;
-      border-right: 2px solid var(--teal);
-      border-bottom: 2px solid var(--teal);
-      transform: rotate(45deg);
-      animation: bob 1.6s ease-in-out infinite;
-    }
-
-    @keyframes bob {
-      0%, 100% { transform: rotate(45deg) translateY(0); }
-      50% { transform: rotate(45deg) translateY(6px); }
-    }
-
     /* ── Canvas section ────────────── */
     .canvas-section {
       position: relative;
@@ -222,28 +166,16 @@
     @media (prefers-reduced-motion: reduce) {
       .canvas-section { height: auto; }
       .canvas-pin { position: relative; height: auto; }
-      .scroll-hint .arrow { animation: none; }
     }
 
     /* ── Mobile ────────────────────── */
     @media (max-width: 700px) {
-      .intro { padding: 60px 20px; }
-      .intro h1 { font-size: clamp(1.6rem, 7vw, 2rem); }
       .outro { padding: 60px 20px; }
       .canvas-overlay { padding: 24px 20px 32px; }
     }
   </style>
 </head>
 <body>
-
-  <section class="intro">
-    <h1>Scroll to control the video</h1>
-    <p>Every frame is tied to your scroll position. Scroll down to play forward, scroll up to rewind.</p>
-    <div class="scroll-hint">
-      <span>Scroll</span>
-      <div class="arrow"></div>
-    </div>
-  </section>
 
   <section class="canvas-section" id="canvasSection">
     <div class="canvas-pin">
@@ -290,11 +222,13 @@
       const pin = canvas.parentElement;
       const w = pin.clientWidth;
       const h = pin.clientHeight;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = window.devicePixelRatio || 1;
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
     }
 
     window.addEventListener('resize', () => {
@@ -310,8 +244,9 @@
       currentFrame = index;
 
       const img = frames[index];
-      const cw = canvas.width / (Math.min(window.devicePixelRatio || 1, 2));
-      const ch = canvas.height / (Math.min(window.devicePixelRatio || 1, 2));
+      const dpr = window.devicePixelRatio || 1;
+      const cw = canvas.width / dpr;
+      const ch = canvas.height / dpr;
       const imgAspect = img.naturalWidth / img.naturalHeight;
       const canvasAspect = cw / ch;
 
