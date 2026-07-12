@@ -128,7 +128,7 @@
         <div class="chevron"></div>
       </div>
       <div class="calendar-cta" id="calendarCta">
-        <button onclick="addToCalendar()">Add to Calendar</button>
+        <button onclick="addToCalendar()">📅 Add to Calendar</button>
       </div>
     </div>
   </section>
@@ -248,8 +248,8 @@
       drawFrame(fi);
       indicator.style.opacity = Math.max(0, 1 - progress / 0.10);
 
-      // Calendar CTA: fade in after 75%, fade out at 95%
-      if (progress > 0.75 && progress < 0.95) {
+      // Calendar CTA: fade in after 80%, stay to the end
+      if (progress > 0.80) {
         calendarCta.classList.add('visible');
       } else {
         calendarCta.classList.remove('visible');
