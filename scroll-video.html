@@ -281,6 +281,10 @@
     let currentFrame = 0;
     let allLoaded = false;
 
+    // ── Detect device: <768px → mobile portrait frames, otherwise landscape ──
+    const isMobile = window.innerWidth < 768;
+    const framesDir = isMobile ? 'frames-mobile/' : 'frames/';
+
     // ── Resize canvas to fill the pin container ──
     function resize() {
       const pin = canvas.parentElement;
@@ -360,7 +364,7 @@
           retry.onerror = () => { loadedCount++; };
         }, 1000);
       };
-      img.src = 'frames/frame_' + pad(i) + '.jpg';
+      img.src = framesDir + 'frame_' + pad(i) + '.jpg';
     }
 
     for (let i = 0; i < TOTAL_FRAMES; i++) {
