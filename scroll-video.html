@@ -238,12 +238,29 @@
 
     resize();
 
-    // ── Draw a specific frame, covering the canvas with object-fit: cover logic ──
+    // ── Draw frame, falling back to nearest loaded frame ──
     function drawFrame(index) {
-      if (!frames[index]) return;
+      // Find nearest loaded frame if exact frame isn't ready
+      let frame = frames[index];
+      let useIndex = index;
+      if (!frame) {
+        for (let d = 1; d < TOTAL_FRAMES; d++) {
+          if (index - d >= 0 && frames[index - d]) {
+            frame = frames[index - d];
+            useIndex = index - d;
+            break;
+          }
+          if (index + d < TOTAL_FRAMES && frames[index + d]) {
+            frame = frames[index + d];
+            useIndex = index + d;
+            break;
+          }
+        }
+        if (!frame) return;
+      }
       currentFrame = index;
 
-      const img = frames[index];
+      const img = frame;
       const dpr = window.devicePixelRatio || 1;
       const cw = canvas.width / dpr;
       const ch = canvas.height / dpr;
@@ -270,28 +287,34 @@
       ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
     }
 
-    // ── Preload all frames ──
+    // ── Progressive preload: every 3rd frame first, then fill in ──
     function pad(n) { return String(n).padStart(3, '0'); }
+
+    let scrollTriggerReady = false;
 
     function preloadFrame(i) {
       const img = new Image();
       img.onload = () => {
         frames[i] = img;
         loadedCount++;
-        loadingEl.textContent = 'Loading frames... ' + Math.round(loadedCount / TOTAL_FRAMES * 100) + '%';
+        loadingEl.textContent = 'Loading... ' + Math.round(loadedCount / TOTAL_FRAMES * 100) + '%';
 
         if (loadedCount === 1) {
           drawFrame(0);
+          resize();
+        }
+
+        if (!scrollTriggerReady && loadedCount >= Math.ceil(TOTAL_FRAMES / 3)) {
+          scrollTriggerReady = true;
+          initScrollTrigger();
         }
 
         if (loadedCount === TOTAL_FRAMES) {
           allLoaded = true;
           loadingEl.style.display = 'none';
-          initScrollTrigger();
         }
       };
       img.onerror = () => {
-        // Retry once after delay
         setTimeout(() => {
           const retry = new Image();
           retry.src = img.src;
@@ -302,11 +325,20 @@
       img.src = framesDir + 'frame_' + pad(i) + '.jpg';
     }
 
+    // Load in staggered passes: every 3rd frame, then fill gaps
+    const pass1 = [];
+    const pass2 = [];
     for (let i = 0; i < TOTAL_FRAMES; i++) {
-      preloadFrame(i);
+      if (i % 3 === 0) {
+        pass1.push(i);
+      } else {
+        pass2.push(i);
+      }
     }
+    pass1.forEach(preloadFrame);
+    setTimeout(() => { pass2.forEach(preloadFrame); }, 50);
 
-    // ── ScrollTrigger — active only after all frames loaded ──
+    // ── ScrollTrigger — activates after first pass (every 3rd frame) ──
     function initScrollTrigger() {
       ScrollTrigger.create({
         trigger: '#canvasSection',
