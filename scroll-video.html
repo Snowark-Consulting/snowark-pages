@@ -9,10 +9,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <style>
     :root {
-      --teal: #174445;
       --green: #0d8f64;
-      --warm: #e9e7e3;
-      --white: #FFFFFF;
       --ink: #0b2021;
     }
 
@@ -28,7 +25,6 @@
       overflow-x: hidden;
     }
 
-    /* ── Video section ────────────── */
     .video-section {
       position: relative;
       height: 400vh;
@@ -45,11 +41,15 @@
       background: var(--ink);
     }
 
-    .video-pin video {
+    .video-pin canvas {
+      display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
+    }
+
+    .video-pin video {
+      display: none;
     }
 
     .loading-indicator {
@@ -67,7 +67,6 @@
       pointer-events: none;
     }
 
-    /* ── Birthday banner ───────────── */
     .birthday-banner {
       position: absolute;
       top: 48px;
@@ -83,7 +82,6 @@
       white-space: nowrap;
     }
 
-    /* ── Scroll indicator ──────────── */
     .scroll-indicator {
       position: absolute;
       bottom: 80px;
@@ -121,7 +119,6 @@
       50% { transform: rotate(45deg) translateY(6px); }
     }
 
-    /* ── Progress overlay ──────────── */
     .video-overlay {
       position: absolute;
       bottom: 0;
@@ -158,14 +155,12 @@
       color: rgba(233,231,227,0.7);
     }
 
-    /* ── Prefers reduced motion ────── */
     @media (prefers-reduced-motion: reduce) {
       .video-section { height: auto; }
       .video-pin { position: relative; height: auto; }
       .scroll-indicator .chevron { animation: none; }
     }
 
-    /* ── Mobile ────────────────────── */
     @media (max-width: 700px) {
       .video-overlay { padding: 24px 20px 32px; }
     }
@@ -175,6 +170,7 @@
 
   <section class="video-section" id="videoSection">
     <div class="video-pin">
+      <canvas id="frameCanvas"></canvas>
       <video id="scrubVideo" preload="auto" muted playsinline></video>
       <div class="birthday-banner" id="birthdayBanner">Noah's Birthday</div>
       <div class="loading-indicator" id="loadingIndicator">Loading...</div>
@@ -195,17 +191,80 @@
     gsap.registerPlugin(ScrollTrigger);
 
     const isMobile = window.innerWidth < 768;
-    const videoSrc = isMobile ? 'scroll-portrait.mp4' : 'scroll-landscape.mp4';
     const video = document.getElementById('scrubVideo');
+    const canvas = document.getElementById('frameCanvas');
+    const ctx = canvas.getContext('2d');
     const progressFill = document.getElementById('progressFill');
     const loadingEl = document.getElementById('loadingIndicator');
     const birthdayBanner = document.getElementById('birthdayBanner');
     const scrollIndicator = document.getElementById('scrollIndicator');
 
-    video.src = videoSrc;
+    video.src = isMobile ? 'scroll-portrait.mp4' : 'scroll-landscape.mp4';
+
+    let seekPending = false;
+    let targetTime = 0;
+    let videoReady = false;
+
+    function resize() {
+      const pin = canvas.parentElement;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = pin.clientWidth * dpr;
+      canvas.height = pin.clientHeight * dpr;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+    }
+
+    function drawVideoToCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      const cw = canvas.width / dpr;
+      const ch = canvas.height / dpr;
+      const vw = video.videoWidth;
+      const vh = video.videoHeight;
+
+      if (!vw || !vh) return;
+
+      const vidAspect = vw / vh;
+      const canvasAspect = cw / ch;
+      let sx, sy, sw, sh;
+
+      if (vidAspect > canvasAspect) {
+        sh = vh;
+        sw = sh * canvasAspect;
+        sx = (vw - sw) / 2;
+        sy = 0;
+      } else {
+        sw = vw;
+        sh = sw / canvasAspect;
+        sx = 0;
+        sy = (vh - sh) / 2;
+      }
+
+      ctx.clearRect(0, 0, cw, ch);
+      ctx.drawImage(video, sx, sy, sw, sh, 0, 0, cw, ch);
+    }
+
+    function seekTo(time) {
+      targetTime = time;
+      if (!seekPending && videoReady) {
+        seekPending = true;
+        video.currentTime = time;
+      }
+    }
+
+    video.addEventListener('seeked', () => {
+      drawVideoToCanvas();
+      seekPending = false;
+      // If target changed during the seek, seek again
+      if (Math.abs(video.currentTime - targetTime) > 0.05) {
+        seekPending = true;
+        video.currentTime = targetTime;
+      }
+    });
 
     video.addEventListener('canplaythrough', () => {
+      videoReady = true;
       loadingEl.style.display = 'none';
+      resize();
       video.currentTime = 0;
 
       ScrollTrigger.create({
@@ -215,22 +274,23 @@
         scrub: 0.5,
         pin: true,
         onUpdate: (self) => {
-          video.currentTime = self.progress * video.duration;
+          const time = self.progress * video.duration;
+          seekTo(time);
           progressFill.style.width = (self.progress * 100) + '%';
 
           birthdayBanner.style.opacity = Math.max(0, 1 - self.progress / 0.12);
           scrollIndicator.style.opacity = Math.max(0, 1 - self.progress / 0.18);
         },
         onLeave: () => {
-          video.currentTime = video.duration;
+          seekTo(video.duration);
         }
       });
     });
 
-    // Fallback if metadata already loaded (cached)
-    if (video.readyState >= 3) {
-      video.dispatchEvent(new Event('canplaythrough'));
-    }
+    window.addEventListener('resize', () => {
+      resize();
+      drawVideoToCanvas();
+    });
   </script>
 
 </body>
