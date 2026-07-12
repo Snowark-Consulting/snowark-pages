@@ -9,21 +9,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: auto; }
-
     body {
       font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
       background: #0b2021;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
-
     .video-section {
       position: relative;
       height: 400vh;
     }
-
     .video-pin {
       position: sticky;
       top: 0;
@@ -34,15 +30,12 @@
       overflow: hidden;
       background: #0b2021;
     }
-
     .video-pin canvas {
       display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-
-    /* ── Scroll indicator ───────────── */
     .scroll-indicator {
       position: absolute;
       bottom: 40px;
@@ -55,7 +48,6 @@
       z-index: 10;
       pointer-events: none;
     }
-
     .scroll-indicator span {
       font-family: 'Lato', sans-serif;
       font-size: 0.72rem;
@@ -65,7 +57,6 @@
       color: rgba(255,255,255,0.85);
       text-shadow: 0 1px 6px rgba(0,0,0,0.5);
     }
-
     .scroll-indicator .chevron {
       width: 18px;
       height: 18px;
@@ -74,12 +65,10 @@
       transform: rotate(45deg);
       animation: bounce 1.8s ease-in-out infinite;
     }
-
     @keyframes bounce {
       0%, 100% { transform: rotate(45deg) translateY(0); }
       50% { transform: rotate(45deg) translateY(6px); }
     }
-
     @media (prefers-reduced-motion: reduce) {
       .video-section { height: auto; }
       .video-pin { position: relative; height: auto; }
@@ -92,7 +81,6 @@
   <section class="video-section" id="videoSection">
     <div class="video-pin" id="videoPin">
       <canvas id="frameCanvas"></canvas>
-
       <div class="scroll-indicator" id="scrollIndicator">
         <span>Scroll</span>
         <div class="chevron"></div>
@@ -101,85 +89,88 @@
   </section>
 
   <script>
-    gsap.registerPlugin(ScrollTrigger);
+    (function() {
+      // Guard: wait for GSAP
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        setTimeout(arguments.callee, 100);
+        return;
+      }
 
-    const TOTAL_FRAMES = 192;
-    const canvas = document.getElementById('frameCanvas');
-    const ctx = canvas.getContext('2');
-    const scrollIndicator = document.getElementById('scrollIndicator');
+      gsap.registerPlugin(ScrollTrigger);
 
-    const frames = new Array(TOTAL_FRAMES);
-    let loadedCount = 0;
-    let currentFrame = 0;
-    let scrollTriggerReady = false;
+      var TOTAL_FRAMES = 192;
+      var canvas = document.getElementById('frameCanvas');
+      var ctx = canvas.getContext('2d');
+      var scrollIndicator = document.getElementById('scrollIndicator');
+      var pin = document.getElementById('videoPin');
 
-    function resize() {
-      const pin = canvas.parentElement;
-      const dpr = window.devicePixelRatio || 1;
-      const cw = pin.clientWidth;
-      const ch = pin.clientHeight;
-      canvas.width = cw * dpr;
-      canvas.height = ch * dpr;
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(dpr, dpr);
-      return { cw, ch };
-    }
+      var frames = new Array(TOTAL_FRAMES);
+      var loadedCount = 0;
+      var currentFrame = 0;
+      var st = null;
 
-    function drawFrame(index) {
-      let frame = frames[index];
-      if (!frame) {
-        for (let d = 1; d < TOTAL_FRAMES; d++) {
-          if (index - d >= 0 && frames[index - d]) { frame = frames[index - d]; break; }
-          if (index + d < TOTAL_FRAMES && frames[index + d]) { frame = frames[index + d]; break; }
+      function pad(n) { return String(n).padStart(3, '0'); }
+
+      function resize() {
+        var dpr = window.devicePixelRatio || 1;
+        var cw = pin.clientWidth;
+        var ch = pin.clientHeight;
+        canvas.width = cw * dpr;
+        canvas.height = ch * dpr;
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(dpr, dpr);
+        return { cw: cw, ch: ch };
+      }
+
+      function drawFrame(index) {
+        var frame = frames[index];
+        if (!frame) {
+          for (var d = 1; d < TOTAL_FRAMES; d++) {
+            if (index - d >= 0 && frames[index - d]) { frame = frames[index - d]; break; }
+            if (index + d < TOTAL_FRAMES && frames[index + d]) { frame = frames[index + d]; break; }
+          }
+          if (!frame) return;
         }
-        if (!frame) return;
+        currentFrame = index;
+
+        var dpr = window.devicePixelRatio || 1;
+        var cw = canvas.width / dpr;
+        var ch = canvas.height / dpr;
+        var vw = frame.naturalWidth;
+        var vh = frame.naturalHeight;
+        if (!vw || !vh) return;
+
+        var imgAspect = vw / vh;
+        var canvasAspect = cw / ch;
+        var sx, sy, sw, sh;
+
+        if (imgAspect > canvasAspect) {
+          sh = vh;
+          sw = sh * canvasAspect;
+          sx = (vw - sw) / 2;
+          sy = 0;
+        } else {
+          sw = vw;
+          sh = sw / canvasAspect;
+          sx = 0;
+          sy = (vh - sh) / 2;
+        }
+
+        ctx.clearRect(0, 0, cw, ch);
+        ctx.drawImage(frame, sx, sy, sw, sh, 0, 0, cw, ch);
       }
-      currentFrame = index;
 
-      const dpr = window.devicePixelRatio || 1;
-      const cw = canvas.width / dpr;
-      const ch = canvas.height / dpr;
-      const vw = frame.naturalWidth;
-      const vh = frame.naturalHeight;
-      if (!vw || !vh) return;
-
-      const imgAspect = vw / vh;
-      const canvasAspect = cw / ch;
-      let sx, sy, sw, sh;
-
-      if (imgAspect > canvasAspect) {
-        sh = vh; sw = sh * canvasAspect;
-        sx = (vw - sw) / 2; sy = 0;
-      } else {
-        sw = vw; sh = sw / canvasAspect;
-        sx = 0; sy = (vh - sh) / 2;
-      }
-
-      ctx.clearRect(0, 0, cw, ch);
-      ctx.drawImage(frame, sx, sy, sw, sh, 0, 0, cw, ch);
-    }
-
-    // Size canvas and fill dark so it blends with body
-    resize();
-
-    function pad(n) { return String(n).padStart(3, '0'); }
-
-    function preloadFrame(i) {
-      const img = new Image();
-      img.onload = function() {
+      function onFrameLoaded(i, img) {
         frames[i] = img;
         loadedCount++;
 
-        // Draw first frame as soon as it loads — this IS the splash
         if (loadedCount === 1) {
           resize();
           drawFrame(0);
         }
 
-        // Activate scrolling once 25% of frames are loaded
-        if (!scrollTriggerReady && loadedCount >= Math.ceil(TOTAL_FRAMES / 4)) {
-          scrollTriggerReady = true;
-          ScrollTrigger.create({
+        if (!st && loadedCount >= Math.ceil(TOTAL_FRAMES / 4)) {
+          st = ScrollTrigger.create({
             trigger: '#videoSection',
             start: 'top top',
             end: 'max',
@@ -188,8 +179,6 @@
             onUpdate: function(self) {
               var fi = Math.round(self.progress * (TOTAL_FRAMES - 1));
               drawFrame(fi);
-
-              // Scroll indicator fades out as scrolling begins
               scrollIndicator.style.opacity = Math.max(0, 1 - self.progress / 0.10);
             },
             onLeave: function() {
@@ -197,31 +186,38 @@
             }
           });
         }
-      };
-      img.onerror = function() {
-        // Retry once after a short delay
-        setTimeout(function() {
-          var r = new Image();
-          r.src = img.src;
-          r.onload = img.onload;
-          r.onerror = function() { loadedCount++; };
-        }, 1000);
-      };
-      img.src = 'frames/frame_' + pad(i) + '.webp';
-    }
+      }
 
-    // Staggered: every 4th frame first, then the rest
-    var p1 = [], p2 = [];
-    for (var i = 0; i < TOTAL_FRAMES; i++) {
-      (i % 4 === 0 ? p1 : p2).push(i);
-    }
-    p1.forEach(preloadFrame);
-    setTimeout(function() { p2.forEach(preloadFrame); }, 50);
+      function preloadFrame(i) {
+        var img = new Image();
+        img.onload = function() { onFrameLoaded(i, img); };
+        img.onerror = function() {
+          setTimeout(function() {
+            var r = new Image();
+            r.src = img.src;
+            r.onload = function() { onFrameLoaded(i, r); };
+            r.onerror = function() { loadedCount++; };
+          }, 1000);
+        };
+        img.src = 'frames/frame_' + pad(i) + '.webp';
+      }
 
-    window.addEventListener('resize', function() {
+      // Init: size canvas
       resize();
-      drawFrame(currentFrame);
-    });
+
+      // Preload: every 4th frame first, then fill
+      var p1 = [], p2 = [];
+      for (var i = 0; i < TOTAL_FRAMES; i++) {
+        (i % 4 === 0 ? p1 : p2).push(i);
+      }
+      p1.forEach(preloadFrame);
+      setTimeout(function() { p2.forEach(preloadFrame); }, 50);
+
+      window.addEventListener('resize', function() {
+        resize();
+        drawFrame(currentFrame);
+      });
+    })();
   </script>
 
 </body>
