@@ -534,8 +534,11 @@
     // Size canvas
     resize();
 
-    // Preload every 4th frame first
-    for (var i = 0; i < TOTAL; i += 4) {
+    // Preload frame 0 first — instant first frame
+    preloadFrame(0);
+
+    // Then every 4th frame for fast scrub activation
+    for (var i = 4; i < TOTAL; i += 4) {
       preloadFrame(i);
     }
 
