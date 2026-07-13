@@ -20,27 +20,9 @@
     html { scroll-behavior: auto; }
     body {
       font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #000;
+      background: #0b2021;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
-    }
-
-    /* ── Desktop: constrain to phone proportions ── */
-    .page-wrapper {
-      width: 100%;
-      min-height: 100vh;
-    }
-
-    @media (min-width: 768px) {
-      body {
-        display: flex;
-        justify-content: center;
-        background: #000;
-      }
-      .page-wrapper {
-        max-width: 430px;
-        box-shadow: 0 0 80px rgba(0,0,0,0.9);
-      }
     }
     .video-section {
       position: relative;
@@ -64,7 +46,7 @@
     }
     .scroll-indicator {
       position: absolute;
-      bottom: 150px;
+      bottom: 130px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
@@ -81,16 +63,11 @@
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: #FFFFFF;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.4);
-      background: rgba(0,0,0,0.25);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      padding: 8px 18px;
-      border-radius: 50px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
     }
     .scroll-indicator .chevron {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       border-right: 2.5px solid #FFFFFF;
       border-bottom: 2.5px solid #FFFFFF;
       transform: rotate(45deg);
@@ -198,8 +175,6 @@
 </head>
 <body>
 
-  <div class="page-wrapper">
-
   <section class="video-section" id="videoSection">
     <div class="video-pin" id="videoPin">
       <canvas id="frameCanvas"></canvas>
@@ -221,8 +196,6 @@
       </div>
     </div>
   </section>
-
-  </div><!-- .page-wrapper -->
 
   <script>
   (function() {
@@ -290,12 +263,10 @@
       img.onload = function() {
         frames[i] = img;
         loadedCount++;
-        console.log('Frame ' + i + ' loaded (' + loadedCount + '/' + TOTAL + ')');
 
         if (loadedCount === 1) {
           resize();
           drawFrame(0);
-          indicator.querySelector('span').textContent = 'Scroll';
         }
 
         if (!ready && loadedCount >= Math.ceil(TOTAL / 4)) {
@@ -303,35 +274,13 @@
         }
       };
       img.onerror = function() {
-        console.error('Frame ' + i + ' FAILED: ' + img.src);
-        loadedCount++;
+        loadedCount++; // count as "loaded" so we don't block forever
       };
       img.src = 'frames/frame_' + pad(i) + '.webp';
     }
 
     // Size canvas
     resize();
-
-    // DIAGNOSTIC: draw a visible rectangle to confirm canvas works
-    var dpr = window.devicePixelRatio || 1;
-    var cw = canvas.width / dpr;
-    var ch = canvas.height / dpr;
-    console.log('Canvas: ' + cw + 'x' + ch + '  dpr:' + dpr + '  ctx:' + !!ctx);
-    if (cw > 0 && ch > 0) {
-      ctx.fillStyle = '#d4c8a8';
-      ctx.fillRect(0, 0, cw, ch);
-    }
-
-    // Show loading state
-    indicator.querySelector('span').textContent = 'Loading...';
-
-    // Fallback: if nothing loads in 8s, show error
-    setTimeout(function() {
-      if (loadedCount === 0) {
-        indicator.querySelector('span').textContent = 'Tap to retry';
-        console.error('NO FRAMES LOADED after 8s timeout');
-      }
-    }, 8000);
 
     // Preload every 4th frame first
     for (var i = 0; i < TOTAL; i += 4) {
