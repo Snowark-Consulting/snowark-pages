@@ -475,6 +475,8 @@
 
         if (loadedCount === 1) {
           resize();
+        }
+        if (i === 0) {
           drawFrame(0);
         }
 
@@ -550,7 +552,7 @@
       'UID:noah-birthday-2026@snowark.com.au',
       'SUMMARY:Noah\'s 6th Birthday',
       'LOCATION:Mitcham Reserve',
-      'DESCRIPTION:Noah\'s 6th Birthday Party at Mitcham Reserve\n\nSaturday 5 September 2026\n10:00 am – 12:00 pm\n\nRSVP here: https://snowark.com.au/pages/noahs-sixth-birthday',
+      'DESCRIPTION:Noah\'s 6th Birthday Party at Mitcham Reserve\n\nSaturday 5 September 2026\n10:00 am – 12:00 pm\n\nRSVP: https://snowark.com.au/pages/noahs-sixth-birthday#rsvp',
       'END:VEVENT',
       'END:VCALENDAR'
     ];
@@ -639,6 +641,13 @@
       </div>
     </div>
   </div>
+
+  <script>
+  // #rsvp deep link — auto-open RSVP modal
+  if (window.location.hash === '#rsvp') {
+    setTimeout(function() { openRsvp(); }, 600);
+  }
+  </script>
 
 </body>
 </html>
