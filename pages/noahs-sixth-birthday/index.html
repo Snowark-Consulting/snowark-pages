@@ -310,6 +310,16 @@
     // Size canvas
     resize();
 
+    // DIAGNOSTIC: draw a visible rectangle to confirm canvas works
+    var dpr = window.devicePixelRatio || 1;
+    var cw = canvas.width / dpr;
+    var ch = canvas.height / dpr;
+    console.log('Canvas: ' + cw + 'x' + ch + '  dpr:' + dpr + '  ctx:' + !!ctx);
+    if (cw > 0 && ch > 0) {
+      ctx.fillStyle = '#d4c8a8';
+      ctx.fillRect(0, 0, cw, ch);
+    }
+
     // Preload every 4th frame first
     for (var i = 0; i < TOTAL; i += 4) {
       preloadFrame(i);
