@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noah's 6th Birthday</title>
+
+  <!-- Open Graph / social preview -->
+  <meta property="og:title" content="Noah's 6th Birthday — You've Been Summoned by Captain Noah">
+  <meta property="og:description" content="Ahoy! Click to find out the details for Noah's 6th birthday treasure hunt.">
+  <meta property="og:image" content="https://snowark.com.au/pages/noahs-sixth-birthday/noah-og-preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; }
+    body {
+      font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0b2021;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    .video-section {
+      position: relative;
+      height: 400vh;
+    }
+    .video-pin {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #0b2021;
+    }
+    .video-pin canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .scroll-indicator span {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+    }
+    .scroll-indicator .chevron {
+      width: 18px;
+      height: 18px;
+      border-right: 2px solid rgba(255,255,255,0.85);
+      border-bottom: 2px solid rgba(255,255,255,0.85);
+      transform: rotate(45deg);
+      animation: bounce 1.8s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50% { transform: rotate(45deg) translateY(6px); }
+    }
+
+    /* ── Calendar CTA ──────────────── */
+    .calendar-cta {
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    .calendar-cta.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Clay-plaque button: 3D molded-clay feel, part of the scene */
+    .calendar-cta button {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 14px 38px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+
+      /* Clay gradient — lighter top catches light, darker bottom = depth */
+      background: linear-gradient(
+        180deg,
+        #5cb876 0%,
+        #479e60 40%,
+        #358248 100%
+      );
+
+      /* Multi-layer clay shadow */
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.18) inset,   /* subtle top rim-light */
+        0 2px 0 rgba(0,0,0,0.08),                /* tight contact shadow */
+        0 4px 6px rgba(0,0,0,0.18),              /* mid shadow */
+        0 8px 24px rgba(0,0,0,0.35);             /* ambient drop */
+
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .calendar-cta button:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.22) inset,
+        0 3px 0 rgba(0,0,0,0.12),
+        0 8px 12px rgba(0,0,0,0.22),
+        0 12px 32px rgba(0,0,0,0.40);
+    }
+
+    .calendar-cta button:active {
+      transform: translateY(1px) scale(0.98);
+      box-shadow:
+        0 0px 0 rgba(255,255,255,0.08) inset,
+        0 1px 0 rgba(0,0,0,0.06),
+        0 2px 4px rgba(0,0,0,0.20),
+        0 4px 12px rgba(0,0,0,0.30);
+    }
+
+    /* Calendar icon SVG — red header like the invite */
+    .cal-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .video-section { height: auto; }
+      .video-pin { position: relative; height: auto; }
+      .scroll-indicator .chevron { animation: none; }
+    }
+
+    @media (max-width: 480px) {
+      .calendar-cta button {
+        font-size: 0.82rem;
+        padding: 12px 28px;
+        gap: 8px;
+      }
+      .cal-icon {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="video-section" id="videoSection">
+    <div class="video-pin" id="videoPin">
+      <canvas id="frameCanvas"></canvas>
+      <div class="scroll-indicator" id="scrollIndicator">
+        <span>Scroll</span>
+        <div class="chevron"></div>
+      </div>
+      <div class="calendar-cta" id="calendarCta">
+        <button onclick="addToCalendar()">
+          <svg class="cal-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="4" width="20" height="18" rx="2.5" fill="white"/>
+            <rect x="2" y="4" width="20" height="7" rx="2.5" fill="#e04848"/>
+            <line x1="7" y1="7" x2="11" y2="7" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="7" y1="9.5" x2="9.5" y2="9.5" stroke="white" stroke-width="1" stroke-linecap="round"/>
+            <text x="12" y="17.5" text-anchor="middle" font-size="9" font-weight="700" fill="#444" font-family="Lato, sans-serif">5</text>
+          </svg>
+          Add to Calendar
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+  (function() {
+    var TOTAL = 192;
+    var canvas = document.getElementById('frameCanvas');
+    var ctx = canvas.getContext('2d');
+    var indicator = document.getElementById('scrollIndicator');
+    var calendarCta = document.getElementById('calendarCta');
+    var pin = document.getElementById('videoPin');
+    var section = document.getElementById('videoSection');
+
+    var frames = new Array(TOTAL);
+    var loadedCount = 0;
+    var currentFrame = 0;
+    var ready = false;
+
+    function pad(n) { return String(n).padStart(3, '0'); }
+
+    function resize() {
+      var dpr = window.devicePixelRatio || 1;
+      var w = pin.clientWidth;
+      var h = pin.clientHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+    }
+
+    function drawFrame(index) {
+      var frame = frames[index];
+      if (!frame) {
+        for (var d = 1; d < TOTAL; d++) {
+          if (index - d >= 0 && frames[index - d]) { frame = frames[index - d]; break; }
+          if (index + d < TOTAL && frames[index + d]) { frame = frames[index + d]; break; }
+        }
+        if (!frame) return;
+      }
+      currentFrame = index;
+
+      var dpr = window.devicePixelRatio || 1;
+      var cw = canvas.width / dpr;
+      var ch = canvas.height / dpr;
+      var vw = frame.naturalWidth;
+      var vh = frame.naturalHeight;
+      if (!vw || !vh) return;
+
+      var imgAspect = vw / vh;
+      var canvasAspect = cw / ch;
+      var sx, sy, sw, sh;
+
+      if (imgAspect > canvasAspect) {
+        sh = vh; sw = sh * canvasAspect;
+        sx = (vw - sw) / 2; sy = 0;
+      } else {
+        sw = vw; sh = sw / canvasAspect;
+        sx = 0; sy = (vh - sh) / 2;
+      }
+
+      ctx.clearRect(0, 0, cw, ch);
+      ctx.drawImage(frame, sx, sy, sw, sh, 0, 0, cw, ch);
+    }
+
+    function preloadFrame(i) {
+      var img = new Image();
+      img.onload = function() {
+        frames[i] = img;
+        loadedCount++;
+
+        if (loadedCount === 1) {
+          resize();
+          drawFrame(0);
+        }
+
+        if (!ready && loadedCount >= Math.ceil(TOTAL / 4)) {
+          ready = true;
+        }
+      };
+      img.onerror = function() {
+        loadedCount++; // count as "loaded" so we don't block forever
+      };
+      img.src = 'frames/frame_' + pad(i) + '.webp';
+    }
+
+    // Size canvas
+    resize();
+
+    // Preload every 4th frame first
+    for (var i = 0; i < TOTAL; i += 4) {
+      preloadFrame(i);
+    }
+
+    // Then the rest
+    setTimeout(function() {
+      for (var i = 0; i < TOTAL; i++) {
+        if (i % 4 !== 0) preloadFrame(i);
+      }
+    }, 50);
+
+    // Scroll-driven frame selection (no GSAP dependency)
+    window.addEventListener('scroll', function() {
+      if (!ready) return;
+
+      var rect = section.getBoundingClientRect();
+      var sectionTop = rect.top;
+      var sectionHeight = rect.height;
+      var viewportHeight = window.innerHeight;
+      var scrollable = sectionHeight - viewportHeight;
+      var scrolled = -sectionTop;
+      var progress = Math.max(0, Math.min(1, scrolled / scrollable));
+
+      if (isNaN(progress)) return;
+
+      var fi = Math.round(progress * (TOTAL - 1));
+      drawFrame(fi);
+      indicator.style.opacity = Math.max(0, 1 - progress / 0.10);
+
+      // Calendar CTA: fade in after 80%, stay to the end
+      if (progress > 0.80) {
+        calendarCta.classList.add('visible');
+      } else {
+        calendarCta.classList.remove('visible');
+      }
+    });
+
+    window.addEventListener('resize', function() {
+      resize();
+      drawFrame(currentFrame);
+    });
+  })();
+
+  // ── Calendar .ics generator ──
+  function addToCalendar() {
+    var lines = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Snowark//NoahsBirthday//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      'DTSTART;TZID=Australia/Adelaide:20260905T100000',
+      'DTEND;TZID=Australia/Adelaide:20260905T120000',
+      'DTSTAMP:20260712T000000Z',
+      'UID:noah-birthday-2026@snowark.com.au',
+      'SUMMARY:Noah\'s 6th Birthday',
+      'LOCATION:Mitcham Reserve',
+      'DESCRIPTION:Noah\'s 6th Birthday Party at Mitcham Reserve\\n\\nSaturday 5 September 2026\\n10:00 am – 12:00 pm',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ];
+    var ics = lines.join('\r\n');
+
+    var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'Noahs-6th-Birthday.ics';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+  }
+  </script>
+
+</body>
+</html>
