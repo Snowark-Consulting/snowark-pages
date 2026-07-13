@@ -143,9 +143,7 @@
       justify-content: center;
     }
 
-    .calendar-cta button,
-    .calendar-cta a.btn-cal,
-    .calendar-cta a.btn-rsvp {
+    .calendar-cta button {
       font-family: 'Lato', sans-serif;
       font-size: 0.88rem;
       font-weight: 700;
@@ -180,9 +178,7 @@
       background: linear-gradient(180deg, #e8a840 0%, #d4892a 40%, #b86818 100%);
     }
 
-    .calendar-cta button:hover,
-    .calendar-cta a.btn-cal:hover,
-    .calendar-cta a.btn-rsvp:hover {
+    .calendar-cta button:hover {
       transform: translateY(-2px) scale(1.03);
       box-shadow:
         0 1px 0 rgba(255,255,255,0.22) inset,
@@ -191,9 +187,7 @@
         0 12px 32px rgba(0,0,0,0.40);
     }
 
-    .calendar-cta button:active,
-    .calendar-cta a.btn-cal:active,
-    .calendar-cta a.btn-rsvp:active {
+    .calendar-cta button:active {
       transform: translateY(1px) scale(0.98);
       box-shadow:
         0 0px 0 rgba(255,255,255,0.08) inset,
@@ -210,9 +204,7 @@
     }
 
     @media (max-width: 480px) {
-      .calendar-cta button,
-    .calendar-cta a.btn-cal,
-    .calendar-cta a.btn-rsvp {
+      .calendar-cta button {
         font-size: 0.82rem;
         padding: 12px 28px;
         gap: 8px;
@@ -434,16 +426,6 @@
       <div class="calendar-cta" id="calendarCta">
         <div class="cta-label">Set your course</div>
         <div class="cta-pair">
-          <a class="btn-cal" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Noah%27s+6th+Birthday&amp;dates=20260905T003000Z/20260905T023000Z&amp;details=RSVP%3A+https%3A%2F%2Fsnowark.com.au%2Fpages%2Fnoahs-sixth-birthday%23rsvp&amp;location=Mitcham+Reserve&amp;ctz=Australia%2FAdelaide" target="_blank" rel="noopener" style="text-decoration:none">
-            <svg class="cal-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="2" y="4" width="20" height="18" rx="2.5" fill="white"/>
-              <rect x="2" y="4" width="20" height="7" rx="2.5" fill="#e04848"/>
-              <line x1="7" y1="7" x2="11" y2="7" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="7" y1="9.5" x2="9.5" y2="9.5" stroke="white" stroke-width="1" stroke-linecap="round"/>
-              <text x="12" y="17.5" text-anchor="middle" font-size="9" font-weight="700" fill="#444" font-family="Lato, sans-serif">5</text>
-            </svg>
-            Add to Calendar
-          </a>
           <button class="btn-rsvp" onclick="openRsvp()">
             <svg class="cal-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="12" cy="6" r="3" fill="white"/>
@@ -595,37 +577,6 @@
       drawFrame(currentFrame);
     });
   })();
-
-  // ── Calendar .ics generator ──
-  function addToCalendar() {
-    var lines = [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'PRODID:-//Snowark//NoahsBirthday//EN',
-      'CALSCALE:GREGORIAN',
-      'METHOD:PUBLISH',
-      'BEGIN:VEVENT',
-      'DTSTART;TZID=Australia/Adelaide:20260905T100000',
-      'DTEND;TZID=Australia/Adelaide:20260905T120000',
-      'DTSTAMP:20260712T000000Z',
-      'UID:noah-birthday-2026@snowark.com.au',
-      'SUMMARY:Noah\'s 6th Birthday',
-      'LOCATION:Mitcham Reserve',
-      'DESCRIPTION:RSVP: https://snowark.com.au/pages/noahs-sixth-birthday#rsvp\n\nNoah\'s 6th Birthday Party\nMitcham Reserve\nSaturday 5 September 2026, 10:00 am – 12:00 pm\n\n🍰 Fruit and Cake Provided\n🎨 Face Painting',
-      'END:VEVENT',
-      'END:VCALENDAR'
-    ];
-    var ics = lines.join('\r\n');
-
-    var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-    var link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'Noahs-6th-Birthday.ics';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(link.href);
-  }
 
   // ── RSVP modal + Supabase ──
   var SUPABASE_URL = 'https://fwnqlryktisglebhmfeb.supabase.co';
