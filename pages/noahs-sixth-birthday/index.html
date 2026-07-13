@@ -497,15 +497,18 @@
       var canvasAspect = cw / ch;
       var sx, sy, sw, sh;
 
+      // "contain" — fit full frame, letterbox empty space
       if (imgAspect > canvasAspect) {
-        sh = vh; sw = sh * canvasAspect;
-        sx = (vw - sw) / 2; sy = 0;
-      } else {
-        sw = vw; sh = sw / canvasAspect;
+        sw = vw; sh = sw / imgAspect;
         sx = 0; sy = (vh - sh) / 2;
+      } else {
+        sh = vh; sw = sh * imgAspect;
+        sx = (vw - sw) / 2; sy = 0;
       }
 
-      ctx.clearRect(0, 0, cw, ch);
+      // Fill letterbox area with scene background
+      ctx.fillStyle = '#0b2021';
+      ctx.fillRect(0, 0, cw, ch);
       ctx.drawImage(frame, sx, sy, sw, sh, 0, 0, cw, ch);
     }
 
