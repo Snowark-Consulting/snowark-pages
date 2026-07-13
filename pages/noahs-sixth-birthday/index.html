@@ -33,6 +33,20 @@
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
+
+    /* Desktop: constrain to a centred column so the video doesn't stretch edge-to-edge */
+    @media (min-width: 768px) {
+      body {
+        display: flex;
+        justify-content: center;
+        background: #000;
+      }
+      .page-wrapper {
+        max-width: 1100px;
+        width: 100%;
+        box-shadow: 0 0 80px rgba(0,0,0,0.9);
+      }
+    }
     .video-section {
       position: relative;
       height: 400vh;
@@ -383,6 +397,7 @@
   </style>
 </head>
 <body>
+<div class="page-wrapper">
 
   <section class="video-section" id="videoSection">
     <div class="video-pin" id="videoPin">
@@ -658,5 +673,6 @@
   }
   </script>
 
+</div>
 </body>
 </html>
