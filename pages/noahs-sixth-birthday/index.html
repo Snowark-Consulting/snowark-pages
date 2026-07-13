@@ -301,7 +301,8 @@
         }
       };
       img.onerror = function() {
-        loadedCount++; // count as "loaded" so we don't block forever
+        console.error('Frame ' + i + ' failed to load: ' + img.src);
+        loadedCount++;
       };
       img.src = 'frames/frame_' + pad(i) + '.webp';
     }
@@ -319,8 +320,23 @@
         ctx.fillRect(0, 0, cw, ch);
       }
 
-      // Preload every 4th frame first
-      for (var i = 0; i < TOTAL; i += 4) {
+      // Load frame 0 directly — guarantees first frame renders
+      var frame0 = new Image();
+      frame0.onload = function() {
+        frames[0] = frame0;
+        if (loadedCount === 0) {
+          loadedCount = 1;
+          resize();
+        }
+        drawFrame(0);
+      };
+      frame0.onerror = function() {
+        console.error('Frame 0 failed to load: ' + frame0.src);
+      };
+      frame0.src = 'frames/frame_000.webp';
+
+      // Preload every 4th frame
+      for (var i = 4; i < TOTAL; i += 4) {
         preloadFrame(i);
       }
 
