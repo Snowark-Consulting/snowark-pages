@@ -307,46 +307,20 @@
       img.src = 'frames/frame_' + pad(i) + '.webp';
     }
 
-    // Wait for layout, then size canvas and fill with warm color
-    requestAnimationFrame(function() {
-      resize();
+    // Size canvas
+    resize();
 
-      // Warm fill so canvas is never transparent
-      var dpr = window.devicePixelRatio || 1;
-      var cw = canvas.width / dpr;
-      var ch = canvas.height / dpr;
-      if (cw > 0 && ch > 0) {
-        ctx.fillStyle = '#d4c8a8'; // warm parchment
-        ctx.fillRect(0, 0, cw, ch);
+    // Preload every 4th frame first
+    for (var i = 0; i < TOTAL; i += 4) {
+      preloadFrame(i);
+    }
+
+    // Then the rest
+    setTimeout(function() {
+      for (var i = 0; i < TOTAL; i++) {
+        if (i % 4 !== 0) preloadFrame(i);
       }
-
-      // Load frame 0 directly — guarantees first frame renders
-      var frame0 = new Image();
-      frame0.onload = function() {
-        frames[0] = frame0;
-        if (loadedCount === 0) {
-          loadedCount = 1;
-          resize();
-        }
-        drawFrame(0);
-      };
-      frame0.onerror = function() {
-        console.error('Frame 0 failed to load: ' + frame0.src);
-      };
-      frame0.src = 'frames/frame_000.webp';
-
-      // Preload every 4th frame
-      for (var i = 4; i < TOTAL; i += 4) {
-        preloadFrame(i);
-      }
-
-      // Then the rest
-      setTimeout(function() {
-        for (var i = 0; i < TOTAL; i++) {
-          if (i % 4 !== 0) preloadFrame(i);
-        }
-      }, 50);
-    });
+    }, 50);
 
     // Scroll-driven frame selection (no GSAP dependency)
     window.addEventListener('scroll', function() {
