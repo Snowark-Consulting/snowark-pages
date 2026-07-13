@@ -46,30 +46,35 @@
     }
     .scroll-indicator {
       position: absolute;
-      bottom: 40px;
+      bottom: 150px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       z-index: 10;
       pointer-events: none;
     }
     .scroll-indicator span {
       font-family: 'Lato', sans-serif;
-      font-size: 0.72rem;
+      font-size: 0.85rem;
       font-weight: 700;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.85);
-      text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+      color: #FFFFFF;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.25);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      padding: 8px 18px;
+      border-radius: 50px;
     }
     .scroll-indicator .chevron {
-      width: 18px;
-      height: 18px;
-      border-right: 2px solid rgba(255,255,255,0.85);
-      border-bottom: 2px solid rgba(255,255,255,0.85);
+      width: 24px;
+      height: 24px;
+      border-right: 2.5px solid #FFFFFF;
+      border-bottom: 2.5px solid #FFFFFF;
       transform: rotate(45deg);
       animation: bounce 1.8s ease-in-out infinite;
     }
