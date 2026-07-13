@@ -96,6 +96,13 @@
     }
 
     /* Clay-plaque button: 3D molded-clay feel, part of the scene */
+    .cta-pair {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
     .calendar-cta button {
       font-family: 'Lato', sans-serif;
       font-size: 0.88rem;
@@ -111,22 +118,24 @@
       gap: 10px;
       white-space: nowrap;
 
-      /* Clay gradient — lighter top catches light, darker bottom = depth */
-      background: linear-gradient(
-        180deg,
-        #5cb876 0%,
-        #479e60 40%,
-        #358248 100%
-      );
-
       /* Multi-layer clay shadow */
       box-shadow:
-        0 1px 0 rgba(255,255,255,0.18) inset,   /* subtle top rim-light */
-        0 2px 0 rgba(0,0,0,0.08),                /* tight contact shadow */
-        0 4px 6px rgba(0,0,0,0.18),              /* mid shadow */
-        0 8px 24px rgba(0,0,0,0.35);             /* ambient drop */
+        0 1px 0 rgba(255,255,255,0.18) inset,
+        0 2px 0 rgba(0,0,0,0.08),
+        0 4px 6px rgba(0,0,0,0.18),
+        0 8px 24px rgba(0,0,0,0.35);
 
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* Green clay — calendar */
+    .btn-cal {
+      background: linear-gradient(180deg, #5cb876 0%, #479e60 40%, #358248 100%);
+    }
+
+    /* Amber/gold clay — RSVP */
+    .btn-rsvp {
+      background: linear-gradient(180deg, #e8a840 0%, #d4892a 40%, #b86818 100%);
     }
 
     .calendar-cta button:hover {
@@ -154,23 +163,214 @@
       flex-shrink: 0;
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .video-section { height: auto; }
-      .video-pin { position: relative; height: auto; }
-      .scroll-indicator .chevron { animation: none; }
-    }
-
     @media (max-width: 480px) {
       .calendar-cta button {
         font-size: 0.82rem;
         padding: 12px 28px;
         gap: 8px;
       }
+      .cta-pair { gap: 10px; }
       .cal-icon {
         width: 18px;
         height: 18px;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      .video-section { height: auto; }
+      .video-pin { position: relative; height: auto; }
+      .scroll-indicator .chevron { animation: none; }
+    }
+
+    /* ── RSVP Modal (pirate claymation theme) ── */
+    .rsvp-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(11,32,33,0.85);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .rsvp-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .rsvp-modal {
+      background: linear-gradient(180deg, #f5ecd7 0%, #e8d5b0 100%);
+      border: 3px solid #8b6914;
+      border-radius: 16px;
+      box-shadow:
+        0 0 0 6px rgba(139,105,20,0.15),
+        0 0 0 12px rgba(139,105,20,0.08),
+        0 12px 48px rgba(0,0,0,0.5);
+      max-width: 400px;
+      width: 90%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rsvp-modal::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 1px dashed rgba(139,105,20,0.25);
+      border-radius: 10px;
+      pointer-events: none;
+    }
+
+    .rsvp-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 2;
+      background: rgba(139,105,20,0.12);
+      border: 2px solid #8b6914;
+      color: #5c3d0e;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .rsvp-close:hover { background: rgba(139,105,20,0.25); }
+
+    .rsvp-inner { padding: 32px 24px 28px; }
+
+    .rsvp-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .rsvp-flag { font-size: 2rem; display: block; margin-bottom: 8px; }
+    .rsvp-header h2 {
+      font-family: 'Cambo', serif;
+      font-size: 1.6rem;
+      color: #3d1f00;
+      margin: 0 0 4px;
+    }
+    .rsvp-header p {
+      font-size: 0.9rem;
+      color: #6b4420;
+      margin: 0;
+    }
+
+    .rsvp-inner label {
+      display: block;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: #3d1f00;
+      margin: 0 0 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .rsvp-inner input[type=text] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #c9a96e;
+      border-radius: 10px;
+      font-family: 'Lato', sans-serif;
+      font-size: 1rem;
+      background: rgba(255,255,255,0.7);
+      color: #3d1f00;
+      margin-bottom: 20px;
+      transition: border-color 0.2s;
+    }
+    .rsvp-inner input[type=text]:focus {
+      outline: none;
+      border-color: #8b6914;
+      box-shadow: 0 0 0 3px rgba(139,105,20,0.1);
+    }
+
+    .rsvp-radios {
+      border: none;
+      padding: 0;
+      margin: 0 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .rsvp-radios legend {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: #3d1f00;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+
+    .radio-card {
+      display: block;
+      cursor: pointer;
+    }
+    .radio-card input { display: none; }
+    .radio-mark {
+      display: block;
+      padding: 14px 18px;
+      border: 2px solid #c9a96e;
+      border-radius: 12px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #5c3d0e;
+      background: rgba(255,255,255,0.5);
+      transition: all 0.2s;
+    }
+    .radio-card input:checked + .radio-mark.yes {
+      background: #d4edda;
+      border-color: #5cb876;
+      color: #1e4620;
+    }
+    .radio-card input:checked + .radio-mark.no {
+      background: #f8d7da;
+      border-color: #d4892a;
+      color: #5c1a1a;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      background: linear-gradient(180deg, #e8a840 0%, #d4892a 40%, #b86818 100%);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.18) inset,
+        0 4px 16px rgba(0,0,0,0.3);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.22) inset,
+        0 8px 24px rgba(0,0,0,0.35);
+    }
+    .btn-submit:active { transform: translateY(1px); }
+
+    .rsvp-success { text-align: center; padding: 12px 0; }
+    .rsvp-success h2 {
+      font-family: 'Cambo', serif;
+      font-size: 1.4rem;
+      color: #1e4620;
+      margin: 8px 0 4px;
+    }
+    .rsvp-success p { color: #5c3d0e; margin: 0; }
   </style>
 </head>
 <body>
@@ -183,19 +383,65 @@
         <div class="chevron"></div>
       </div>
       <div class="calendar-cta" id="calendarCta">
-        <button onclick="addToCalendar()">
-          <svg class="cal-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="4" width="20" height="18" rx="2.5" fill="white"/>
-            <rect x="2" y="4" width="20" height="7" rx="2.5" fill="#e04848"/>
-            <line x1="7" y1="7" x2="11" y2="7" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="7" y1="9.5" x2="9.5" y2="9.5" stroke="white" stroke-width="1" stroke-linecap="round"/>
-            <text x="12" y="17.5" text-anchor="middle" font-size="9" font-weight="700" fill="#444" font-family="Lato, sans-serif">5</text>
-          </svg>
-          Add to Calendar
-        </button>
+        <div class="cta-pair">
+          <button class="btn-cal" onclick="addToCalendar()">
+            <svg class="cal-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="4" width="20" height="18" rx="2.5" fill="white"/>
+              <rect x="2" y="4" width="20" height="7" rx="2.5" fill="#e04848"/>
+              <line x1="7" y1="7" x2="11" y2="7" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="7" y1="9.5" x2="9.5" y2="9.5" stroke="white" stroke-width="1" stroke-linecap="round"/>
+              <text x="12" y="17.5" text-anchor="middle" font-size="9" font-weight="700" fill="#444" font-family="Lato, sans-serif">5</text>
+            </svg>
+            Add to Calendar
+          </button>
+          <button class="btn-rsvp" onclick="openRsvp()">
+            <svg class="cal-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="6" r="3" fill="white"/>
+              <path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" stroke="white" stroke-width="2" fill="none"/>
+            </svg>
+            RSVP
+          </button>
+        </div>
       </div>
     </div>
   </section>
+
+  <!-- RSVP Modal -->
+  <div class="rsvp-overlay" id="rsvpOverlay">
+    <div class="rsvp-modal">
+      <button class="rsvp-close" onclick="closeRsvp()" aria-label="Close">✕</button>
+      <div class="rsvp-inner">
+        <div class="rsvp-header">
+          <span class="rsvp-flag">🏴‍☠️</span>
+          <h2>Ahoy, Matey!</h2>
+          <p>Captain Noah requests yer reply</p>
+        </div>
+        <form id="rsvpForm" onsubmit="submitRsvp(event)">
+          <label for="childName">Young Buccaneer's Name</label>
+          <input type="text" id="childName" placeholder="e.g. Jack Sparrow" required>
+
+          <fieldset class="rsvp-radios">
+            <legend>Can they make it?</legend>
+            <label class="radio-card">
+              <input type="radio" name="attending" value="yes" required>
+              <span class="radio-mark yes">⚓ Aye! We'll be there</span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="attending" value="no" required>
+              <span class="radio-mark no">💀 Arrr, can't make it</span>
+            </label>
+          </fieldset>
+
+          <button type="submit" class="btn-submit">Send Yer Reply</button>
+        </form>
+        <div class="rsvp-success" id="rsvpSuccess" style="display:none">
+          <span class="rsvp-flag">🦜</span>
+          <h2>Yer reply be logged!</h2>
+          <p>See ye on the high seas, matey.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
   (function() {
@@ -341,7 +587,7 @@
       'UID:noah-birthday-2026@snowark.com.au',
       'SUMMARY:Noah\'s 6th Birthday',
       'LOCATION:Mitcham Reserve',
-      'DESCRIPTION:Noah\'s 6th Birthday Party at Mitcham Reserve\\n\\nSaturday 5 September 2026\\n10:00 am – 12:00 pm',
+      'DESCRIPTION:Noah\\'s 6th Birthday Party at Mitcham Reserve\\n\\nSaturday 5 September 2026\\n10:00 am – 12:00 pm\\n\\nRSVP here: https://snowark.com.au/pages/noahs-sixth-birthday',
       'END:VEVENT',
       'END:VCALENDAR'
     ];
@@ -356,6 +602,52 @@
     document.body.removeChild(link);
     URL.revokeObjectURL(link.href);
   }
+
+  // ── RSVP ──
+  var SUPABASE_URL = 'https://fwnqlryktisglebhmfeb.supabase.co';
+  var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ3bnFscnlrdGlzZ2xlYmhtZmViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzcxMjIzNjcsImV4cCI6MjA1MjY5ODM2N30.fGJWkXKFVW7DJk5LVvEGJgIpxw9V8HqEFuKbnKj9nGs';
+
+  function openRsvp() {
+    document.getElementById('rsvpOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeRsvp() {
+    document.getElementById('rsvpOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function submitRsvp(event) {
+    event.preventDefault();
+    var name = document.getElementById('childName').value.trim();
+    var attending = document.querySelector('input[name="attending"]:checked').value;
+    var status = attending === 'yes' ? 'rsvp_yes' : 'rsvp_no';
+
+    fetch(SUPABASE_URL + '/rest/v1/client_responses', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        client_name: name,
+        status: status
+      })
+    }).then(function() {
+      document.getElementById('rsvpForm').style.display = 'none';
+      document.getElementById('rsvpSuccess').style.display = 'block';
+    }).catch(function() {
+      document.getElementById('rsvpForm').style.display = 'none';
+      document.getElementById('rsvpSuccess').style.display = 'block';
+    });
+  }
+
+  // Close modal on overlay click
+  document.getElementById('rsvpOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeRsvp();
+  });
   </script>
 
 </body>
