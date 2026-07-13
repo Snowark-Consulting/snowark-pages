@@ -290,10 +290,12 @@
       img.onload = function() {
         frames[i] = img;
         loadedCount++;
+        console.log('Frame ' + i + ' loaded (' + loadedCount + '/' + TOTAL + ')');
 
         if (loadedCount === 1) {
           resize();
           drawFrame(0);
+          indicator.querySelector('span').textContent = 'Scroll';
         }
 
         if (!ready && loadedCount >= Math.ceil(TOTAL / 4)) {
@@ -301,7 +303,7 @@
         }
       };
       img.onerror = function() {
-        console.error('Frame ' + i + ' failed to load: ' + img.src);
+        console.error('Frame ' + i + ' FAILED: ' + img.src);
         loadedCount++;
       };
       img.src = 'frames/frame_' + pad(i) + '.webp';
@@ -319,6 +321,17 @@
       ctx.fillStyle = '#d4c8a8';
       ctx.fillRect(0, 0, cw, ch);
     }
+
+    // Show loading state
+    indicator.querySelector('span').textContent = 'Loading...';
+
+    // Fallback: if nothing loads in 8s, show error
+    setTimeout(function() {
+      if (loadedCount === 0) {
+        indicator.querySelector('span').textContent = 'Tap to retry';
+        console.error('NO FRAMES LOADED after 8s timeout');
+      }
+    }, 8000);
 
     // Preload every 4th frame first
     for (var i = 0; i < TOTAL; i += 4) {
