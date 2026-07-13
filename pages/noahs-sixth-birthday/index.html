@@ -143,7 +143,9 @@
       justify-content: center;
     }
 
-    .calendar-cta button {
+    .calendar-cta button,
+    .calendar-cta a.btn-cal,
+    .calendar-cta a.btn-rsvp {
       font-family: 'Lato', sans-serif;
       font-size: 0.88rem;
       font-weight: 700;
@@ -178,7 +180,9 @@
       background: linear-gradient(180deg, #e8a840 0%, #d4892a 40%, #b86818 100%);
     }
 
-    .calendar-cta button:hover {
+    .calendar-cta button:hover,
+    .calendar-cta a.btn-cal:hover,
+    .calendar-cta a.btn-rsvp:hover {
       transform: translateY(-2px) scale(1.03);
       box-shadow:
         0 1px 0 rgba(255,255,255,0.22) inset,
@@ -187,7 +191,9 @@
         0 12px 32px rgba(0,0,0,0.40);
     }
 
-    .calendar-cta button:active {
+    .calendar-cta button:active,
+    .calendar-cta a.btn-cal:active,
+    .calendar-cta a.btn-rsvp:active {
       transform: translateY(1px) scale(0.98);
       box-shadow:
         0 0px 0 rgba(255,255,255,0.08) inset,
@@ -204,7 +210,9 @@
     }
 
     @media (max-width: 480px) {
-      .calendar-cta button {
+      .calendar-cta button,
+    .calendar-cta a.btn-cal,
+    .calendar-cta a.btn-rsvp {
         font-size: 0.82rem;
         padding: 12px 28px;
         gap: 8px;
@@ -426,7 +434,7 @@
       <div class="calendar-cta" id="calendarCta">
         <div class="cta-label">Set your course</div>
         <div class="cta-pair">
-          <button class="btn-cal" onclick="addToCalendar()">
+          <a class="btn-cal" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Noah%27s+6th+Birthday&amp;dates=20260905T003000Z/20260905T023000Z&amp;details=RSVP%3A+https%3A%2F%2Fsnowark.com.au%2Fpages%2Fnoahs-sixth-birthday%23rsvp&amp;location=Mitcham+Reserve&amp;ctz=Australia%2FAdelaide" target="_blank" rel="noopener" style="text-decoration:none">
             <svg class="cal-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="2" y="4" width="20" height="18" rx="2.5" fill="white"/>
               <rect x="2" y="4" width="20" height="7" rx="2.5" fill="#e04848"/>
@@ -435,7 +443,7 @@
               <text x="12" y="17.5" text-anchor="middle" font-size="9" font-weight="700" fill="#444" font-family="Lato, sans-serif">5</text>
             </svg>
             Add to Calendar
-          </button>
+          </a>
           <button class="btn-rsvp" onclick="openRsvp()">
             <svg class="cal-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="12" cy="6" r="3" fill="white"/>
