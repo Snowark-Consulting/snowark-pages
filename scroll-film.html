@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SnowArk ,  You get your nights back.</title>
+<meta name="description" content="I deploy an AI chief of staff into your business. You get your nights back.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<style>
+:root {
+  --teal: #174445;
+  --green: #0d8f64;
+  --green-lift: #4cc296;
+  --warm: #e9e7e3;
+  --void: #0b2021;
+  --black: #000000;
+  --white: #FFFFFF;
+  --fg-2: #615c50;
+  --border: #d5d2cc;
+  --font-display: 'Cambo', Georgia, serif;
+  --font-sans: 'Lato', -apple-system, sans-serif;
+  --radius: 8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-family:var(--font-sans);font-size:16px;line-height:1.6;color:var(--black);background:var(--white)}
+html.lenis{height:auto}.lenis.lenis-smooth{scroll-behavior:auto}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}
+
+/* ── Film section ── */
+.film-driver{height:750vh;position:relative}
+.film-stage{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--void)}
+#film-canvas{position:absolute;inset:0;width:100%;height:100%}
+.film-gradient{position:absolute;bottom:0;left:0;width:100%;height:30vh;background:linear-gradient(transparent,rgba(11,32,33,.85));pointer-events:none;opacity:0}
+
+/* Beat overlays */
+.beat{position:absolute;pointer-events:none;opacity:0}
+.beat.hero{top:42%;left:50%;transform:translate(-50%,-50%);text-align:center;width:90%;max-width:700px}
+.beat.hero h1{font:400 clamp(2.4rem,6vw,5rem)/1.1 var(--font-display);color:var(--white);letter-spacing:-.01em}
+.beat.hero .sub{font:300 clamp(1rem,2.5vw,1.25rem)/1.5 var(--font-sans);color:rgba(255,255,255,.6);margin-top:.75rem}
+.beat.chaos{top:35%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.beat.chaos h2{font:400 clamp(1.6rem,4vw,2.8rem)/1.2 var(--font-display);color:rgba(255,255,255,.85)}
+.beat.calm{top:30%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.beat.calm h2{font:400 clamp(1.6rem,4vw,2.8rem)/1.2 var(--font-display);color:var(--white)}
+.beat.order{top:38%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.beat.order h2{font:400 clamp(1.6rem,4vw,2.8rem)/1.2 var(--font-display);color:rgba(11,32,33,.9)}
+.beat.signal{top:44%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.beat.signal h2{font:400 clamp(2rem,5vw,3.6rem)/1.1 var(--font-display);color:var(--teal)}
+
+/* Header */
+.film-header{position:fixed;top:0;left:0;width:100%;z-index:100;padding:20px 32px;display:flex;justify-content:space-between;align-items:center;transition:background .3s}
+.film-header.on-light .logo-text{color:var(--teal)}
+.film-header.on-light .chapter-label{color:var(--fg-2)}
+.film-header .logo-text{font:400 18px/1 var(--font-display);color:var(--white);transition:color .3s}
+.film-header .chapter-label{font:600 10px/1 var(--font-sans);text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.5);transition:color .3s}
+
+/* Chapter bar */
+.chapter-bar{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:100;display:flex;gap:6px}
+.chapter-bar .seg{width:40px;height:2px;background:rgba(255,255,255,.2);border-radius:1px;overflow:hidden}
+.chapter-bar .seg .fill{width:0%;height:100%;background:var(--green-lift);transition:width .1s linear}
+
+/* ── After-film sections ── */
+.content{background:var(--white);position:relative;z-index:2}
+.section{padding:100px 24px;max-width:1100px;margin:0 auto}
+.section.warm{background:var(--warm);max-width:none;padding:100px 24px}
+.section.warm .inner{max-width:1100px;margin:0 auto}
+.section.teal{background:var(--teal);max-width:none;padding:100px 24px;color:var(--white)}
+.section.teal .inner{max-width:1100px;margin:0 auto}
+
+h2{font:400 2rem/1.2 var(--font-display);margin-bottom:16px}
+h3{font:400 1.35rem/1.3 var(--font-display);margin-bottom:10px}
+.eyebrow{font:600 10px/1.3 var(--font-sans);text-transform:uppercase;letter-spacing:.14em;color:var(--green);margin-bottom:12px}
+.lead{font:300 1.15rem/1.6 var(--font-sans);color:var(--fg-2);max-width:600px}
+
+/* Cards */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:40px}
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:28px}
+.card h4{font:400 1.1rem/1.4 var(--font-display);margin-bottom:8px}
+.card p{font:300 .95rem/1.6 var(--font-sans);color:var(--fg-2)}
+.card-grid.alt .card{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:var(--white)}
+.card-grid.alt .card p{color:rgba(255,255,255,.65)}
+
+/* Steps */
+.steps{margin-top:40px}
+.step{display:flex;gap:24px;padding:24px 0;border-bottom:1px solid var(--border)}
+.step:first-child{border-top:1px solid var(--border)}
+.step .num{font:400 2.8rem/1 var(--font-display);color:var(--teal);min-width:56px;flex-shrink:0}
+.step .num.warm-num{color:rgba(11,32,33,.15)}
+.step h4{font:400 1.2rem/1.3 var(--font-display);margin-bottom:6px}
+.step p{font:300 .95rem/1.6 var(--font-sans);color:var(--fg-2);max-width:540px}
+
+/* Pricing */
+.price-block{margin-top:32px;border:1px solid var(--border);border-radius:var(--radius);padding:36px;max-width:560px}
+.price-block h3{font:400 1.5rem/1.3 var(--font-display)}
+.price-block ul{list-style:none;margin-top:20px}
+.price-block ul li{font:300 .95rem/1.7 var(--font-sans);color:var(--fg-2);padding:4px 0}
+.price-block ul li::before{content:'- ';color:var(--green)}
+.price-block .note{font:300 .85rem/1.6 var(--font-sans);color:var(--fg-2);margin-top:20px;font-style:italic}
+
+/* Contact */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:40px;align-items:start}
+.contact-info p{font:300 .95rem/1.7 var(--font-sans);color:var(--fg-2);max-width:400px}
+.contact-form{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:28px}
+.contact-form input,.contact-form textarea{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);font:400 .95rem/1.5 var(--font-sans);margin-bottom:12px;background:var(--white);color:var(--black)}
+.contact-form textarea{min-height:100px;resize:vertical}
+.contact-form input:focus,.contact-form textarea:focus{outline:none;border-color:var(--teal)}
+
+.btn{font:600 14px/1 var(--font-sans);border:0;border-radius:var(--radius);padding:14px 28px;cursor:pointer;transition:background .2s,opacity .2s}
+.btn-primary{background:var(--teal);color:var(--white)}
+.btn-primary:hover{background:#123636}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* Footer */
+.footer{padding:40px 24px;border-top:1px solid var(--border);text-align:center}
+.footer p{font:300 .8rem/1.6 var(--font-sans);color:var(--fg-2)}
+
+.form-success{display:none;padding:20px;text-align:center}
+.form-success p{font:400 1rem/1.5 var(--font-sans);color:var(--green)}
+
+@media (max-width:700px){
+  .section{padding:64px 20px}
+  .section.warm,.section.teal{padding:64px 20px}
+  .contact-grid{grid-template-columns:1fr;gap:32px}
+  .film-header{padding:14px 20px}
+  .chapter-bar{bottom:20px}.chapter-bar .seg{width:28px}
+  h2{font-size:1.6rem}
+  .beat.hero h1{font-size:2.2rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .film-driver{height:auto}
+  .film-stage{position:relative;height:60vh}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ FILM ═══════════ -->
+<div class="film-driver" id="film-driver">
+  <div class="film-stage" id="film-stage">
+    <canvas id="film-canvas"></canvas>
+    <div class="film-gradient" id="film-gradient"></div>
+
+    <!-- Beat overlays -->
+    <div class="beat hero" data-in="-0.05" data-peak="0" data-out="0.22">
+      <h1>SnowArk</h1>
+      <p class="sub">I deploy an AI chief of staff into your business.</p>
+    </div>
+    <div class="beat chaos" data-in="0.22" data-peak="0.30" data-out="0.42">
+      <h2>Every tool. Every channel. Every notification.</h2>
+    </div>
+    <div class="beat calm" data-in="0.42" data-peak="0.50" data-out="0.62">
+      <h2>Then: a calm hand.</h2>
+    </div>
+    <div class="beat order" data-in="0.62" data-peak="0.72" data-out="0.84">
+      <h2>Out of chaos, order.</h2>
+    </div>
+    <div class="beat signal" data-in="0.84" data-peak="0.90" data-out="1.05">
+      <h2>You get your nights back.</h2>
+    </div>
+  </div>
+</div>
+
+<!-- Film header -->
+<header class="film-header" id="film-header">
+  <span class="logo-text">SnowArk</span>
+  <span class="chapter-label" id="chapter-label">The Pulse</span>
+</header>
+
+<!-- Chapter bar -->
+<div class="chapter-bar" id="chapter-bar">
+  <div class="seg"><div class="fill" id="seg-0"></div></div>
+  <div class="seg"><div class="fill" id="seg-1"></div></div>
+  <div class="seg"><div class="fill" id="seg-2"></div></div>
+  <div class="seg"><div class="fill" id="seg-3"></div></div>
+  <div class="seg"><div class="fill" id="seg-4"></div></div>
+</div>
+
+<!-- ═══════════ AFTER-FILM ═══════════ -->
+<div class="content">
+
+  <!-- Problem -->
+  <div class="section warm">
+    <div class="inner">
+      <p class="eyebrow">The Problem</p>
+      <h2>Your business is running you.</h2>
+      <p class="lead">You did not sign up to be the bottleneck. But somewhere along the way, every decision started routing through you.</p>
+      <div class="card-grid" style="margin-top:40px">
+        <div class="card">
+          <h4>You are the operations department</h4>
+          <p>Every tool, every platform, every process ,  you are the glue holding it together. It works, but it does not scale.</p>
+        </div>
+        <div class="card">
+          <h4>Growth creates chaos</h4>
+          <p>More customers means more moving parts. Without systems, growth feels like drowning faster.</p>
+        </div>
+        <div class="card">
+          <h4>You cannot hire your way out</h4>
+          <p>A VA needs instructions. An ops hire needs onboarding. Both need management. You are still the bottleneck.</p>
+        </div>
+        <div class="card">
+          <h4>Nights and weekends are not strategy</h4>
+          <p>Catching up after hours is not a plan. It is a holding pattern that cannot hold forever.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guide -->
+  <div class="section">
+    <p class="eyebrow">The Guide</p>
+    <h2>You are not behind. You are wearing too many hats.</h2>
+    <p class="lead">I have spent years inside operations at eight-figure brands. The problem is never talent or effort ,  it is architecture. You need someone who can see the whole board.</p>
+    <div class="card-grid" style="margin-top:32px">
+      <div class="card">
+        <h4>18 platforms</h4>
+        <p>Integrated across ecommerce and retail operations.</p>
+      </div>
+      <div class="card">
+        <h4>8-figure brands</h4>
+        <p>Operations leadership at scale, not theory.</p>
+      </div>
+      <div class="card">
+        <h4>Fractional, not full-time</h4>
+        <p>You get the capability without the overhead.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Plan -->
+  <div class="section warm">
+    <div class="inner">
+      <p class="eyebrow">How It Works</p>
+      <h2>Three steps to getting your nights back.</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <div>
+            <h4>Map</h4>
+            <p>We audit your operations end to end ,  every tool, every process, every handoff. We find the constraints you have learned to work around.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <div>
+            <h4>Configure</h4>
+            <p>I deploy an AI chief of staff into your existing stack. It watches, learns, and begins handling the routine ,  so you stop being the router for every decision.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <div>
+            <h4>Refine</h4>
+            <p>Month by month, the system improves. New connections, deeper understanding, broader scope. The agent gets smarter; you get more of your time back.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pricing -->
+  <div class="section">
+    <p class="eyebrow">Investment</p>
+    <h2>Fractional AI chief of staff.</h2>
+    <p class="lead">Pricing is based on a needs analysis. Every engagement starts with an audit that tells us exactly what to build.</p>
+    <div class="price-block">
+      <h3>How it works</h3>
+      <ul>
+        <li>Diagnostic audit maps your operations</li>
+        <li>Agent deployed into your existing tools</li>
+        <li>Month-to-month engagement, no lock-in</li>
+        <li>Ongoing refinement and optimisation</li>
+      </ul>
+      <p class="note">No set prices published ,  every business is different. The audit tells us the scope.</p>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div class="section teal" id="contact">
+    <div class="inner">
+      <p class="eyebrow" style="color:var(--green-lift)">Start the conversation</p>
+      <h2>Book a chat.</h2>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <p>Tell me about your business. No pitch, no pressure ,  just a conversation about where you are and where you want to be.</p>
+          <p style="margin-top:16px;font-size:.9rem;color:rgba(255,255,255,.55)">josh@snowark.com.au</p>
+        </div>
+        <div class="contact-form" id="contact-form">
+          <a href="mailto:josh@snowark.com.au?subject=SnowArk%20enquiry" class="btn btn-primary" style="display:inline-block;text-decoration:none;font-size:15px;padding:16px 36px">Email Josh</a>
+          <p style="margin-top:20px;font-size:.85rem;color:var(--fg-2)">josh@snowark.com.au</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>SnowArk Consulting &copy; 2026 &middot; Adelaide, Australia</p>
+  </div>
+</div>
+
+<script>
+/* ═══════════ LENIS ═══════════ */
+const lenis = new Lenis({ lerp: 0.09, smoothWheel: true });
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(t => lenis.raf(t * 1000));
+gsap.ticker.lagSmoothing(0);
+
+/* ═══════════ CANVAS ═══════════ */
+const canvas = document.getElementById('film-canvas');
+const ctx = canvas.getContext('2d');
+const filmStage = document.getElementById('film-stage');
+const filmDriver = document.getElementById('film-driver');
+
+let W, H, dpr;
+function resize(){
+  dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  const r = filmStage.getBoundingClientRect();
+  W = r.width; H = r.height;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+}
+resize();
+window.addEventListener('resize', resize);
+
+/* ═══════════ PARTICLE SYSTEM ═══════════ */
+const NODES_MAX = 120;
+const nodes = [];
+
+function createNode(x, y, vx, vy){
+  return { x, y, vx, vy, ox: x, oy: y, life: 1, size: 2 + Math.random() * 3 };
+}
+
+// Start with one central node
+nodes.push(createNode(W/2, H/2, 0, 0));
+
+let phase = -1;
+let filmProgress = 0;
+
+function updateFilm(p){
+  filmProgress = p;
+  const newPhase = p < 0.18 ? 0 : p < 0.38 ? 1 : p < 0.58 ? 2 : p < 0.78 ? 3 : 4;
+
+  if (newPhase !== phase) {
+    phase = newPhase;
+    // Phase transitions
+    if (phase === 1){
+      // Burst into chaos ,  spawn many nodes
+      const cx = W/2, cy = H/2;
+      for (let i = 0; i < 80; i++){
+        const a = Math.random() * Math.PI * 2;
+        const r = 80 + Math.random() * 300;
+        nodes.push(createNode(cx + Math.cos(a)*r, cy + Math.sin(a)*r, (Math.random()-.5)*1.5, (Math.random()-.5)*1.5));
+      }
+    }
+    if (phase === 2){
+      // Begin ordering ,  nodes slow down, start moving toward lattice positions
+    }
+    if (phase === 3){
+      // Snap to lattice
+      const cols = 10, rows = Math.min(8, Math.floor(nodes.length / cols));
+      const spacing = Math.min(W, H) / (Math.max(cols, rows) + 1);
+      const ox = (W - (cols-1) * spacing) / 2;
+      const oy = (H - (rows-1) * spacing) / 2;
+      nodes.forEach((n, i) => {
+        const col = i % cols, row = Math.floor(i / cols) % rows;
+        n.ox = ox + col * spacing;
+        n.oy = oy + row * spacing;
+        n.vx = (n.ox - n.x) * 0.02;
+        n.vy = (n.oy - n.y) * 0.02;
+      });
+    }
+  }
+
+  // Update nodes
+  const chaos = phase <= 1 ? 1 : phase === 2 ? 0.5 : phase === 3 ? 0.15 : 0.02;
+  nodes.forEach(n => {
+    if (phase >= 2){
+      // Drift toward ordered position
+      n.vx += (n.ox - n.x) * 0.008;
+      n.vy += (n.oy - n.y) * 0.008;
+      n.vx *= 0.94;
+      n.vy *= 0.94;
+    } else {
+      // Chaotic wandering
+      n.vx += (Math.random() - 0.5) * chaos * 0.6;
+      n.vy += (Math.random() - 0.5) * chaos * 0.6;
+      n.vx *= 0.98;
+      n.vy *= 0.98;
+    }
+    n.x += n.vx;
+    n.y += n.vy;
+    // Bounce edges softly
+    if (n.x < 0) { n.x = 0; n.vx *= -0.5; }
+    if (n.x > W) { n.x = W; n.vx *= -0.5; }
+    if (n.y < 0) { n.y = 0; n.vy *= -0.5; }
+    if (n.y > H) { n.y = H; n.vy *= -0.5; }
+  });
+
+  // Limit node count
+  while (nodes.length > NODES_MAX) nodes.shift();
+}
+
+function drawFilm(p){
+  // Background
+  const bgR = Math.round(11 + (255-11) * Math.pow(Math.max(0, (p-0.72)/0.28), 1.5));
+  const bgG = Math.round(32 + (255-32) * Math.pow(Math.max(0, (p-0.72)/0.28), 1.5));
+  const bgB = Math.round(33 + (255-33) * Math.pow(Math.max(0, (p-0.72)/0.28), 1.5));
+  ctx.fillStyle = `rgb(${bgR},${bgG},${bgB})`;
+  ctx.fillRect(0, 0, W, H);
+
+  if (nodes.length === 0) return;
+
+  // Glow
+  const glowAlpha = phase <= 1 ? 0.35 : phase === 2 ? 0.2 : phase === 3 ? 0.12 : 0.05;
+
+  // Draw connections
+  const maxDist = phase <= 1 ? 140 : phase === 2 ? 100 : phase === 3 ? 80 : 70;
+  const nodeColor = p > 0.75 ? [23,68,69] : p > 0.55 ? [76,194,150] : [76,194,150];
+  const edgeAlpha = phase <= 1 ? 0.18 : phase === 2 ? 0.22 : phase === 3 ? 0.3 : 0.25;
+
+  for (let i = 0; i < nodes.length; i++){
+    for (let j = i+1; j < nodes.length; j++){
+      const dx = nodes[i].x - nodes[j].x;
+      const dy = nodes[i].y - nodes[j].y;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      if (d < maxDist){
+        const a = edgeAlpha * (1 - d/maxDist);
+        ctx.strokeStyle = `rgba(${nodeColor[0]},${nodeColor[1]},${nodeColor[2]},${a})`;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  // Draw nodes
+  nodes.forEach(n => {
+    const alpha = 0.6 + glowAlpha * (0.5 + 0.5 * Math.sin(Date.now()/1000 + n.x));
+    ctx.fillStyle = `rgba(${nodeColor[0]},${nodeColor[1]},${nodeColor[2]},${alpha})`;
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.size, 0, Math.PI*2);
+    ctx.fill();
+  });
+
+  // Phase 0-1: central pulse
+  if (phase <= 1 && nodes.length > 0){
+    const pulse = 0.4 + 0.6 * Math.sin(Date.now()/600);
+    const cx = nodes[0].x, cy = nodes[0].y;
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 80 * pulse);
+    grad.addColorStop(0, 'rgba(76,194,150,0.5)');
+    grad.addColorStop(1, 'rgba(76,194,150,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 80 * pulse, 0, Math.PI*2);
+    ctx.fill();
+  }
+}
+
+/* ═══════════ SCROLL HANDOFF ═══════════ */
+const filmGradient = document.getElementById('film-gradient');
+const filmHeader = document.getElementById('film-header');
+const chapterLabel = document.getElementById('chapter-label');
+const chapterNames = ['The Pulse','The Noise','The Hand','The Order','The Signal'];
+
+function tick(){
+  const r = filmDriver.getBoundingClientRect();
+  const p = Math.max(0, Math.min(1, -r.top / (r.height - window.innerHeight)));
+  updateFilm(p);
+  drawFilm(p);
+
+  // Chapter label
+  const ci = Math.min(4, Math.floor(p * 5));
+  chapterLabel.textContent = chapterNames[ci];
+
+  // Chapter bar fills
+  for (let i = 0; i < 5; i++){
+    const segStart = i/5, segEnd = (i+1)/5;
+    let fill = 0;
+    if (p >= segEnd) fill = 1;
+    else if (p > segStart) fill = (p - segStart) / (segEnd - segStart);
+    document.getElementById('seg-'+i).style.width = (fill*100)+'%';
+  }
+
+  // Gradient at bottom
+  filmGradient.style.opacity = Math.max(0, Math.min(1, (p - 0.85) / 0.15));
+
+  // Header contrast
+  const topStrip = ctx.getImageData(0, 0, 1, 1).data;
+  const lum = 0.299 * topStrip[0] + 0.587 * topStrip[1] + 0.114 * topStrip[2];
+  if (lum > 138) filmHeader.classList.add('on-light');
+  else filmHeader.classList.remove('on-light');
+
+  // Beat overlays
+  document.querySelectorAll('.beat').forEach(b => {
+    const bIn = parseFloat(b.dataset.in);
+    const bPeak = parseFloat(b.dataset.peak);
+    const bOut = parseFloat(b.dataset.out);
+    let alpha = 0;
+    if (p >= bIn && p <= bOut){
+      if (p < bPeak) alpha = (p - bIn) / Math.max(1e-4, bPeak - bIn);
+      else if (bOut > 1.5) alpha = 1;
+      else alpha = 1 - (p - bPeak) / Math.max(1e-4, bOut - bPeak);
+    }
+    b.style.opacity = alpha;
+    b.style.transform = b.classList.contains('hero')
+      ? `translate(-50%, calc(-50% - ${(1-alpha)*20}px))`
+      : `translate(-50%, calc(-50% - ${(1-alpha)*12}px))`;
+  });
+
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+/* ═══════════ DEV CONTRACT ═══════════ */
+const JUMP = new URLSearchParams(location.search).get('jump');
+if (JUMP !== null) history.scrollRestoration = 'manual';
+// Mark ready after fonts + canvas settle
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    if (JUMP !== null) {
+      window.scrollTo(0, +JUMP || 0);
+      ScrollTrigger.refresh();
+    }
+    window.__ready = true;
+  }, 800);
+});
+
+/* ═══════════ JANK METER ═══════════ */
+(function(){
+  const deltas = []; let last = performance.now();
+  const meter = () => {
+    const now = performance.now(); deltas.push(now - last); last = now;
+    if (deltas.length >= 120){
+      deltas.sort((a,b)=>a-b);
+      const p95 = deltas[Math.floor(deltas.length*.95)];
+      const max = deltas[deltas.length-1];
+      console.log(`jank | p95:${p95.toFixed(1)}ms max:${max.toFixed(1)}ms | ${max<50?'PASS':'CHECK'}`);
+      deltas.length = 0;
+    }
+    requestAnimationFrame(meter);
+  };
+  requestAnimationFrame(meter);
+})();
+
+/* ═══════════ DEV CONTRACT ═══════════ */
+</script>
+</body>
+</html>
