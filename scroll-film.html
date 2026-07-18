@@ -372,7 +372,12 @@ function updateFilm(p){
   }
 
   const chaos = phase <= 1 ? 1.2 : phase === 2 ? 0.5 : phase === 3 ? 0.12 : 0.01;
-  nodes.forEach(n => {
+  nodes.forEach((n, i) => {
+    if (phase === 0 && i === 0){
+      // Anchor the pulse node at center
+      n.x = W/2; n.y = H/2; n.vx = 0; n.vy = 0;
+      return;
+    }
     if (phase >= 2){
       n.vx += (n.ox - n.x) * 0.015;
       n.vy += (n.oy - n.y) * 0.015;
