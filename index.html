@@ -1304,6 +1304,64 @@
       .fit-cols { grid-template-columns: 1fr; }
       .letter-wrap { padding: 36px 24px; }
     }
+
+    /* ══════════════ Section quick-jump nav ══════════════ */
+    .section-nav {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 8px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      box-shadow: 0 2px 16px rgba(14, 41, 41, 0.06);
+    }
+    .section-nav a {
+      display: block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(14, 41, 41, 0.18);
+      transition: background 0.3s ease, transform 0.3s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .section-nav a:hover,
+    .section-nav a.active {
+      background: var(--green);
+      transform: scale(1.4);
+    }
+    .section-nav a .label {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      white-space: nowrap;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #0e2929;
+      background: var(--white);
+      padding: 4px 12px;
+      border-radius: 6px;
+      box-shadow: 0 2px 10px rgba(14, 41, 41, 0.1);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .section-nav a:hover .label {
+      opacity: 1;
+    }
+    @media (max-width: 900px) {
+      .section-nav { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -1323,6 +1381,24 @@
   </nav>
   <a href="#contact" class="btn btn-primary">Book a chat</a>
 </header>
+
+<!-- ═══════════════ QUICK-JUMP NAV ═══════════════ -->
+<nav class="section-nav" aria-label="Jump to section">
+  <a href="#top"><span class="label">Top</span></a>
+  <a href="#statement"><span class="label">Statement</span></a>
+  <a href="#problem"><span class="label">The Problem</span></a>
+  <a href="#alternative"><span class="label">Alternatives</span></a>
+  <a href="#guide"><span class="label">Who I Am</span></a>
+  <a href="#plan"><span class="label">How I Work</span></a>
+  <a href="#what"><span class="label">What It Is</span></a>
+  <a href="#returns"><span class="label">Returns</span></a>
+  <a href="#proof"><span class="label">Proof</span></a>
+  <a href="#fit"><span class="label">Fit</span></a>
+  <a href="#pricing"><span class="label">Pricing</span></a>
+  <a href="#faq"><span class="label">FAQ</span></a>
+  <a href="#note"><span class="label">Note from Josh</span></a>
+  <a href="#contact"><span class="label">Contact</span></a>
+</nav>
 
 <!-- ═══════════════ 1. HERO ═══════════════ -->
 <section class="hero dark-sec" id="top">
@@ -1809,11 +1885,11 @@
       <blockquote>
         <p>Working with Josh has completely changed the trajectory of my business.</p>
         <div class="testimonial-full" id="testimonial-full">
-          <p>When I first approached him, I had an idea. Today, I have Atlas — an AI operating system that genuinely feels like a member of the team. Josh didn't just build an AI assistant; he designed the architecture, the thinking, and the systems behind it from the ground up.</p>
+          <p>When I first approached him, I had an idea. Today, I have Atlas, an AI operating system that genuinely feels like a member of the team. Josh didn't just build an AI assistant; he designed the architecture, the thinking, and the systems behind it from the ground up.</p>
           <p>What impresses me most is that Atlas isn't a collection of prompts. It's a living system that learns, remembers, makes structured decisions, and helps run my business day to day. Every interaction has purpose, every workflow has been carefully considered, and the level of strategic thinking Josh brings is unlike anything I've experienced.</p>
           <p>Josh has an incredible ability to take ideas that are scattered across conversations and turn them into scalable systems. He challenges assumptions, thinks several steps ahead, and builds with long-term growth in mind rather than quick fixes.</p>
           <p>As the founder of Not Forgotten, I genuinely see Josh as one of the biggest reasons we've been able to move from an idea to building something with the potential to transform an industry. Atlas has become the brain of our business, and that's a direct reflection of Josh's vision, technical ability, and commitment to excellence.</p>
-          <p>If you're looking for someone who can help you build AI that actually works for your business — not just answer questions, but become part of how your business operates — I couldn't recommend Josh highly enough.</p>
+          <p>If you're looking for someone who can help you build AI that actually works for your business, not just answer questions, but become part of how your business operates, I couldn't recommend Josh highly enough.</p>
         </div>
         <button class="testimonial-expand" onclick="toggleTestimonial()" aria-expanded="false">Read the full story</button>
       </blockquote>
@@ -2884,6 +2960,28 @@ function toggleTestimonial() {
     btn.textContent = 'Show less';
   }
 }
+
+/* ══════════════ Section nav active state ══════════════ */
+(function() {
+  var dots = document.querySelectorAll('.section-nav a');
+  if (!dots.length) return;
+  var sections = [];
+  dots.forEach(function(dot) {
+    var id = dot.getAttribute('href').slice(1);
+    var el = document.getElementById(id);
+    if (el) sections.push({ el: el, dot: dot });
+  });
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        dots.forEach(function(d) { d.classList.remove('active'); });
+        var match = sections.find(function(s) { return s.el === entry.target; });
+        if (match) match.dot.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+  sections.forEach(function(s) { observer.observe(s.el); });
+})();
 </script>
 
 </body>
