@@ -1360,7 +1360,63 @@
       opacity: 1;
     }
     @media (max-width: 900px) {
-      .section-nav { display: none; }
+      .section-nav {
+        position: fixed;
+        top: var(--nav-h);
+        right: 0;
+        left: 0;
+        transform: none;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 6px;
+        padding: 8px 20px;
+        border-radius: 0;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+        box-shadow: 0 2px 8px rgba(14, 41, 41, 0.04);
+        white-space: nowrap;
+        scrollbar-width: none;
+        z-index: 99;
+      }
+      .section-nav::-webkit-scrollbar { display: none; }
+      .section-nav a {
+        width: auto;
+        height: auto;
+        border-radius: 999px;
+        padding: 7px 15px;
+        background: rgba(14, 41, 41, 0.05);
+        flex-shrink: 0;
+        white-space: nowrap;
+      }
+      .section-nav a.active {
+        background: var(--green);
+      }
+      .section-nav a .label {
+        position: static;
+        opacity: 1;
+        transform: none;
+        background: transparent;
+        padding: 0;
+        box-shadow: none;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: rgba(20, 30, 30, 0.75);
+        white-space: nowrap;
+        transition: none;
+        pointer-events: auto;
+      }
+      .section-nav a.active .label {
+        color: var(--white);
+      }
+      .section-nav a:hover {
+        background: rgba(14, 41, 41, 0.1);
+        transform: none;
+      }
+      .section-nav a.active:hover {
+        background: var(--green);
+      }
     }
   </style>
 </head>
