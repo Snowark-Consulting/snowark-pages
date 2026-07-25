@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Snowark | Your AI chief of staff</title>
-  <meta name="description" content="Snowark deploys an AI chief of staff for founders. I deploy it, I optimise it. You lead the business.">
-  <meta property="og:title" content="Snowark | Your AI chief of staff">
+  <title>SnowArk | Your AI chief of staff</title>
+  <meta name="description" content="SnowArk deploys an AI chief of staff for founders and their teams. I deploy it, I optimise it. You lead the business.">
+  <meta property="og:title" content="SnowArk | Your AI chief of staff">
   <meta property="og:description" content="A persistent, context-rich agent that connects to your tools, learns how you operate, and runs the operational layer.">
   <meta property="og:image" content="https://snowark.com.au/snowark-og-image.jpg">
   <meta property="og:image:width" content="1200">
@@ -877,6 +877,29 @@
       height: auto;
       object-fit: contain;
     }
+    .testimonial-full { max-height: 0; overflow: hidden; transition: max-height 0.5s ease, opacity 0.35s ease; opacity: 0; }
+    .testimonial-full.open { max-height: 1200px; opacity: 1; }
+    .testimonial-full p { font-family: var(--font-heading); font-size: clamp(1.3rem, 2.4vw, 1.8rem); line-height: 1.5; color: #1a2f2f; max-width: 54ch; }
+    .testimonial-full p + p { margin-top: 22px; }
+    .testimonial-expand {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 8px 18px;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: none;
+      border: 1.5px solid var(--green);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+    .testimonial-expand:hover { background: var(--green); color: #fff; }
+    .testimonial-expand::after { content: ' +'; font-family: var(--font-heading); font-size: 1.1rem; margin-left: 2px; }
+    .testimonial-expand.open::after { content: ' \\2212'; }
     .ownership-note {
       margin: 40px auto 0;
       text-align: center;
@@ -1287,9 +1310,9 @@
 
 <!-- ═══════════════ NAV ═══════════════ -->
 <header id="header">
-  <a class="nav-logo" href="#top" aria-label="Snowark home">
-    <img class="logo-white" src="assets/logos/SnowArk-White.png" alt="Snowark" width="106" height="20">
-    <img class="logo-dark" src="assets/logos/SnowArk-Black.png" alt="Snowark" width="106" height="20">
+  <a class="nav-logo" href="#top" aria-label="SnowArk home">
+    <img class="logo-white" src="assets/logos/SnowArk-White.png" alt="SnowArk" width="106" height="20">
+    <img class="logo-dark" src="assets/logos/SnowArk-Black.png" alt="SnowArk" width="106" height="20">
   </a>
   <nav class="nav-links" aria-label="Primary">
     <a href="#problem">The problem</a>
@@ -1373,9 +1396,9 @@
   </svg>
   <div class="grain"></div>
   <div class="hero-content">
-    <p class="hero-badge glass anim"><span class="dot"></span>Snowark Consulting</p>
+    <p class="hero-badge glass anim"><span class="dot"></span>SnowArk Consulting</p>
     <h1 class="anim">I deploy an AI chief of staff into your business. You get your nights back.</h1>
-    <p class="hero-sub anim">A persistent, context-rich agent that connects to your tools, learns how you operate, and runs the operational layer. I deploy it, I optimise it. You lead the business.</p>
+    <p class="hero-sub anim">A persistent, context-rich agent that connects to your tools, learns how you operate, and runs the operational layer, for you and your team. I deploy it, I optimise it. You lead the business.</p>
     <div class="hero-ctas anim">
       <a href="#contact" class="btn btn-primary">Book a chat</a>
       <a href="#statement" class="btn btn-ghost">See how it works</a>
@@ -1606,7 +1629,7 @@
   <div class="container">
     <p class="eyebrow reveal">What founders try first</p>
     <h2 class="reveal">None of it quite works</h2>
-    <p class="lead reveal">Before Snowark, most founders try one of these paths. Each solves part of the problem. None solves the whole thing.</p>
+    <p class="lead reveal">Before SnowArk, most founders try one of these paths. Each solves part of the problem. None solves the whole thing.</p>
 
     <div class="ledger">
       <div class="ledger-row reveal">
@@ -1657,7 +1680,7 @@
       <div>
         <h3 class="reveal">Hi, I’m Josh. This was built from the inside.</h3>
         <p class="reveal">I’m not an AI vendor. I spent years as CMO across multiple eight-figure brands, and six months ago I finally ran out of hours. So I built an AI operating system that works the way I do: connected to every platform I use, carrying context from one day into the next, working while I sleep. It runs 24/7, with its own memory, its own governance, and its own capability.</p>
-        <p class="reveal">That system is production infrastructure, not a pilot. It has analysed 3,447 sales calls to build a customer insights engine, connected to 18 platforms, and replaced paid SaaS subscriptions with integrations it maintains itself. It ran alongside a $6.2M marketing operation, and it’s the playbook every Snowark placement is built from on day one. I now run Snowark full time. You deal with me directly, and the overnight work happens because my own agents do it.</p>
+        <p class="reveal">That system is production infrastructure, not a pilot. It has analysed 3,447 sales calls to build a customer insights engine, connected to 18 platforms, and replaced paid SaaS subscriptions with integrations it maintains itself. It ran alongside a $6.2M marketing operation, and it’s the playbook every SnowArk placement is built from on day one. I now run SnowArk full time. You deal with me directly, and the overnight work happens because the agents I deploy into your business do it.</p>
       </div>
       <div class="cred-grid reveal">
         <div class="cred glass">
@@ -1716,7 +1739,7 @@
         <span class="step-no">03</span>
         <div>
           <h3>Run and refine</h3>
-          <p>I don't hand over and walk away. I operate your agent month to month, improving its capability and pointing it at the next constraint. You focus on your clients. The agent handles the rest.</p>
+          <p>I don't hand over and walk away. I operate your agent month to month, improving its capability and pointing it at the next constraint. You focus on your customers and your team. The agent handles the rest.</p>
         </div>
       </div>
     </div>
@@ -1760,8 +1783,8 @@
 
     <div class="what-grid">
       <div>
-        <p class="lead reveal">A chief of staff does three things: protects your attention, drives execution, and ensures nothing falls through the cracks. Your agent does all three. It triages the inbox, chases quotes, briefs you before meetings, then builds the dashboards and pages that act on what it learns.</p>
-        <p class="lead reveal" style="margin-top:18px;">While you’re with clients, it’s already working. A morning report before you wake. A quote chased before it goes cold. A brief on your desk before the meeting.</p>
+        <p class="lead reveal">A chief of staff does three things: protects your attention, drives execution, and ensures nothing falls through the cracks. And because it connects to the tools your team already uses, it makes every team member more effective, not just you. Your agent does all three. It triages the inbox, chases quotes, briefs you before meetings, then builds the dashboards and pages that act on what it learns.</p>
+        <p class="lead reveal" style="margin-top:18px;">While you’re with clients, it’s already working. A morning report before you wake. A quote chased before it goes cold. A brief on your desk before the meeting. A marketer with campaign data pulled before she asks. An ops lead who never chases an update manually again.</p>
       </div>
       <div class="feed glass reveal" aria-label="A sample day of agent activity">
         <p class="feed-head">A Tuesday, unsupervised</p>
@@ -1784,9 +1807,17 @@
     <div class="testimonial glass reveal">
       <div class="card-glow"></div>
       <blockquote>
-        <p>The more context our agent gets, the less it feels like an automation platform and the more it feels like a genuine business partner that understands how I think and why decisions get made.</p>
+        <p>Working with Josh has completely changed the trajectory of my business.</p>
+        <div class="testimonial-full" id="testimonial-full">
+          <p>When I first approached him, I had an idea. Today, I have Atlas — an AI operating system that genuinely feels like a member of the team. Josh didn't just build an AI assistant; he designed the architecture, the thinking, and the systems behind it from the ground up.</p>
+          <p>What impresses me most is that Atlas isn't a collection of prompts. It's a living system that learns, remembers, makes structured decisions, and helps run my business day to day. Every interaction has purpose, every workflow has been carefully considered, and the level of strategic thinking Josh brings is unlike anything I've experienced.</p>
+          <p>Josh has an incredible ability to take ideas that are scattered across conversations and turn them into scalable systems. He challenges assumptions, thinks several steps ahead, and builds with long-term growth in mind rather than quick fixes.</p>
+          <p>As the founder of Not Forgotten, I genuinely see Josh as one of the biggest reasons we've been able to move from an idea to building something with the potential to transform an industry. Atlas has become the brain of our business, and that's a direct reflection of Josh's vision, technical ability, and commitment to excellence.</p>
+          <p>If you're looking for someone who can help you build AI that actually works for your business — not just answer questions, but become part of how your business operates — I couldn't recommend Josh highly enough.</p>
+        </div>
+        <button class="testimonial-expand" onclick="toggleTestimonial()" aria-expanded="false">Read the full story</button>
       </blockquote>
-      <p class="attribution"><strong>James</strong>, Not Forgotten Systems</p>
+      <p class="attribution"><strong>James Hardstaff</strong>, Founder, Not Forgotten Systems</p>
       <div class="testimonial-logo">
         <img src="assets/notforgotten-logo.png" alt="Not Forgotten Systems" width="130" height="77" loading="lazy">
       </div>
@@ -1807,7 +1838,7 @@
         <span class="ret-idx">01 &middot; Time</span>
         <div class="ret-art" aria-hidden="true"><svg viewBox="0 0 220 70" preserveAspectRatio="xMidYMid meet"><path class="art-bg" d="M 110 8 A 27 27 0 1 0 110 62 A 27 27 0 1 0 110 8 M 110 35 L 110 18 M 110 35 L 124 43"/><path class="art-draw" d="M 110 8 A 27 27 0 1 0 110 62 A 27 27 0 1 0 110 8 M 110 35 L 110 18 M 110 35 L 124 43" pathLength="100" style="animation-delay:0s"/></svg></div>
         <h3>The load comes off</h3>
-        <p>Morning reports before you wake. The inbox triaged, quotes chased, meeting briefs on your desk. The operational weight of the business stops landing on you. You get your nights back.</p>
+        <p>Morning reports before you wake. The inbox triaged, quotes chased, meeting briefs on your desk. The operational weight of the business stops landing on you and your team stops waiting on you for context. You get your nights back.</p>
       </div>
       <div class="return-card glass spot reveal">
         <span class="ret-idx">02 &middot; Cost</span>
@@ -1835,12 +1866,12 @@
   <div class="container">
     <p class="eyebrow reveal">Recent placements</p>
     <h2 class="reveal">Meet a few of my placements</h2>
-    <p class="lead reveal">I don't install software. I place a chief of staff. Gary runs with the marketing team at AFS Group. Winston keeps Snowark itself running. Atlas works for Not Forgotten Systems. A few of their colleagues prefer to keep their engagements confidential.</p>
+    <p class="lead reveal">I don't install software. I place a chief of staff. Gary runs with the marketing team at AFS Group. Winston keeps SnowArk itself running. Atlas works for Not Forgotten Systems. A few of their colleagues prefer to keep their engagements confidential.</p>
 
-    <div class="orb-stage" aria-label="Agents placed with businesses, orbiting the Snowark platform">
+    <div class="orb-stage" aria-label="Agents placed with businesses, orbiting the SnowArk platform">
       <div class="orb" aria-hidden="true"></div>
       <div class="orbit o1"><span class="chip agent-chip"><img src="assets/profile/gary-avatar.jpg" alt="Gary, placed with The AFS Group"><span class="id"><em>Gary</em><small>The AFS Group</small></span></span></div>
-      <div class="orbit o2"><span class="chip agent-chip"><img src="assets/profile/winston-avatar.jpg" alt="Winston, placed with Snowark"><span class="id"><em>Winston</em><small>Snowark</small></span></span></div>
+      <div class="orbit o2"><span class="chip agent-chip"><img src="assets/profile/winston-avatar.jpg" alt="Winston, placed with SnowArk"><span class="id"><em>Winston</em><small>SnowArk</small></span></span></div>
       <div class="orbit o3"><span class="chip agent-chip"><img src="assets/profile/atlas-avatar.jpg" alt="Atlas, placed with Not Forgotten Systems"><span class="id"><em>Atlas</em><small>Not Forgotten</small></span></span></div>
       <div class="orbit wide w1" aria-hidden="true"><span class="chip agent-chip shadow-chip"><span class="sil"><svg viewBox="0 0 42 42"><circle cx="21" cy="15" r="8" fill="rgba(233,231,227,0.25)"/><path d="M5 42 a16 13 0 0 1 32 0" fill="rgba(233,231,227,0.25)"/></svg></span><span class="id"><em>Classified</em></span></span></div>
       <div class="orbit wide w2" aria-hidden="true"><span class="chip agent-chip shadow-chip"><span class="sil"><svg viewBox="0 0 42 42"><circle cx="21" cy="15" r="8" fill="rgba(233,231,227,0.25)"/><path d="M5 42 a16 13 0 0 1 32 0" fill="rgba(233,231,227,0.25)"/></svg></span><span class="id"><em>Under NDA</em></span></span></div>
@@ -1874,7 +1905,7 @@
         <p>Designed and runs the full experimentation engine. ICE scoring, experiment cards, funnel-stage mapping. Tests are prioritised, tracked, and reviewed without a human PM.</p>
       </article>
       <article class="fan-card">
-        <header><img src="assets/profile/winston-avatar.jpg" alt=""><div><strong>Winston</strong><span>Snowark</span></div></header>
+        <header><img src="assets/profile/winston-avatar.jpg" alt=""><div><strong>Winston</strong><span>SnowArk</span></div></header>
         <p>Built this website from the ground up. Yes, the one you are reading.</p>
       </article>
     </div>
@@ -1896,7 +1927,7 @@
       <div class="fit-col glass spot fit-yes reveal">
         <h3>We’ll get on well if</h3>
         <ul>
-          <li class="reveal">You’ve got more opportunities than hours, whether that’s an established business drowning in its own operations or an earlier-stage one you want to build AI-first from day one</li>
+          <li class="reveal">You’ve got more opportunities than hours, whether that’s an established business wanting more leverage from your existing team or an earlier-stage one you want to build AI-first from day one</li>
           <li class="reveal">You already live in tools like Shopify, Xero, HubSpot or Asana, or you’re ready to adopt them</li>
           <li class="reveal">You want to stay in the loop: reviewing, approving, redirecting</li>
           <li class="reveal">You’re building leverage, not just delegating tasks</li>
@@ -1950,9 +1981,9 @@
         </div>
       </details>
       <details>
-        <summary>Is Snowark really one person?</summary>
+        <summary>Is SnowArk really one person?</summary>
         <div class="faq-body">
-        <p>One operator, plus his agents, and that’s the point. You get the person who built the infrastructure, on every engagement. The heavy lifting runs overnight because my own agents do it. And everything built for you is documented and owned by you, so nothing depends on me being awake.</p>
+        <p>One operator, plus his agents, and that’s the point. You get the person who built the infrastructure, on every engagement. The heavy lifting runs overnight because the agents deployed into your business do it. And everything built for you is documented and owned by you, so nothing depends on me being awake.</p>
         </div>
       </details>
       <details>
@@ -2005,12 +2036,12 @@
       <p>You’ve scrolled a fair way to get here, so let me save you the guesswork about who you’d actually be dealing with.</p>
       <p>I’m Josh. Until recently I was CMO across a portfolio of eight-figure brands, with a $6.2M budget and never enough hours. Six months ago I built an AI agent to engineer those hours back.</p>
       <p>It worked, and not just on the admin. The agent turned 3,447 sales calls into a customer insights engine that shaped strategy. It replaced paid software with integrations it built and still maintains. It shipped landing pages the same day they were requested, briefed me before meetings, and chased quotes while I was in them. Time back, costs down, growth moving. My nights came back as a side effect.</p>
-      <p>In fact, it worked well enough that I left the day job. Snowark is now what I do full time: placing that same infrastructure into other businesses. Not a team of account managers. Not a chatbot subscription. Me, working out where the leverage is in your business, and an agent configured to go after it, deployed in days and run month to month.</p>
+      <p>In fact, it worked well enough that I left the day job. SnowArk is now what I do full time: placing that same infrastructure into other businesses. Not a team of account managers. Not a chatbot subscription. Me, working out where the leverage is in your business, and an agent configured to go after it, deployed in days and run month to month.</p>
       <p>I keep the client list deliberately short. Fewer placements, more attention.</p>
       <p>If your business is running you, I’d like to hear about it. The form below takes a minute, and a real reply lands within 24 hours. Winston will have read it in seconds. He’s the one who deployed this page.</p>
       <div class="letter-sig">
         <img src="josh.jpg" alt="Josh Hancock">
-        <div><span class="name">Josh Hancock</span><span class="role">Founder, Snowark</span></div>
+        <div><span class="name">Josh Hancock</span><span class="role">Founder, SnowArk</span></div>
       </div>
     </div>
   </div>
@@ -2058,9 +2089,9 @@
   <div class="aurora">
     <div class="blob b3" style="opacity:0.4; bottom:-50%;"></div>
   </div>
-  <div class="footer-mark" role="img" aria-label="Snowark"></div>
+  <div class="footer-mark" role="img" aria-label="SnowArk"></div>
   <div class="footer-meta">
-    <span>Snowark Consulting &copy; 2026</span>
+    <span>SnowArk Consulting &copy; 2026</span>
     <a href="mailto:josh@snowark.com.au">josh@snowark.com.au</a>
   </div>
 </footer>
@@ -2835,6 +2866,24 @@
   }, { threshold: 0.1 });
   obs.observe(canvas);
 })();
+
+/* ══════════════ Testimonial expand/collapse ══════════════ */
+function toggleTestimonial() {
+  var full = document.getElementById('testimonial-full');
+  var btn = document.querySelector('.testimonial-expand');
+  var isOpen = full.classList.contains('open');
+  if (isOpen) {
+    full.classList.remove('open');
+    btn.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.textContent = 'Read the full story';
+  } else {
+    full.classList.add('open');
+    btn.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    btn.textContent = 'Show less';
+  }
+}
 </script>
 
 </body>
