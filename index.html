@@ -1557,6 +1557,9 @@
 <div class="beat" id="beat5"><span class="eyebrow">////// 06:12</span><h2>You get your time back.</h2></div>
 
 <div id="dawn"></div>
+<div id="burn">
+  <div class="tag">I build an AI chief of staff, so you can get your time back.</div>
+</div>
 
 
 <div id="track"></div>
@@ -3579,7 +3582,7 @@ function runTypers(now){
 }
 const hoursEls=[...document.querySelectorAll('#hours .h')];
 const clockT=document.querySelector('#clock .t');
-const dawn=$('dawn'), cue=$('cue');
+const dawn=$('dawn'), burn=$('burn'), cue=$('cue');
 
 const nightClock = clockAt;
 const chapterAt = p => p<.16?0 : p<.34?1 : p<.60?2 : p<.78?3 : 4;
@@ -3625,6 +3628,8 @@ if (reduced){
     el.style.transform='none'; el.style.margin='14vh auto'; el.style.textAlign='center';
   });
   dawn.remove(); cue.remove();
+  burn.style.position='relative'; burn.style.opacity='1';
+  burn.style.transform='none'; burn.style.margin='10vh auto';
   document.body.classList.add('arrived');
   workUniforms.uW.value.set(1,0,0,0);
   renderer.render(scene, cam);
@@ -3760,8 +3765,12 @@ function frame(now){
   hoursEls.forEach((h,i)=> h.classList.toggle('on', i===ch));
   cue.style.opacity = P<.02?1:0;
 
-  dawn.style.opacity = range(P,.85,.965);
-  document.body.classList.toggle('arrived', P > .91);
+  dawn.style.opacity = range(P,.80,.93);
+  document.body.classList.toggle('arrived', P > .88);
+  const bo = range(P,.86,.945);
+  burn.style.opacity=bo;
+  burn.style.filter=`blur(${(1-bo)*22}px)`;
+  burn.style.transform=`translate(-50%,-50%) scale(${1.22-bo*.22})`;
 
   runTypers(now);
   renderer.render(scene,cam);
