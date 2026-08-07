@@ -482,8 +482,8 @@ const beats = [
   {el:$('beat1'), a:.045, b:.135},
   {el:$('beat2'), a:.185, b:.295},
   {el:$('beat3'), a:.365, b:.520},
-  {el:$('beat4'), a:.625, b:.715},
-  {el:$('beat5'), a:.745, b:.845},
+  {el:$('beat4'), a:.60,  b:.675},
+  {el:$('beat5'), a:.775, b:.86},
 ];
 const counterEl=$('counter'), ctr=$('ctr'), doneEl=$('doneline');
 const hoursEls=[...document.querySelectorAll('#hours .h')];
@@ -588,8 +588,8 @@ function frame(now){
   });
   counterEl.style.opacity = win(P,.375,.545);
   ctr.textContent = Math.round(47*(1-range(P,.38,.545)));
-  doneEl.style.opacity = win(P,.665,.80,.05);
-  doneEl.classList.toggle('still', P>.742);
+  doneEl.style.opacity = win(P,.705,.755,.03);
+  doneEl.classList.toggle('still', P>.735);
 
   clockT.textContent = nightClock(P);
   const ch = chapterAt(P);
