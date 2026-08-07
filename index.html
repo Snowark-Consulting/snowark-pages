@@ -1493,7 +1493,7 @@
   #burn .tag{font:italic 400 clamp(.98rem,1.6vw,1.25rem)/1.55 Lato;color:#3d4a49;margin-top:18px;max-width:26em;text-wrap:balance}
 
   /* ---------- track + landing ---------- */
-  #track{height:820vh;height:820svh}
+  #track{height:1025vh;height:1025svh}
   #landing{position:relative;z-index:9;background:var(--dawn);color:var(--ink);
            min-height:92vh;display:flex;align-items:center;justify-content:center;text-align:center}
   #landing .inner{max-width:640px;padding:96px 28px}
@@ -3441,7 +3441,7 @@ aur.position.set(0,14,-70); scene.add(aur);
 gsap.registerPlugin(ScrollTrigger);
 let lenis = null, lenisVel = 0;
 if (!reduced){
-  lenis = new Lenis({duration:1.15, smoothWheel:true});
+  lenis = new Lenis({duration:1.15, smoothWheel:true, touchMultiplier:1.5});
   lenis.on('scroll', (e)=>{ lenisVel = e.velocity || 0; ScrollTrigger.update(); });
   gsap.ticker.add((t)=> lenis.raf(t*1000));
   gsap.ticker.lagSmoothing(0);
