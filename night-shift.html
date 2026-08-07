@@ -39,15 +39,16 @@
 
   /* ---------- beats ---------- */
   .beat{position:fixed;z-index:5;opacity:0;pointer-events:none;max-width:min(560px,80vw)}
-  .beat{padding:18px 24px;border-radius:14px;
-     background:linear-gradient(180deg,rgba(5,18,20,.78),rgba(5,18,20,.58));
-     border:1px solid rgba(127,212,196,.16);
-     backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-     box-shadow:0 24px 70px rgba(2,10,11,.45)}
-  .beat h2{font:900 clamp(1.45rem,3.4vw,2.6rem)/1.08 Lato;color:#ffffff;letter-spacing:-.01em}
-  .beat p{font:italic 400 clamp(.9rem,1.3vw,1.05rem)/1.5 Cambo;color:#dfe8e4;margin-top:10px;max-width:34em}
-  #beat5{padding:22px 34px}
+  .beat .eyebrow{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;
+     color:var(--green-lift);opacity:.9;margin-bottom:14px}
+  .beat h2{font:800 clamp(1.35rem,3vw,2.3rem)/1.1 Lato;color:#fff;letter-spacing:-.005em;
+     text-shadow:0 1px 3px rgba(2,10,11,.9),0 2px 26px rgba(2,10,11,.75)}
+  .beat p{font:italic 400 clamp(.88rem,1.25vw,1rem)/1.55 Cambo;color:#cfe0da;margin-top:10px;max-width:30em;
+     text-shadow:0 1px 3px rgba(2,10,11,.9),0 2px 18px rgba(2,10,11,.7)}
+  .beat::before{content:"";position:absolute;inset:-34% -22%;z-index:-1;pointer-events:none;
+     background:radial-gradient(closest-side,rgba(3,12,14,.52),rgba(3,12,14,0) 72%)}
   #beat0{left:50%;top:74%;transform:translate(-50%,-50%);text-align:center}
+  #beat0 .eyebrow,#beat5 .eyebrow{margin-bottom:10px}
   #beat0 h2{font-size:clamp(1.7rem,4vw,3rem)}
   #beat1{left:8vw;bottom:18vh}
   #beat2{right:8vw;top:22vh;text-align:right}
@@ -59,8 +60,7 @@
   #beat5 h2{font-size:clamp(1.9rem,4.6vw,3.4rem)}
 
   .term{position:fixed;z-index:5;font-family:var(--mono);color:#7fe9c0;opacity:0;pointer-events:none;
-     padding:10px 16px;border-radius:10px;background:rgba(5,18,20,.72);
-     border:1px solid rgba(127,212,196,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+     text-shadow:0 1px 3px rgba(2,10,11,.95),0 0 22px rgba(2,10,11,.8)}
   #counter{left:8vw;top:calc(20vh + 1em);margin-top:clamp(5.4rem,11vw,7.6rem);font-size:clamp(.78rem,1.1vw,.92rem);letter-spacing:.1em}
   #counter .dim{color:var(--teal-soft);opacity:.75}
   #doneline{right:8vw;bottom:calc(24vh - 3.1em);font-size:clamp(.8rem,1.2vw,.95rem);letter-spacing:.12em;text-align:right}
@@ -120,19 +120,19 @@
   <div class="h" data-h="4">06:30</div>
 </div>
 
-<div class="beat" id="beat0"><h2>Ready to get your nights back?</h2></div>
-<div class="beat" id="beat1"><h2>You built the business.</h2><p>Every decision still passes through your hands.</p></div>
-<div class="beat" id="beat2"><h2>So we placed something in it.</h2><p>An AI chief of staff, connected to everything, working while you sleep.</p></div>
-<div class="beat" id="beat3"><h2>It builds while you rest.</h2><p>Orders, inboxes, follow-ups, reports. Handled in the hours you never see.</p></div>
+<div class="beat" id="beat0"><h2>Ready to get your time back?</h2></div>
+<div class="beat" id="beat1"><span class="eyebrow">////// 23:00 &middot; the study</span><h2>You built the business.</h2><p>Every decision still passes through your hands.</p></div>
+<div class="beat" id="beat2"><span class="eyebrow">////// 00:00 &middot; the placement</span><h2>So we placed something in it.</h2><p>An AI chief of staff, connected to everything, working while you sleep.</p></div>
+<div class="beat" id="beat3"><span class="eyebrow">////// 03:00 &middot; the night shift</span><h2>It builds while you rest.</h2><p>Orders, inboxes, follow-ups, reports. Handled in the hours you never see.</p></div>
 <div class="term" id="counter"><span class="dim">inbox&nbsp;</span><span id="ctr">47</span><span class="dim">&nbsp;unread</span></div>
-<div class="beat" id="beat4"><h2>Work finishes before you arrive.</h2><p>Quietly. Overnight. Every day.</p></div>
+<div class="beat" id="beat4"><span class="eyebrow">////// 05:30 &middot; the handover</span><h2>Work finishes before you arrive.</h2><p>Quietly. Overnight. Every day.</p></div>
 <div class="term" id="doneline">done. 06:12.<span class="cur"></span></div>
-<div class="beat" id="beat5"><h2>You get your nights back.</h2></div>
+<div class="beat" id="beat5"><span class="eyebrow">////// 06:12</span><h2>You get your time back.</h2></div>
 
 <div id="dawn"></div>
 <div id="burn">
   <img class="lockup" src="assets/logos/SnowArk-Secondary-Black.png" alt="SnowArk">
-  <div class="tag">I build an AI chief of staff, so you can get your nights back.</div>
+  <div class="tag">I build an AI chief of staff, so you can get your time back.</div>
 </div>
 
 <div id="track"></div>
