@@ -868,13 +868,17 @@ async function boot(){
   }
   if (jump){
     const y = parseFloat(jump)||0;
-    if (lenis) lenis.scrollTo(y,{immediate:true,force:true});
-    window.scrollTo(0,y);
-    ScrollTrigger.update();
+    /* hold the target until the page provably stays there — immune to
+       Lenis lerp, ScrollTrigger refresh, and late layout shifts */
+    let settled = 0;
+    for (let i = 0; i < 40 && settled < 4; i++){
+      if (lenis) lenis.scrollTo(y,{immediate:true,force:true});
+      window.scrollTo(0,y);
+      ScrollTrigger.update();
+      await new Promise(r=>setTimeout(r,90));
+      settled = Math.abs(scrollY - y) < 2 ? settled + 1 : 0;
+    }
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-    if (lenis) lenis.scrollTo(y,{immediate:true,force:true});
-    window.scrollTo(0,y);
-    ScrollTrigger.update();
   }
   await new Promise(r=>setTimeout(r,350));
   window.__ready = true;

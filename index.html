@@ -1554,12 +1554,10 @@
 <div class="term" id="counter"><span class="dim">inbox&nbsp;</span><span id="ctr">47</span><span class="dim">&nbsp;unread</span></div>
 <div class="beat" id="beat4"><span class="eyebrow">////// 05:30 &middot; the handover</span><h2>Work finishes before you arrive.</h2><p>Quietly. Reliably. Every day.</p></div>
 <div class="term" id="doneline"><span class="txt">done. 06:12.</span><span class="cur"></span></div>
-<div class="beat" id="beat5"><span class="eyebrow">////// 06:12</span><h2>The business runs. You live.</h2></div>
+<div class="beat" id="beat5"><span class="eyebrow">////// 06:12</span><h2>You get your time back.</h2></div>
 
 <div id="dawn"></div>
-<div id="burn">
-  <div class="tag">I build an AI chief of staff, so you can get your time back.</div>
-</div>
+
 
 <div id="track"></div>
 <div id="site">
@@ -1593,6 +1591,14 @@
   <a href="#contact"><span class="label">Contact</span></a>
 </nav>
 
+<section class="statement" id="statement">
+  <div class="container">
+    <p class="eyebrow">The truth</p>
+    <p class="statement-text" id="statement-text">You built something real. But somewhere along the way, the admin took over. The tools that were meant to help now demand your attention. The data that should guide your decisions is scattered across platforms. Every hour spent in the weeds is an hour not spent on growth.</p>
+    <p class="statement-close" id="statement-close">Your business is running you.</p>
+  </div>
+</section>
+
 <section class="stack-marquee" aria-label="Platforms your agent connects to">
   <p class="eyebrow">Connects to the tools you already run</p>
   <div class="m-row left">
@@ -1608,13 +1614,8 @@
 </section>
 
 <!-- ═══════════════ 2. STATEMENT (scroll reveal) ═══════════════ -->
-<section class="statement" id="statement">
-  <div class="container">
-    <p class="eyebrow">The truth</p>
-    <p class="statement-text" id="statement-text">You built something real. But somewhere along the way, the admin took over. The tools that were meant to help now demand your attention. The data that should guide your decisions is scattered across platforms. Every hour spent in the weeds is an hour not spent on growth.</p>
-    <p class="statement-close" id="statement-close">Your business is running you.</p>
-  </div>
-</section>
+
+
 
 <!-- ═══════════════ 3. THE PROBLEM ═══════════════ -->
 <section id="problem">
@@ -3574,7 +3575,7 @@ function runTypers(now){
 }
 const hoursEls=[...document.querySelectorAll('#hours .h')];
 const clockT=document.querySelector('#clock .t');
-const dawn=$('dawn'), burn=$('burn'), cue=$('cue');
+const dawn=$('dawn'), cue=$('cue');
 
 const nightClock = clockAt;
 const chapterAt = p => p<.16?0 : p<.34?1 : p<.60?2 : p<.78?3 : 4;
@@ -3618,9 +3619,7 @@ if (reduced){
     el.style.position='relative'; el.style.opacity='1'; el.style.inset='auto';
     el.style.transform='none'; el.style.margin='14vh auto'; el.style.textAlign='center';
   });
-  dawn.remove(); burn.style.position='relative'; burn.style.opacity='1';
-  burn.style.transform='none'; burn.style.margin='10vh auto';
-  cue.remove();
+  dawn.remove(); cue.remove();
   document.body.classList.add('arrived');
   workUniforms.uW.value.set(1,0,0,0);
   renderer.render(scene, cam);
@@ -3745,10 +3744,6 @@ function frame(now){
 
   dawn.style.opacity = range(P,.80,.93);
   document.body.classList.toggle('arrived', P > .88);
-  const bo = range(P,.86,.945);
-  burn.style.opacity=bo;
-  burn.style.filter=`blur(${(1-bo)*22}px)`;
-  burn.style.transform=`translate(-50%,-50%) scale(${1.22-bo*.22})`;
 
   runTypers(now);
   renderer.render(scene,cam);
@@ -3784,13 +3779,17 @@ async function boot(){
   }
   if (jump){
     const y = parseFloat(jump)||0;
-    if (lenis) lenis.scrollTo(y,{immediate:true,force:true});
-    window.scrollTo(0,y);
-    ScrollTrigger.update();
+    /* hold the target until the page provably stays there — immune to
+       Lenis lerp, ScrollTrigger refresh, and late layout shifts */
+    let settled = 0;
+    for (let i = 0; i < 40 && settled < 4; i++){
+      if (lenis) lenis.scrollTo(y,{immediate:true,force:true});
+      window.scrollTo(0,y);
+      ScrollTrigger.update();
+      await new Promise(r=>setTimeout(r,90));
+      settled = Math.abs(scrollY - y) < 2 ? settled + 1 : 0;
+    }
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-    if (lenis) lenis.scrollTo(y,{immediate:true,force:true});
-    window.scrollTo(0,y);
-    ScrollTrigger.update();
   }
   await new Promise(r=>setTimeout(r,350));
   window.__ready = true;
