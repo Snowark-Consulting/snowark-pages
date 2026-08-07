@@ -39,8 +39,12 @@
 
   /* ---------- beats ---------- */
   .beat{position:fixed;z-index:5;opacity:0;pointer-events:none;max-width:min(760px,84vw)}
-  .beat h2{font:900 clamp(2.2rem,6vw,4.6rem)/1.04 Lato;color:#f2efe9;letter-spacing:-.01em}
-  .beat p{font:italic 400 clamp(1.02rem,1.9vw,1.35rem)/1.55 Cambo;color:var(--mist);margin-top:18px;max-width:34em}
+  .beat h2{font:900 clamp(2.2rem,6vw,4.6rem)/1.04 Lato;color:#f6f4ee;letter-spacing:-.01em;
+     text-shadow:0 2px 18px rgba(2,10,11,.95),0 0 46px rgba(2,10,11,.85),0 0 110px rgba(2,10,11,.7)}
+  .beat p{font:italic 400 clamp(1.02rem,1.9vw,1.35rem)/1.55 Cambo;color:#e6e2d9;margin-top:18px;max-width:34em;
+     text-shadow:0 1px 12px rgba(2,10,11,.95),0 0 34px rgba(2,10,11,.9)}
+  .beat::before{content:"";position:absolute;inset:-18% -12%;z-index:-1;border-radius:32px;
+     background:radial-gradient(closest-side,rgba(3,13,15,.66),rgba(3,13,15,0));filter:blur(6px)}
   #beat1{left:8vw;bottom:18vh}
   #beat2{right:8vw;top:22vh;text-align:right}
   #beat2 p{margin-left:auto}
@@ -50,7 +54,7 @@
   #beat5{left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;max-width:90vw}
   #beat5 h2{font-size:clamp(2.6rem,7vw,5.4rem)}
 
-  .term{position:fixed;z-index:5;font-family:var(--mono);color:var(--green-lift);opacity:0;pointer-events:none}
+  .term{position:fixed;z-index:5;font-family:var(--mono);color:var(--green-lift);opacity:0;pointer-events:none;text-shadow:0 1px 10px rgba(2,10,11,.95),0 0 26px rgba(2,10,11,.85)}
   #counter{left:8vw;top:calc(20vh + 1em);margin-top:clamp(7rem,16vw,11rem);font-size:clamp(.85rem,1.4vw,1.05rem);letter-spacing:.1em}
   #counter .dim{color:var(--teal-soft);opacity:.75}
   #doneline{right:8vw;bottom:calc(24vh - 3.4em);font-size:clamp(.9rem,1.5vw,1.1rem);letter-spacing:.12em;text-align:right}
@@ -62,8 +66,7 @@
   #dawn{position:fixed;inset:0;z-index:7;pointer-events:none;opacity:0;
         background:linear-gradient(180deg,#f6f3ec 0%,#f4f1ea 55%,#ece8df 100%)}
   #burn{position:fixed;z-index:8;left:50%;top:46%;transform:translate(-50%,-50%);text-align:center;opacity:0;pointer-events:none}
-  #burn img{width:clamp(84px,10vw,128px);display:block;margin:0 auto}
-  #burn .word{font:400 clamp(1.6rem,3.4vw,2.6rem)/1 Cambo;color:var(--ink);letter-spacing:.42em;margin-top:26px;text-indent:.42em}
+  #burn .lockup{width:clamp(220px,26vw,360px);display:block;margin:0 auto}
   #burn .tag{font:700 10.5px/1 Lato;letter-spacing:.3em;color:var(--green);margin-top:16px;text-transform:uppercase}
 
   /* ---------- track + landing ---------- */
@@ -121,8 +124,7 @@
 
 <div id="dawn"></div>
 <div id="burn">
-  <img src="assets/logos/SnowArk-Icon-Black.svg" alt="SnowArk">
-  <div class="word">SNOWARK</div>
+  <img class="lockup" src="assets/logos/SnowArk-Secondary-Black.png" alt="SnowArk">
   <div class="tag">The business runs. You live.</div>
 </div>
 
@@ -144,17 +146,16 @@
 import * as THREE from 'three';
 
 /* ============================================================
-   SnowArk — The Night Shift
-   scroll = the night itself, 23:00 → dawn.
-   Real-time build: one camera dolly, one particle system that
-   transforms (dormant → streams → artefacts → settled), snow
-   throughout, DOM beats above, dawn + logo burn at the end.
+   SnowArk — The Night Shift  (v2: everything is particles)
+   One substance the whole night: the lamp and the machine are
+   particle formations; they dissolve into the rivers of work,
+   reform as the closed laptop, and disperse into dawn.
+   The cursor stirs the field — a path of particles.
    ============================================================ */
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const mobile  = matchMedia('(max-width: 720px)').matches;
 
-/* ---------- renderer / scene ---------- */
 const canvas   = document.getElementById('gl');
 const renderer = new THREE.WebGLRenderer({canvas, antialias:false, alpha:false, powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
@@ -165,104 +166,115 @@ const scene = new THREE.Scene();
 scene.fog   = new THREE.Fog(0x061a1c, 6, 46);
 const cam   = new THREE.PerspectiveCamera(56, innerWidth/innerHeight, .1, 400);
 
-/* ---------- shared sprite texture ---------- */
-function dotTexture(inner='rgba(255,255,255,1)'){
+function dotTexture(){
   const c = document.createElement('canvas'); c.width = c.height = 64;
   const x = c.getContext('2d');
   const g = x.createRadialGradient(32,32,0,32,32,32);
-  g.addColorStop(0, inner); g.addColorStop(.35,'rgba(255,255,255,.55)'); g.addColorStop(1,'rgba(255,255,255,0)');
+  g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.35,'rgba(255,255,255,.55)'); g.addColorStop(1,'rgba(255,255,255,0)');
   x.fillStyle = g; x.fillRect(0,0,64,64);
   return new THREE.CanvasTexture(c);
 }
 const softDot = dotTexture();
+const rnd = () => Math.random()*2-1;
 
-/* ---------- the desk at 23:00 (and its echo at 05:30) ---------- */
-function makeDesk(z, withLamp){
-  const g = new THREE.Group();
-  const dark = new THREE.MeshBasicMaterial({color:0x0e2b2d});
-  const edgeMat = new THREE.LineBasicMaterial({color:0x2a7f80, transparent:true, opacity:.85});
-
-  const base = new THREE.Mesh(new THREE.BoxGeometry(3.0,.10,2.05), dark);
-  const lid  = new THREE.Mesh(new THREE.BoxGeometry(3.0,.09,2.05), dark);
-  lid.position.y = .21;
-  const seam = new THREE.Mesh(new THREE.PlaneGeometry(2.86,.075),
-        new THREE.MeshBasicMaterial({color:0x4cc296, transparent:true, opacity:.5}));
-  seam.position.set(0,.155,1.028);
-  [base,lid].forEach(m=>{
-    g.add(m);
-    const e = new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry), edgeMat);
-    e.position.copy(m.position); g.add(e);
-  });
-  g.add(seam);
-  const glow = new THREE.Sprite(new THREE.SpriteMaterial({map:softDot, color:0x2fae7e, transparent:true, opacity:.5, depthWrite:false, blending:THREE.AdditiveBlending}));
-  glow.scale.set(4.2,1.7,1); glow.position.set(0,.3,1.0); glow.material.opacity=.3; g.add(glow);
-  g.userData.seam = seam; g.userData.glow = glow;
-
-  if (withLamp){
-    const pole = new THREE.Mesh(new THREE.CylinderGeometry(.055,.075,2.1,10), dark);
-    pole.position.set(-2.7,1.05,-.3);
-    const arm = new THREE.Mesh(new THREE.CylinderGeometry(.045,.045,1.15,8), dark);
-    arm.position.set(-2.25,2.06,-.3); arm.rotation.z = Math.PI/2.3;
-    const head = new THREE.Mesh(new THREE.ConeGeometry(.5,.62,18,1,true),
-          new THREE.MeshBasicMaterial({color:0x123234, side:THREE.DoubleSide}));
-    head.position.set(-1.78,1.92,-.3); head.rotation.z = -2.65;
-    g.add(arm);
-    const bulb = new THREE.Sprite(new THREE.SpriteMaterial({map:softDot, color:0xffd9a0, transparent:true, opacity:.95, depthWrite:false, blending:THREE.AdditiveBlending}));
-    bulb.scale.set(3.1,3.1,1); bulb.position.set(-1.7,1.62,-.3);
-    const pool = new THREE.Sprite(new THREE.SpriteMaterial({map:softDot, color:0xffc985, transparent:true, opacity:.32, depthWrite:false, blending:THREE.AdditiveBlending}));
-    pool.scale.set(5.2,2.6,1); pool.position.set(-1.6,.15,-.2);
-    g.add(pole, head, bulb, pool);
-  }
-  g.position.set(0,-.9,z);
-  g.scale.setScalar(2.4);
-  scene.add(g);
-  return g;
+/* ---------- light sprites (glow is light, not object) ---------- */
+function glowSprite(color, sx, sy, x,y,z, o){
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({map:softDot, color, transparent:true, opacity:o, depthWrite:false, blending:THREE.AdditiveBlending}));
+  sp.scale.set(sx,sy,1); sp.position.set(x,y,z); scene.add(sp); return sp;
 }
-const desk1 = makeDesk(-14, true);
-const desk2 = makeDesk(-74, false);
-desk2.visible = false;
+const bulbGlow = glowSprite(0xffd9a0, 7.5,7.5, -4.1,2.9,-12.3, .85);
+const poolGlow = glowSprite(0xffc985, 12,5.6, -3.4,-1.2,-12.0, .30);
+const seamGlow2= glowSprite(0x2fae7e, 10,4,   0,-1.1,-71.2, 0);
 
-/* ---------- artefact wireframes (the business, assembling) ---------- */
-const artefacts = new THREE.Group();
-function wire(geo, x,y,z, s=1, color=0x2a7f80){
-  const m = new THREE.LineSegments(new THREE.EdgesGeometry(geo),
-      new THREE.LineBasicMaterial({color, transparent:true, opacity:0}));
-  m.position.set(x,y,z); m.scale.setScalar(s);
-  artefacts.add(m); return m;
-}
-const aParcel = wire(new THREE.BoxGeometry(4,4,4), -9, 2.5, -40, 1);
-const aDocs   = [0,1,2].map(i => wire(new THREE.BoxGeometry(5.4,.28,3.6), 8.5, -1.2 + i*1.05, -46, 1, 0x35907a));
-const aStore  = wire(new THREE.ConeGeometry(4.4,3.2,4), 0, 6.5, -54, 1, 0x4cc296);
-aStore.rotation.y = Math.PI/4;
-const aRing   = wire(new THREE.TorusGeometry(7,.05,8,64), 0, 1.5, -49, 1, 0x1d5f60);
-aRing.rotation.x = Math.PI/2.15;
-scene.add(artefacts);
-
-/* ---------- THE work particle system ---------- */
-const N = mobile ? 55000 : 140000;
-const pos0 = new Float32Array(N*3);  // dormant  (inside the laptop seam)
-const pos1 = new Float32Array(N*3);  // streams  (flowing through the vast void)
-const tan1 = new Float32Array(N*3);  // stream tangents
-const pha  = new Float32Array(N);    // flow phase
-const pos2 = new Float32Array(N*3);  // artefact shells
-const pos3 = new Float32Array(N*3);  // settled  (into desk2)
+/* ============================================================
+   particle shape sampling — the world is one point cloud
+   ============================================================ */
+const N = mobile ? 55000 : 118000;
+const pos0 = new Float32Array(N*3);   // 23:00 — lamp + open work desk
+const pos1 = new Float32Array(N*3);   // the rivers
+const tan1 = new Float32Array(N*3);
+const pha  = new Float32Array(N);
+const pos2 = new Float32Array(N*3);   // artefact shells
+const pos3 = new Float32Array(N*3);   // 05:30 — the closed machine
 const col  = new Float32Array(N*3);
-const rnd  = () => Math.random()*2-1;
+const siz  = new Float32Array(N);
 
-/* stream curves: long lazy arcs from desk1 through the rupture zone */
+const C = {
+  body:  new THREE.Color(0x2e6d6b),  // slab/pole points — readable teal
+  edge:  new THREE.Color(0x7fd4c4),  // silhouette edges — bright mint
+  seam:  new THREE.Color(0x4cc296),
+  bulb:  new THREE.Color(0xffd9a0),
+  mist:  new THREE.Color(0x9fc4c0),
+  green: new THREE.Color(0x4cc296),
+  teal:  new THREE.Color(0x2a7f80),
+};
+
+/* samplers write {p:[x,y,z], c:Color, s:size} */
+function sampleBoxSurf(cx,cy,cz, w,h,d, edgeBias){
+  const e = Math.random() < edgeBias;
+  const pick = Math.random();
+  let x=rnd()*w/2, y=rnd()*h/2, z=rnd()*d/2;
+  if (pick < .33) x = (Math.random()<.5?-1:1)*w/2;
+  else if (pick < .66) y = (Math.random()<.5?-1:1)*h/2;
+  else z = (Math.random()<.5?-1:1)*d/2;
+  if (e){ // snap a second axis to a face -> an edge
+    if (pick < .33) y = (Math.random()<.5?-1:1)*h/2;
+    else if (pick < .66) z = (Math.random()<.5?-1:1)*d/2;
+    else x = (Math.random()<.5?-1:1)*w/2;
+  }
+  return {p:[cx+x, cy+y, cz+z], c: e?C.edge:C.body, s: e?1.12:.9};
+}
+function sampleCyl(cx,cy,cz, r, h, tiltZ){
+  const th = Math.random()*Math.PI*2, y = rnd()*h/2;
+  let p = new THREE.Vector3(Math.cos(th)*r, y, Math.sin(th)*r);
+  if (tiltZ) p.applyAxisAngle(new THREE.Vector3(0,0,1), tiltZ);
+  return {p:[cx+p.x, cy+p.y, cz+p.z], c: Math.random()<.25?C.edge:C.body, s:.9};
+}
+function sampleCone(cx,cy,cz, r, h, tiltZ){
+  const th = Math.random()*Math.PI*2, t = Math.sqrt(Math.random());
+  let p = new THREE.Vector3(Math.cos(th)*r*t, h/2 - t*h, Math.sin(th)*r*t);
+  p.applyAxisAngle(new THREE.Vector3(0,0,1), tiltZ);
+  const rim = t > .92;
+  return {p:[cx+p.x, cy+p.y, cz+p.z], c: rim?C.edge:C.body, s: rim?1.3:.8};
+}
+
+/* 23:00 scene — desk left of centre, lamp leaning over it */
+function sceneOpen(){
+  const r = Math.random();
+  if (r < .30)  return sampleBoxSurf(0,-1.35,-12.2, 7.4,.26,4.9, .16);          // desk slab
+  else if (r < .46) return sampleBoxSurf(.6,-.98,-12.6, 3.4,.14,2.3, .22);      // open laptop base
+  else if (r < .60){ const q = sampleBoxSurf(.6,.0,-13.55, 3.4,2.1,.12,.22); return q; } // raised screen
+  else if (r < .70) return sampleCyl(-4.15,.6,-12.3,.09,4.4,0);                 // lamp pole
+  else if (r < .78) return sampleCyl(-3.45,2.72,-12.3,.07,1.6,Math.PI/2.25);    // arm
+  else if (r < .93) return sampleCone(-2.85,2.44,-12.3,.85,1.0,-2.65);          // shade
+  else { // bulb fireflies — spherical cloud
+    const v = new THREE.Vector3(rnd(),rnd(),rnd()).normalize().multiplyScalar(Math.cbrt(Math.random())*.55);
+    return {p:[-2.8+v.x, 2.25+v.y, -12.3+v.z], c:C.bulb, s:1.5};
+  }
+}
+/* 05:30 scene — the machine, closed, alone */
+function sceneClosed(){
+  const r = Math.random();
+  if (r < .42) return sampleBoxSurf(0,-.72,-71.6, 4.6,.20,3.1, .38);            // base slab
+  else if (r < .84){ const q = sampleBoxSurf(0,-.47,-71.6, 4.6,.16,3.1, .38); return q; } // closed lid
+  else if (r < .96){ // glowing seam line between them
+    return {p:[rnd()*2.2, -.585+rnd()*.03, -70.06+rnd()*.06], c:C.seam, s:1.5};
+  }
+  else return {p:[rnd()*5.5, -.4+rnd()*1.6, -71.5+rnd()*2.5], c:C.mist, s:.8};  // faint air
+}
+
+/* rivers */
 const curves = [];
 for (let i=0;i<9;i++){
   const y0 = rnd()*2.0, x0 = rnd()*3.0;
   curves.push(new THREE.CatmullRomCurve3([
-    new THREE.Vector3(x0*.3, -.4+y0*.2, -14),
+    new THREE.Vector3(x0*.3, -.4+y0*.2, -13),
     new THREE.Vector3(x0*2.4+rnd()*2, y0*2.2+rnd()*1.5, -26 - Math.random()*4),
     new THREE.Vector3(x0*4.2+rnd()*4, y0*3.4+rnd()*3.2, -38 - Math.random()*6),
     new THREE.Vector3(x0*2.2+rnd()*5, y0*2.4+rnd()*4.0, -52 - Math.random()*6),
     new THREE.Vector3(rnd()*2.5,      y0*1.1+rnd()*1.4, -64 - Math.random()*4),
   ]));
 }
-const cGreen = new THREE.Color(0x4cc296), cTeal = new THREE.Color(0x2a7f80),
-      cSoft  = new THREE.Color(0x7fb8b9), cWarm = new THREE.Color(0xc9b78a);
 const artefactAnchors = [
   {c:new THREE.Vector3(-9,2.5,-40),  s:[4,4,4]},
   {c:new THREE.Vector3(8.5,-.2,-46), s:[5.4,2.6,3.6]},
@@ -270,42 +282,43 @@ const artefactAnchors = [
   {c:new THREE.Vector3(0,1.5,-49),   s:[14,.4,14]},
 ];
 const tmpV = new THREE.Vector3();
+
 for (let i=0;i<N;i++){
   const i3 = i*3;
-  // dormant: a tight bar of light inside the seam
-  pos0[i3]   = rnd()*7.5;
-  pos0[i3+1] = .1 + rnd()*2.6;
-  pos0[i3+2] = -12.2 + rnd()*4.2;
-  // streams
+  const o = sceneOpen();
+  pos0[i3]=o.p[0]; pos0[i3+1]=o.p[1]; pos0[i3+2]=o.p[2];
+
   const cu = curves[i % curves.length];
   const t  = Math.random();
   cu.getPointAt(t, tmpV);
-  pos1[i3]   = tmpV.x + rnd()*.5;
-  pos1[i3+1] = tmpV.y + rnd()*.5;
-  pos1[i3+2] = tmpV.z + rnd()*.5;
+  pos1[i3]=tmpV.x+rnd()*.5; pos1[i3+1]=tmpV.y+rnd()*.5; pos1[i3+2]=tmpV.z+rnd()*.5;
   cu.getTangentAt(t, tmpV);
-  tan1[i3] = tmpV.x; tan1[i3+1] = tmpV.y; tan1[i3+2] = tmpV.z;
-  pha[i] = Math.random();
-  // artefact shells: points scattered on the surfaces of the anchor volumes
+  tan1[i3]=tmpV.x; tan1[i3+1]=tmpV.y; tan1[i3+2]=tmpV.z;
+  pha[i]=Math.random();
+
   const a = artefactAnchors[i % artefactAnchors.length];
-  const face = (Math.random()*3)|0;
-  const u=rnd(), v=rnd(), w = Math.random()<.5?-1:1;
-  const p = [u,v,w*1]; // one axis pinned to a face
-  const axes = face===0 ? [2,0,1] : face===1 ? [0,2,1] : [0,1,2];
-  pos2[i3]   = a.c.x + p[axes[0]]*a.s[0]/2;
-  pos2[i3+1] = a.c.y + p[axes[1]]*a.s[1]/2;
-  pos2[i3+2] = a.c.z + p[axes[2]]*a.s[2]/2;
-  // settled: back into desk2's seam
-  pos3[i3]   = rnd()*3.2;
-  pos3[i3+1] = -.55 + rnd()*.2;
-  pos3[i3+2] = -71.4 + rnd()*.9;
-  // colour
-  const r = Math.random();
-  const c = r<.42 ? cGreen : r<.78 ? cTeal : r<.94 ? cSoft : cWarm;
-  col[i3]=c.r; col[i3+1]=c.g; col[i3+2]=c.b;
+  const face=(Math.random()*3)|0, u=rnd(), v=rnd(), w=Math.random()<.5?-1:1;
+  const pp=[u,v,w]; const axes = face===0?[2,0,1]:face===1?[0,2,1]:[0,1,2];
+  pos2[i3]  =a.c.x+pp[axes[0]]*a.s[0]/2;
+  pos2[i3+1]=a.c.y+pp[axes[1]]*a.s[1]/2;
+  pos2[i3+2]=a.c.z+pp[axes[2]]*a.s[2]/2;
+
+  const cl = sceneClosed();
+  pos3[i3]=cl.p[0]; pos3[i3+1]=cl.p[1]; pos3[i3+2]=cl.p[2];
+
+  /* colour: shape role, with the river tint taking over mid-flight is
+     handled by keeping roles — gold bulb points become gold flecks */
+  let cc = o.c;
+  if (cc === C.body || cc === C.edge){
+    const r2 = Math.random();
+    if (r2 < .14) cc = Math.random()<.5 ? C.green : C.teal;   // some desk points are already "work"
+  }
+  col[i3]=cc.r; col[i3+1]=cc.g; col[i3+2]=cc.b;
+  siz[i] = (o.s + (cl.s||1))/2;
 }
+
 const workGeo = new THREE.BufferGeometry();
-workGeo.setAttribute('position', new THREE.BufferAttribute(pos0.slice(),3)); // required by three
+workGeo.setAttribute('position', new THREE.BufferAttribute(pos0.slice(),3));
 workGeo.setAttribute('aP0', new THREE.BufferAttribute(pos0,3));
 workGeo.setAttribute('aP1', new THREE.BufferAttribute(pos1,3));
 workGeo.setAttribute('aT1', new THREE.BufferAttribute(tan1,3));
@@ -313,36 +326,48 @@ workGeo.setAttribute('aPh', new THREE.BufferAttribute(pha,1));
 workGeo.setAttribute('aP2', new THREE.BufferAttribute(pos2,3));
 workGeo.setAttribute('aP3', new THREE.BufferAttribute(pos3,3));
 workGeo.setAttribute('aCol', new THREE.BufferAttribute(col,3));
+workGeo.setAttribute('aSz', new THREE.BufferAttribute(siz,1));
 
 const workUniforms = {
-  uW:    {value: new THREE.Vector4(1,0,0,0)},   // dormant, stream, artefact, settled
+  uW:    {value: new THREE.Vector4(1,0,0,0)},
   uFlow: {value: 0},
-  uSize: {value: mobile ? 2.8 : 4.0},
+  uSize: {value: mobile ? 2.6 : 3.6},
   uMap:  {value: softDot},
   uFog:  {value: new THREE.Color(0x061a1c)},
   uFogRange: {value: new THREE.Vector2(6,46)},
+  uM:    {value: new THREE.Vector3(0,0,999)},   // mouse point in world
+  uMV:   {value: new THREE.Vector2(0,0)},       // mouse velocity
 };
 const workMat = new THREE.ShaderMaterial({
   uniforms: workUniforms,
   transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
   vertexShader: `
-    attribute vec3 aP0,aP1,aT1,aP2,aP3,aCol; attribute float aPh;
-    uniform vec4 uW; uniform float uFlow,uSize;
+    attribute vec3 aP0,aP1,aT1,aP2,aP3,aCol; attribute float aPh,aSz;
+    uniform vec4 uW; uniform float uFlow,uSize; uniform vec3 uM; uniform vec2 uMV;
     varying vec3 vCol; varying float vFogZ,vAlpha;
     void main(){
       vec4 w = uW / max(uW.x+uW.y+uW.z+uW.w, 1e-4);
       float run = fract(aPh + uFlow) - .5;
       vec3 stream = aP1 + aT1 * run * 7.0;
       vec3 p = aP0*w.x + stream*w.y + aP2*w.z + aP3*w.w;
-      // gentle life in every state
       p.x += sin(uFlow*40.0 + aPh*80.0)*.03;
       p.y += cos(uFlow*34.0 + aPh*60.0)*.03;
+
+      /* the path of particles: the cursor stirs the field */
+      vec3 dm = p - uM;
+      float md = max(length(dm), 0.35);
+      float mf = smoothstep(3.2, 0.0, md) / md;
+      p += vec3(-dm.y, dm.x, 0.0) * mf * 0.9
+         + dm * mf * 0.55
+         + vec3(uMV * smoothstep(3.2, 0.0, md) * 1.6, 0.0);
+
       vec4 mv = modelViewMatrix * vec4(p,1.0);
       gl_Position = projectionMatrix * mv;
-      float tw = .75 + .5*sin(aPh*120.0 + uFlow*55.0);
-      gl_PointSize = min(uSize * tw * (30.0 / -mv.z), 20.0);
-      float dormGate = mix(1.0, step(aPh, 0.035)*.30, clamp(w.x*1.15, 0.0, 1.0));
-      vAlpha = dormGate;
+      float tw = .8 + .4*sin(aPh*120.0 + uFlow*55.0);
+      gl_PointSize = min(uSize * aSz * tw * (30.0 / -mv.z), 20.0);
+      float dormShow  = mix(1.0, step(aPh, 0.62), clamp(w.x, 0.0, 1.0));
+      float settleShow = mix(1.0, step(fract(aPh*7.31), 0.5)*.85, clamp(w.w, 0.0, 1.0));
+      vAlpha = mix(1.0, .78, clamp(w.x,0.,1.)) * dormShow * settleShow;
       vCol = aCol; vFogZ = -mv.z;
     }`,
   fragmentShader: `
@@ -360,20 +385,35 @@ const workPts = new THREE.Points(workGeo, workMat);
 workPts.frustumCulled = false;
 scene.add(workPts);
 
-/* ---------- snow, all night long ---------- */
+/* ---------- artefact wireframes ---------- */
+const artefacts = new THREE.Group();
+function wire(geo, x,y,z, s=1, color=0x2a7f80){
+  const m = new THREE.LineSegments(new THREE.EdgesGeometry(geo),
+      new THREE.LineBasicMaterial({color, transparent:true, opacity:0}));
+  m.position.set(x,y,z); m.scale.setScalar(s);
+  artefacts.add(m); return m;
+}
+const aParcel = wire(new THREE.BoxGeometry(4,4,4), -9, 2.5, -40);
+const aDocs   = [0,1,2].map(i => wire(new THREE.BoxGeometry(5.4,.28,3.6), 8.5, -1.2 + i*1.05, -46, 1, 0x35907a));
+const aStore  = wire(new THREE.ConeGeometry(4.4,3.2,4), 0, 6.5, -54, 1, 0x4cc296);
+aStore.rotation.y = Math.PI/4;
+const aRing   = wire(new THREE.TorusGeometry(7,.05,8,64), 0, 1.5, -49, 1, 0x1d5f60);
+aRing.rotation.x = Math.PI/2.15;
+scene.add(artefacts);
+
+/* ---------- snow ---------- */
 const SN = mobile ? 1400 : 3200;
 const sPos = new Float32Array(SN*3), sSp = new Float32Array(SN);
 for (let i=0;i<SN;i++){
-  sPos[i*3]   = rnd()*22;
-  sPos[i*3+1] = rnd()*14;
-  sPos[i*3+2] = rnd()*30;
-  sSp[i] = .25 + Math.random()*.8;
+  sPos[i*3]=rnd()*22; sPos[i*3+1]=rnd()*14; sPos[i*3+2]=rnd()*30;
+  sSp[i]=.25+Math.random()*.8;
 }
 const snowGeo = new THREE.BufferGeometry();
 snowGeo.setAttribute('position', new THREE.BufferAttribute(sPos,3));
 const snowMat = new THREE.PointsMaterial({size:.095, map:softDot, transparent:true, opacity:.75,
       color:0xcfe4e2, depthWrite:false, blending:THREE.AdditiveBlending, sizeAttenuation:true});
 const snow = new THREE.Points(snowGeo, snowMat);
+snow.frustumCulled = false;
 scene.add(snow);
 
 /* ---------- aurora ---------- */
@@ -385,15 +425,19 @@ function auroraTexture(){
   g.addColorStop(.45,'rgba(42,127,128,.24)');
   g.addColorStop(.75,'rgba(76,194,150,.34)');
   g.addColorStop(1,'rgba(76,194,150,0)');
-  x.fillStyle = g; x.fillRect(0,0,512,256);
+  x.fillStyle=g; x.fillRect(0,0,512,256);
+  const m = x.createLinearGradient(0,0,512,0);
+  m.addColorStop(0,'rgba(0,0,0,0)'); m.addColorStop(.25,'rgba(0,0,0,1)');
+  m.addColorStop(.75,'rgba(0,0,0,1)'); m.addColorStop(1,'rgba(0,0,0,0)');
+  x.globalCompositeOperation='destination-in'; x.fillStyle=m; x.fillRect(0,0,512,256);
   return new THREE.CanvasTexture(c);
 }
 const aur = new THREE.Mesh(new THREE.PlaneGeometry(90,26),
-   new THREE.MeshBasicMaterial({map:auroraTexture(), transparent:true, opacity:.5, depthWrite:false, blending:THREE.AdditiveBlending}));
+   new THREE.MeshBasicMaterial({map:auroraTexture(), transparent:true, opacity:.16, depthWrite:false, blending:THREE.AdditiveBlending}));
 aur.position.set(0,14,-70); scene.add(aur);
 
 /* ============================================================
-   scroll orchestration
+   scroll + mouse orchestration
    ============================================================ */
 gsap.registerPlugin(ScrollTrigger);
 let lenis = null, lenisVel = 0;
@@ -404,17 +448,16 @@ if (!reduced){
   gsap.ticker.lagSmoothing(0);
 }
 
-let P = 0; // master progress 0..1 across the night
+let P = 0;
 ScrollTrigger.create({
   trigger:'#track', start:'top top', end:'bottom bottom', scrub:true,
   onUpdate(self){ P = self.progress; }
 });
 
-/* DOM beat windows: fade in → hold → fade out, driven off P each frame */
-const win = (p, a, b, fade=.035) => {
-  if (p < a - fade || p > b + fade) return 0;
-  if (p < a) return (p - (a - fade)) / fade;
-  if (p > b) return 1 - (p - b) / fade;
+const win = (p,a,b,fade=.035)=>{
+  if (p < a-fade || p > b+fade) return 0;
+  if (p < a) return (p-(a-fade))/fade;
+  if (p > b) return 1-(p-b)/fade;
   return 1;
 };
 const $ = id => document.getElementById(id);
@@ -425,30 +468,37 @@ const beats = [
   {el:$('beat4'), a:.625, b:.715},
   {el:$('beat5'), a:.745, b:.845},
 ];
-const counterEl = $('counter'), ctr = $('ctr'), doneEl = $('doneline');
-const hoursEls = [...document.querySelectorAll('#hours .h')];
-const clockT = document.querySelector('#clock .t');
-const dawn = $('dawn'), burn = $('burn'), cue = $('cue');
+const counterEl=$('counter'), ctr=$('ctr'), doneEl=$('doneline');
+const hoursEls=[...document.querySelectorAll('#hours .h')];
+const clockT=document.querySelector('#clock .t');
+const dawn=$('dawn'), burn=$('burn'), cue=$('cue');
 
-/* the night clock: 23:00 → 06:30 mapped over P */
 function nightClock(p){
-  const mins = 23*60 + p * (7.5*60);  // 23:00 + 7.5h
-  const m = Math.round(mins) % (24*60);
-  const hh = String((m/60)|0).padStart(2,'0');
-  const mm = String(m%60).padStart(2,'0');
-  return `${hh}:${mm}`;
+  const mins = 23*60 + p*(7.5*60);
+  const m = Math.round(mins)%(24*60);
+  return `${String((m/60)|0).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
 }
 const chapterAt = p => p<.16?0 : p<.34?1 : p<.60?2 : p<.78?3 : 4;
+const camZ = p => 8 - p*94;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const clamp01=v=>Math.min(1,Math.max(0,v));
+const range=(p,a,b)=>clamp01((p-a)/(b-a));
 
-/* camera path */
-const camZ = p => 8 - p*94;         // 8 → -86
-const lerp = (a,b,t)=>a+(b-a)*t;
-const clamp01 = v => Math.min(1,Math.max(0,v));
-const range = (p,a,b)=>clamp01((p-a)/(b-a));
+/* mouse -> world point on the focus plane */
+const mouseNDC = new THREE.Vector2(0,-10);
+const mouseWorld = new THREE.Vector3(0,0,999);
+const mouseVel = new THREE.Vector2();
+let lastMX=0,lastMY=0;
+addEventListener('pointermove', (e)=>{
+  mouseNDC.set((e.clientX/innerWidth)*2-1, -(e.clientY/innerHeight)*2+1);
+  mouseVel.x = (e.clientX-lastMX)*.004; mouseVel.y = -(e.clientY-lastMY)*.004;
+  lastMX=e.clientX; lastMY=e.clientY;
+});
+const ray = new THREE.Raycaster();
+const focusPlane = new THREE.Plane(new THREE.Vector3(0,0,1), 0); // normal fixed, constant updated per frame
 
-/* ---------- reduced-motion fallback ---------- */
 if (reduced){
-  document.getElementById('track').style.height = '0';
+  document.getElementById('track').style.height='0';
   [...document.querySelectorAll('.beat,.term')].forEach(el=>{
     el.style.position='relative'; el.style.opacity='1'; el.style.inset='auto';
     el.style.transform='none'; el.style.margin='14vh auto'; el.style.textAlign='center';
@@ -456,136 +506,122 @@ if (reduced){
   dawn.remove(); burn.style.position='relative'; burn.style.opacity='1';
   burn.style.transform='none'; burn.style.margin='10vh auto';
   cue.remove();
-  workUniforms.uW.value.set(0,0,1,0);
+  workUniforms.uW.value.set(1,0,0,0);
   renderer.render(scene, cam);
 }
 
-/* ---------- main loop ---------- */
-let flow = 0, last = performance.now();
+let flow=0, last=performance.now();
 function frame(now){
-  const dt = Math.min(.05, (now-last)/1000); last = now;
+  const dt = Math.min(.05,(now-last)/1000); last=now;
 
-  /* velocity-coupled work: the night moves while you move */
   const drive = .10 + Math.min(2.4, Math.abs(lenisVel)*.35);
-  flow += dt * drive * .045;
+  flow += dt*drive*.045;
   workUniforms.uFlow.value = flow;
 
-  /* particle state weights from scroll position */
   const w0 = 1 - range(P,.16,.32);
-  const w1 = range(P,.22,.36) * (1 - range(P,.56,.68));
-  const w2 = range(P,.40,.54) * (1 - range(P,.62,.72));
-  const w3 = range(P,.64,.78) * (1 - range(P,.86,.96));
+  const w1 = range(P,.22,.36)*(1-range(P,.56,.68));
+  const w2 = range(P,.40,.54)*(1-range(P,.62,.72));
+  const w3 = range(P,.64,.78)*(1-range(P,.86,.96));
   workUniforms.uW.value.set(w0,w1,w2,w3);
 
-  /* rupture: the void becomes vast at 03:00 */
   const rupture = range(P,.32,.42);
-  scene.fog.near = lerp(6, 10, rupture);
-  scene.fog.far  = lerp(46, 150, rupture) * (1 - range(P,.80,.98)*.55);
+  scene.fog.near = lerp(6,10,rupture);
+  scene.fog.far  = lerp(46,150,rupture)*(1-range(P,.80,.98)*.55);
   workUniforms.uFogRange.value.set(scene.fog.near, scene.fog.far);
-  cam.fov = lerp(56, 68, rupture); cam.updateProjectionMatrix();
+  cam.fov = lerp(56,68,rupture); cam.updateProjectionMatrix();
 
-  /* camera */
   const z = camZ(P);
   const lift = range(P,.10,.20)*(1-range(P,.26,.38))*1.6
              + range(P,.60,.68)*(1-range(P,.74,.84))*1.2;
-  cam.position.set(
-    Math.sin(P*9.4)*.55,
-    Math.sin(P*6.1)*.35 + .1 + lift,
-    z
-  );
+  cam.position.set(Math.sin(P*9.4)*.55, Math.sin(P*6.1)*.35+.1+lift, z);
   cam.lookAt(cam.position.x*.6, cam.position.y*.6, z-8);
 
-  /* desk visibility + seam pulse */
-  desk1.visible = P < .40;
-  desk2.visible = P > .55;
-  const pulse = .75 + Math.sin(now*.004)*.25;
-  desk1.userData.seam.material.opacity = (.28 + range(P,.10,.26)*.4) * pulse;
-  desk1.userData.glow.material.opacity = .16 + range(P,.10,.26)*.28;
-  desk2.userData.seam.material.opacity = .9 - range(P,.66,.80)*.75;
-  desk2.userData.glow.material.opacity = .5 - range(P,.66,.80)*.42;
+  /* mouse stir point on a plane just ahead of the camera */
+  ray.setFromCamera(mouseNDC, cam);
+  focusPlane.constant = -(z-11);
+  if (!ray.ray.intersectPlane(focusPlane, mouseWorld)) mouseWorld.set(0,0,999);
+  workUniforms.uM.value.lerp(mouseWorld, .18);
+  workUniforms.uMV.value.lerp(mouseVel, .12);
+  mouseVel.multiplyScalar(.94);
 
-  /* artefacts assemble across the rupture */
-  const build = range(P,.40,.56) * (1 - range(P,.62,.72));
-  aParcel.material.opacity = build*.85;
-  aDocs.forEach((d,i)=> d.material.opacity = Math.max(0, build - i*.12)*.8);
-  aStore.material.opacity = Math.max(0, build-.18)*.9;
-  aRing.material.opacity  = build*.5;
-  artefacts.rotation.y = flow*.9;
+  /* light sprites */
+  bulbGlow.material.opacity = (.6 - range(P,.14,.30)*.6) * (.8+.2*Math.sin(now*.003));
+  poolGlow.material.opacity = .3 - range(P,.14,.30)*.3;
+  seamGlow2.material.opacity = (range(P,.62,.70)*.5 - range(P,.78,.88)*.5) * (.8+.2*Math.sin(now*.004));
 
-  /* snow drifts down around the camera */
+  const build = range(P,.40,.56)*(1-range(P,.62,.72));
+  aParcel.material.opacity=build*.85;
+  aDocs.forEach((d,i)=> d.material.opacity=Math.max(0,build-i*.12)*.8);
+  aStore.material.opacity=Math.max(0,build-.18)*.9;
+  aRing.material.opacity=build*.5;
+  artefacts.rotation.y=flow*.9;
+
   const sp = snowGeo.attributes.position.array;
   for (let i=0;i<SN;i++){
     sp[i*3+1] -= sSp[i]*dt*.9;
     if (sp[i*3+1] < -7) sp[i*3+1] = 7;
   }
   snowGeo.attributes.position.needsUpdate = true;
-  snow.position.z = z - 12;
-  aur.position.z = z - 56;
-  aur.material.opacity = Math.max(0, .16 + rupture*.34 - range(P,.8,.95)*.5);
+  snow.position.z = z-12;
+  aur.position.z = z-56;
+  aur.material.opacity = Math.max(0,.16+rupture*.34-range(P,.8,.95)*.5);
 
-  /* ---------- DOM ---------- */
   beats.forEach(({el,a,b})=>{
     const o = win(P,a,b);
-    el.style.opacity = o;
+    el.style.opacity=o;
     el.style.transform = (el.id==='beat5')
       ? `translate(-50%, calc(-50% + ${(1-o)*18}px))`
       : `translateY(${(1-o)*22}px)`;
   });
-  const co = win(P,.375,.545);
-  counterEl.style.opacity = co;
-  ctr.textContent = Math.round(47 * (1 - range(P,.38,.545)));
-  const dn = win(P,.665,.80,.05);
-  doneEl.style.opacity = dn;
-  doneEl.classList.toggle('still', P > .742);
+  counterEl.style.opacity = win(P,.375,.545);
+  ctr.textContent = Math.round(47*(1-range(P,.38,.545)));
+  doneEl.style.opacity = win(P,.665,.80,.05);
+  doneEl.classList.toggle('still', P>.742);
 
   clockT.textContent = nightClock(P);
   const ch = chapterAt(P);
   hoursEls.forEach((h,i)=> h.classList.toggle('on', i===ch));
-  cue.style.opacity = P < .02 ? 1 : 0;
+  cue.style.opacity = P<.02?1:0;
 
   dawn.style.opacity = range(P,.80,.93);
   const bo = range(P,.86,.945);
-  burn.style.opacity = bo;
-  burn.style.filter = `blur(${(1-bo)*22}px)`;
-  burn.style.transform = `translate(-50%,-50%) scale(${1.22 - bo*.22})`;
+  burn.style.opacity=bo;
+  burn.style.filter=`blur(${(1-bo)*22}px)`;
+  burn.style.transform=`translate(-50%,-50%) scale(${1.22-bo*.22})`;
 
-  renderer.render(scene, cam);
+  renderer.render(scene,cam);
   requestAnimationFrame(frame);
 }
 
-/* ---------- resize ---------- */
 addEventListener('resize', ()=>{
-  renderer.setSize(innerWidth, innerHeight);
-  cam.aspect = innerWidth/innerHeight;
+  renderer.setSize(innerWidth,innerHeight);
+  cam.aspect=innerWidth/innerHeight;
   cam.updateProjectionMatrix();
 });
 
-/* ---------- dev contract: ?jump=<y> + __ready ---------- */
 async function boot(){
   try { await document.fonts.ready; } catch(e){}
-  /* warmup: force-compile shaders + upload textures for every particle state
-     before first paint, so no state-entry stutters mid-scroll */
   const savedW = workUniforms.uW.value.clone();
   for (const w of [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]){
     workUniforms.uW.value.set(...w);
     [aParcel,aStore,aRing,...aDocs].forEach(m=>m.material.opacity=.5);
-    renderer.render(scene, cam);
+    renderer.render(scene,cam);
   }
   [aParcel,aStore,aRing,...aDocs].forEach(m=>m.material.opacity=0);
   workUniforms.uW.value.copy(savedW);
   if (!reduced) requestAnimationFrame(frame);
   const jump = new URLSearchParams(location.search).get('jump');
   if (jump){
-    const y = parseFloat(jump) || 0;
-    if (lenis) lenis.scrollTo(y, {immediate:true, force:true});
-    window.scrollTo(0, y);
+    const y = parseFloat(jump)||0;
+    if (lenis) lenis.scrollTo(y,{immediate:true,force:true});
+    window.scrollTo(0,y);
     ScrollTrigger.update();
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-    if (lenis) lenis.scrollTo(y, {immediate:true, force:true});
-    window.scrollTo(0, y);
+    if (lenis) lenis.scrollTo(y,{immediate:true,force:true});
+    window.scrollTo(0,y);
     ScrollTrigger.update();
   }
-  await new Promise(r=>setTimeout(r, 350));
+  await new Promise(r=>setTimeout(r,350));
   window.__ready = true;
 }
 boot();
