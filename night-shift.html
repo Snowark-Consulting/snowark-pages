@@ -39,12 +39,14 @@
 
   /* ---------- beats ---------- */
   .beat{position:fixed;z-index:5;opacity:0;pointer-events:none;max-width:min(760px,84vw)}
-  .beat h2{font:900 clamp(2.2rem,6vw,4.6rem)/1.04 Lato;color:#f6f4ee;letter-spacing:-.01em;
-     text-shadow:0 2px 18px rgba(2,10,11,.95),0 0 46px rgba(2,10,11,.85),0 0 110px rgba(2,10,11,.7)}
-  .beat p{font:italic 400 clamp(1.02rem,1.9vw,1.35rem)/1.55 Cambo;color:#e6e2d9;margin-top:18px;max-width:34em;
-     text-shadow:0 1px 12px rgba(2,10,11,.95),0 0 34px rgba(2,10,11,.9)}
-  .beat::before{content:"";position:absolute;inset:-18% -12%;z-index:-1;border-radius:32px;
-     background:radial-gradient(closest-side,rgba(3,13,15,.66),rgba(3,13,15,0));filter:blur(6px)}
+  .beat{padding:30px 36px;border-radius:20px;
+     background:linear-gradient(180deg,rgba(5,18,20,.78),rgba(5,18,20,.58));
+     border:1px solid rgba(127,212,196,.16);
+     backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+     box-shadow:0 24px 70px rgba(2,10,11,.45)}
+  .beat h2{font:900 clamp(2rem,5.2vw,4rem)/1.06 Lato;color:#ffffff;letter-spacing:-.01em}
+  .beat p{font:italic 400 clamp(1rem,1.8vw,1.3rem)/1.55 Cambo;color:#dfe8e4;margin-top:16px;max-width:34em}
+  #beat5{padding:34px 44px}
   #beat1{left:8vw;bottom:18vh}
   #beat2{right:8vw;top:22vh;text-align:right}
   #beat2 p{margin-left:auto}
@@ -54,7 +56,9 @@
   #beat5{left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;max-width:90vw}
   #beat5 h2{font-size:clamp(2.6rem,7vw,5.4rem)}
 
-  .term{position:fixed;z-index:5;font-family:var(--mono);color:var(--green-lift);opacity:0;pointer-events:none;text-shadow:0 1px 10px rgba(2,10,11,.95),0 0 26px rgba(2,10,11,.85)}
+  .term{position:fixed;z-index:5;font-family:var(--mono);color:#7fe9c0;opacity:0;pointer-events:none;
+     padding:10px 16px;border-radius:10px;background:rgba(5,18,20,.72);
+     border:1px solid rgba(127,212,196,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
   #counter{left:8vw;top:calc(20vh + 1em);margin-top:clamp(7rem,16vw,11rem);font-size:clamp(.85rem,1.4vw,1.05rem);letter-spacing:.1em}
   #counter .dim{color:var(--teal-soft);opacity:.75}
   #doneline{right:8vw;bottom:calc(24vh - 3.4em);font-size:clamp(.9rem,1.5vw,1.1rem);letter-spacing:.12em;text-align:right}
@@ -340,7 +344,8 @@ workGeo.setAttribute('aCol', new THREE.BufferAttribute(col,3));
 workGeo.setAttribute('aSz', new THREE.BufferAttribute(siz,1));
 
 const workUniforms = {
-  uW:    {value: new THREE.Vector4(1,0,0,0)},
+  uW:    {value: new THREE.Vector4(1,0,0,0)},   // kept for warmup only
+  uP:    {value: 0},
   uFlow: {value: 0},
   uSize: {value: mobile ? 2.6 : 3.6},
   uMap:  {value: softDot},
@@ -354,10 +359,21 @@ const workMat = new THREE.ShaderMaterial({
   transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
   vertexShader: `
     attribute vec3 aP0,aP1,aT1,aP2,aP3,aCol; attribute float aPh,aSz;
-    uniform vec4 uW; uniform float uFlow,uSize; uniform vec3 uM; uniform vec2 uMV;
+    uniform vec4 uW; uniform float uP,uFlow,uSize; uniform vec3 uM; uniform vec2 uMV;
     varying vec3 vCol; varying float vFogZ,vAlpha;
+    float rng(float x, float a, float b){ return clamp((x-a)/(b-a), 0.0, 1.0); }
     void main(){
-      vec4 w = uW / max(uW.x+uW.y+uW.z+uW.w, 1e-4);
+      /* per-particle stagger: each point leaves and arrives on its own beat */
+      float o  = (aPh - .5) * .07;
+      float p_ = uP + o;
+      float w0 = 1.0 - rng(p_,.16,.32);
+      float w1 = rng(p_,.22,.36) * (1.0 - rng(p_,.56,.68));
+      float w2 = rng(p_,.40,.54) * (1.0 - rng(p_,.56,.66));
+      float w3 = rng(p_,.58,.70) * (1.0 - rng(p_,.86,.96));
+      /* every transition flows THROUGH the river, never a straight dissolve */
+      float T = 4.0*w0*(1.0-w0)*step(.05,uP) + 4.0*w2*(1.0-w2) + 4.0*w3*(1.0-w3);
+      w1 += min(T, 1.0) * .55;
+      vec4 w = vec4(w0,w1,w2,w3) / max(w0+w1+w2+w3, 1e-4);
       float run = fract(aPh + uFlow) - .5;
       vec3 stream = aP1 + aT1 * run * 7.0;
       vec3 p = aP0*w.x + stream*w.y + aP2*w.z + aP3*w.w;
@@ -513,11 +529,7 @@ function frame(now){
   flow += dt*drive*.045;
   workUniforms.uFlow.value = flow;
 
-  const w0 = 1 - range(P,.16,.32);
-  const w1 = range(P,.22,.36)*(1-range(P,.56,.68));
-  const w2 = range(P,.40,.54)*(1-range(P,.56,.66));
-  const w3 = range(P,.58,.70)*(1-range(P,.86,.96));
-  workUniforms.uW.value.set(w0,w1,w2,w3);
+  workUniforms.uP.value = P;   // weights are computed per-particle in the shader
 
   const rupture = range(P,.32,.42);
   scene.fog.near = lerp(6,10,rupture);
