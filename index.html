@@ -2377,7 +2377,7 @@
       var tl = gsap.timeline({
         scrollTrigger: {
           trigger: '.statement',
-          start: 'top top',
+          start: function() { return 'top ' + (window.matchMedia('(max-width: 720px)').matches ? 136 : 88); },
           end: '+=140%',
           pin: true,
           scrub: 0.7,
