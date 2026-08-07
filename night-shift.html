@@ -829,7 +829,7 @@ function frame(now){
       amt = Math.max(amt, o);
     }
   }
-  if (rect){
+  if (rect && P < .70){
     const W = innerWidth, H = innerHeight;
     workUniforms.uTextRect.value.set(rect.left/W*2-1, 1-(rect.bottom/H)*2, rect.right/W*2-1, 1-(rect.top/H)*2);
     workUniforms.uTextAmt.value = amt;
