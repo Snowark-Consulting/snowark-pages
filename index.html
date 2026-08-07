@@ -1541,21 +1541,21 @@
   <img class="mark" src="assets/logos/SnowArk-White.png" alt="SnowArk">
   <div class="sub">Your AI Chief of Staff</div>
 </div>
-<div class="hud" id="clock"><div class="t">--:--</div><div class="d">your time</div></div>
+<div class="hud" id="clock"><div class="t">0h</div><div class="d">recovered</div></div>
 <div class="hud" id="cue"><div class="lbl">Scroll</div></div>
 <div class="hud" id="hours">
-  <div class="h" data-h="0">23:00</div><div class="h" data-h="1">00:00</div>
-  <div class="h" data-h="2">03:00</div><div class="h" data-h="3">05:30</div>
-  <div class="h" data-h="4">06:30</div>
+  <div class="h" data-h="0">0h</div><div class="h" data-h="1">2h</div>
+  <div class="h" data-h="2">4h</div><div class="h" data-h="3">6h</div>
+  <div class="h" data-h="4">8h</div>
 </div>
 
 <div class="beat" id="beat0"><h1>I deploy an AI chief of staff into your business.</h1><p class="beat0-sub">It connects to the tools you already run, works while you sleep, and gets smarter every day.</p></div>
-<div class="beat" id="beat1"><span class="eyebrow">////// 23:00 &middot; the weeds</span><h2>You built the business.</h2><p>You&rsquo;re in the weeds. Your team is buried in admin.</p></div>
-<div class="beat" id="beat2"><span class="eyebrow">////// 00:00 &middot; the placement</span><h2>I place an AI chief of staff in it.</h2><p>It works alongside your team, and gets smarter with every interaction.</p></div>
-<div class="beat" id="beat3"><span class="eyebrow">////// 03:00 &middot; the night shift</span><h2>It works with and without you.</h2><p>Orders, inboxes, follow-ups, reports. Even at 3am.</p></div>
+<div class="beat" id="beat1"><span class="eyebrow">////// the weeds</span><h2>You built the business.</h2><p>You&rsquo;re in the weeds. Your team is buried in admin.</p></div>
+<div class="beat" id="beat2"><span class="eyebrow">////// the placement</span><h2>I place an AI chief of staff in it.</h2><p>It works alongside your team, and gets smarter with every interaction.</p></div>
+<div class="beat" id="beat3"><span class="eyebrow">////// the night shift</span><h2>It works with and without you.</h2><p>Orders, inboxes, follow-ups, reports. Even at 3am.</p></div>
 <div class="term" id="counter"><span class="dim">inbox&nbsp;</span><span id="ctr">47</span><span class="dim">&nbsp;unread</span></div>
-<div class="beat" id="beat4"><span class="eyebrow">////// 05:30 &middot; the calm</span><h2>Work finishes before you arrive.</h2><p>Quietly. Reliably. Every day.</p></div>
-<div class="term" id="doneline"><span class="txt">done. 06:12.</span><span class="cur"></span></div>
+<div class="beat" id="beat4"><span class="eyebrow">////// the calm</span><h2>Work finishes before you arrive.</h2><p>Quietly. Reliably. Every day.</p></div>
+<div class="term" id="doneline"><span class="txt">done. 8h recovered.</span><span class="cur"></span></div>
 <div class="beat" id="beat5"><span class="eyebrow">////// 06:12</span><h2>You get your time back.</h2></div>
 
 <div id="dawn"></div>
@@ -3543,23 +3543,10 @@ const beats = [
   {el:$('beat5'), a:.775, b:.86},
 ];
 const counterEl=$('counter'), ctr=$('ctr'), doneEl=$('doneline');
-/* the night begins at the visitor's own local time */
-const NIGHT_START = (() => { const d = new Date(); return d.getHours()*60 + d.getMinutes(); })();
-const NIGHT_SPAN = 7.5 * 60;
-const fmtClock = m => { const mm = Math.round(m) % 1440; return `${String((mm/60)|0).padStart(2,'0')}:${String(mm%60).padStart(2,'0')}`; };
-const clockAt = p => fmtClock(NIGHT_START + p*NIGHT_SPAN);
+/* hours recovered: counts up from 0h to 8h as the night scrolls */
+const hoursSaved = p => Math.min(8, Math.round(p * 8)) + 'h';
 {
-  const stamp = { beat1:.165, beat2:.24, beat3:.445, beat4:.64, beat5:.80 };
-  for (const [id, pp] of Object.entries(stamp)){
-    const ey = document.querySelector('#'+id+' .eyebrow');
-    if (ey) ey.textContent = ey.textContent.replace(/\d\d:\d\d/, clockAt(pp));
-  }
-  const dt = doneEl.querySelector('.txt');
-  dt.textContent = dt.textContent.replace(/\d\d:\d\d/, clockAt(.74));
-  const railP = [0,.16,.34,.60,.78];
-  document.querySelectorAll('#hours .h').forEach((h,i)=> h.textContent = clockAt(railP[i]));
-  const dsub = document.querySelector('#clock .d');
-  if (dsub) dsub.textContent = 'your time';
+  /* beat labels and HUD markers are static, no per-visitor clock calc needed */
 }
 /* terminal type-in: annotations decode as they arrive */
 const typers = [];
@@ -3582,7 +3569,7 @@ const hoursEls=[...document.querySelectorAll('#hours .h')];
 const clockT=document.querySelector('#clock .t');
 const dawn=$('dawn'), burn=$('burn'), cue=$('cue');
 
-const nightClock = clockAt;
+const hoursSavedFn = hoursSaved;
 const chapterAt = p => p<.16?0 : p<.34?1 : p<.60?2 : p<.78?3 : 4;
 const camZ = p => 8 - p*94;
 const lerp=(a,b,t)=>a+(b-a)*t;
@@ -3758,7 +3745,7 @@ function frame(now){
   doneEl.style.opacity = dnO;
   doneEl.classList.toggle('still', P>.735);
 
-  clockT.textContent = nightClock(P);
+  clockT.textContent = hoursSavedFn(P);
   const ch = chapterAt(P);
   hoursEls.forEach((h,i)=> h.classList.toggle('on', i===ch));
   cue.style.opacity = P<.02?1:0;
