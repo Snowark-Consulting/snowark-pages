@@ -1551,7 +1551,7 @@
 <div class="beat" id="beat3"><span class="eyebrow">////// 03:00 &middot; the night shift</span><h2>It works with and without you.</h2><p>Orders, inboxes, follow-ups, reports. Even at 3am.</p></div>
 <div class="term" id="counter"><span class="dim">inbox&nbsp;</span><span id="ctr">47</span><span class="dim">&nbsp;unread</span></div>
 <div class="beat" id="beat4"><span class="eyebrow">////// 05:30 &middot; the handover</span><h2>Work finishes before you arrive.</h2><p>Quietly. Reliably. Every day.</p></div>
-<div class="term" id="doneline">done. 06:12.<span class="cur"></span></div>
+<div class="term" id="doneline"><span class="txt">done. 06:12.</span><span class="cur"></span></div>
 <div class="beat" id="beat5"><span class="eyebrow">////// 06:12</span><h2>You get your time back.</h2></div>
 
 <div id="dawn"></div>
@@ -3131,10 +3131,8 @@ function glowSprite(color, sx, sy, x,y,z, o){
   sp.scale.set(sx,sy,1); sp.position.set(x,y,z); scene.add(sp); return sp;
 }
 const glowMul  = mobile ? .68 : 1;
-const bulbGlow = mobile ? glowSprite(0xffd9a0, 8.2,8.2, -4.16,3.83,-12.31, .85)
-                        : glowSprite(0xffd9a0, 11.6,11.6, -5.66,5.2,-12.36, .85);
-const poolGlow = mobile ? glowSprite(0xffc985, 13.2,6.2, -3.36,-.87,-11.97, .30)
-                        : glowSprite(0xffc985, 18.6,8.7, -4.57,-1.16,-11.89, .30);
+const bulbGlow = glowSprite(0x2fae7e, mobile?6.5:9, mobile?6.5:9, .4,.6,-13.0, .5);   // the screen's cast
+const poolGlow = glowSprite(0x123a36, mobile?11:15, mobile?5:7, .3,-1.6,-11.9, .30);
 const seamGlow2= glowSprite(0x2fae7e, 4.2,4.2, 0,.35,-71.7, 0);
 const floorPool= glowSprite(0x123a36, 16,7, 0,-4.6,-71.4, 0);
 const glyphGlow= glowSprite(0x4cc296, mobile?7:10.5, mobile?7:10.5, 0,.35,-73.6, 0);
@@ -3200,15 +3198,15 @@ function sceneOpen(){
   /* one framing transform: larger, higher, optically centred */
   const S  = mobile ? 1.14 : 1.55;
   const OY = mobile ? .5 : .7;
-  const post = q => { q.p[0] = (q.p[0] + .45) * S;
+  const post = q => { q.p[0] = (q.p[0] - .35) * S;
                       q.p[1] = q.p[1] * S + OY;
                       q.p[2] = -12.2 + (q.p[2] + 12.2) * S;
                       return q; };
   const r = Math.random();
-  if (r < .30)  return post(sampleBoxSurf(0,-1.35,-12.2, 7.4,.26,4.9, .16));          // desk slab
-  else if (r < .46) return post(sampleBoxSurf(.6,-.98,-12.6, 3.4,.14,2.3, .22));      // open laptop base
-  else if (r < .52){ return post(sampleBoxSurf(.6,.0,-13.55, 3.4,2.1,.12,.30)); } // raised screen
-  else if (r < .60){ // a clock on the screen; its hands are the room's only motion
+  if (r < .36)  return post(sampleBoxSurf(0,-1.35,-12.2, 7.4,.26,4.9, .16));          // desk slab
+  else if (r < .54) return post(sampleBoxSurf(.6,-.98,-12.6, 3.4,.14,2.3, .22));      // open laptop base
+  else if (r < .62){ return post(sampleBoxSurf(.6,.0,-13.55, 3.4,2.1,.12,.30)); } // raised screen
+  else if (r < .80){ // a clock on the screen; its hands are the room's only motion
     const cx = .6, cz = -13.47, rr = Math.random();
     if (rr < .40){        // face ring
       const th = Math.random()*Math.PI*2;
@@ -3224,12 +3222,10 @@ function sceneOpen(){
       return post({p:[cx, 0, cz], c: C.edge, s: 1.35, hand:[2, Math.random()*.33*S]});
     }
   }
-  else if (r < .70) return post(sampleCyl(-4.15,.6,-12.3,.09,4.4,0));                 // lamp pole
-  else if (r < .78) return post(sampleCyl(-3.45,2.72,-12.3,.07,1.6,Math.PI/2.25));    // arm
-  else if (r < .93) return post(sampleCone(-2.85,2.44,-12.3,.85,1.0,-2.65));          // shade
-  else { // bulb fireflies — spherical cloud
-    const v = new THREE.Vector3(rnd(),rnd(),rnd()).normalize().multiplyScalar(Math.cbrt(Math.random())*.55);
-    return post({p:[-2.8+v.x, 2.25+v.y, -12.3+v.z], c:C.bulb, s:1.5});
+  else { // ember dust: the day's warmth, drifting around the desk
+    const gold = Math.random() < .45;
+    return post({p:[rnd()*4.6 + .4, -.6 + rnd()*2.2, -12.4 + rnd()*2.2],
+                 c: gold ? C.bulb : C.mist, s: gold ? 1.05 : .7});
   }
 }
 /* 05:30 scene — the night's work resolves into the mark itself, colossal */
@@ -3316,6 +3312,7 @@ const workUniforms = {
   uP:    {value: 0},
   uFlow: {value: 0},
   uTime: {value: 0},
+  uIntro:{value: 1},
   uSize: {value: mobile ? 2.5 : 3.6},
   uMap:  {value: softDot},
   uFog:  {value: new THREE.Color(0x061a1c)},
@@ -3331,7 +3328,7 @@ const workMat = new THREE.ShaderMaterial({
   transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
   vertexShader: `
     attribute vec3 aP0,aP1,aT1,aP2,aP3,aCol; attribute float aPh,aSz; attribute vec2 aHand;
-    uniform vec4 uW; uniform float uP,uFlow,uSize,uTime;
+    uniform vec4 uW; uniform float uP,uFlow,uSize,uTime,uIntro;
     uniform vec4 uT0,uT1,uT2,uT3,uT4;
     varying vec3 vCol; varying float vFogZ,vAlpha;
     float rng(float x, float a, float b){ return clamp((x-a)/(b-a), 0.0, 1.0); }
@@ -3375,6 +3372,9 @@ const workMat = new THREE.ShaderMaterial({
       WAKE(uT0) WAKE(uT1) WAKE(uT2) WAKE(uT3) WAKE(uT4)
       p += acc;
 
+      /* arrival: everything condenses out of the river field */
+      vec3 scatter = aP1 * 1.18 + vec3(0.0, 1.2, 4.0);
+      p = mix(scatter, p, uIntro);
       vec4 mv = modelViewMatrix * vec4(p,1.0);
       gl_Position = projectionMatrix * mv;
       float tw = .82 + .36*sin(aPh*47.0 + uFlow*16.0);
@@ -3452,6 +3452,9 @@ ScrollTrigger.create({
   trigger:'#track', start:'top top', end:'bottom bottom', scrub:true,
   onUpdate(self){ P = self.progress; }
 });
+/* magnetism: a resting thumb settles on a composed frame, never a seam */
+const SNAPS = [0, .13, .24, .445, .64, .73, .82, .95];
+let lastMove = 0, snapping = false;
 
 const win = (p,a,b,fade=.035)=>{
   if (p < a-fade || p > b+fade) return 0;
@@ -3469,6 +3472,23 @@ const beats = [
   {el:$('beat5'), a:.775, b:.86},
 ];
 const counterEl=$('counter'), ctr=$('ctr'), doneEl=$('doneline');
+/* terminal type-in: annotations decode as they arrive */
+const typers = [];
+document.querySelectorAll('.beat .eyebrow').forEach(el => typers.push({el, full: el.textContent, t0: 0, on: false}));
+const doneTxt = doneEl.querySelector('.txt');
+typers.push({el: doneTxt, full: doneTxt.textContent, t0: 0, on: false, watch: doneEl});
+function runTypers(now){
+  typers.forEach(ty => {
+    const host = ty.watch || ty.el.closest('.beat');
+    const vis = host && parseFloat(host.style.opacity || 0) > .02;
+    if (vis && !ty.on){ ty.on = true; ty.t0 = now; }
+    if (!vis && ty.on){ ty.on = false; ty.el.textContent = ''; }
+    if (ty.on){
+      const k = Math.min(ty.full.length, Math.ceil((now - ty.t0) / 26));
+      if (ty.el.textContent.length !== k) ty.el.textContent = ty.full.slice(0, k);
+    }
+  });
+}
 const hoursEls=[...document.querySelectorAll('#hours .h')];
 const clockT=document.querySelector('#clock .t');
 const dawn=$('dawn'), burn=$('burn'), cue=$('cue');
@@ -3494,6 +3514,21 @@ addEventListener('pointermove', (e)=>{
   mouseVel.x = (e.clientX-lastMX)*.004; mouseVel.y = -(e.clientY-lastMY)*.004;
   lastMX=e.clientX; lastMY=e.clientY;
 });
+/* tilt: the phone's attitude leans the night */
+const tilt = {x:0, y:0}; let tsx = 0, tsy = 0;
+if (!reduced && matchMedia('(pointer: coarse)').matches){
+  const onOri = e => {
+    if (e.gamma == null) return;
+    tilt.x = Math.max(-1, Math.min(1, (e.gamma || 0) / 26));
+    tilt.y = Math.max(-1, Math.min(1, ((e.beta || 0) - 45) / 30));
+  };
+  const arm = () => {
+    const D = window.DeviceOrientationEvent;
+    if (D && D.requestPermission) D.requestPermission().then(r => { if (r === 'granted') addEventListener('deviceorientation', onOri); }).catch(()=>{});
+    else addEventListener('deviceorientation', onOri);
+  };
+  addEventListener('touchend', arm, {once:true});
+}
 const ray = new THREE.Raycaster();
 const focusPlane = new THREE.Plane(new THREE.Vector3(0,0,1), 0); // normal fixed, constant updated per frame
 
@@ -3512,11 +3547,33 @@ if (reduced){
   renderer.render(scene, cam);
 }
 
+/* the night's palette drifts: teal dusk, violet small hours, warming pre-dawn */
+const FOGSTOPS = [[0,0x061a1c],[.32,0x0b1420],[.5,0x0e1224],[.68,0x0a1d1e],[.85,0x14231e]];
+const fogA = new THREE.Color(), fogB = new THREE.Color();
+function nightTint(p){
+  let i = 0;
+  while (i < FOGSTOPS.length-1 && p > FOGSTOPS[i+1][0]) i++;
+  const [pa, ca] = FOGSTOPS[i], [pb, cb] = FOGSTOPS[Math.min(i+1, FOGSTOPS.length-1)];
+  const t = pb > pa ? Math.min(1, Math.max(0, (p-pa)/(pb-pa))) : 0;
+  fogA.setHex(ca); fogB.setHex(cb); return fogA.lerp(fogB, t);
+}
 let flow=0, last=performance.now();
 function frame(now){
   const dt = Math.min(.05,(now-last)/1000); last=now;
 
   workUniforms.uTime.value = now * .001;
+  if (Math.abs(lenisVel) > .08){ lastMove = now; snapping = false; }
+  if (lenis && !snapping && matchMedia('(pointer: coarse)').matches
+      && P > .005 && P < .97 && now - lastMove > 340){
+    let best = null, bd = 1;
+    for (const sp of SNAPS){ const d = Math.abs(sp - P); if (d < bd){ bd = d; best = sp; } }
+    if (best !== null && bd > .0015 && bd < .045){
+      snapping = true;
+      const track = document.getElementById('track');
+      const yT = track.offsetTop + best * (track.offsetHeight - innerHeight);
+      lenis.scrollTo(yT, {duration: 1.0, easing: t => 1 - Math.pow(1 - t, 3)});
+    }
+  }
   const drive = .06 + Math.min(1.6, Math.abs(lenisVel)*.22);
   flow += dt*drive*.045;
   workUniforms.uFlow.value = flow;
@@ -3527,6 +3584,10 @@ function frame(now){
   scene.fog.near = lerp(6,10,rupture);
   scene.fog.far  = lerp(46,150,rupture)*(1-range(P,.80,.98)*.55)*(innerWidth<721?.86:1);
   workUniforms.uFogRange.value.set(scene.fog.near, scene.fog.far);
+  const tintC = nightTint(P);
+  scene.fog.color.copy(tintC);
+  workUniforms.uFog.value.copy(tintC);
+  renderer.setClearColor(tintC, 1);
   cam.fov = lerp(56,68,rupture); cam.updateProjectionMatrix();
 
   const z = camZ(P);
@@ -3535,7 +3596,8 @@ function frame(now){
   const lift = range(P,.10,.20)*(1-range(P,.26,.38))*1.6 + aim*.9;
   const orbit = aim * Math.sin(range(P,.60,.86)*2.4) * 2.6;
   const standoff = (mobile ? rupture * (1 - range(P,.56,.68)) * 6.5 : 0) + aim*11.5;
-  cam.position.set(Math.sin(P*9.4)*.55 + orbit, Math.sin(P*6.1)*.35+.1+lift + (mobile?rupture*.9:0), z + standoff);
+  tsx += (tilt.x - tsx)*.06; tsy += (tilt.y - tsy)*.06;
+  cam.position.set(Math.sin(P*9.4)*.55 + orbit + tsx*.6, Math.sin(P*6.1)*.35+.1+lift + (mobile?rupture*.9:0) - tsy*.4, z + standoff);
   const tx = lerp(cam.position.x*.6, 0,    aim);
   const ty = lerp(cam.position.y*.6, .35, aim);
   const tz = lerp(z-8, -71.8, aim);
@@ -3560,8 +3622,8 @@ function frame(now){
   }
 
   /* light sprites */
-  bulbGlow.material.opacity = (.6 - range(P,.14,.30)*.6) * (.8+.2*Math.sin(now*.003)) * glowMul;
-  poolGlow.material.opacity = (.3 - range(P,.14,.30)*.3) * glowMul;
+  bulbGlow.material.opacity = (.34 - range(P,.14,.30)*.34) * (.85+.15*Math.sin(now*.003)) * glowMul;
+  poolGlow.material.opacity = (.26 - range(P,.14,.30)*.26) * glowMul;
   seamGlow2.material.opacity = (range(P,.62,.70)*.12 - range(P,.80,.90)*.12) * (.8+.2*Math.sin(now*.004));
   floorPool.material.opacity = (range(P,.62,.72)*.5  - range(P,.82,.92)*.5);
   glyphGlow.material.opacity = (range(P,.64,.72)*.34 - range(P,.82,.92)*.34) * (.72+.28*Math.sin(now*.0022));
@@ -3600,6 +3662,7 @@ function frame(now){
   burn.style.filter=`blur(${(1-bo)*22}px)`;
   burn.style.transform=`translate(-50%,-50%) scale(${1.22-bo*.22})`;
 
+  runTypers(now);
   renderer.render(scene,cam);
   requestAnimationFrame(frame);
 }
@@ -3626,7 +3689,12 @@ async function boot(){
   [aParcel,aStore,aRing,...aDocs].forEach(m=>m.material.opacity=0);
   workUniforms.uW.value.copy(savedW);
   if (!reduced) requestAnimationFrame(frame);
+  /* entry ritual: skip when jumped (harness) or reduced motion */
   const jump = new URLSearchParams(location.search).get('jump');
+  if (!reduced && !jump){
+    workUniforms.uIntro.value = 0;
+    gsap.to(workUniforms.uIntro, {value: 1, duration: 1.9, delay: .15, ease: 'power3.inOut'});
+  }
   if (jump){
     const y = parseFloat(jump)||0;
     if (lenis) lenis.scrollTo(y,{immediate:true,force:true});
