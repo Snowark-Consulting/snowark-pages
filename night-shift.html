@@ -33,8 +33,8 @@
   #cue{bottom:30px;left:50%;transform:translateX(-50%);text-align:center;transition:opacity .6s}
   #cue .lbl{font:700 10px/1 Lato;letter-spacing:.34em;text-transform:uppercase;
        color:var(--teal-soft);opacity:.45;margin-bottom:10px;text-indent:.34em}
-  #cue .chev{width:14px;height:14px;margin:0 auto;border-right:1.5px solid var(--green-lift);border-bottom:1.5px solid var(--green-lift);transform:rotate(45deg);animation:chev 1.8s ease-in-out infinite}
-  @keyframes chev{0%,100%{opacity:.25;translate:0 -4px}50%{opacity:1;translate:0 3px}}
+  #cue .lbl{animation:cuebreathe 2.6s ease-in-out infinite}
+  @keyframes cuebreathe{0%,100%{opacity:.3}50%{opacity:.75}}
   #hours{bottom:96px;right:34px;text-align:right;font-family:var(--mono)}
   #hours .h{font-size:11px;letter-spacing:.22em;color:var(--teal-soft);opacity:.28;margin-top:10px;transition:all .5s}
   #hours .h.on{opacity:1;color:var(--green-lift)}
@@ -103,7 +103,7 @@
     #doneline{bottom:calc(24vh - 4.2em)}
   }
   @media (prefers-reduced-motion:reduce){
-    #cue .chev{animation:none}
+    #cue .lbl{animation:none}
     #doneline .cur{animation:none}
   }
 </style>
@@ -117,7 +117,7 @@
   <div class="sub">Your AI Chief of Staff</div>
 </div>
 <div class="hud" id="clock"><div class="t">23:00</div><div class="d">tonight</div></div>
-<div class="hud" id="cue"><div class="lbl">Scroll</div><div class="chev"></div></div>
+<div class="hud" id="cue"><div class="lbl">Scroll</div></div>
 <div class="hud" id="hours">
   <div class="h" data-h="0">23:00</div><div class="h" data-h="1">00:00</div>
   <div class="h" data-h="2">03:00</div><div class="h" data-h="3">05:30</div>
