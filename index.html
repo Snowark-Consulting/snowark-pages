@@ -3135,9 +3135,9 @@ const bulbGlow = mobile ? glowSprite(0xffd9a0, 8.2,8.2, -4.16,3.83,-12.31, .85)
                         : glowSprite(0xffd9a0, 11.6,11.6, -5.66,5.2,-12.36, .85);
 const poolGlow = mobile ? glowSprite(0xffc985, 13.2,6.2, -3.36,-.87,-11.97, .30)
                         : glowSprite(0xffc985, 18.6,8.7, -4.57,-1.16,-11.89, .30);
-const seamGlow2= glowSprite(0x2fae7e, 3.0,1.2, 0,-.62,-70.5, 0);
-const floorPool= glowSprite(0x123a36, 13,5.5, 0,-1.35,-71.4, 0);
-const glyphGlow= glowSprite(0x4cc296, 1.7,1.7, 0,-.42,-71.6, 0);
+const seamGlow2= glowSprite(0x2fae7e, 4.2,4.2, 0,.35,-71.7, 0);
+const floorPool= glowSprite(0x123a36, 16,7, 0,-4.6,-71.4, 0);
+const glyphGlow= glowSprite(0x4cc296, mobile?7:10.5, mobile?7:10.5, 0,.35,-73.6, 0);
 
 /* ============================================================
    particle shape sampling — the world is one point cloud
@@ -3221,23 +3221,15 @@ function sceneOpen(){
     return post({p:[-2.8+v.x, 2.25+v.y, -12.3+v.z], c:C.bulb, s:1.5});
   }
 }
-/* 05:30 scene — THE SAME laptop from 23:00, now closed */
+/* 05:30 scene — the night's work resolves into the mark itself, colossal */
 function sceneClosed(){
-  const r = Math.random();
-  if (r < .38) return sampleBoxSurf(0,-.66,-71.6, 3.4,.14,2.3, .30);            // base, same footprint as opening
-  else if (r < .72){ const q = sampleBoxSurf(0,-.49,-71.6, 3.4,.11,2.3, .30); return q; } // lid, closed flat
-  else if (r < .82){ // lit seam along the FRONT edge, facing the camera
-    return {p:[rnd()*1.6, -.575+rnd()*.025, -70.44+rnd()*.05], c:C.seam, s:1.5};
+  const G = mobile ? 6.4 : 9.6;
+  const ip = sampleIconPoint();
+  if (ip && Math.random() > .08){
+    return {p:[ip.u*G + rnd()*.06, .35 - ip.v*G + rnd()*.06, -71.8 + rnd()*.55],
+            c: C.green, s: 1.15};
   }
-  else if (r < .955){ // the S-globe glowing on the lid
-    const th = Math.random()*Math.PI*2;
-    const ring = Math.random() < .72;
-    const rad = ring ? .34 : .34*Math.random();
-    const q = {p:[Math.cos(th)*rad, -.428, -71.6+Math.sin(th)*rad], c:C.green, s: ring?1.5:1.1};
-    if (!ring && Math.abs(Math.sin(th)) > .6) q.c = C.seam;   // hint of the S bar
-    return q;
-  }
-  else return {p:[rnd()*3.2, -.45+rnd()*.7, -71.5+rnd()*1.6], c:C.mist, s:.7};  // faint air
+  return {p:[rnd()*7, .3+rnd()*4.5, -71.5+rnd()*3], c:C.mist, s:.7};  // ambient air
 }
 
 /* rivers */
@@ -3352,6 +3344,13 @@ const workMat = new THREE.ShaderMaterial({
       p.x += w.x * sin(uTime*.38 + aP0.y*.6)  * .09;
 
       /* the path of particles: the cursor stirs the field */
+      /* the settled mark sways slowly on its axis */
+      float wob = w.w * sin(uTime*.32) * .16;
+      float cw = cos(wob), sw = sin(wob);
+      vec2 relzx = vec2(p.x, p.z + 71.8);
+      p.x = relzx.x*cw - relzx.y*sw;
+      p.z = relzx.x*sw + relzx.y*cw - 71.8;
+
       /* the wake: each particle has its own radius and curl direction,
          and answers to the cursor's recent path, not just its position */
       float vr  = .65 + .85*fract(aPh*13.71);
@@ -3366,7 +3365,7 @@ const workMat = new THREE.ShaderMaterial({
       float tw = .82 + .36*sin(aPh*47.0 + uFlow*16.0);
       gl_PointSize = min(uSize * aSz * tw * (30.0 / -mv.z), uSize > 3.0 ? 34.0 : 16.0);
       float dormShow  = mix(1.0, step(aPh, 0.62), clamp(w.x, 0.0, 1.0));
-      float settleShow = mix(1.0, step(fract(aPh*7.31), 0.22)*.72, clamp(w.w, 0.0, 1.0));
+      float settleShow = mix(1.0, step(fract(aPh*7.31), 0.88)*.9, clamp(w.w, 0.0, 1.0));
       vAlpha = mix(1.0, .78, clamp(w.x,0.,1.)) * dormShow * settleShow;
       vCol = aCol; vFogZ = -mv.z;
     }`,
@@ -3518,13 +3517,13 @@ function frame(now){
   const z = camZ(P);
   /* through the settle the camera rises and looks down at the machine */
   const aim = range(P,.60,.70)*(1-range(P,.84,.93));
-  const lift = range(P,.10,.20)*(1-range(P,.26,.38))*1.6 + aim*2.7;
+  const lift = range(P,.10,.20)*(1-range(P,.26,.38))*1.6 + aim*.9;
   const orbit = aim * Math.sin(range(P,.60,.86)*2.4) * 2.6;
   const standoff = (mobile ? rupture * (1 - range(P,.56,.68)) * 6.5 : 0) + aim*11.5;
   cam.position.set(Math.sin(P*9.4)*.55 + orbit, Math.sin(P*6.1)*.35+.1+lift + (mobile?rupture*.9:0), z + standoff);
   const tx = lerp(cam.position.x*.6, 0,    aim);
-  const ty = lerp(cam.position.y*.6, -.55, aim);
-  const tz = lerp(z-8, -71.6, aim);
+  const ty = lerp(cam.position.y*.6, .35, aim);
+  const tz = lerp(z-8, -71.8, aim);
   cam.lookAt(tx, ty, tz);
 
   /* mouse stir point on a plane just ahead of the camera */
@@ -3550,7 +3549,7 @@ function frame(now){
   poolGlow.material.opacity = (.3 - range(P,.14,.30)*.3) * glowMul;
   seamGlow2.material.opacity = (range(P,.62,.70)*.12 - range(P,.80,.90)*.12) * (.8+.2*Math.sin(now*.004));
   floorPool.material.opacity = (range(P,.62,.72)*.5  - range(P,.82,.92)*.5);
-  glyphGlow.material.opacity = (range(P,.64,.72)*.55 - range(P,.80,.90)*.55) * (.72+.28*Math.sin(now*.0022));
+  glyphGlow.material.opacity = (range(P,.64,.72)*.34 - range(P,.82,.92)*.34) * (.72+.28*Math.sin(now*.0022));
 
   const build = range(P,.40,.56)*(1-range(P,.62,.72));
   aParcel.material.opacity=build*.85;
