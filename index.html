@@ -1478,7 +1478,7 @@
 
   .term{position:fixed;z-index:5;font-family:var(--mono);color:#7fe9c0;opacity:0;pointer-events:none;
      text-shadow:0 1px 3px rgba(2,10,11,.95),0 0 22px rgba(2,10,11,.8)}
-  #counter{left:8vw;top:calc(20vh + 1em);margin-top:clamp(5.4rem,11vw,7.6rem);font-size:clamp(.78rem,1.1vw,.92rem);letter-spacing:.1em}
+  #counter{left:8vw;top:calc(20vh + 1em);margin-top:clamp(9rem,15vw,11.5rem);font-size:clamp(.78rem,1.1vw,.92rem);letter-spacing:.1em}
   #counter .dim{color:var(--teal-soft);opacity:.75}
   #doneline{right:8vw;bottom:calc(24vh - 3.1em);font-size:clamp(.8rem,1.2vw,.95rem);letter-spacing:.12em;text-align:right}
   #doneline .cur{display:inline-block;width:.62em;height:1.15em;vertical-align:-.2em;background:var(--green-lift);margin-left:.35em;animation:blink 1.05s steps(1) infinite}
@@ -1514,7 +1514,7 @@
   @media (max-width:720px){
     #beat1,#beat3{left:6vw}#beat2,#beat4{right:6vw}
     #hours{display:none}
-    #counter{margin-top:11.5rem}
+    #counter{margin-top:14rem}
     #doneline{bottom:calc(24vh - 4.2em)}
   }
   @media (prefers-reduced-motion:reduce){
@@ -1548,7 +1548,7 @@
 <div class="beat" id="beat0"><h2>Ready to get your time back?</h2></div>
 <div class="beat" id="beat1"><span class="eyebrow">////// 23:00 &middot; the study</span><h2>You built the business.</h2><p>You&rsquo;re in the weeds. Your team is buried in admin.</p></div>
 <div class="beat" id="beat2"><span class="eyebrow">////// 00:00 &middot; the placement</span><h2>We place an AI chief of staff in it.</h2><p>It works alongside your team, and gets smarter with every interaction.</p></div>
-<div class="beat" id="beat3"><span class="eyebrow">////// 03:00 &middot; the night shift</span><h2>It works with and without you.</h2><p>Orders, inboxes, follow-ups, reports. 3am included.</p></div>
+<div class="beat" id="beat3"><span class="eyebrow">////// 03:00 &middot; the night shift</span><h2>It works with and without you.</h2><p>Orders, inboxes, follow-ups, reports. Even at 3am.</p></div>
 <div class="term" id="counter"><span class="dim">inbox&nbsp;</span><span id="ctr">47</span><span class="dim">&nbsp;unread</span></div>
 <div class="beat" id="beat4"><span class="eyebrow">////// 05:30 &middot; the handover</span><h2>Work finishes before you arrive.</h2><p>Quietly. Reliably. Every day.</p></div>
 <div class="term" id="doneline">done. 06:12.<span class="cur"></span></div>
@@ -3142,7 +3142,7 @@ const glyphGlow= glowSprite(0x4cc296, 1.7,1.7, 0,-.42,-71.6, 0);
 /* ============================================================
    particle shape sampling — the world is one point cloud
    ============================================================ */
-const N = mobile ? 40000 : 84000;
+const N = mobile ? 28000 : 84000;
 const pos0 = new Float32Array(N*3);   // 23:00 — lamp + open work desk
 const pos1 = new Float32Array(N*3);   // the rivers
 const tan1 = new Float32Array(N*3);
@@ -3311,7 +3311,7 @@ const workUniforms = {
   uP:    {value: 0},
   uFlow: {value: 0},
   uTime: {value: 0},
-  uSize: {value: mobile ? 2.6 : 3.6},
+  uSize: {value: mobile ? 2.1 : 3.6},
   uMap:  {value: softDot},
   uFog:  {value: new THREE.Color(0x061a1c)},
   uFogRange: {value: new THREE.Vector2(6,46)},
@@ -3364,7 +3364,7 @@ const workMat = new THREE.ShaderMaterial({
       vec4 mv = modelViewMatrix * vec4(p,1.0);
       gl_Position = projectionMatrix * mv;
       float tw = .82 + .36*sin(aPh*47.0 + uFlow*16.0);
-      gl_PointSize = min(uSize * aSz * tw * (30.0 / -mv.z), uSize > 4.5 ? 34.0 : 20.0);
+      gl_PointSize = min(uSize * aSz * tw * (30.0 / -mv.z), uSize > 3.0 ? 34.0 : 12.0);
       float dormShow  = mix(1.0, step(aPh, 0.62), clamp(w.x, 0.0, 1.0));
       float settleShow = mix(1.0, step(fract(aPh*7.31), 0.22)*.72, clamp(w.w, 0.0, 1.0));
       vAlpha = mix(1.0, .78, clamp(w.x,0.,1.)) * dormShow * settleShow;
@@ -3376,7 +3376,7 @@ const workMat = new THREE.ShaderMaterial({
     void main(){
       float a = texture2D(uMap, gl_PointCoord).a;
       float f = smoothstep(uFogRange.x, uFogRange.y, vFogZ);
-      float near = smoothstep(1.3, 3.2, vFogZ);
+      float near = smoothstep(uSize > 3.0 ? 1.3 : 2.4, uSize > 3.0 ? 3.2 : 5.0, vFogZ);
       vec3 c = mix(vCol, uFog, f*.85);
       gl_FragColor = vec4(c * 1.05, min(1.0, a * .82) * (1.0 - f*.9) * near * vAlpha);
     }`,
@@ -3511,7 +3511,7 @@ function frame(now){
 
   const rupture = range(P,.32,.42);
   scene.fog.near = lerp(6,10,rupture);
-  scene.fog.far  = lerp(46,150,rupture)*(1-range(P,.80,.98)*.55);
+  scene.fog.far  = lerp(46,150,rupture)*(1-range(P,.80,.98)*.55)*(innerWidth<721?.72:1);
   workUniforms.uFogRange.value.set(scene.fog.near, scene.fog.far);
   cam.fov = lerp(56,68,rupture); cam.updateProjectionMatrix();
 
