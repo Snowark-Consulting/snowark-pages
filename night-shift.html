@@ -31,6 +31,8 @@
   #clock .t{font-size:13px;letter-spacing:.18em;color:#e9e7e3}
   #clock .d{font-size:10px;letter-spacing:.12em;opacity:.6;margin-top:6px}
   #cue{bottom:30px;left:50%;transform:translateX(-50%);text-align:center;transition:opacity .6s}
+  #cue .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.34em;text-transform:uppercase;
+       color:var(--teal-soft);opacity:.45;margin-bottom:10px;text-indent:.34em}
   #cue .chev{width:14px;height:14px;margin:0 auto;border-right:1.5px solid var(--green-lift);border-bottom:1.5px solid var(--green-lift);transform:rotate(45deg);animation:chev 1.8s ease-in-out infinite}
   @keyframes chev{0%,100%{opacity:.25;translate:0 -4px}50%{opacity:1;translate:0 3px}}
   #hours{bottom:96px;right:34px;text-align:right;font-family:var(--mono)}
@@ -76,7 +78,7 @@
   #burn .tag{font:italic 400 clamp(1rem,1.7vw,1.3rem)/1.5 Cambo;color:#3d4a49;margin-top:18px;max-width:26em;text-wrap:balance}
 
   /* ---------- track + landing ---------- */
-  #track{height:820vh}
+  #track{height:820vh;height:820svh}
   #landing{position:relative;z-index:9;background:var(--dawn);color:var(--ink);
            min-height:92vh;display:flex;align-items:center;justify-content:center;text-align:center}
   #landing .inner{max-width:640px;padding:96px 28px}
@@ -115,7 +117,7 @@
   <div class="sub">Your AI Chief of Staff</div>
 </div>
 <div class="hud" id="clock"><div class="t">23:00</div><div class="d">tonight</div></div>
-<div class="hud" id="cue"><div class="chev"></div></div>
+<div class="hud" id="cue"><div class="lbl">Scroll</div><div class="chev"></div></div>
 <div class="hud" id="hours">
   <div class="h" data-h="0">23:00</div><div class="h" data-h="1">00:00</div>
   <div class="h" data-h="2">03:00</div><div class="h" data-h="3">05:30</div>
@@ -214,8 +216,11 @@ function glowSprite(color, sx, sy, x,y,z, o){
   const sp = new THREE.Sprite(new THREE.SpriteMaterial({map:softDot, color, transparent:true, opacity:o, depthWrite:false, blending:THREE.AdditiveBlending}));
   sp.scale.set(sx,sy,1); sp.position.set(x,y,z); scene.add(sp); return sp;
 }
-const bulbGlow = glowSprite(0xffd9a0, 11.6,11.6, -5.66,5.2,-12.36, .85);
-const poolGlow = glowSprite(0xffc985, 18.6,8.7, -4.57,-1.16,-11.89, .30);
+const glowMul  = mobile ? .68 : 1;
+const bulbGlow = mobile ? glowSprite(0xffd9a0, 8.2,8.2, -4.16,3.83,-12.31, .85)
+                        : glowSprite(0xffd9a0, 11.6,11.6, -5.66,5.2,-12.36, .85);
+const poolGlow = mobile ? glowSprite(0xffc985, 13.2,6.2, -3.36,-.87,-11.97, .30)
+                        : glowSprite(0xffc985, 18.6,8.7, -4.57,-1.16,-11.89, .30);
 const seamGlow2= glowSprite(0x2fae7e, 3.0,1.2, 0,-.62,-70.5, 0);
 const floorPool= glowSprite(0x123a36, 13,5.5, 0,-1.35,-71.4, 0);
 const glyphGlow= glowSprite(0x4cc296, 1.7,1.7, 0,-.42,-71.6, 0);
@@ -278,9 +283,11 @@ function sampleCone(cx,cy,cz, r, h, tiltZ){
 /* 23:00 scene — desk left of centre, lamp leaning over it */
 function sceneOpen(){
   /* one framing transform: larger, higher, optically centred */
-  const post = q => { q.p[0] = (q.p[0] + .45) * 1.55;
-                      q.p[1] = q.p[1] * 1.55 + .7;
-                      q.p[2] = -12.2 + (q.p[2] + 12.2) * 1.55;
+  const S  = mobile ? 1.14 : 1.55;
+  const OY = mobile ? .5 : .7;
+  const post = q => { q.p[0] = (q.p[0] + .45) * S;
+                      q.p[1] = q.p[1] * S + OY;
+                      q.p[2] = -12.2 + (q.p[2] + 12.2) * S;
                       return q; };
   const r = Math.random();
   if (r < .30)  return post(sampleBoxSurf(0,-1.35,-12.2, 7.4,.26,4.9, .16));          // desk slab
@@ -388,6 +395,7 @@ const workUniforms = {
   uW:    {value: new THREE.Vector4(1,0,0,0)},   // kept for warmup only
   uP:    {value: 0},
   uFlow: {value: 0},
+  uTime: {value: 0},
   uSize: {value: mobile ? 2.6 : 3.6},
   uMap:  {value: softDot},
   uFog:  {value: new THREE.Color(0x061a1c)},
@@ -403,7 +411,7 @@ const workMat = new THREE.ShaderMaterial({
   transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
   vertexShader: `
     attribute vec3 aP0,aP1,aT1,aP2,aP3,aCol; attribute float aPh,aSz;
-    uniform vec4 uW; uniform float uP,uFlow,uSize;
+    uniform vec4 uW; uniform float uP,uFlow,uSize,uTime;
     uniform vec4 uT0,uT1,uT2,uT3,uT4;
     varying vec3 vCol; varying float vFogZ,vAlpha;
     float rng(float x, float a, float b){ return clamp((x-a)/(b-a), 0.0, 1.0); }
@@ -424,6 +432,9 @@ const workMat = new THREE.ShaderMaterial({
       vec3 p = aP0*w.x + stream*w.y + aP2*w.z + aP3*w.w;
       p.x += sin(uFlow*13.0 + aPh*40.0)*.05;
       p.y += cos(uFlow*11.0 + aPh*31.0)*.05;
+      /* the dormant desk floats: one slow swell across the whole formation */
+      p.y += w.x * sin(uTime*.55 + aP0.x*.42) * .16;
+      p.x += w.x * sin(uTime*.38 + aP0.y*.6)  * .09;
 
       /* the path of particles: the cursor stirs the field */
       /* the wake: each particle has its own radius and curl direction,
@@ -521,8 +532,8 @@ const win = (p,a,b,fade=.035)=>{
 };
 const $ = id => document.getElementById(id);
 const beats = [
-  {el:$('beat0'), a:0,    b:.028},
-  {el:$('beat1'), a:.045, b:.135},
+  {el:$('beat0'), a:0,    b:.018},
+  {el:$('beat1'), a:.095, b:.165},
   {el:$('beat2'), a:.185, b:.295},
   {el:$('beat3'), a:.365, b:.520},
   {el:$('beat4'), a:.60,  b:.675},
@@ -575,6 +586,7 @@ let flow=0, last=performance.now();
 function frame(now){
   const dt = Math.min(.05,(now-last)/1000); last=now;
 
+  workUniforms.uTime.value = now * .001;
   const drive = .06 + Math.min(1.6, Math.abs(lenisVel)*.22);
   flow += dt*drive*.045;
   workUniforms.uFlow.value = flow;
@@ -617,8 +629,8 @@ function frame(now){
   }
 
   /* light sprites */
-  bulbGlow.material.opacity = (.6 - range(P,.14,.30)*.6) * (.8+.2*Math.sin(now*.003));
-  poolGlow.material.opacity = .3 - range(P,.14,.30)*.3;
+  bulbGlow.material.opacity = (.6 - range(P,.14,.30)*.6) * (.8+.2*Math.sin(now*.003)) * glowMul;
+  poolGlow.material.opacity = (.3 - range(P,.14,.30)*.3) * glowMul;
   seamGlow2.material.opacity = (range(P,.62,.70)*.12 - range(P,.80,.90)*.12) * (.8+.2*Math.sin(now*.004));
   floorPool.material.opacity = (range(P,.62,.72)*.5  - range(P,.82,.92)*.5);
   glyphGlow.material.opacity = (range(P,.64,.72)*.55 - range(P,.80,.90)*.55) * (.72+.28*Math.sin(now*.0022));
@@ -660,7 +672,12 @@ function frame(now){
   requestAnimationFrame(frame);
 }
 
+let lastRW = innerWidth, lastRH = innerHeight;
 addEventListener('resize', ()=>{
+  /* mobile URL-bar show/hide fires resize with small height deltas — ignore
+     them, or the canvas re-layout reads as a mid-scroll kick */
+  if (innerWidth === lastRW && Math.abs(innerHeight - lastRH) < 140) return;
+  lastRW = innerWidth; lastRH = innerHeight;
   renderer.setSize(innerWidth,innerHeight);
   cam.aspect=innerWidth/innerHeight;
   cam.updateProjectionMatrix();
