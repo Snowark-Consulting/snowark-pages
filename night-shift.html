@@ -49,10 +49,11 @@
      text-shadow:0 1px 3px rgba(2,10,11,.9),0 2px 18px rgba(2,10,11,.7)}
   .beat::before{content:"";position:absolute;inset:-34% -22%;z-index:-1;pointer-events:none;
      background:radial-gradient(closest-side,rgba(3,12,14,.52),rgba(3,12,14,0) 72%)}
-  #beat0{left:50%;top:46%;transform:translate(-50%,-50%);text-align:center;max-width:min(700px,88vw)}
-  #beat0 p{margin-left:auto;margin-right:auto;font-size:clamp(1.05rem,1.9vw,1.4rem)}
+  #beat0{left:8vw;bottom:14vh;max-width:min(520px,84vw)}
+  #beat0 h2{font-size:clamp(1.35rem,2.6vw,2.1rem)}
+  #beat0 p{font-size:clamp(.95rem,1.5vw,1.15rem)}
   #beat0 .eyebrow,#beat5 .eyebrow{margin-bottom:10px}
-  #beat0 h2{font-size:clamp(1.9rem,4.4vw,3.5rem)}
+  
   #beat1{left:8vw;bottom:18vh}
   #beat2{right:8vw;top:22vh;text-align:right}
   #beat2 p{margin-left:auto}
@@ -125,7 +126,7 @@
   <div class="h" data-h="4">06:30</div>
 </div>
 
-<div class="beat" id="beat0"><h2>An AI chief of staff that runs&nbsp;the&nbsp;busywork.</h2><p>You get your time back.</p></div>
+<div class="beat" id="beat0"><span class="eyebrow">////// SNOWARK</span><h2>An AI chief of staff that runs&nbsp;the&nbsp;busywork.</h2><p>You get your time back.</p></div>
 <div class="beat" id="beat1"><span class="eyebrow">////// 23:00 &middot; the study</span><h2>You built the business.</h2><p>You&rsquo;re in the weeds. Your team is buried in admin.</p></div>
 <div class="beat" id="beat2"><span class="eyebrow">////// 00:00 &middot; the placement</span><h2>We place an AI chief of staff in it.</h2><p>It works alongside your team, and gets smarter with every interaction.</p></div>
 <div class="beat" id="beat3"><span class="eyebrow">////// 03:00 &middot; the night shift</span><h2>It works with and without you.</h2><p>Orders, inboxes, follow-ups, reports. Even at 3am.</p></div>
@@ -289,7 +290,7 @@ function sampleCone(cx,cy,cz, r, h, tiltZ){
 /* 23:00 scene — desk left of centre, lamp leaning over it */
 function sceneOpen(){
   /* one framing transform: larger, higher, optically centred */
-  const S  = mobile ? 1.32 : 1.72;
+  const S  = mobile ? 1.2 : 1.6;
   const OY = mobile ? .5 : .7;
   const post = q => { q.p[0] = (q.p[0] - .35) * S;
                       q.p[1] = q.p[1] * S + OY;
@@ -457,8 +458,8 @@ const workMat = new THREE.ShaderMaterial({
       /* per-particle stagger: each point leaves and arrives on its own beat */
       float o  = (aPh - .5) * .07;
       float p_ = uP + o;
-      float wT = 1.0 - rng(p_,.012,.062);
-      float w0 = rng(p_,.035,.10) * (1.0 - rng(p_,.16,.32));
+      float wT = 0.0;
+      float w0 = 1.0 - rng(p_,.16,.32);
       float w1 = rng(p_,.22,.36) * (1.0 - rng(p_,.56,.68));
       float w2 = rng(p_,.40,.54) * (1.0 - rng(p_,.56,.66));
       float w3 = rng(p_,.58,.70) * (1.0 - rng(p_,.86,.96));
@@ -596,7 +597,7 @@ const win = (p,a,b,fade=.035)=>{
 };
 const $ = id => document.getElementById(id);
 const beats = [
-  {el:$('beat0'), a:0,    b:.008},
+  {el:$('beat0'), a:0,    b:.075},
   {el:$('beat1'), a:.13,  b:.20},
   {el:$('beat2'), a:.185, b:.295},
   {el:$('beat3'), a:.365, b:.520},
@@ -787,7 +788,7 @@ function frame(now){
   beats.forEach(({el,a,b})=>{
     const o = win(P,a,b);
     el.style.opacity=o;
-    el.style.transform = (el.id==='beat5' || el.id==='beat0')
+    el.style.transform = (el.id==='beat5')
       ? `translate(-50%, calc(-50% + ${(1-o)*14}px))`
       : `translateY(${(1-o)*22}px)`;
   });
