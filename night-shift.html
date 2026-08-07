@@ -49,9 +49,10 @@
      text-shadow:0 1px 3px rgba(2,10,11,.9),0 2px 18px rgba(2,10,11,.7)}
   .beat::before{content:"";position:absolute;inset:-34% -22%;z-index:-1;pointer-events:none;
      background:radial-gradient(closest-side,rgba(3,12,14,.52),rgba(3,12,14,0) 72%)}
-  #beat0{left:50%;top:74%;transform:translate(-50%,-50%);text-align:center}
+  #beat0{left:50%;top:46%;transform:translate(-50%,-50%);text-align:center;max-width:min(700px,88vw)}
+  #beat0 p{margin-left:auto;margin-right:auto;font-size:clamp(1.05rem,1.9vw,1.4rem)}
   #beat0 .eyebrow,#beat5 .eyebrow{margin-bottom:10px}
-  #beat0 h2{font-size:clamp(1.85rem,4.3vw,3.3rem)}
+  #beat0 h2{font-size:clamp(1.9rem,4.4vw,3.5rem)}
   #beat1{left:8vw;bottom:18vh}
   #beat2{right:8vw;top:22vh;text-align:right}
   #beat2 p{margin-left:auto}
@@ -116,7 +117,7 @@
   <img class="mark" src="assets/logos/SnowArk-White.png" alt="SnowArk">
   <div class="sub">Your AI Chief of Staff</div>
 </div>
-<div class="hud" id="clock"><div class="t">23:00</div><div class="d">tonight</div></div>
+<div class="hud" id="clock"><div class="t">--:--</div><div class="d">your time</div></div>
 <div class="hud" id="cue"><div class="lbl">Scroll</div></div>
 <div class="hud" id="hours">
   <div class="h" data-h="0">23:00</div><div class="h" data-h="1">00:00</div>
@@ -124,7 +125,7 @@
   <div class="h" data-h="4">06:30</div>
 </div>
 
-<div class="beat" id="beat0"><h2>Ready to get your time back?</h2></div>
+<div class="beat" id="beat0"><h2>An AI chief of staff that runs&nbsp;the&nbsp;busywork.</h2><p>You get your time back.</p></div>
 <div class="beat" id="beat1"><span class="eyebrow">////// 23:00 &middot; the study</span><h2>You built the business.</h2><p>You&rsquo;re in the weeds. Your team is buried in admin.</p></div>
 <div class="beat" id="beat2"><span class="eyebrow">////// 00:00 &middot; the placement</span><h2>We place an AI chief of staff in it.</h2><p>It works alongside your team, and gets smarter with every interaction.</p></div>
 <div class="beat" id="beat3"><span class="eyebrow">////// 03:00 &middot; the night shift</span><h2>It works with and without you.</h2><p>Orders, inboxes, follow-ups, reports. Even at 3am.</p></div>
@@ -242,6 +243,7 @@ const pos3 = new Float32Array(N*3);   // 05:30 — the closed machine
 const col  = new Float32Array(N*3);
 const siz  = new Float32Array(N);
 const hnd  = new Float32Array(N*2);   // clock hands: [type, radius]
+const ptx  = new Float32Array(N*3);   // the opening statement, as particles
 
 const C = {
   body:  new THREE.Color(0x2e6d6b),  // slab/pole points — readable teal
@@ -288,7 +290,7 @@ function sampleCone(cx,cy,cz, r, h, tiltZ){
 /* 23:00 scene — desk left of centre, lamp leaning over it */
 function sceneOpen(){
   /* one framing transform: larger, higher, optically centred */
-  const S  = mobile ? 1.14 : 1.55;
+  const S  = mobile ? 1.32 : 1.72;
   const OY = mobile ? .5 : .7;
   const post = q => { q.p[0] = (q.p[0] - .35) * S;
                       q.p[1] = q.p[1] * S + OY;
@@ -400,6 +402,32 @@ workGeo.setAttribute('aP3', new THREE.BufferAttribute(pos3,3));
 workGeo.setAttribute('aCol', new THREE.BufferAttribute(col,3));
 workGeo.setAttribute('aSz', new THREE.BufferAttribute(siz,1));
 workGeo.setAttribute('aHand', new THREE.BufferAttribute(hnd,2));
+const aPT = new THREE.BufferAttribute(ptx, 3);
+workGeo.setAttribute('aPT', aPT);
+/* sample the opener's own words into particle targets (after fonts load) */
+function sampleStatement(){
+  const W = 1280, H = 420, c = document.createElement('canvas');
+  c.width = W; c.height = H;
+  const x = c.getContext('2d');
+  x.fillStyle = '#fff'; x.textAlign = 'center';
+  x.font = '400 86px Cambo, serif';
+  x.fillText('An AI chief of staff', W/2, 120);
+  x.fillText('that runs the busywork.', W/2, 220);
+  x.font = 'italic 400 44px Lato, sans-serif';
+  x.fillText('You get your time back.', W/2, 330);
+  const d = x.getImageData(0,0,W,H).data, pts = [];
+  for (let py = 0; py < H; py += 2) for (let px = 0; px < W; px += 2)
+    if (d[(py*W+px)*4+3] > 128) pts.push([px/W, py/H]);
+  if (!pts.length) return;
+  const ww = mobile ? 8.6 : 12.5, hh = ww * H / W;
+  for (let i = 0; i < N; i++){
+    const [u, v] = pts[(Math.random()*pts.length)|0];
+    ptx[i*3]   = (u - .5) * ww + rnd()*.03;
+    ptx[i*3+1] = (.5 - v) * hh + .35 + rnd()*.03;
+    ptx[i*3+2] = -4.8 + rnd()*.18;
+  }
+  aPT.needsUpdate = true;
+}
 
 const workUniforms = {
   uW:    {value: new THREE.Vector4(1,0,0,0)},   // kept for warmup only
@@ -421,7 +449,7 @@ const workMat = new THREE.ShaderMaterial({
   uniforms: workUniforms,
   transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
   vertexShader: `
-    attribute vec3 aP0,aP1,aT1,aP2,aP3,aCol; attribute float aPh,aSz; attribute vec2 aHand;
+    attribute vec3 aP0,aP1,aT1,aP2,aP3,aPT,aCol; attribute float aPh,aSz; attribute vec2 aHand;
     uniform vec4 uW; uniform float uP,uFlow,uSize,uTime,uIntro;
     uniform vec4 uT0,uT1,uT2,uT3,uT4;
     varying vec3 vCol; varying float vFogZ,vAlpha;
@@ -430,17 +458,25 @@ const workMat = new THREE.ShaderMaterial({
       /* per-particle stagger: each point leaves and arrives on its own beat */
       float o  = (aPh - .5) * .07;
       float p_ = uP + o;
-      float w0 = 1.0 - rng(p_,.16,.32);
+      float wT = 1.0 - rng(p_,.012,.062);
+      float w0 = rng(p_,.035,.10) * (1.0 - rng(p_,.16,.32));
       float w1 = rng(p_,.22,.36) * (1.0 - rng(p_,.56,.68));
       float w2 = rng(p_,.40,.54) * (1.0 - rng(p_,.56,.66));
       float w3 = rng(p_,.58,.70) * (1.0 - rng(p_,.86,.96));
       /* every transition flows THROUGH the river, never a straight dissolve */
-      float T = 4.0*w0*(1.0-w0)*step(.05,uP) + 4.0*w2*(1.0-w2) + 4.0*w3*(1.0-w3);
+      float T = 4.0*w0*(1.0-w0)*step(.11,uP) + 4.0*w2*(1.0-w2) + 4.0*w3*(1.0-w3);
       w1 += min(T, 1.0) * .55;
-      vec4 w = vec4(w0,w1,w2,w3) / max(w0+w1+w2+w3, 1e-4);
+      float tot = wT+w0+w1+w2+w3;
+      wT /= max(tot,1e-4);
+      vec4 w = vec4(w0,w1,w2,w3) / max(tot, 1e-4);
       float run = fract(aPh + uFlow) - .5;
       vec3 stream = aP1 + aT1 * run * 7.0;
-      vec3 p = aP0*w.x + stream*w.y + aP2*w.z + aP3*w.w;
+      vec3 p = aPT*wT + aP0*w.x + stream*w.y + aP2*w.z + aP3*w.w;
+      /* the statement detonates: outward burst between words and desk */
+      float burst = 4.0 * wT * (1.0 - wT);
+      vec3 bdir = normalize(aPT - vec3(0.0,.35,-4.8) + vec3(0.,0.,-.001));
+      p += bdir * burst * (1.6 + fract(aPh*5.7)*1.4);
+      p.z -= burst * 1.8;
       p.x += sin(uFlow*13.0 + aPh*40.0)*.05;
       p.y += cos(uFlow*11.0 + aPh*31.0)*.05;
       /* the clock's hands sweep — the room's one motion */
@@ -476,7 +512,7 @@ const workMat = new THREE.ShaderMaterial({
       float dormShow  = mix(1.0, step(aPh, 0.62), clamp(w.x, 0.0, 1.0));
       float settleShow = mix(1.0, step(fract(aPh*7.31), 0.88)*.9, clamp(w.w, 0.0, 1.0));
       vAlpha = mix(1.0, .78, clamp(w.x,0.,1.)) * dormShow * settleShow;
-      vCol = aCol; vFogZ = -mv.z;
+      vCol = mix(aCol, vec3(.93,.92,.88), wT); vFogZ = -mv.z;
     }`,
   fragmentShader: `
     uniform sampler2D uMap; uniform vec3 uFog; uniform vec2 uFogRange; uniform float uSize;
@@ -548,7 +584,7 @@ ScrollTrigger.create({
   onUpdate(self){ P = self.progress; }
 });
 /* magnetism: a resting thumb settles on a composed frame, never a seam */
-const SNAPS = [0, .13, .24, .445, .64, .73, .82, .95];
+const SNAPS = [0, .165, .24, .445, .64, .73, .82, .95];
 let lastMove = 0, snapping = false;
 
 const win = (p,a,b,fade=.035)=>{
@@ -559,14 +595,32 @@ const win = (p,a,b,fade=.035)=>{
 };
 const $ = id => document.getElementById(id);
 const beats = [
-  {el:$('beat0'), a:0,    b:.018},
-  {el:$('beat1'), a:.095, b:.165},
+  {el:$('beat0'), a:0,    b:.008},
+  {el:$('beat1'), a:.13,  b:.20},
   {el:$('beat2'), a:.185, b:.295},
   {el:$('beat3'), a:.365, b:.520},
   {el:$('beat4'), a:.60,  b:.675},
   {el:$('beat5'), a:.775, b:.86},
 ];
 const counterEl=$('counter'), ctr=$('ctr'), doneEl=$('doneline');
+/* the night begins at the visitor's own local time */
+const NIGHT_START = (() => { const d = new Date(); return d.getHours()*60 + d.getMinutes(); })();
+const NIGHT_SPAN = 7.5 * 60;
+const fmtClock = m => { const mm = Math.round(m) % 1440; return `${String((mm/60)|0).padStart(2,'0')}:${String(mm%60).padStart(2,'0')}`; };
+const clockAt = p => fmtClock(NIGHT_START + p*NIGHT_SPAN);
+{
+  const stamp = { beat1:.165, beat2:.24, beat3:.445, beat4:.64, beat5:.80 };
+  for (const [id, pp] of Object.entries(stamp)){
+    const ey = document.querySelector('#'+id+' .eyebrow');
+    if (ey) ey.textContent = ey.textContent.replace(/\d\d:\d\d/, clockAt(pp));
+  }
+  const dt = doneEl.querySelector('.txt');
+  dt.textContent = dt.textContent.replace(/\d\d:\d\d/, clockAt(.74));
+  const railP = [0,.16,.34,.60,.78];
+  document.querySelectorAll('#hours .h').forEach((h,i)=> h.textContent = clockAt(railP[i]));
+  const dsub = document.querySelector('#clock .d');
+  if (dsub) dsub.textContent = 'your time';
+}
 /* terminal type-in: annotations decode as they arrive */
 const typers = [];
 document.querySelectorAll('.beat .eyebrow').forEach(el => typers.push({el, full: el.textContent, t0: 0, on: false}));
@@ -588,11 +642,7 @@ const hoursEls=[...document.querySelectorAll('#hours .h')];
 const clockT=document.querySelector('#clock .t');
 const dawn=$('dawn'), burn=$('burn'), cue=$('cue');
 
-function nightClock(p){
-  const mins = 23*60 + p*(7.5*60);
-  const m = Math.round(mins)%(24*60);
-  return `${String((m/60)|0).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
-}
+const nightClock = clockAt;
 const chapterAt = p => p<.16?0 : p<.34?1 : p<.60?2 : p<.78?3 : 4;
 const camZ = p => 8 - p*94;
 const lerp=(a,b,t)=>a+(b-a)*t;
@@ -772,6 +822,7 @@ addEventListener('resize', ()=>{
 
 async function boot(){
   try { await document.fonts.ready; } catch(e){}
+  try { sampleStatement(); } catch(e){}
   const savedW = workUniforms.uW.value.clone();
   for (const w of [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]){
     workUniforms.uW.value.set(...w);
