@@ -75,8 +75,8 @@
   #dawn{position:fixed;inset:0;z-index:7;pointer-events:none;opacity:0;
         background:linear-gradient(180deg,#f6f3ec 0%,#f4f1ea 55%,#ece8df 100%)}
   #burn{position:fixed;z-index:8;left:50%;top:46%;transform:translate(-50%,-50%);text-align:center;opacity:0;pointer-events:none}
-  #burn .lockup{width:clamp(220px,26vw,360px);display:block;margin:0 auto}
-  #burn .tag{font:italic 400 clamp(.98rem,1.6vw,1.25rem)/1.55 Lato;color:#3d4a49;margin-top:18px;max-width:26em;text-wrap:balance}
+
+  #burn .tag{font:italic 400 clamp(1.2rem,2.1vw,1.65rem)/1.6 Lato;color:#2e3b3a;max-width:24em;text-wrap:balance}
 
   /* ---------- track + landing ---------- */
   #track{height:1025vh;height:1025svh}
@@ -132,11 +132,10 @@
 <div class="term" id="counter"><span class="dim">inbox&nbsp;</span><span id="ctr">47</span><span class="dim">&nbsp;unread</span></div>
 <div class="beat" id="beat4"><span class="eyebrow">////// 05:30 &middot; the handover</span><h2>Work finishes before you arrive.</h2><p>Quietly. Reliably. Every day.</p></div>
 <div class="term" id="doneline"><span class="txt">done. 06:12.</span><span class="cur"></span></div>
-<div class="beat" id="beat5"><span class="eyebrow">////// 06:12</span><h2>You get your time back.</h2></div>
+<div class="beat" id="beat5"><span class="eyebrow">////// 06:12</span><h2>The business runs. You live.</h2></div>
 
 <div id="dawn"></div>
 <div id="burn">
-  <img class="lockup" src="assets/logos/SnowArk-Secondary-Black.png" alt="SnowArk">
   <div class="tag">I build an AI chief of staff, so you can get your time back.</div>
 </div>
 
@@ -469,6 +468,7 @@ const workMat = new THREE.ShaderMaterial({
       float tot = wT+w0+w1+w2+w3;
       wT /= max(tot,1e-4);
       vec4 w = vec4(w0,w1,w2,w3) / max(tot, 1e-4);
+      float textFlare = smoothstep(.004, .016, uP);
       float run = fract(aPh + uFlow) - .5;
       vec3 stream = aP1 + aT1 * run * 7.0;
       vec3 p = aPT*wT + aP0*w.x + stream*w.y + aP2*w.z + aP3*w.w;
@@ -508,10 +508,11 @@ const workMat = new THREE.ShaderMaterial({
       vec4 mv = modelViewMatrix * vec4(p,1.0);
       gl_Position = projectionMatrix * mv;
       float tw = .82 + .36*sin(aPh*47.0 + uFlow*16.0);
-      gl_PointSize = min(uSize * aSz * tw * (30.0 / -mv.z), uSize > 3.0 ? 34.0 : 11.0);
+      gl_PointSize = min(uSize * aSz * tw * (30.0 / -mv.z), uSize > 3.0 ? 34.0 : 11.0) * mix(1.0, .5, clamp(wT,0.,1.));
       float dormShow  = mix(1.0, step(aPh, 0.62), clamp(w.x, 0.0, 1.0));
+      float textShow  = mix(1.0, textFlare, clamp(wT, 0.0, 1.0));
       float settleShow = mix(1.0, step(fract(aPh*7.31), 0.88)*.9, clamp(w.w, 0.0, 1.0));
-      vAlpha = mix(1.0, .78, clamp(w.x,0.,1.)) * dormShow * settleShow;
+      vAlpha = mix(1.0, .78, clamp(w.x,0.,1.)) * dormShow * settleShow * textShow;
       vCol = mix(aCol, vec3(.93,.92,.88), wT); vFogZ = -mv.z;
     }`,
   fragmentShader: `
