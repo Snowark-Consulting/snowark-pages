@@ -41,9 +41,9 @@
   .beat{position:fixed;z-index:5;opacity:0;pointer-events:none;max-width:min(560px,80vw)}
   .beat .eyebrow{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;
      color:var(--green-lift);opacity:.9;margin-bottom:14px}
-  .beat h2{font:800 clamp(1.35rem,3vw,2.3rem)/1.1 Lato;color:#fff;letter-spacing:-.005em;
+  .beat h2{font:800 clamp(1.35rem,3vw,2.3rem)/1.1 Lato;color:#fff;letter-spacing:-.005em;text-wrap:balance;
      text-shadow:0 1px 3px rgba(2,10,11,.9),0 2px 26px rgba(2,10,11,.75)}
-  .beat p{font:italic 400 clamp(.88rem,1.25vw,1rem)/1.55 Cambo;color:#cfe0da;margin-top:10px;max-width:30em;
+  .beat p{font:italic 400 clamp(.88rem,1.25vw,1rem)/1.55 Cambo;color:#cfe0da;margin-top:10px;max-width:30em;text-wrap:pretty;
      text-shadow:0 1px 3px rgba(2,10,11,.9),0 2px 18px rgba(2,10,11,.7)}
   .beat::before{content:"";position:absolute;inset:-34% -22%;z-index:-1;pointer-events:none;
      background:radial-gradient(closest-side,rgba(3,12,14,.52),rgba(3,12,14,0) 72%)}
@@ -73,15 +73,15 @@
         background:linear-gradient(180deg,#f6f3ec 0%,#f4f1ea 55%,#ece8df 100%)}
   #burn{position:fixed;z-index:8;left:50%;top:46%;transform:translate(-50%,-50%);text-align:center;opacity:0;pointer-events:none}
   #burn .lockup{width:clamp(220px,26vw,360px);display:block;margin:0 auto}
-  #burn .tag{font:italic 400 clamp(1rem,1.7vw,1.3rem)/1.5 Cambo;color:#3d4a49;margin-top:18px;max-width:26em}
+  #burn .tag{font:italic 400 clamp(1rem,1.7vw,1.3rem)/1.5 Cambo;color:#3d4a49;margin-top:18px;max-width:26em;text-wrap:balance}
 
   /* ---------- track + landing ---------- */
   #track{height:820vh}
   #landing{position:relative;z-index:9;background:var(--dawn);color:var(--ink);
            min-height:92vh;display:flex;align-items:center;justify-content:center;text-align:center}
   #landing .inner{max-width:640px;padding:96px 28px}
-  #landing h2{font:400 clamp(2rem,4.6vw,3.2rem)/1.15 Cambo}
-  #landing p{font:400 1.05rem/1.7 Lato;color:#3d4a49;margin-top:20px}
+  #landing h2{font:400 clamp(2rem,4.6vw,3.2rem)/1.15 Cambo;text-wrap:balance}
+  #landing p{font:400 1.05rem/1.7 Lato;color:#3d4a49;margin-top:20px;text-wrap:pretty}
   #landing .cta{display:inline-block;margin-top:36px;padding:16px 34px;border-radius:999px;
      background:var(--teal);color:#fff;font:700 .95rem Lato;letter-spacing:.06em;text-decoration:none;
      transition:transform .25s,box-shadow .25s;box-shadow:0 14px 40px rgba(14,41,41,.18)}
@@ -121,7 +121,7 @@
 </div>
 
 <div class="beat" id="beat0"><h2>Ready to get your time back?</h2></div>
-<div class="beat" id="beat1"><span class="eyebrow">////// 23:00 &middot; the study</span><h2>You built the business.</h2><p>Every decision still passes through your hands.</p></div>
+<div class="beat" id="beat1"><span class="eyebrow">////// 23:00 &middot; the study</span><h2>You built the business.</h2><p>You&rsquo;re in the weeds. Your team is buried in admin.</p></div>
 <div class="beat" id="beat2"><span class="eyebrow">////// 00:00 &middot; the placement</span><h2>So we placed something in it.</h2><p>An AI chief of staff, connected to everything, working while you sleep.</p></div>
 <div class="beat" id="beat3"><span class="eyebrow">////// 03:00 &middot; the night shift</span><h2>It builds while you rest.</h2><p>Orders, inboxes, follow-ups, reports. Handled in the hours you never see.</p></div>
 <div class="term" id="counter"><span class="dim">inbox&nbsp;</span><span id="ctr">47</span><span class="dim">&nbsp;unread</span></div>
