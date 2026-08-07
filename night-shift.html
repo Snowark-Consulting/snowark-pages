@@ -97,6 +97,8 @@
   @media (max-width:720px){
     #beat1,#beat3{left:6vw}#beat2,#beat4{right:6vw}
     #hours{display:none}
+    #counter{margin-top:11.5rem}
+    #doneline{bottom:calc(24vh - 4.2em)}
   }
   @media (prefers-reduced-motion:reduce){
     #cue .chev{animation:none}
@@ -184,6 +186,29 @@ function dotTexture(){
 const softDot = dotTexture();
 const rnd = () => Math.random()*2-1;
 
+/* the brand icon, sampled to pixels, becomes particle targets on the laptop screen */
+async function loadIconData(url){
+  const img = new Image();
+  await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = url; });
+  const c = document.createElement('canvas'); c.width = c.height = 96;
+  const x = c.getContext('2d');
+  x.drawImage(img, 0, 0, 96, 96);
+  return x.getImageData(0, 0, 96, 96);
+}
+let iconData = null;
+try { iconData = await loadIconData('assets/logos/Snowark-Icon.png'); } catch(e) {}
+function sampleIconPoint(){
+  if (!iconData) return null;
+  for (let tries = 0; tries < 24; tries++){
+    const u = Math.random(), v = Math.random();
+    const px = (iconData.width * u) | 0, py = (iconData.height * v) | 0;
+    if (iconData.data[(py * iconData.width + px) * 4 + 3] > 128){
+      return {u: u - .5, v: v - .5};
+    }
+  }
+  return null;
+}
+
 /* ---------- light sprites (glow is light, not object) ---------- */
 function glowSprite(color, sx, sy, x,y,z, o){
   const sp = new THREE.Sprite(new THREE.SpriteMaterial({map:softDot, color, transparent:true, opacity:o, depthWrite:false, blending:THREE.AdditiveBlending}));
@@ -255,7 +280,13 @@ function sceneOpen(){
   const r = Math.random();
   if (r < .30)  return sampleBoxSurf(0,-1.35,-12.2, 7.4,.26,4.9, .16);          // desk slab
   else if (r < .46) return sampleBoxSurf(.6,-.98,-12.6, 3.4,.14,2.3, .22);      // open laptop base
-  else if (r < .60){ const q = sampleBoxSurf(.6,.0,-13.55, 3.4,2.1,.12,.22); return q; } // raised screen
+  else if (r < .52){ const q = sampleBoxSurf(.6,.0,-13.55, 3.4,2.1,.12,.30); return q; } // raised screen
+  else if (r < .60){ // the icon, alive on the screen
+    const ip = sampleIconPoint();
+    if (!ip) return sampleBoxSurf(.6,.0,-13.55, 3.4,2.1,.12,.22);
+    return {p:[.6 + ip.u*1.55 + rnd()*.02, -ip.v*1.55 + rnd()*.02, -13.47 + rnd()*.05],
+            c: Math.random()<.8 ? C.seam : C.edge, s: 1.25};
+  }
   else if (r < .70) return sampleCyl(-4.15,.6,-12.3,.09,4.4,0);                 // lamp pole
   else if (r < .78) return sampleCyl(-3.45,2.72,-12.3,.07,1.6,Math.PI/2.25);    // arm
   else if (r < .93) return sampleCone(-2.85,2.44,-12.3,.85,1.0,-2.65);          // shade
@@ -356,15 +387,19 @@ const workUniforms = {
   uMap:  {value: softDot},
   uFog:  {value: new THREE.Color(0x061a1c)},
   uFogRange: {value: new THREE.Vector2(6,46)},
-  uM:    {value: new THREE.Vector3(0,0,999)},   // mouse point in world
-  uMV:   {value: new THREE.Vector2(0,0)},       // mouse velocity
+  uT0: {value: new THREE.Vector4(0,0,999,0)},   // cursor wake, newest to oldest
+  uT1: {value: new THREE.Vector4(0,0,999,0)},
+  uT2: {value: new THREE.Vector4(0,0,999,0)},
+  uT3: {value: new THREE.Vector4(0,0,999,0)},
+  uT4: {value: new THREE.Vector4(0,0,999,0)},
 };
 const workMat = new THREE.ShaderMaterial({
   uniforms: workUniforms,
   transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
   vertexShader: `
     attribute vec3 aP0,aP1,aT1,aP2,aP3,aCol; attribute float aPh,aSz;
-    uniform vec4 uW; uniform float uP,uFlow,uSize; uniform vec3 uM; uniform vec2 uMV;
+    uniform vec4 uW; uniform float uP,uFlow,uSize;
+    uniform vec4 uT0,uT1,uT2,uT3,uT4;
     varying vec3 vCol; varying float vFogZ,vAlpha;
     float rng(float x, float a, float b){ return clamp((x-a)/(b-a), 0.0, 1.0); }
     void main(){
@@ -386,11 +421,14 @@ const workMat = new THREE.ShaderMaterial({
       p.y += cos(uFlow*11.0 + aPh*31.0)*.05;
 
       /* the path of particles: the cursor stirs the field */
-      vec3 dm = p - uM;
-      float md = max(length(dm), 0.5);
-      float ms = smoothstep(6.0, 0.0, md);
-      p += vec3(-dm.y, dm.x, 0.0) * (ms * 0.55 / md)
-         + dm * (ms * 0.85 / md);
+      /* the wake: each particle has its own radius and curl direction,
+         and answers to the cursor's recent path, not just its position */
+      float vr  = .65 + .85*fract(aPh*13.71);
+      float sgn = fract(aPh*7.13) > .5 ? 1.0 : -1.0;
+      vec3 acc = vec3(0.0);
+      #define WAKE(T) { vec3 dw = p - T.xyz; float dwd = max(length(dw), .45);         float wf = smoothstep(4.4*vr, 0.0, dwd) * T.w;         acc += vec3(-dw.y, dw.x, 0.0) * (sgn * wf * .62 / dwd) + dw * (wf * .78 / dwd); }
+      WAKE(uT0) WAKE(uT1) WAKE(uT2) WAKE(uT3) WAKE(uT4)
+      p += acc;
 
       vec4 mv = modelViewMatrix * vec4(p,1.0);
       gl_Position = projectionMatrix * mv;
@@ -513,6 +551,8 @@ addEventListener('pointermove', (e)=>{
 });
 const ray = new THREE.Raycaster();
 const focusPlane = new THREE.Plane(new THREE.Vector3(0,0,1), 0); // normal fixed, constant updated per frame
+const wakeHistory = [];   // {x,y,z,t}
+let lastWakeSample = 0;
 
 if (reduced){
   document.getElementById('track').style.height='0';
@@ -558,9 +598,21 @@ function frame(now){
   ray.setFromCamera(mouseNDC, cam);
   focusPlane.constant = -(z-11);
   if (!ray.ray.intersectPlane(focusPlane, mouseWorld)) mouseWorld.set(0,0,999);
-  workUniforms.uM.value.lerp(mouseWorld, .055);
-  workUniforms.uMV.value.lerp(mouseVel, .12);
-  mouseVel.multiplyScalar(.94);
+  /* newest wake point chases the cursor with a lag; history ages behind it */
+  const t0 = workUniforms.uT0.value;
+  t0.x += (mouseWorld.x - t0.x)*.14; t0.y += (mouseWorld.y - t0.y)*.14; t0.z += (mouseWorld.z - t0.z)*.14;
+  t0.w = mouseWorld.z > 500 ? 0 : 1;
+  if (now - lastWakeSample > 85 && t0.w > 0){
+    wakeHistory.unshift({x:t0.x, y:t0.y, z:t0.z, t:now});
+    if (wakeHistory.length > 4) wakeHistory.pop();
+    lastWakeSample = now;
+  }
+  [workUniforms.uT1, workUniforms.uT2, workUniforms.uT3, workUniforms.uT4].forEach((u, i)=>{
+    const h = wakeHistory[i];
+    if (!h){ u.value.w = 0; return; }
+    const age = (now - h.t)/1000;
+    u.value.set(h.x, h.y, h.z, Math.max(0, Math.exp(-age*1.9) * .7));
+  });
 
   /* light sprites */
   bulbGlow.material.opacity = (.6 - range(P,.14,.30)*.6) * (.8+.2*Math.sin(now*.003));
