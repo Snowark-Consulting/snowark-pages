@@ -38,30 +38,32 @@
   #hours .h.on{opacity:1;color:var(--green-lift)}
 
   /* ---------- beats ---------- */
-  .beat{position:fixed;z-index:5;opacity:0;pointer-events:none;max-width:min(760px,84vw)}
-  .beat{padding:30px 36px;border-radius:20px;
+  .beat{position:fixed;z-index:5;opacity:0;pointer-events:none;max-width:min(560px,80vw)}
+  .beat{padding:18px 24px;border-radius:14px;
      background:linear-gradient(180deg,rgba(5,18,20,.78),rgba(5,18,20,.58));
      border:1px solid rgba(127,212,196,.16);
      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
      box-shadow:0 24px 70px rgba(2,10,11,.45)}
-  .beat h2{font:900 clamp(2rem,5.2vw,4rem)/1.06 Lato;color:#ffffff;letter-spacing:-.01em}
-  .beat p{font:italic 400 clamp(1rem,1.8vw,1.3rem)/1.55 Cambo;color:#dfe8e4;margin-top:16px;max-width:34em}
-  #beat5{padding:34px 44px}
+  .beat h2{font:900 clamp(1.45rem,3.4vw,2.6rem)/1.08 Lato;color:#ffffff;letter-spacing:-.01em}
+  .beat p{font:italic 400 clamp(.9rem,1.3vw,1.05rem)/1.5 Cambo;color:#dfe8e4;margin-top:10px;max-width:34em}
+  #beat5{padding:22px 34px}
+  #beat0{left:50%;top:34%;transform:translate(-50%,-50%);text-align:center}
+  #beat0 h2{font-size:clamp(1.7rem,4vw,3rem)}
   #beat1{left:8vw;bottom:18vh}
   #beat2{right:8vw;top:22vh;text-align:right}
   #beat2 p{margin-left:auto}
   #beat3{left:8vw;top:20vh}
   #beat4{right:8vw;bottom:24vh;text-align:right}
   #beat4 p{margin-left:auto}
-  #beat5{left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;max-width:90vw}
-  #beat5 h2{font-size:clamp(2.6rem,7vw,5.4rem)}
+  #beat5{left:50%;top:31%;transform:translate(-50%,-50%);text-align:center;max-width:90vw}
+  #beat5 h2{font-size:clamp(1.9rem,4.6vw,3.4rem)}
 
   .term{position:fixed;z-index:5;font-family:var(--mono);color:#7fe9c0;opacity:0;pointer-events:none;
      padding:10px 16px;border-radius:10px;background:rgba(5,18,20,.72);
      border:1px solid rgba(127,212,196,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-  #counter{left:8vw;top:calc(20vh + 1em);margin-top:clamp(7rem,16vw,11rem);font-size:clamp(.85rem,1.4vw,1.05rem);letter-spacing:.1em}
+  #counter{left:8vw;top:calc(20vh + 1em);margin-top:clamp(5.4rem,11vw,7.6rem);font-size:clamp(.78rem,1.1vw,.92rem);letter-spacing:.1em}
   #counter .dim{color:var(--teal-soft);opacity:.75}
-  #doneline{right:8vw;bottom:calc(24vh - 3.4em);font-size:clamp(.9rem,1.5vw,1.1rem);letter-spacing:.12em;text-align:right}
+  #doneline{right:8vw;bottom:calc(24vh - 3.1em);font-size:clamp(.8rem,1.2vw,.95rem);letter-spacing:.12em;text-align:right}
   #doneline .cur{display:inline-block;width:.62em;height:1.15em;vertical-align:-.2em;background:var(--green-lift);margin-left:.35em;animation:blink 1.05s steps(1) infinite}
   #doneline.still .cur{animation:none;opacity:.9}
   @keyframes blink{50%{opacity:0}}
@@ -71,7 +73,7 @@
         background:linear-gradient(180deg,#f6f3ec 0%,#f4f1ea 55%,#ece8df 100%)}
   #burn{position:fixed;z-index:8;left:50%;top:46%;transform:translate(-50%,-50%);text-align:center;opacity:0;pointer-events:none}
   #burn .lockup{width:clamp(220px,26vw,360px);display:block;margin:0 auto}
-  #burn .tag{font:700 10.5px/1 Lato;letter-spacing:.3em;color:var(--green);margin-top:16px;text-transform:uppercase}
+  #burn .tag{font:italic 400 clamp(1rem,1.7vw,1.3rem)/1.5 Cambo;color:#3d4a49;margin-top:18px;max-width:26em}
 
   /* ---------- track + landing ---------- */
   #track{height:820vh}
@@ -118,6 +120,7 @@
   <div class="h" data-h="4">06:30</div>
 </div>
 
+<div class="beat" id="beat0"><h2>Ready to get your nights back?</h2></div>
 <div class="beat" id="beat1"><h2>You built the business.</h2><p>Every decision still passes through your hands.</p></div>
 <div class="beat" id="beat2"><h2>So we placed something in it.</h2><p>An AI chief of staff, connected to everything, working while you sleep.</p></div>
 <div class="beat" id="beat3"><h2>It builds while you rest.</h2><p>Orders, inboxes, follow-ups, reports. Handled in the hours you never see.</p></div>
@@ -129,7 +132,7 @@
 <div id="dawn"></div>
 <div id="burn">
   <img class="lockup" src="assets/logos/SnowArk-Secondary-Black.png" alt="SnowArk">
-  <div class="tag">The business runs. You live.</div>
+  <div class="tag">I build an AI chief of staff, so you can get your nights back.</div>
 </div>
 
 <div id="track"></div>
@@ -189,6 +192,8 @@ function glowSprite(color, sx, sy, x,y,z, o){
 const bulbGlow = glowSprite(0xffd9a0, 7.5,7.5, -4.1,2.9,-12.3, .85);
 const poolGlow = glowSprite(0xffc985, 12,5.6, -3.4,-1.2,-12.0, .30);
 const seamGlow2= glowSprite(0x2fae7e, 3.0,1.2, 0,-.62,-70.5, 0);
+const floorPool= glowSprite(0x123a36, 13,5.5, 0,-1.35,-71.4, 0);
+const glyphGlow= glowSprite(0x4cc296, 1.7,1.7, 0,-.42,-71.6, 0);
 
 /* ============================================================
    particle shape sampling — the world is one point cloud
@@ -267,7 +272,7 @@ function sceneClosed(){
   else if (r < .82){ // lit seam along the FRONT edge, facing the camera
     return {p:[rnd()*1.6, -.575+rnd()*.025, -70.44+rnd()*.05], c:C.seam, s:1.5};
   }
-  else if (r < .93){ // the S-globe glowing on the lid
+  else if (r < .955){ // the S-globe glowing on the lid
     const th = Math.random()*Math.PI*2;
     const ring = Math.random() < .72;
     const rad = ring ? .34 : .34*Math.random();
@@ -473,6 +478,7 @@ const win = (p,a,b,fade=.035)=>{
 };
 const $ = id => document.getElementById(id);
 const beats = [
+  {el:$('beat0'), a:0,    b:.028},
   {el:$('beat1'), a:.045, b:.135},
   {el:$('beat2'), a:.185, b:.295},
   {el:$('beat3'), a:.365, b:.520},
@@ -540,8 +546,9 @@ function frame(now){
   const z = camZ(P);
   /* through the settle the camera rises and looks down at the machine */
   const aim = range(P,.60,.70)*(1-range(P,.84,.93));
-  const lift = range(P,.10,.20)*(1-range(P,.26,.38))*1.6 + aim*2.3;
-  cam.position.set(Math.sin(P*9.4)*.55, Math.sin(P*6.1)*.35+.1+lift, z);
+  const lift = range(P,.10,.20)*(1-range(P,.26,.38))*1.6 + aim*2.7;
+  const orbit = aim * Math.sin(range(P,.60,.86)*2.4) * 2.6;
+  cam.position.set(Math.sin(P*9.4)*.55 + orbit, Math.sin(P*6.1)*.35+.1+lift, z + aim*11.5);
   const tx = lerp(cam.position.x*.6, 0,    aim);
   const ty = lerp(cam.position.y*.6, -.55, aim);
   const tz = lerp(z-8, -71.6, aim);
@@ -559,6 +566,8 @@ function frame(now){
   bulbGlow.material.opacity = (.6 - range(P,.14,.30)*.6) * (.8+.2*Math.sin(now*.003));
   poolGlow.material.opacity = .3 - range(P,.14,.30)*.3;
   seamGlow2.material.opacity = (range(P,.62,.70)*.12 - range(P,.80,.90)*.12) * (.8+.2*Math.sin(now*.004));
+  floorPool.material.opacity = (range(P,.62,.72)*.5  - range(P,.82,.92)*.5);
+  glyphGlow.material.opacity = (range(P,.64,.72)*.55 - range(P,.80,.90)*.55) * (.72+.28*Math.sin(now*.0022));
 
   const build = range(P,.40,.56)*(1-range(P,.62,.72));
   aParcel.material.opacity=build*.85;
@@ -573,8 +582,8 @@ function frame(now){
   beats.forEach(({el,a,b})=>{
     const o = win(P,a,b);
     el.style.opacity=o;
-    el.style.transform = (el.id==='beat5')
-      ? `translate(-50%, calc(-50% + ${(1-o)*18}px))`
+    el.style.transform = (el.id==='beat5' || el.id==='beat0')
+      ? `translate(-50%, calc(-50% + ${(1-o)*14}px))`
       : `translateY(${(1-o)*22}px)`;
   });
   counterEl.style.opacity = win(P,.375,.545);
