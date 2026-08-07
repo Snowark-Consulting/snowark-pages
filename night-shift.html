@@ -401,21 +401,6 @@ const aRing   = wire(new THREE.TorusGeometry(7,.05,8,64), 0, 1.5, -49, 1, 0x1d5f
 aRing.rotation.x = Math.PI/2.15;
 scene.add(artefacts);
 
-/* ---------- snow ---------- */
-const SN = mobile ? 1400 : 3200;
-const sPos = new Float32Array(SN*3), sSp = new Float32Array(SN);
-for (let i=0;i<SN;i++){
-  sPos[i*3]=rnd()*22; sPos[i*3+1]=rnd()*14; sPos[i*3+2]=rnd()*30;
-  sSp[i]=.25+Math.random()*.8;
-}
-const snowGeo = new THREE.BufferGeometry();
-snowGeo.setAttribute('position', new THREE.BufferAttribute(sPos,3));
-const snowMat = new THREE.PointsMaterial({size:.095, map:softDot, transparent:true, opacity:.75,
-      color:0xcfe4e2, depthWrite:false, blending:THREE.AdditiveBlending, sizeAttenuation:true});
-const snow = new THREE.Points(snowGeo, snowMat);
-snow.frustumCulled = false;
-scene.add(snow);
-
 /* ---------- aurora ---------- */
 function auroraTexture(){
   const c = document.createElement('canvas'); c.width=512; c.height=256;
@@ -556,13 +541,6 @@ function frame(now){
   aRing.material.opacity=build*.5;
   artefacts.rotation.y=flow*.9;
 
-  const sp = snowGeo.attributes.position.array;
-  for (let i=0;i<SN;i++){
-    sp[i*3+1] -= sSp[i]*dt*.9;
-    if (sp[i*3+1] < -7) sp[i*3+1] = 7;
-  }
-  snowGeo.attributes.position.needsUpdate = true;
-  snow.position.z = z-12;
   aur.position.z = z-56;
   aur.material.opacity = Math.max(0,.16+rupture*.34-range(P,.8,.95)*.5);
 
