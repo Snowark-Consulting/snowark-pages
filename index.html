@@ -1591,14 +1591,6 @@
   <a href="#contact"><span class="label">Contact</span></a>
 </nav>
 
-<section class="statement" id="statement">
-  <div class="container">
-    <p class="eyebrow">The truth</p>
-    <p class="statement-text" id="statement-text">You built something real. But somewhere along the way, the admin took over. The tools that were meant to help now demand your attention. The data that should guide your decisions is scattered across platforms. Every hour spent in the weeds is an hour not spent on growth.</p>
-    <p class="statement-close" id="statement-close">Your business is running you.</p>
-  </div>
-</section>
-
 <section class="stack-marquee" aria-label="Platforms your agent connects to">
   <p class="eyebrow">Connects to the tools you already run</p>
   <div class="m-row left">
@@ -1612,6 +1604,16 @@
     </div>
   </div>
 </section>
+
+<section class="statement" id="statement">
+  <div class="container">
+    <p class="eyebrow">The truth</p>
+    <p class="statement-text" id="statement-text">You built something real. But somewhere along the way, the admin took over. The tools that were meant to help now demand your attention. The data that should guide your decisions is scattered across platforms. Every hour spent in the weeds is an hour not spent on growth.</p>
+    <p class="statement-close" id="statement-close">Your business is running you.</p>
+  </div>
+</section>
+
+
 
 <!-- ═══════════════ 2. STATEMENT (scroll reveal) ═══════════════ -->
 
@@ -2372,9 +2374,11 @@
       var tl = gsap.timeline({
         scrollTrigger: {
           trigger: '.statement',
-          start: 'top 80%',
-          end: 'bottom 50%',
-          scrub: 0.7
+          start: 'top top',
+          end: '+=140%',
+          pin: true,
+          scrub: 0.7,
+          anticipatePin: 1
         }
       });
       tl.from('#statement-text .w', {
@@ -3756,8 +3760,8 @@ function frame(now){
   hoursEls.forEach((h,i)=> h.classList.toggle('on', i===ch));
   cue.style.opacity = P<.02?1:0;
 
-  dawn.style.opacity = range(P,.80,.93);
-  document.body.classList.toggle('arrived', P > .88);
+  dawn.style.opacity = range(P,.85,.965);
+  document.body.classList.toggle('arrived', P > .91);
 
   runTypers(now);
   renderer.render(scene,cam);
