@@ -1440,7 +1440,7 @@
   .hud{position:fixed;z-index:6;pointer-events:none}
   .hud a{pointer-events:auto}
   #brand{top:28px;left:32px}
-  #brand .word{font:700 15px/1 Lato;letter-spacing:.34em;color:#e9e7e3}
+  #brand .mark{height:22px;display:block}
   #brand .sub{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--teal-soft);margin-top:8px;opacity:.85}
   #clock{top:28px;right:32px;text-align:right;font-family:var(--mono);color:var(--teal-soft)}
   #clock .t{font-size:13px;letter-spacing:.18em;color:#e9e7e3}
@@ -1532,8 +1532,8 @@
 <div id="vignette"></div><div id="grain"></div>
 
 <div class="hud" id="brand">
-  <div class="word">SNOWARK</div>
-  <div class="sub">an AI chief of staff for founders</div>
+  <img class="mark" src="assets/logos/SnowArk-White.png" alt="SnowArk">
+  <div class="sub">Your AI Chief of Staff</div>
 </div>
 <div class="hud" id="clock"><div class="t">23:00</div><div class="d">tonight</div></div>
 <div class="hud" id="cue"><div class="chev"></div></div>
@@ -3128,8 +3128,8 @@ function glowSprite(color, sx, sy, x,y,z, o){
   const sp = new THREE.Sprite(new THREE.SpriteMaterial({map:softDot, color, transparent:true, opacity:o, depthWrite:false, blending:THREE.AdditiveBlending}));
   sp.scale.set(sx,sy,1); sp.position.set(x,y,z); scene.add(sp); return sp;
 }
-const bulbGlow = glowSprite(0xffd9a0, 7.5,7.5, -4.1,2.9,-12.3, .85);
-const poolGlow = glowSprite(0xffc985, 12,5.6, -3.4,-1.2,-12.0, .30);
+const bulbGlow = glowSprite(0xffd9a0, 9.9,9.9, -4.95,4.38,-12.33, .85);
+const poolGlow = glowSprite(0xffc985, 15.8,7.4, -4.03,-1.03,-11.94, .30);
 const seamGlow2= glowSprite(0x2fae7e, 3.0,1.2, 0,-.62,-70.5, 0);
 const floorPool= glowSprite(0x123a36, 13,5.5, 0,-1.35,-71.4, 0);
 const glyphGlow= glowSprite(0x4cc296, 1.7,1.7, 0,-.42,-71.6, 0);
@@ -3191,22 +3191,27 @@ function sampleCone(cx,cy,cz, r, h, tiltZ){
 
 /* 23:00 scene — desk left of centre, lamp leaning over it */
 function sceneOpen(){
+  /* one framing transform: larger, higher, optically centred */
+  const post = q => { q.p[0] = (q.p[0] + .35) * 1.32;
+                      q.p[1] = q.p[1] * 1.32 + .55;
+                      q.p[2] = -12.2 + (q.p[2] + 12.2) * 1.32;
+                      return q; };
   const r = Math.random();
-  if (r < .30)  return sampleBoxSurf(0,-1.35,-12.2, 7.4,.26,4.9, .16);          // desk slab
-  else if (r < .46) return sampleBoxSurf(.6,-.98,-12.6, 3.4,.14,2.3, .22);      // open laptop base
-  else if (r < .52){ const q = sampleBoxSurf(.6,.0,-13.55, 3.4,2.1,.12,.30); return q; } // raised screen
+  if (r < .30)  return post(sampleBoxSurf(0,-1.35,-12.2, 7.4,.26,4.9, .16));          // desk slab
+  else if (r < .46) return post(sampleBoxSurf(.6,-.98,-12.6, 3.4,.14,2.3, .22));      // open laptop base
+  else if (r < .52){ return post(sampleBoxSurf(.6,.0,-13.55, 3.4,2.1,.12,.30)); } // raised screen
   else if (r < .60){ // the icon, alive on the screen
     const ip = sampleIconPoint();
     if (!ip) return sampleBoxSurf(.6,.0,-13.55, 3.4,2.1,.12,.22);
-    return {p:[.6 + ip.u*1.55 + rnd()*.02, -ip.v*1.55 + rnd()*.02, -13.47 + rnd()*.05],
-            c: Math.random()<.8 ? C.seam : C.edge, s: 1.25};
+    return post({p:[.6 + ip.u*1.55 + rnd()*.02, -ip.v*1.55 + rnd()*.02, -13.47 + rnd()*.05],
+            c: Math.random()<.8 ? C.seam : C.edge, s: 1.25});
   }
-  else if (r < .70) return sampleCyl(-4.15,.6,-12.3,.09,4.4,0);                 // lamp pole
-  else if (r < .78) return sampleCyl(-3.45,2.72,-12.3,.07,1.6,Math.PI/2.25);    // arm
-  else if (r < .93) return sampleCone(-2.85,2.44,-12.3,.85,1.0,-2.65);          // shade
+  else if (r < .70) return post(sampleCyl(-4.15,.6,-12.3,.09,4.4,0));                 // lamp pole
+  else if (r < .78) return post(sampleCyl(-3.45,2.72,-12.3,.07,1.6,Math.PI/2.25));    // arm
+  else if (r < .93) return post(sampleCone(-2.85,2.44,-12.3,.85,1.0,-2.65));          // shade
   else { // bulb fireflies — spherical cloud
     const v = new THREE.Vector3(rnd(),rnd(),rnd()).normalize().multiplyScalar(Math.cbrt(Math.random())*.55);
-    return {p:[-2.8+v.x, 2.25+v.y, -12.3+v.z], c:C.bulb, s:1.5};
+    return post({p:[-2.8+v.x, 2.25+v.y, -12.3+v.z], c:C.bulb, s:1.5});
   }
 }
 /* 05:30 scene — THE SAME laptop from 23:00, now closed */
@@ -3465,8 +3470,7 @@ addEventListener('pointermove', (e)=>{
 });
 const ray = new THREE.Raycaster();
 const focusPlane = new THREE.Plane(new THREE.Vector3(0,0,1), 0); // normal fixed, constant updated per frame
-const wakeHistory = [];   // {x,y,z,t}
-let lastWakeSample = 0;
+
 
 if (reduced){
   document.getElementById('track').style.height='0';
@@ -3513,21 +3517,19 @@ function frame(now){
   ray.setFromCamera(mouseNDC, cam);
   focusPlane.constant = -(z-11);
   if (!ray.ray.intersectPlane(focusPlane, mouseWorld)) mouseWorld.set(0,0,999);
-  /* newest wake point chases the cursor with a lag; history ages behind it */
+  /* smooth wake: a chain of followers, each chasing the one ahead —
+     continuous lag, no snapshots, no snapping */
+  const active = mouseWorld.z < 500 ? 1 : 0;
   const t0 = workUniforms.uT0.value;
   t0.x += (mouseWorld.x - t0.x)*.14; t0.y += (mouseWorld.y - t0.y)*.14; t0.z += (mouseWorld.z - t0.z)*.14;
-  t0.w = mouseWorld.z > 500 ? 0 : 1;
-  if (now - lastWakeSample > 85 && t0.w > 0){
-    wakeHistory.unshift({x:t0.x, y:t0.y, z:t0.z, t:now});
-    if (wakeHistory.length > 4) wakeHistory.pop();
-    lastWakeSample = now;
+  t0.w += (active - t0.w)*.1;
+  const chain = [workUniforms.uT0, workUniforms.uT1, workUniforms.uT2, workUniforms.uT3, workUniforms.uT4];
+  const lag = [.10,.082,.066,.052], wgt = [.8,.55,.38,.24];
+  for (let ci = 1; ci < 5; ci++){
+    const v = chain[ci].value, pv = chain[ci-1].value;
+    v.x += (pv.x - v.x)*lag[ci-1]; v.y += (pv.y - v.y)*lag[ci-1]; v.z += (pv.z - v.z)*lag[ci-1];
+    v.w += (active*wgt[ci-1] - v.w)*.08;
   }
-  [workUniforms.uT1, workUniforms.uT2, workUniforms.uT3, workUniforms.uT4].forEach((u, i)=>{
-    const h = wakeHistory[i];
-    if (!h){ u.value.w = 0; return; }
-    const age = (now - h.t)/1000;
-    u.value.set(h.x, h.y, h.z, Math.max(0, Math.exp(-age*1.9) * .7));
-  });
 
   /* light sprites */
   bulbGlow.material.opacity = (.6 - range(P,.14,.30)*.6) * (.8+.2*Math.sin(now*.003));
