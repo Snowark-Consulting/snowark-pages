@@ -26,12 +26,12 @@
   .hud a{pointer-events:auto}
   #brand{top:28px;left:32px}
   #brand .mark{height:22px;display:block}
-  #brand .sub{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--teal-soft);margin-top:8px;opacity:.85}
+  #brand .sub{font:400 11.5px/1 Lato;letter-spacing:.14em;color:var(--teal-soft);margin-top:8px;opacity:.9}
   #clock{top:28px;right:32px;text-align:right;font-family:var(--mono);color:var(--teal-soft)}
   #clock .t{font-size:13px;letter-spacing:.18em;color:#e9e7e3}
   #clock .d{font-size:10px;letter-spacing:.12em;opacity:.6;margin-top:6px}
   #cue{bottom:30px;left:50%;transform:translateX(-50%);text-align:center;transition:opacity .6s}
-  #cue .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.34em;text-transform:uppercase;
+  #cue .lbl{font:700 10px/1 Lato;letter-spacing:.34em;text-transform:uppercase;
        color:var(--teal-soft);opacity:.45;margin-bottom:10px;text-indent:.34em}
   #cue .chev{width:14px;height:14px;margin:0 auto;border-right:1.5px solid var(--green-lift);border-bottom:1.5px solid var(--green-lift);transform:rotate(45deg);animation:chev 1.8s ease-in-out infinite}
   @keyframes chev{0%,100%{opacity:.25;translate:0 -4px}50%{opacity:1;translate:0 3px}}
@@ -43,15 +43,15 @@
   .beat{position:fixed;z-index:5;opacity:0;pointer-events:none;max-width:min(560px,80vw)}
   .beat .eyebrow{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;
      color:var(--green-lift);opacity:.9;margin-bottom:14px}
-  .beat h2{font:800 clamp(1.35rem,3vw,2.3rem)/1.1 Lato;color:#fff;letter-spacing:-.005em;text-wrap:balance;
+  .beat h2{font:400 clamp(1.55rem,3.4vw,2.7rem)/1.14 Cambo;color:#fff;text-wrap:balance;
      text-shadow:0 1px 3px rgba(2,10,11,.9),0 2px 26px rgba(2,10,11,.75)}
-  .beat p{font:italic 400 clamp(.88rem,1.25vw,1rem)/1.55 Cambo;color:#cfe0da;margin-top:10px;max-width:30em;text-wrap:pretty;
+  .beat p{font:italic 400 clamp(.88rem,1.25vw,1rem)/1.6 Lato;color:#cfe0da;margin-top:10px;max-width:30em;text-wrap:pretty;
      text-shadow:0 1px 3px rgba(2,10,11,.9),0 2px 18px rgba(2,10,11,.7)}
   .beat::before{content:"";position:absolute;inset:-34% -22%;z-index:-1;pointer-events:none;
      background:radial-gradient(closest-side,rgba(3,12,14,.52),rgba(3,12,14,0) 72%)}
   #beat0{left:50%;top:74%;transform:translate(-50%,-50%);text-align:center}
   #beat0 .eyebrow,#beat5 .eyebrow{margin-bottom:10px}
-  #beat0 h2{font-size:clamp(1.7rem,4vw,3rem)}
+  #beat0 h2{font-size:clamp(1.85rem,4.3vw,3.3rem)}
   #beat1{left:8vw;bottom:18vh}
   #beat2{right:8vw;top:22vh;text-align:right}
   #beat2 p{margin-left:auto}
@@ -59,7 +59,7 @@
   #beat4{right:8vw;bottom:24vh;text-align:right}
   #beat4 p{margin-left:auto}
   #beat5{left:50%;top:31%;transform:translate(-50%,-50%);text-align:center;max-width:90vw}
-  #beat5 h2{font-size:clamp(1.9rem,4.6vw,3.4rem)}
+  #beat5 h2{font-size:clamp(2.05rem,5vw,3.7rem)}
 
   .term{position:fixed;z-index:5;font-family:var(--mono);color:#7fe9c0;opacity:0;pointer-events:none;
      text-shadow:0 1px 3px rgba(2,10,11,.95),0 0 22px rgba(2,10,11,.8)}
@@ -75,7 +75,7 @@
         background:linear-gradient(180deg,#f6f3ec 0%,#f4f1ea 55%,#ece8df 100%)}
   #burn{position:fixed;z-index:8;left:50%;top:46%;transform:translate(-50%,-50%);text-align:center;opacity:0;pointer-events:none}
   #burn .lockup{width:clamp(220px,26vw,360px);display:block;margin:0 auto}
-  #burn .tag{font:italic 400 clamp(1rem,1.7vw,1.3rem)/1.5 Cambo;color:#3d4a49;margin-top:18px;max-width:26em;text-wrap:balance}
+  #burn .tag{font:italic 400 clamp(.98rem,1.6vw,1.25rem)/1.55 Lato;color:#3d4a49;margin-top:18px;max-width:26em;text-wrap:balance}
 
   /* ---------- track + landing ---------- */
   #track{height:820vh;height:820svh}
@@ -354,7 +354,8 @@ for (let i=0;i<N;i++){
   const cu = curves[i % curves.length];
   const t  = Math.random();
   cu.getPointAt(t, tmpV);
-  pos1[i3]=tmpV.x+rnd()*.5; pos1[i3+1]=tmpV.y+rnd()*.5; pos1[i3+2]=tmpV.z+rnd()*.5;
+  const sqz = mobile ? .58 : 1;   // portrait: tighter braids, not a pixel storm
+  pos1[i3]=tmpV.x*sqz+rnd()*.5; pos1[i3+1]=tmpV.y*(mobile?.68:1)+rnd()*.5; pos1[i3+2]=tmpV.z+rnd()*.5;
   cu.getTangentAt(t, tmpV);
   tan1[i3]=tmpV.x; tan1[i3+1]=tmpV.y; tan1[i3+2]=tmpV.z;
   pha[i]=Math.random();
@@ -449,7 +450,7 @@ const workMat = new THREE.ShaderMaterial({
       vec4 mv = modelViewMatrix * vec4(p,1.0);
       gl_Position = projectionMatrix * mv;
       float tw = .82 + .36*sin(aPh*47.0 + uFlow*16.0);
-      gl_PointSize = min(uSize * aSz * tw * (30.0 / -mv.z), 34.0);
+      gl_PointSize = min(uSize * aSz * tw * (30.0 / -mv.z), uSize > 4.5 ? 34.0 : 20.0);
       float dormShow  = mix(1.0, step(aPh, 0.62), clamp(w.x, 0.0, 1.0));
       float settleShow = mix(1.0, step(fract(aPh*7.31), 0.22)*.72, clamp(w.w, 0.0, 1.0));
       vAlpha = mix(1.0, .78, clamp(w.x,0.,1.)) * dormShow * settleShow;
@@ -604,7 +605,8 @@ function frame(now){
   const aim = range(P,.60,.70)*(1-range(P,.84,.93));
   const lift = range(P,.10,.20)*(1-range(P,.26,.38))*1.6 + aim*2.7;
   const orbit = aim * Math.sin(range(P,.60,.86)*2.4) * 2.6;
-  cam.position.set(Math.sin(P*9.4)*.55 + orbit, Math.sin(P*6.1)*.35+.1+lift, z + aim*11.5);
+  const standoff = (mobile ? rupture * (1 - range(P,.56,.68)) * 6.5 : 0) + aim*11.5;
+  cam.position.set(Math.sin(P*9.4)*.55 + orbit, Math.sin(P*6.1)*.35+.1+lift + (mobile?rupture*.9:0), z + standoff);
   const tx = lerp(cam.position.x*.6, 0,    aim);
   const ty = lerp(cam.position.y*.6, -.55, aim);
   const tz = lerp(z-8, -71.6, aim);
