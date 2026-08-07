@@ -3358,6 +3358,8 @@ const workUniforms = {
   uT2: {value: new THREE.Vector4(0,0,999,0)},
   uT3: {value: new THREE.Vector4(0,0,999,0)},
   uT4: {value: new THREE.Vector4(0,0,999,0)},
+  uTextRect: {value: new THREE.Vector4(0,0,0,0)},   // active callout, NDC
+  uTextAmt:  {value: 0},
 };
 const workMat = new THREE.ShaderMaterial({
   uniforms: workUniforms,
@@ -3366,6 +3368,7 @@ const workMat = new THREE.ShaderMaterial({
     attribute vec3 aP0,aP1,aT1,aP2,aP3,aPT,aCol; attribute float aPh,aSz; attribute vec2 aHand;
     uniform vec4 uW; uniform float uP,uFlow,uSize,uTime,uIntro;
     uniform vec4 uT0,uT1,uT2,uT3,uT4;
+    uniform vec4 uTextRect; uniform float uTextAmt;
     varying vec3 vCol; varying float vFogZ,vAlpha;
     float rng(float x, float a, float b){ return clamp((x-a)/(b-a), 0.0, 1.0); }
     void main(){
@@ -3422,6 +3425,21 @@ const workMat = new THREE.ShaderMaterial({
       p = mix(scatter, p, uIntro);
       vec4 mv = modelViewMatrix * vec4(p,1.0);
       gl_Position = projectionMatrix * mv;
+      /* the swarm makes way for the words */
+      if (uTextAmt > .01 && gl_Position.w > 0.0){
+        vec2 ndc = gl_Position.xy / gl_Position.w;
+        vec2 c    = (uTextRect.xy + uTextRect.zw) * .5;
+        vec2 half_ = (uTextRect.zw - uTextRect.xy) * .5 + vec2(.10,.12);
+        vec2 dd = abs(ndc - c) / max(half_, vec2(1e-3));
+        float inside = max(dd.x, dd.y);
+        if (inside < 1.0){
+          vec2 dir = normalize(ndc - c + vec2(0.0, 1e-4));
+          float vary = .6 + .8 * fract(aPh * 9.31);
+          ndc += dir * (1.0 - inside) * .2 * uTextAmt * vary;
+          gl_Position.xy = ndc * gl_Position.w;
+          vAlpha *= mix(1.0, clamp(inside*inside, 0.0, 1.0), uTextAmt * .92);
+        }
+      }
       float tw = .82 + .36*sin(aPh*47.0 + uFlow*16.0);
       gl_PointSize = min(uSize * aSz * tw * (30.0 / -mv.z), uSize > 3.0 ? 34.0 : 11.0) * mix(1.0, .5, clamp(wT,0.,1.));
       float dormShow  = mix(1.0, step(aPh, 0.62), clamp(w.x, 0.0, 1.0));
@@ -3700,13 +3718,21 @@ function frame(now){
   aur.position.z = z-56;
   aur.material.opacity = Math.max(0,.16+rupture*.34-range(P,.8,.95)*.5);
 
+  let topBeat = null, topO = 0;
   beats.forEach(({el,a,b})=>{
     const o = win(P,a,b);
+    if (o > topO){ topO = o; topBeat = el; }
     el.style.opacity=o;
     el.style.transform = (el.id==='beat5')
       ? `translate(-50%, calc(-50% + ${(1-o)*14}px))`
       : `translateY(${(1-o)*22}px)`;
   });
+  if (topBeat && topO > .04){
+    const r = topBeat.getBoundingClientRect();
+    const W = innerWidth, H = innerHeight;
+    workUniforms.uTextRect.value.set(r.left/W*2-1, 1-(r.bottom/H)*2, r.right/W*2-1, 1-(r.top/H)*2);
+    workUniforms.uTextAmt.value = topO;
+  } else workUniforms.uTextAmt.value = 0;
   counterEl.style.opacity = win(P,.375,.545);
   ctr.textContent = Math.round(47*(1-range(P,.38,.545)));
   doneEl.style.opacity = win(P,.705,.755,.03);
