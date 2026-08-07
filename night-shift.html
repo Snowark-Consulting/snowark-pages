@@ -201,7 +201,7 @@ const siz  = new Float32Array(N);
 
 const C = {
   body:  new THREE.Color(0x2e6d6b),  // slab/pole points — readable teal
-  edge:  new THREE.Color(0x7fd4c4),  // silhouette edges — bright mint
+  edge:  new THREE.Color(0x58b0a4),  // silhouette edges — cool mint, no burn
   seam:  new THREE.Color(0x4cc296),
   bulb:  new THREE.Color(0xffd9a0),
   mist:  new THREE.Color(0x9fc4c0),
@@ -374,7 +374,7 @@ const workMat = new THREE.ShaderMaterial({
       float tw = .8 + .4*sin(aPh*120.0 + uFlow*55.0);
       gl_PointSize = min(uSize * aSz * tw * (30.0 / -mv.z), 20.0);
       float dormShow  = mix(1.0, step(aPh, 0.62), clamp(w.x, 0.0, 1.0));
-      float settleShow = mix(1.0, step(fract(aPh*7.31), 0.5)*.85, clamp(w.w, 0.0, 1.0));
+      float settleShow = mix(1.0, step(fract(aPh*7.31), 0.22)*.72, clamp(w.w, 0.0, 1.0));
       vAlpha = mix(1.0, .78, clamp(w.x,0.,1.)) * dormShow * settleShow;
       vCol = aCol; vFogZ = -mv.z;
     }`,
