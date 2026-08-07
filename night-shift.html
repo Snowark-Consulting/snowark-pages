@@ -184,7 +184,7 @@ function glowSprite(color, sx, sy, x,y,z, o){
 }
 const bulbGlow = glowSprite(0xffd9a0, 7.5,7.5, -4.1,2.9,-12.3, .85);
 const poolGlow = glowSprite(0xffc985, 12,5.6, -3.4,-1.2,-12.0, .30);
-const seamGlow2= glowSprite(0x2fae7e, 10,4,   0,-1.1,-71.2, 0);
+const seamGlow2= glowSprite(0x2fae7e, 3.0,1.2, 0,-.62,-70.5, 0);
 
 /* ============================================================
    particle shape sampling — the world is one point cloud
@@ -252,15 +252,23 @@ function sceneOpen(){
     return {p:[-2.8+v.x, 2.25+v.y, -12.3+v.z], c:C.bulb, s:1.5};
   }
 }
-/* 05:30 scene — the machine, closed, alone */
+/* 05:30 scene — THE SAME laptop from 23:00, now closed */
 function sceneClosed(){
   const r = Math.random();
-  if (r < .42) return sampleBoxSurf(0,-.72,-71.6, 4.6,.20,3.1, .38);            // base slab
-  else if (r < .84){ const q = sampleBoxSurf(0,-.47,-71.6, 4.6,.16,3.1, .38); return q; } // closed lid
-  else if (r < .96){ // glowing seam line between them
-    return {p:[rnd()*2.2, -.585+rnd()*.03, -70.06+rnd()*.06], c:C.seam, s:1.5};
+  if (r < .38) return sampleBoxSurf(0,-.66,-71.6, 3.4,.14,2.3, .30);            // base, same footprint as opening
+  else if (r < .72){ const q = sampleBoxSurf(0,-.49,-71.6, 3.4,.11,2.3, .30); return q; } // lid, closed flat
+  else if (r < .82){ // lit seam along the FRONT edge, facing the camera
+    return {p:[rnd()*1.6, -.575+rnd()*.025, -70.44+rnd()*.05], c:C.seam, s:1.5};
   }
-  else return {p:[rnd()*5.5, -.4+rnd()*1.6, -71.5+rnd()*2.5], c:C.mist, s:.8};  // faint air
+  else if (r < .93){ // the S-globe glowing on the lid
+    const th = Math.random()*Math.PI*2;
+    const ring = Math.random() < .72;
+    const rad = ring ? .34 : .34*Math.random();
+    const q = {p:[Math.cos(th)*rad, -.428, -71.6+Math.sin(th)*rad], c:C.green, s: ring?1.5:1.1};
+    if (!ring && Math.abs(Math.sin(th)) > .6) q.c = C.seam;   // hint of the S bar
+    return q;
+  }
+  else return {p:[rnd()*3.2, -.45+rnd()*.7, -71.5+rnd()*1.6], c:C.mist, s:.7};  // faint air
 }
 
 /* rivers */
@@ -505,8 +513,8 @@ function frame(now){
 
   const w0 = 1 - range(P,.16,.32);
   const w1 = range(P,.22,.36)*(1-range(P,.56,.68));
-  const w2 = range(P,.40,.54)*(1-range(P,.62,.72));
-  const w3 = range(P,.64,.78)*(1-range(P,.86,.96));
+  const w2 = range(P,.40,.54)*(1-range(P,.56,.66));
+  const w3 = range(P,.58,.70)*(1-range(P,.86,.96));
   workUniforms.uW.value.set(w0,w1,w2,w3);
 
   const rupture = range(P,.32,.42);
@@ -516,10 +524,14 @@ function frame(now){
   cam.fov = lerp(56,68,rupture); cam.updateProjectionMatrix();
 
   const z = camZ(P);
-  const lift = range(P,.10,.20)*(1-range(P,.26,.38))*1.6
-             + range(P,.60,.68)*(1-range(P,.74,.84))*1.2;
+  /* through the settle the camera rises and looks down at the machine */
+  const aim = range(P,.60,.70)*(1-range(P,.84,.93));
+  const lift = range(P,.10,.20)*(1-range(P,.26,.38))*1.6 + aim*2.3;
   cam.position.set(Math.sin(P*9.4)*.55, Math.sin(P*6.1)*.35+.1+lift, z);
-  cam.lookAt(cam.position.x*.6, cam.position.y*.6, z-8);
+  const tx = lerp(cam.position.x*.6, 0,    aim);
+  const ty = lerp(cam.position.y*.6, -.55, aim);
+  const tz = lerp(z-8, -71.6, aim);
+  cam.lookAt(tx, ty, tz);
 
   /* mouse stir point on a plane just ahead of the camera */
   ray.setFromCamera(mouseNDC, cam);
@@ -532,7 +544,7 @@ function frame(now){
   /* light sprites */
   bulbGlow.material.opacity = (.6 - range(P,.14,.30)*.6) * (.8+.2*Math.sin(now*.003));
   poolGlow.material.opacity = .3 - range(P,.14,.30)*.3;
-  seamGlow2.material.opacity = (range(P,.62,.70)*.5 - range(P,.78,.88)*.5) * (.8+.2*Math.sin(now*.004));
+  seamGlow2.material.opacity = (range(P,.62,.70)*.12 - range(P,.80,.90)*.12) * (.8+.2*Math.sin(now*.004));
 
   const build = range(P,.40,.56)*(1-range(P,.62,.72));
   aParcel.material.opacity=build*.85;
