@@ -812,15 +812,28 @@ function frame(now){
       ? `translate(-50%, calc(-50% + ${(1-o)*14}px))`
       : `translateY(${(1-o)*22}px)`;
   });
-  if (topBeat && topO > .04){
-    const r = topBeat.getBoundingClientRect();
+  const ctrO = win(P,.375,.545);
+  const dnO  = win(P,.705,.755,.03);
+  let rect = topBeat && topO > .04 ? topBeat.getBoundingClientRect() : null;
+  let amt = topO;
+  /* the terminal lines get the same right of way as the beats */
+  for (const [el, o] of [[counterEl, ctrO], [doneEl, dnO]]){
+    if (o > .04){
+      const r2 = el.getBoundingClientRect();
+      if (!rect){ rect = r2; amt = o; }
+      else rect = {left: Math.min(rect.left, r2.left), top: Math.min(rect.top, r2.top),
+                   right: Math.max(rect.right, r2.right), bottom: Math.max(rect.bottom, r2.bottom)};
+      amt = Math.max(amt, o);
+    }
+  }
+  if (rect){
     const W = innerWidth, H = innerHeight;
-    workUniforms.uTextRect.value.set(r.left/W*2-1, 1-(r.bottom/H)*2, r.right/W*2-1, 1-(r.top/H)*2);
-    workUniforms.uTextAmt.value = topO;
+    workUniforms.uTextRect.value.set(rect.left/W*2-1, 1-(rect.bottom/H)*2, rect.right/W*2-1, 1-(rect.top/H)*2);
+    workUniforms.uTextAmt.value = amt;
   } else workUniforms.uTextAmt.value = 0;
-  counterEl.style.opacity = win(P,.375,.545);
+  counterEl.style.opacity = ctrO;
   ctr.textContent = Math.round(47*(1-range(P,.38,.545)));
-  doneEl.style.opacity = win(P,.705,.755,.03);
+  doneEl.style.opacity = dnO;
   doneEl.classList.toggle('still', P>.735);
 
   clockT.textContent = nightClock(P);
