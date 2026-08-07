@@ -189,7 +189,7 @@ const seamGlow2= glowSprite(0x2fae7e, 3.0,1.2, 0,-.62,-70.5, 0);
 /* ============================================================
    particle shape sampling — the world is one point cloud
    ============================================================ */
-const N = mobile ? 55000 : 118000;
+const N = mobile ? 40000 : 84000;
 const pos0 = new Float32Array(N*3);   // 23:00 — lamp + open work desk
 const pos1 = new Float32Array(N*3);   // the rivers
 const tan1 = new Float32Array(N*3);
@@ -207,6 +207,9 @@ const C = {
   mist:  new THREE.Color(0x9fc4c0),
   green: new THREE.Color(0x4cc296),
   teal:  new THREE.Color(0x2a7f80),
+  violet:new THREE.Color(0x8b85e0),
+  peri:  new THREE.Color(0x6d8fe0),
+  cyan:  new THREE.Color(0x6fd4e8),
 };
 
 /* samplers write {p:[x,y,z], c:Color, s:size} */
@@ -358,21 +361,20 @@ const workMat = new THREE.ShaderMaterial({
       float run = fract(aPh + uFlow) - .5;
       vec3 stream = aP1 + aT1 * run * 7.0;
       vec3 p = aP0*w.x + stream*w.y + aP2*w.z + aP3*w.w;
-      p.x += sin(uFlow*40.0 + aPh*80.0)*.03;
-      p.y += cos(uFlow*34.0 + aPh*60.0)*.03;
+      p.x += sin(uFlow*13.0 + aPh*40.0)*.05;
+      p.y += cos(uFlow*11.0 + aPh*31.0)*.05;
 
       /* the path of particles: the cursor stirs the field */
       vec3 dm = p - uM;
-      float md = max(length(dm), 0.35);
-      float mf = smoothstep(3.2, 0.0, md) / md;
-      p += vec3(-dm.y, dm.x, 0.0) * mf * 0.9
-         + dm * mf * 0.55
-         + vec3(uMV * smoothstep(3.2, 0.0, md) * 1.6, 0.0);
+      float md = max(length(dm), 0.5);
+      float ms = smoothstep(6.0, 0.0, md);
+      p += vec3(-dm.y, dm.x, 0.0) * (ms * 0.55 / md)
+         + dm * (ms * 0.85 / md);
 
       vec4 mv = modelViewMatrix * vec4(p,1.0);
       gl_Position = projectionMatrix * mv;
-      float tw = .8 + .4*sin(aPh*120.0 + uFlow*55.0);
-      gl_PointSize = min(uSize * aSz * tw * (30.0 / -mv.z), 20.0);
+      float tw = .82 + .36*sin(aPh*47.0 + uFlow*16.0);
+      gl_PointSize = min(uSize * aSz * tw * (30.0 / -mv.z), 34.0);
       float dormShow  = mix(1.0, step(aPh, 0.62), clamp(w.x, 0.0, 1.0));
       float settleShow = mix(1.0, step(fract(aPh*7.31), 0.22)*.72, clamp(w.w, 0.0, 1.0));
       vAlpha = mix(1.0, .78, clamp(w.x,0.,1.)) * dormShow * settleShow;
@@ -507,7 +509,7 @@ let flow=0, last=performance.now();
 function frame(now){
   const dt = Math.min(.05,(now-last)/1000); last=now;
 
-  const drive = .10 + Math.min(2.4, Math.abs(lenisVel)*.35);
+  const drive = .06 + Math.min(1.6, Math.abs(lenisVel)*.22);
   flow += dt*drive*.045;
   workUniforms.uFlow.value = flow;
 
@@ -537,7 +539,7 @@ function frame(now){
   ray.setFromCamera(mouseNDC, cam);
   focusPlane.constant = -(z-11);
   if (!ray.ray.intersectPlane(focusPlane, mouseWorld)) mouseWorld.set(0,0,999);
-  workUniforms.uM.value.lerp(mouseWorld, .18);
+  workUniforms.uM.value.lerp(mouseWorld, .055);
   workUniforms.uMV.value.lerp(mouseVel, .12);
   mouseVel.multiplyScalar(.94);
 
