@@ -3410,12 +3410,19 @@ const workMat = new THREE.ShaderMaterial({
       }
 
       /* the path of particles: the cursor stirs the field */
-      /* the settled mark sways slowly on its axis */
-      float wob = w.w * sin(uTime*.32) * .16;
+      /* the settled mark sways slowly on its axis, dissipates outward from centre */
+      float wob = w.w * sin(uTime*.32) * .12;
       float cw = cos(wob), sw = sin(wob);
       vec2 relzx = vec2(p.x, p.z + 71.8);
       p.x = relzx.x*cw - relzx.y*sw;
       p.z = relzx.x*sw + relzx.y*cw - 71.8;
+      /* outward dissipation as mark fades */
+      float fadeOut = 1.0 - w.w;
+      vec3 markCentre = vec3(0.0, 0.35, -71.8);
+      vec3 toCentre = p - markCentre;
+      float dist = length(toCentre);
+      vec3 radial = dist > 0.001 ? toCentre / dist : vec3(0.0, 1.0, 0.0);
+      p += radial * fadeOut * 1.6;
 
       /* the wake: each particle has its own radius and curl direction,
          and answers to the cursor's recent path, not just its position */
