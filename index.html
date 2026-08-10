@@ -3162,6 +3162,7 @@ const col  = new Float32Array(N*3);
 const siz  = new Float32Array(N);
 const hnd  = new Float32Array(N*2);   // clock hands: [type, radius]
 const ptx  = new Float32Array(N*3);   // the opening statement, as particles
+const scat = new Float32Array(N*3);   // full-viewport scatter: where they burst FROM
 
 const C = {
   body:  new THREE.Color(0x2e6d6b),  // slab/pole points ,  readable teal
@@ -3309,6 +3310,22 @@ for (let i=0;i<N;i++){
   siz[i] = (o.s + (cl.s||1))/2;
 }
 
+/* full-viewport scatter: each particle gets a unique burst origin
+   spanning the camera frustum so the field fills the entire screen
+   on arrival, then condenses into the desk as the user scrolls */
+{
+  const frustHalf = Math.tan(28 * Math.PI/180); // FOV 56° half-angle
+  for (let i=0;i<N;i++){
+    const i3 = i*3;
+    const depth = 5 + Math.random()*24;           // 5-29 units ahead of camera
+    const halfH = depth * frustHalf;
+    const halfW = halfH * (innerWidth / Math.max(innerHeight, 1));
+    scat[i3]   = (Math.random()*2-1) * halfW;
+    scat[i3+1] = (Math.random()*2-1) * halfH;
+    scat[i3+2] = 8 - depth;                       // camera at z=8, so world-z = 8 - depth
+  }
+}
+
 const workGeo = new THREE.BufferGeometry();
 workGeo.setAttribute('position', new THREE.BufferAttribute(pos0.slice(),3));
 workGeo.setAttribute('aP0', new THREE.BufferAttribute(pos0,3));
@@ -3322,6 +3339,8 @@ workGeo.setAttribute('aSz', new THREE.BufferAttribute(siz,1));
 workGeo.setAttribute('aHand', new THREE.BufferAttribute(hnd,2));
 const aPT = new THREE.BufferAttribute(ptx, 3);
 workGeo.setAttribute('aPT', aPT);
+const aScat = new THREE.BufferAttribute(scat, 3);
+workGeo.setAttribute('aScatter', aScat);
 /* sample the opener's own words into particle targets (after fonts load) */
 function sampleStatement(){
   const W = 1280, H = 420, c = document.createElement('canvas');
@@ -3371,7 +3390,7 @@ const workMat = new THREE.ShaderMaterial({
   uniforms: workUniforms,
   transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
   vertexShader: `
-    attribute vec3 aP0,aP1,aT1,aP2,aP3,aPT,aCol; attribute float aPh,aSz; attribute vec2 aHand;
+    attribute vec3 aP0,aP1,aT1,aP2,aP3,aPT,aScatter,aCol; attribute float aPh,aSz; attribute vec2 aHand;
     uniform vec4 uW; uniform float uP,uFlow,uSize,uTime,uIntro;
     uniform vec4 uT0,uT1,uT2,uT3,uT4;
     uniform vec4 uTextRect; uniform float uTextAmt; uniform vec4 uClear;
@@ -3433,8 +3452,8 @@ const workMat = new THREE.ShaderMaterial({
       WAKE(uT0) WAKE(uT1) WAKE(uT2) WAKE(uT3) WAKE(uT4)
       p += acc;
 
-      /* arrival: everything condenses out of the river field */
-      vec3 scatter = aP1 * 1.18 + vec3(0.0, 1.2, 4.0);
+      /* arrival: everything condenses from full-viewport scatter into the desk */
+      vec3 scatter = aScatter;
       p = mix(scatter, p, uIntro);
       vec4 mv = modelViewMatrix * vec4(p,1.0);
       gl_Position = projectionMatrix * mv;
@@ -3794,7 +3813,7 @@ async function boot(){
   const jump = new URLSearchParams(location.search).get('jump');
   if (!reduced && !jump){
     workUniforms.uIntro.value = 0;
-    gsap.to(workUniforms.uIntro, {value: 1, duration: 1.9, delay: .15, ease: 'power3.inOut'});
+    gsap.to(workUniforms.uIntro, {value: 1, duration: 2.2, delay: .12, ease: 'power4.out'});
   }
   if (jump){
     const y = parseFloat(jump)||0;
