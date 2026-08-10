@@ -3383,8 +3383,8 @@ const workUniforms = {
   uT4: {value: new THREE.Vector4(0,0,999,0)},
   uTextRect: {value: new THREE.Vector4(0,0,0,0)},   // active callout, NDC
   uTextAmt:  {value: 0},
-  uClear:    {value: mobile ? new THREE.Vector4(.045,.06,.13,.55)
-                            : new THREE.Vector4(.10,.12,.20,.92)},
+  uClear:    {value: mobile ? new THREE.Vector4(.03,.04,.10,.40)
+                            : new THREE.Vector4(.05,.06,.14,.50)},
 };
 const workMat = new THREE.ShaderMaterial({
   uniforms: workUniforms,
@@ -3812,8 +3812,10 @@ async function boot(){
   /* entry ritual: skip when jumped (harness) or reduced motion */
   const jump = new URLSearchParams(location.search).get('jump');
   if (!reduced && !jump){
-    workUniforms.uIntro.value = 0;
-    gsap.to(workUniforms.uIntro, {value: 1, duration: 2.2, delay: .12, ease: 'power4.out'});
+    /* burst outward from desk to full viewport, then settle back */
+    const introTl = gsap.timeline({delay: .08});
+    introTl.fromTo(workUniforms.uIntro, {value: 1}, {value: 0, duration: .48, ease: 'power3.out'})
+           .to(workUniforms.uIntro,       {value: 1, duration: 1.7, ease: 'power4.in'});
   }
   if (jump){
     const y = parseFloat(jump)||0;
