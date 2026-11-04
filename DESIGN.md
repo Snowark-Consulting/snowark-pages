@@ -159,8 +159,11 @@ marquees, shimmer, orbits). No video, no canvas, no Lottie.
   mapping (email lands in `custom_personality`, company in `customers`).
   Preserve exactly unless the table is migrated.
 - Microsoft Clarity `xg3xx2k35l` ships on every page.
-- Preserve on rebuilds: `dash/`, `notforgotten-onboarding/`, `proposals/`,
+- Preserve on rebuilds: `notforgotten-onboarding/`, `proposals/`,
   `cao-reference.html`, `josh-resume.html`.
+- **`dash/` was removed 2026-11-04.** It was an internal operator shell with no data,
+  sitting in a publicly served directory. Do not reinstate it here; internal consoles
+  belong on Cloudflare Pages behind Access (see `snowark-client-os`).
 - Deploy: push to `main`, Vercel serves in ~7s. Verify live with a grep
   for a new-build marker, then a browser pass.
 

@@ -2,11 +2,8 @@ User-agent: *
 Allow: /
 
 # Internal tooling and unpublished work stays out of search results.
-# Note: robots.txt is not access control. /client-os/ and /dash/ are internal
-# consoles that should be gated at the edge (Cloudflare Access), not merely
-# disallowed here.
-Disallow: /dash/
-Disallow: /client-os/
+# Note: robots.txt is not access control. Internal consoles belong on Cloudflare
+# Pages behind Access, not in a publicly served directory (removed 2026-11-04).
 Disallow: /demos/
 Disallow: /frames/
 Disallow: /films/
