@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Internal tooling and unpublished work stays out of search results.
+# Note: robots.txt is not access control. /client-os/ and /dash/ are internal
+# consoles that should be gated at the edge (Cloudflare Access), not merely
+# disallowed here.
+Disallow: /dash/
+Disallow: /client-os/
+Disallow: /demos/
+Disallow: /frames/
+Disallow: /films/
+Disallow: /onboarding-form/
+Disallow: /notforgotten-onboarding/
+
+Sitemap: https://snowark.com.au/sitemap.xml

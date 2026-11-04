@@ -13,6 +13,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://snowark.com.au/">
+  <link rel="canonical" href="https://snowark.com.au/">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -20,9 +21,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cambo&family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
 
   <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
@@ -42,6 +40,8 @@
       --teal-soft: #7fb8b9;
       --green: #0d8f64;
       --green-lift: #4cc296;
+      /* AA-safe green for small text and white-on-green: #0d8f64 is 4.09:1 on white */
+      --green-ink: #0b7550;
       --mist: #e9e7e3;
       --white: #ffffff;
       --text: rgba(233, 231, 227, 0.78);
@@ -74,7 +74,7 @@
     h3 { font-family: var(--font-body); font-weight: 700; font-size: 1.15rem; line-height: 1.4; color: #0e2929; }
 
     p { max-width: 62ch; }
-    a { color: var(--green); text-decoration: none; }
+    a { color: var(--green-ink); text-decoration: none; }
     img { max-width: 100%; display: block; }
 
     .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
@@ -96,7 +96,7 @@
       font-weight: 700;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--green);
+      color: var(--green-ink);
       margin-bottom: 20px;
     }
     .dark-sec .eyebrow { color: var(--green-lift); }
@@ -504,7 +504,7 @@
       font-size: clamp(1.7rem, 3.6vw, 2.8rem);
       font-family: var(--font-heading);
       line-height: 1.35;
-      color: var(--green);
+      color: var(--green-ink);
     }
 
     /* ══════════════ Card grids ══════════════ */
@@ -606,7 +606,7 @@
       display: block;
       font-family: var(--font-heading);
       font-size: 2.1rem;
-      color: var(--green);
+      color: var(--green-ink);
       margin-bottom: 10px;
       line-height: 1;
     }
@@ -687,7 +687,7 @@
     .ledger-row .idx {
       font-family: var(--font-heading);
       font-size: 1.1rem;
-      color: rgba(20, 30, 30, 0.4);
+      color: #656c6b; /* was rgba(20,30,30,.4): 2.42:1 on the warm background */
     }
     .ledger-row h3 { font-size: 1.05rem; }
     .ledger-row p { font-size: 0.92rem; max-width: none; }
@@ -788,7 +788,7 @@
     .plan-card .step-no {
       font-family: var(--font-heading);
       font-size: 2.6rem;
-      color: var(--green);
+      color: var(--green-ink);
       line-height: 1;
     }
     .plan-card h3 { font-family: var(--font-heading); font-weight: 400; font-size: 1.7rem; margin-bottom: 14px; }
@@ -808,7 +808,7 @@
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--green);
+      color: var(--green-ink);
       margin-bottom: 18px;
     }
     .feed-window {
@@ -840,7 +840,7 @@
       font-weight: 700;
       font-size: 0.76rem;
       letter-spacing: 0.04em;
-      color: var(--green);
+      color: var(--green-ink);
     }
 
     /* ══════════════ Testimonial ══════════════ */
@@ -891,14 +891,14 @@
       font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--green);
+      color: var(--green-ink);
       background: none;
       border: 1.5px solid var(--green);
       border-radius: 8px;
       cursor: pointer;
       transition: background 0.25s ease, color 0.25s ease;
     }
-    .testimonial-expand:hover { background: var(--green); color: #fff; }
+    .testimonial-expand:hover { background: var(--green-ink); color: #fff; }
     .testimonial-expand::after { content: ' +'; font-family: var(--font-heading); font-size: 1.1rem; margin-left: 2px; }
     .testimonial-expand.open::after { content: ' \2212'; }
     .ownership-note {
@@ -1049,7 +1049,7 @@
     .form-submit { text-align: center; margin-top: 8px; }
     .form-submit .btn { width: 100%; }
     .form-success, .form-error { display: none; text-align: center; margin-top: 20px; font-size: 0.95rem; }
-    .form-success p { color: var(--green); }
+    .form-success p { color: var(--green-ink); }
     .form-error p { color: #b3492f; }
     .contact-head { text-align: center; }
     .contact-head .lead { margin-left: auto; margin-right: auto; }
@@ -1140,7 +1140,16 @@
       html { scroll-behavior: auto; }
     }
 
-    :focus-visible { outline: 2px solid var(--green-lift); outline-offset: 3px; border-radius: 4px; }
+    :focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
+    .dark-sec :focus-visible, #burn :focus-visible { outline-color: var(--green-lift); }
+    /* skip link, visible only when focused */
+    .skip-link{position:absolute;left:12px;top:-64px;z-index:200;padding:12px 20px;border-radius:8px;
+      background:var(--teal);color:#fff;font:700 .9rem/1 var(--font-body);text-decoration:none;
+      transition:top .18s ease}
+    .skip-link:focus{top:12px}
+    /* bigger hit area for the dot navigation without changing how it looks */
+    /* keep the header logo a 24px+ target */
+    .nav-logo{padding:6px 0;display:inline-flex;align-items:center}
   
     /* Content depth pass: returns, fit, faq, letter */
     .returns-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 56px; }
@@ -1163,12 +1172,12 @@
     .fit-col ul { list-style: none; display: grid; gap: 14px; }
     .fit-col li { position: relative; padding-left: 28px; font-size: 0.95rem; line-height: 1.55; }
     .fit-col li::before { position: absolute; left: 0; top: -1px; font-weight: 700; font-size: 1.05rem; }
-    .fit-yes li::before { content: '+'; color: var(--green); }
+    .fit-yes li::before { content: '+'; color: var(--green-ink); }
     .fit-no li::before { content: '\2212'; color: rgba(14, 41, 41, 0.4); }
     .faq-list { max-width: 840px; margin: 48px auto 0; border-top: 1px solid rgba(0, 0, 0, 0.12); counter-reset: faq; }
     .faq-list details { border-bottom: 1px solid rgba(0, 0, 0, 0.12); }
     .faq-list summary { cursor: pointer; list-style: none; display: flex; justify-content: flex-start; align-items: center; gap: 18px; padding: 22px 4px; font-weight: 700; font-size: 1.02rem; color: #0e2929; transition: color 0.25s ease; }
-    .faq-list summary:hover { color: var(--green); }
+    .faq-list summary:hover { color: var(--green-ink); }
     .faq-list summary::before { counter-increment: faq; content: counter(faq, decimal-leading-zero); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; color: var(--teal-lift); min-width: 26px; flex: none; }
     .faq-list summary::-webkit-details-marker { display: none; }
     .faq-list summary::after { content: '+'; font-family: var(--font-heading); font-size: 1.5rem; font-weight: 400; color: var(--teal-lift); transition: transform 0.25s ease; flex: none; margin-left: auto; }
@@ -1316,8 +1325,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
-      padding: 10px 8px;
+      gap: 0;
+      padding: 8px 6px;
       background: rgba(255, 255, 255, 0.6);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
@@ -1325,24 +1334,35 @@
       border: 1px solid rgba(0, 0, 0, 0.06);
       box-shadow: 0 2px 16px rgba(14, 41, 41, 0.06);
     }
+    /* the anchor is a real 24px target; the dot itself is drawn by ::before */
     .section-nav a {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .section-nav a::before {
+      content: '';
       width: 8px;
       height: 8px;
       border-radius: 50%;
       background: rgba(14, 41, 41, 0.18);
       transition: background 0.3s ease, transform 0.3s ease;
-      position: relative;
-      flex-shrink: 0;
     }
-    .section-nav a:hover,
-    .section-nav a.active {
+    .section-nav a:hover::before,
+    .section-nav a.active::before {
       background: var(--green);
       transform: scale(1.4);
     }
+    .section-nav a:focus-visible { outline: 2px solid var(--teal); outline-offset: -2px; }
+    .section-nav a:focus-visible::before { background: var(--teal); transform: scale(1.7); }
     .section-nav a .label {
       position: absolute;
-      right: 20px;
+      right: 28px;
       top: 50%;
       transform: translateY(-50%);
       white-space: nowrap;
@@ -1411,7 +1431,7 @@
         pointer-events: auto;
       }
       .section-nav a.active .label {
-        color: var(--green);
+        color: var(--green-ink);
         font-weight: 600;
       }
       .section-nav a:hover {
@@ -1529,16 +1549,20 @@
   /* ---------- splice: the site arrives at dawn ---------- */
   #site{position:relative;z-index:9;background:var(--white,#fff);color:rgba(20,30,30,.82)}
   body:not(.arrived) #header, body:not(.arrived) .section-nav{opacity:0!important;pointer-events:none!important}
+  /* keyboard users get the navigation the moment they tab into it, even before the site "arrives" */
+  body:not(.arrived) #header:focus-within, body:not(.arrived) .section-nav:focus-within{
+    opacity:1!important;pointer-events:auto!important}
   #header,.section-nav{transition:opacity .6s ease}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 <div id="top"></div>
 <canvas id="gl"></canvas>
 <div id="vignette"></div><div id="grain"></div>
 
 <div class="hud" id="brand">
-  <img class="mark" src="assets/logos/SnowArk-White.png" alt="SnowArk">
+  <img class="mark" src="assets/logos/SnowArk-White.png" alt="SnowArk" width="596" height="113">
   <div class="sub">Your AI Chief of Staff</div>
 </div>
 <div class="hud" id="clock"><div class="t">0h</div><div class="d">recovered</div></div>
@@ -1596,16 +1620,17 @@
   <a href="#contact"><span class="label">Contact</span></a>
 </nav>
 
+<main id="main">
 <section class="stack-marquee" aria-label="Platforms your agent connects to">
   <p class="eyebrow">Connects to the tools you already run</p>
   <div class="m-row left">
     <div class="m-track">
-      <span class="m-pill"><img src="assets/tools/shopify.svg" alt="">Shopify</span><span class="m-pill"><img src="assets/tools/hubspot.svg" alt="">HubSpot</span><span class="m-pill"><img src="assets/tools/klaviyo.png" alt="">Klaviyo</span><span class="m-pill"><img src="assets/tools/googleanalytics.svg" alt="">Google Analytics</span><span class="m-pill"><img src="assets/tools/googleads.svg" alt="">Google Ads</span><span class="m-pill"><img src="assets/tools/meta.svg" alt="">Meta Ads</span><span class="m-pill"><img src="assets/tools/googlesearchconsole.svg" alt="">Search Console</span><span class="m-pill"><img src="assets/tools/asana.svg" alt="">Asana</span><span class="m-pill"><img src="assets/tools/netsuite.png" alt="">NetSuite</span><span class="m-pill"><img src="assets/tools/airtable.svg" alt="">Airtable</span><span class="m-pill"><img src="assets/tools/trello.svg" alt="">Trello</span><span class="m-pill"><img src="assets/tools/googledocs.svg" alt="">Google Docs</span>
+      <span class="m-pill"><img src="assets/tools/shopify.svg" alt="" width="24" height="24">Shopify</span><span class="m-pill"><img src="assets/tools/hubspot.svg" alt="" width="24" height="24">HubSpot</span><span class="m-pill"><img src="assets/tools/klaviyo.png" alt="" width="64" height="64">Klaviyo</span><span class="m-pill"><img src="assets/tools/googleanalytics.svg" alt="" width="24" height="24">Google Analytics</span><span class="m-pill"><img src="assets/tools/googleads.svg" alt="" width="24" height="24">Google Ads</span><span class="m-pill"><img src="assets/tools/meta.svg" alt="" width="24" height="24">Meta Ads</span><span class="m-pill"><img src="assets/tools/googlesearchconsole.svg" alt="" width="24" height="24">Search Console</span><span class="m-pill"><img src="assets/tools/asana.svg" alt="" width="24" height="24">Asana</span><span class="m-pill"><img src="assets/tools/netsuite.png" alt="" width="48" height="48">NetSuite</span><span class="m-pill"><img src="assets/tools/airtable.svg" alt="" width="24" height="24">Airtable</span><span class="m-pill"><img src="assets/tools/trello.svg" alt="" width="24" height="24">Trello</span><span class="m-pill"><img src="assets/tools/googledocs.svg" alt="" width="24" height="24">Google Docs</span>
     </div>
   </div>
   <div class="m-row right">
     <div class="m-track">
-      <span class="m-pill"><img src="assets/tools/xero.svg" alt="">Xero</span><span class="m-pill"><img src="assets/tools/gmail.svg" alt="">Gmail</span><span class="m-pill"><img src="assets/tools/googlechat.svg" alt="">Google Chat</span><span class="m-pill"><img src="assets/tools/slack.svg" alt="">Slack</span><span class="m-pill"><img src="assets/tools/discord.svg" alt="">Discord</span><span class="m-pill"><img src="assets/tools/aircall.svg" alt="">Aircall</span><span class="m-pill"><img src="assets/tools/supabase.svg" alt="">Supabase</span><span class="m-pill"><img src="assets/tools/cloudflare.svg" alt="">Cloudflare</span><span class="m-pill"><img src="assets/tools/github.svg" alt="">GitHub</span><span class="m-pill"><img src="assets/tools/monday.svg" alt="">Monday.com</span><span class="m-pill"><img src="assets/tools/wordpress.svg" alt="">WordPress</span><span class="m-pill"><img src="assets/tools/googlesheets.svg" alt="">Google Sheets</span><span class="m-pill"><img src="assets/tools/googledrive.svg" alt="">Google Drive</span>
+      <span class="m-pill"><img src="assets/tools/xero.svg" alt="" width="24" height="24">Xero</span><span class="m-pill"><img src="assets/tools/gmail.svg" alt="" width="24" height="24">Gmail</span><span class="m-pill"><img src="assets/tools/googlechat.svg" alt="" width="24" height="24">Google Chat</span><span class="m-pill"><img src="assets/tools/slack.svg" alt="" width="24" height="24">Slack</span><span class="m-pill"><img src="assets/tools/discord.svg" alt="" width="24" height="24">Discord</span><span class="m-pill"><img src="assets/tools/aircall.svg" alt="" width="24" height="24">Aircall</span><span class="m-pill"><img src="assets/tools/supabase.svg" alt="" width="24" height="24">Supabase</span><span class="m-pill"><img src="assets/tools/cloudflare.svg" alt="" width="24" height="24">Cloudflare</span><span class="m-pill"><img src="assets/tools/github.svg" alt="" width="24" height="24">GitHub</span><span class="m-pill"><img src="assets/tools/monday.svg" alt="" width="24" height="24">Monday.com</span><span class="m-pill"><img src="assets/tools/wordpress.svg" alt="" width="24" height="24">WordPress</span><span class="m-pill"><img src="assets/tools/googlesheets.svg" alt="" width="24" height="24">Google Sheets</span><span class="m-pill"><img src="assets/tools/googledrive.svg" alt="" width="24" height="24">Google Drive</span>
     </div>
   </div>
 </section>
@@ -1860,7 +1885,7 @@
 
     <div class="guide-hero glass reveal">
       <div class="portrait-wrap">
-        <img src="josh.jpg" alt="Josh Hancock" class="portrait">
+        <img src="josh.jpg" alt="Josh Hancock" class="portrait" width="313" height="313">
       </div>
       <p class="guide-quote">Most founders know AI is the answer. What they lack is the time, the technical depth, and the executive lens to deploy it at the right problems. They try shortcuts that don’t stick. They wonder if they’re falling behind. <strong>They’re not. They just need someone who’s done this from the inside.</strong></p>
     </div>
@@ -1993,7 +2018,7 @@
       </div>
     </div>
 
-    <p class="ownership-note reveal">Everything I build stays with you. Your IP, your infrastructure, your agent. I run it while you need me. You own it forever.</p>
+    <p class="ownership-note reveal">Everything I build stays with you. Your IP, your infrastructure, your agent. I keep it running for as long as you want me. You own it outright.</p>
   </div>
 </section>
 
@@ -2065,9 +2090,9 @@
 
     <div class="orb-stage" aria-label="Agents placed with businesses, orbiting the SnowArk platform">
       <div class="orb" aria-hidden="true"></div>
-      <div class="orbit o1"><span class="chip agent-chip"><img src="assets/profile/gary-avatar.jpg" alt="Gary, placed with The AFS Group"><span class="id"><em>Gary</em><small>The AFS Group</small></span></span></div>
-      <div class="orbit o2"><span class="chip agent-chip"><img src="assets/profile/winston-avatar.jpg" alt="Winston, placed with SnowArk"><span class="id"><em>Winston</em><small>SnowArk</small></span></span></div>
-      <div class="orbit o3"><span class="chip agent-chip"><img src="assets/profile/atlas-avatar.jpg" alt="Atlas, placed with Not Forgotten Systems"><span class="id"><em>Atlas</em><small>Not Forgotten</small></span></span></div>
+      <div class="orbit o1"><span class="chip agent-chip"><img src="assets/profile/gary-avatar.jpg" alt="Gary, placed with The AFS Group" width="512" height="512"><span class="id"><em>Gary</em><small>The AFS Group</small></span></span></div>
+      <div class="orbit o2"><span class="chip agent-chip"><img src="assets/profile/winston-avatar.jpg" alt="Winston, placed with SnowArk" width="1024" height="1024"><span class="id"><em>Winston</em><small>SnowArk</small></span></span></div>
+      <div class="orbit o3"><span class="chip agent-chip"><img src="assets/profile/atlas-avatar.jpg" alt="Atlas, placed with Not Forgotten Systems" width="1024" height="1024"><span class="id"><em>Atlas</em><small>Not Forgotten</small></span></span></div>
       <div class="orbit wide w1" aria-hidden="true"><span class="chip agent-chip shadow-chip"><span class="sil"><svg viewBox="0 0 42 42"><circle cx="21" cy="15" r="8" fill="rgba(233,231,227,0.25)"/><path d="M5 42 a16 13 0 0 1 32 0" fill="rgba(233,231,227,0.25)"/></svg></span><span class="id"><em>Classified</em></span></span></div>
       <div class="orbit wide w2" aria-hidden="true"><span class="chip agent-chip shadow-chip"><span class="sil"><svg viewBox="0 0 42 42"><circle cx="21" cy="15" r="8" fill="rgba(233,231,227,0.25)"/><path d="M5 42 a16 13 0 0 1 32 0" fill="rgba(233,231,227,0.25)"/></svg></span><span class="id"><em>Under NDA</em></span></span></div>
       <div class="orbit wide w3" aria-hidden="true"><span class="chip agent-chip shadow-chip"><span class="sil"><svg viewBox="0 0 42 42"><circle cx="21" cy="15" r="8" fill="rgba(233,231,227,0.25)"/><path d="M5 42 a16 13 0 0 1 32 0" fill="rgba(233,231,227,0.25)"/></svg></span><span class="id"><em>Confidential</em></span></span></div>
@@ -2076,31 +2101,31 @@
     <p class="fan-label reveal">Highlights from their performance reviews</p>
     <div class="fan-stage reveal" id="fan" aria-label="Examples of work completed by placed agents">
       <article class="fan-card">
-        <header><img src="assets/profile/gary-avatar.jpg" alt=""><div><strong>Gary</strong><span>The AFS Group</span></div></header>
+        <header><img src="assets/profile/gary-avatar.jpg" alt="" width="512" height="512"><div><strong>Gary</strong><span>The AFS Group</span></div></header>
         <p>Turned 3,447 sales calls into a searchable intelligence layer. The exec team now hears what customers actually say.</p>
       </article>
       <article class="fan-card">
-        <header><img src="assets/profile/gary-avatar.jpg" alt=""><div><strong>Gary</strong><span>The AFS Group</span></div></header>
+        <header><img src="assets/profile/gary-avatar.jpg" alt="" width="512" height="512"><div><strong>Gary</strong><span>The AFS Group</span></div></header>
         <p>Tagged in Asana for a finance landing page. Shipped the full Shopify build back for approval the same day.</p>
       </article>
       <article class="fan-card">
-        <header><img src="assets/profile/atlas-avatar.jpg" alt=""><div><strong>Atlas</strong><span>Not Forgotten Systems</span></div></header>
+        <header><img src="assets/profile/atlas-avatar.jpg" alt="" width="1024" height="1024"><div><strong>Atlas</strong><span>Not Forgotten Systems</span></div></header>
         <p>Runs his own Gmail, refreshes the company dashboard hourly, and keeps the founder's inbox at zero.</p>
       </article>
       <article class="fan-card">
-        <header><img src="assets/profile/gary-avatar.jpg" alt=""><div><strong>Gary</strong><span>The AFS Group</span></div></header>
+        <header><img src="assets/profile/gary-avatar.jpg" alt="" width="512" height="512"><div><strong>Gary</strong><span>The AFS Group</span></div></header>
         <p>Replaced a paid sync subscription with an integration he built himself. He also maintains it.</p>
       </article>
       <article class="fan-card">
-        <header><img src="assets/profile/gary-avatar.jpg" alt=""><div><strong>Gary</strong><span>The AFS Group</span></div></header>
+        <header><img src="assets/profile/gary-avatar.jpg" alt="" width="512" height="512"><div><strong>Gary</strong><span>The AFS Group</span></div></header>
         <p>Tagged in an Asana comment about a campaign. Designed the on-brand email in HubSpot, built the audience segment, and staged both for approval.</p>
       </article>
       <article class="fan-card">
-        <header><img src="assets/profile/gary-avatar.jpg" alt=""><div><strong>Gary</strong><span>The AFS Group</span></div></header>
+        <header><img src="assets/profile/gary-avatar.jpg" alt="" width="512" height="512"><div><strong>Gary</strong><span>The AFS Group</span></div></header>
         <p>Designed and runs the full experimentation engine. ICE scoring, experiment cards, funnel-stage mapping. Tests are prioritised, tracked, and reviewed without a human PM.</p>
       </article>
       <article class="fan-card">
-        <header><img src="assets/profile/winston-avatar.jpg" alt=""><div><strong>Winston</strong><span>SnowArk</span></div></header>
+        <header><img src="assets/profile/winston-avatar.jpg" alt="" width="1024" height="1024"><div><strong>Winston</strong><span>SnowArk</span></div></header>
         <p>Built this website from the ground up. Yes, the one you are reading.</p>
       </article>
     </div>
@@ -2202,7 +2227,7 @@
       <details>
         <summary>What if we stop working together?</summary>
         <div class="faq-body">
-        <p>You keep everything. Your agent, your infrastructure, your integrations, your documentation. I run it while you need me. You own it forever.</p>
+        <p>You keep everything. Your agent, your infrastructure, your integrations, your documentation. I run it while you need me, and you own it from day one.</p>
         </div>
       </details>
       <details>
@@ -2235,7 +2260,7 @@
       <p>I keep the client list deliberately short. Fewer placements, more attention.</p>
       <p>If your business is running you, I’d like to hear about it. The form below takes a minute, and a real reply lands within 24 hours. Winston will have read it in seconds. He’s the one who deployed this page.</p>
       <div class="letter-sig">
-        <img src="josh.jpg" alt="Josh Hancock">
+        <img src="josh.jpg" alt="Josh Hancock" width="313" height="313">
         <div><span class="name">Josh Hancock</span><span class="role">Founder, SnowArk</span></div>
       </div>
     </div>
@@ -2286,11 +2311,16 @@
   </div>
   <div class="footer-mark" role="img" aria-label="SnowArk"></div>
   <div class="footer-meta">
-    <a href="mailto:josh@snowark.com.au">josh@snowark.com.au</a>
+    <a href="mailto:josh@snowark.com.au" style="display:inline-block;padding:6px 4px;">josh@snowark.com.au</a>
   </div>
 </footer>
+</main>
 
 <!-- ═══════════════ JS ═══════════════ -->
+<!-- GSAP is loaded here, not in the head, so it no longer blocks first paint -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
 <script>
   gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
