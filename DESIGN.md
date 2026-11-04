@@ -159,8 +159,11 @@ marquees, shimmer, orbits). No video, no canvas, no Lottie.
   mapping (email lands in `custom_personality`, company in `customers`).
   Preserve exactly unless the table is migrated.
 - Microsoft Clarity `xg3xx2k35l` ships on every page.
-- Preserve on rebuilds: `notforgotten-onboarding/`, `proposals/`,
-  `cao-reference.html`, `josh-resume.html`.
+- Preserve on rebuilds: `notforgotten-onboarding/`, `josh-resume.html`.
+- **Client-confidential pages do NOT live in this repo.** `proposals/abatrades/` and
+  `cao-reference.html` were removed 2026-11-04 and now sit behind Cloudflare Access at
+  `snowark-internal.pages.dev`. Anything client-confidential, internal or operator-facing
+  goes there, never here: this repo is served publicly by Vercel AND GitHub Pages.
 - **`dash/` was removed 2026-11-04.** It was an internal operator shell with no data,
   sitting in a publicly served directory. Do not reinstate it here; internal consoles
   belong on Cloudflare Pages behind Access (see `snowark-client-os`).
