@@ -1444,9 +1444,10 @@
   @media (hover:hover){ .sp__cue:hover .label{background-size:100% 1px} }
   .sp__cue:focus-visible .label{background-size:100% 1px}
 
-  /* the mark: on the grid, right edge = header CTA's right edge, centred on headline + sub */
-  .sp__mark{grid-area:m; justify-self:end; align-self:center; position:relative; pointer-events:none;
-    width:clamp(220px,24vw,380px); aspect-ratio:1}
+  /* the mark: on desktop and tablet, a large bottom-right corner anchor that bleeds off the edges */
+  .sp__mark{--sp-mark:66svh; grid-area:auto; position:absolute; pointer-events:none;
+    width:var(--sp-mark); aspect-ratio:1;
+    right:calc(var(--sp-mark) * -.22); bottom:calc(var(--sp-mark) * -.18)}
   .sp__fill{position:absolute; inset:0;
     background:linear-gradient(100deg,var(--teal) 0%,var(--teal-lift) 34%,var(--green-lift) 58%,var(--green) 72%,var(--teal) 100%);
     background-size:200% 100%;
