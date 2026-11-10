@@ -1450,8 +1450,17 @@
   .sp__cue:focus-visible{outline:none}
   .sp__cue:focus-visible .sp__ask{background-size:100% 1px}
   .sp__chev{display:block; width:22px; height:22px; margin-left:2px; color:var(--green)}
-  .sp__chev svg{display:block; width:100%; height:100%; animation:sp-bob 2.2s cubic-bezier(.45,.05,.35,1) infinite}
-  @keyframes sp-bob{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(6px);opacity:1}}
+  /* a springy drop: stretch on the way down, squash on landing, one small rebound, then rest */
+  .sp__chev svg{display:block; width:100%; height:100%; transform-origin:50% 75%; animation:sp-bounce 2.3s infinite}
+  @keyframes sp-bounce{
+    0%  {transform:translateY(0) scale(1,1);       opacity:.7;  animation-timing-function:cubic-bezier(.55,0,.85,.35)}
+    16% {transform:translateY(9px) scale(.94,1.06); opacity:1;   animation-timing-function:cubic-bezier(.2,.7,.4,1)}
+    21% {transform:translateY(9px) scale(1.06,.92); opacity:1;   animation-timing-function:cubic-bezier(.15,.75,.35,1)}
+    33% {transform:translateY(-2px) scale(.98,1.03);              animation-timing-function:cubic-bezier(.55,0,.8,.4)}
+    41% {transform:translateY(3px) scale(1.03,.97);               animation-timing-function:cubic-bezier(.2,.7,.4,1)}
+    50% {transform:translateY(0) scale(1,1);       opacity:.85}
+    100%{transform:translateY(0) scale(1,1);       opacity:.7}
+  }
 
   /* the mark: on desktop and tablet, a large bottom-right corner anchor that bleeds off the edges */
   .sp__mark{--sp-mark:66svh; grid-area:auto; position:absolute; pointer-events:none;
