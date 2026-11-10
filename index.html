@@ -1465,11 +1465,19 @@
   #clock{top:28px;right:32px;text-align:right;font-family:var(--mono);color:var(--teal-soft)}
   #clock .t{font-size:13px;letter-spacing:.18em;color:#e9e7e3}
   #clock .d{font-size:10px;letter-spacing:.12em;opacity:.6;margin-top:6px}
-  #cue{bottom:30px;left:50%;transform:translateX(-50%);text-align:center;transition:opacity .6s}
-  #cue .lbl{font:700 10px/1 Lato;letter-spacing:.34em;text-transform:uppercase;
-       color:var(--teal-soft);opacity:.45;margin-bottom:10px;text-indent:.34em}
-  #cue .lbl{animation:cuebreathe 2.6s ease-in-out infinite}
-  @keyframes cuebreathe{0%,100%{opacity:.3}50%{opacity:.75}}
+  #cue{bottom:calc(30px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);text-align:center;transition:opacity .6s}
+  #cue .lbl{font:700 10px/1 Lato;letter-spacing:.32em;text-transform:uppercase;
+       color:var(--teal-soft);opacity:.62;margin-bottom:12px;text-indent:.32em;
+       animation:cuebreathe 2.6s ease-in-out infinite}
+  @keyframes cuebreathe{0%,100%{opacity:.5}50%{opacity:.9}}
+  /* A single green light travelling down a hairline rail: the motion draws the eye,
+     the rail and label keep it quiet enough for a premium hero. */
+  #cue .rail{position:relative;width:1px;height:34px;margin:0 auto;overflow:hidden;
+       background:linear-gradient(180deg,rgba(233,231,227,0) 0%,rgba(233,231,227,.35) 45%,rgba(233,231,227,0) 100%)}
+  #cue .rail::after{content:"";position:absolute;left:-1px;top:-34%;width:3px;height:34%;
+       border-radius:2px;background:var(--green-lift);box-shadow:0 0 8px rgba(76,194,150,.75);
+       animation:cuefall 2.3s cubic-bezier(.45,.05,.35,1) infinite}
+  @keyframes cuefall{0%{top:-34%;opacity:0}22%{opacity:1}78%{opacity:1}100%{top:100%;opacity:0}}
   #hours{bottom:96px;right:34px;text-align:right;font-family:var(--mono)}
   #hours .h{font-size:11px;letter-spacing:.22em;color:var(--teal-soft);opacity:.28;margin-top:10px;transition:all .5s}
   #hours .h.on{opacity:1;color:var(--green-lift)}
@@ -1540,9 +1548,16 @@
     #hours{display:none}
     #counter{margin-top:14rem}
     #doneline{bottom:calc(24vh - 4.2em)}
+    /* Touch screens have no mouse, so the cue leads with the travelling light on a
+       taller rail and a brighter label than desktop: legible at arm's length. */
+    #cue{bottom:calc(38px + env(safe-area-inset-bottom))}
+    #cue .lbl{font-size:11px;opacity:.75;margin-bottom:14px}
+    #cue .rail{height:46px}
+    #cue .rail::after{width:4px;left:-1.5px;height:32%}
   }
   @media (prefers-reduced-motion:reduce){
-    #cue .lbl{animation:none}
+    #cue .lbl{animation:none;opacity:.75}
+    #cue .rail::after{animation:none;top:34%;opacity:.95}
     #doneline .cur{animation:none}
   }
 
@@ -1566,7 +1581,7 @@
   <div class="sub">Your AI Chief of Staff</div>
 </div>
 <div class="hud" id="clock"><div class="t">0h</div><div class="d">recovered</div></div>
-<div class="hud" id="cue"><div class="lbl">Scroll</div></div>
+<div class="hud" id="cue" aria-hidden="true"><div class="lbl">Scroll</div><div class="rail"></div></div>
 <div class="hud" id="hours">
   <div class="h" data-h="0">0h</div><div class="h" data-h="1">2h</div>
   <div class="h" data-h="2">4h</div><div class="h" data-h="3">6h</div>
