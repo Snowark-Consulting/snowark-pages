@@ -1483,15 +1483,18 @@
   :root{--sp-land:88px}
   @media (max-width:900px){:root{--sp-land:136px}}
 
-  /* dive (JS on, motion welcome): one sticky stage over ~240vh, landing on the next section */
-  html.sp-js .sp{height:240vh; height:240svh; margin-bottom:calc(-100vh + var(--sp-land,88px)); margin-bottom:calc(-100svh + var(--sp-land,88px)); pointer-events:none}
-  html.sp-js .sp__stage{position:sticky; top:0; height:100vh; height:100svh}
-  html.sp-js .sp__frame{height:100%; min-height:0}
+  /* dive (JS on, motion welcome): one sticky stage plus a fixed dive distance, landing on the next section.
+     The stage fills the LARGEST viewport (lvh) so no strip of the next section shows when a mobile URL bar
+     hides; the dive distance stays in svh so nothing re-measures when the bar toggles. The content frame
+     stays at the small viewport, so the logo and copy never sit under a visible URL bar. */
+  html.sp-js .sp{height:240vh; height:calc(140svh + 100lvh); margin-bottom:calc(-100vh + var(--sp-land,88px)); margin-bottom:calc(-100lvh + var(--sp-land,88px)); pointer-events:none}
+  html.sp-js .sp__stage{position:sticky; top:0; height:100vh; height:100lvh}
+  html.sp-js .sp__frame{height:100vh; height:100svh; min-height:0}
   html.sp-js .sp__frame a{pointer-events:auto}
   html.sp-js .sp__curtain{z-index:1; pointer-events:auto; --cx:50%; --cy:50%; --r:0px;
     -webkit-mask:radial-gradient(circle at var(--cx) var(--cy), transparent var(--r), #000 calc(var(--r) + 1px));
             mask:radial-gradient(circle at var(--cx) var(--cy), transparent var(--r), #000 calc(var(--r) + 1px))}
-  @media (max-width:900px){ html.sp-js .sp{height:230vh; height:230svh} }
+  @media (max-width:900px){ html.sp-js .sp{height:230vh; height:calc(130svh + 100lvh)} }
   /* no-JS / reduced-motion: keep the section nav visible, and clear it so the headline is never covered */
   @media (max-width:900px){
     html:not(.sp-js) .sp__frame{padding-top:calc(var(--nav-h,72px) + 48px + 32px)}
@@ -1566,7 +1569,7 @@
       </ul>
       <div class="sp__mark" data-sp-mark role="img" aria-label="SnowArk"><div class="sp__fill"></div></div>
       <div class="sp__foot">
-        <p class="sp__ask">Ready to get your time back?</p>
+        <p class="sp__ask">Ready to get your nights back?</p>
         <a class="sp__cue" href="#statement" data-sp-cue data-sp-fade><span class="rail" aria-hidden="true"></span><span class="label">Scroll to find out how</span></a>
       </div>
     </div>
@@ -2275,6 +2278,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
 <script>
   gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+  /* a mobile URL bar showing or hiding is not a real resize: don't re-measure every trigger mid-scroll */
+  ScrollTrigger.config({ ignoreMobileResize: true });
 
   var motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -2331,18 +2336,20 @@
           },
           end: '+=140%',
           pin: true,
-          scrub: 0.7,
-          invalidateOnRefresh: true
+          scrub: 0.7
+          /* no invalidateOnRefresh: it re-reads a from() tween's end values after they have been
+             set to the start state, so the words stayed dim. The start function is re-run on every
+             refresh anyway, and fromTo pins both ends explicitly. */
         }
       });
-      tl.from('#statement-text .w', {
-        opacity: 0.34,
+      tl.fromTo('#statement-text .w', { opacity: 0.34 }, {
+        opacity: 1,
         stagger: 0.03,
         ease: 'none'
       });
-      tl.from('#statement-close', {
-        opacity: 0,
-        y: 18,
+      tl.fromTo('#statement-close', { opacity: 0, y: 18 }, {
+        opacity: 1,
+        y: 0,
         duration: 2.4,
         ease: 'power2.out'
       });
@@ -2702,8 +2709,12 @@
     syncNav(p);
   }
 
+  /* the dive ends exactly where the stage stops sticking (section height minus stage height), whatever the
+     current URL bar state, so the statement pin always starts at the same pixel */
   var st = ScrollTrigger.create({
-    trigger: wrap, start: 'top top', end: 'bottom bottom', invalidateOnRefresh: true,
+    trigger: wrap, start: 'top top',
+    end: function () { return '+=' + Math.max(1, wrap.offsetHeight - stage.offsetHeight); },
+    invalidateOnRefresh: true,
     onRefresh: function (self) { measure(); render(self.progress); },
     onUpdate: function (self) { render(self.progress); }
   });
