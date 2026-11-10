@@ -1384,6 +1384,15 @@
         background: rgba(13, 143, 100, 0.12);
       }
     }
+    /* hide the section nav until the dive has landed; no-JS and reduced-motion keep current behaviour */
+    html.sp-js .section-nav{
+      opacity:0; pointer-events:none; visibility:hidden;
+      transition:opacity .45s ease, visibility 0s linear .45s;
+    }
+    html.sp-js.sp-nav-on .section-nav{
+      opacity:1; pointer-events:auto; visibility:visible;
+      transition:opacity .45s ease, visibility 0s;
+    }
 
     /* marquee moved into "What it is": full-bleed rows inside the 1100px container */
     .stack-marquee--what{width:100vw; margin:72px 0 8px calc(50% - 50vw); padding:0}
@@ -1444,20 +1453,16 @@
   @media (hover:hover){ .sp__cue:hover .label{background-size:100% 1px} }
   .sp__cue:focus-visible .label{background-size:100% 1px}
 
-  /* the mark: on the grid, right edge = header CTA's right edge, centred on headline + sub */
-  .sp__mark{grid-area:m; justify-self:end; align-self:center; position:relative; pointer-events:none;
-    width:clamp(220px,24vw,380px); aspect-ratio:1}
+  /* the mark: on desktop and tablet, a large bottom-right corner anchor that bleeds off the edges */
+  .sp__mark{--sp-mark:66svh; grid-area:auto; position:absolute; pointer-events:none;
+    width:var(--sp-mark); aspect-ratio:1;
+    right:calc(var(--sp-mark) * -.22); bottom:calc(var(--sp-mark) * -.18)}
   .sp__fill{position:absolute; inset:0;
     background:linear-gradient(100deg,var(--teal) 0%,var(--teal-lift) 34%,var(--green-lift) 58%,var(--green) 72%,var(--teal) 100%);
     background-size:200% 100%;
     -webkit-mask:var(--sp-icon) center / contain no-repeat; mask:var(--sp-icon) center / contain no-repeat;
     animation:sp-shimmer 9s ease-in-out infinite alternate}
   @keyframes sp-shimmer{from{background-position:0% 0} to{background-position:100% 0}}
-  .sp__pulse{position:absolute; left:var(--sp-u); top:var(--sp-v); width:26%; aspect-ratio:1; translate:-50% -50%}
-  .sp__pulse i{position:absolute; inset:0; border-radius:50%; border:1.5px solid var(--green); opacity:0;
-    animation:sp-in 3.2s cubic-bezier(.45,.05,.35,1) infinite}
-  .sp__pulse i + i{animation-delay:1.6s}
-  @keyframes sp-in{0%{scale:1;opacity:0}30%{opacity:.6}100%{scale:.3;opacity:0}}
 
   /* phone: text column on the 32px edge; the mark is a corner anchor cropped off the right edge,
      its bottom on the same 32px line as the scroll cue */
@@ -1474,22 +1479,39 @@
   }
   @media (max-width:380px){ .sp__head h1{font-size:2.3rem} }
 
-  /* dive (JS on, motion welcome): one sticky stage over ~160vh, landing on the next section */
-  html.sp-js .sp{height:160vh; height:160svh; margin-bottom:-100vh; margin-bottom:-100svh; pointer-events:none}
+  /* where the dive hands off to the pinned statement (header 72 + 16, or header + mobile nav ~46 + 18) */
+  :root{--sp-land:88px}
+  @media (max-width:900px){:root{--sp-land:136px}}
+
+  /* dive (JS on, motion welcome): one sticky stage over ~240vh, landing on the next section */
+  html.sp-js .sp{height:240vh; height:240svh; margin-bottom:calc(-100vh + var(--sp-land,88px)); margin-bottom:calc(-100svh + var(--sp-land,88px)); pointer-events:none}
   html.sp-js .sp__stage{position:sticky; top:0; height:100vh; height:100svh}
   html.sp-js .sp__frame{height:100%; min-height:0}
   html.sp-js .sp__frame a{pointer-events:auto}
   html.sp-js .sp__curtain{z-index:1; pointer-events:auto; --cx:50%; --cy:50%; --r:0px;
     -webkit-mask:radial-gradient(circle at var(--cx) var(--cy), transparent var(--r), #000 calc(var(--r) + 1px));
             mask:radial-gradient(circle at var(--cx) var(--cy), transparent var(--r), #000 calc(var(--r) + 1px))}
-  @media (max-width:900px){ html.sp-js .sp{height:150vh; height:150svh} }
+  @media (max-width:900px){ html.sp-js .sp{height:230vh; height:230svh} }
+  /* no-JS / reduced-motion: keep the section nav visible, and clear it so the headline is never covered */
+  @media (max-width:900px){
+    html:not(.sp-js) .sp__frame{padding-top:calc(var(--nav-h,72px) + 48px + 32px)}
+  }
   @media (prefers-reduced-motion:reduce){
-    .sp__fill,.sp__pulse i,.sp__cue .rail::after{animation:none}
-    .sp__pulse{display:none}
+    .sp__fill,.sp__cue .rail::after{animation:none}
     .sp__cue .rail::after{top:30%; opacity:1}
     .sp__trust img,.sp__cue .label{transition:none}
   }
 </style>
+<script>/* opt into the dive before first paint, only when motion is welcome */
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('sp-js');
+    if (location.hash === '#statement' || location.hash === '#top') {
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      window.__spPendingHash = location.hash;
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+  }
+</script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -1542,7 +1564,7 @@
         <li><img src="assets/tools/googleanalytics.svg" alt="Google Analytics" width="22" height="22"></li>
         <li><a href="#what">+19 more</a></li>
       </ul>
-      <div class="sp__mark" data-sp-mark role="img" aria-label="SnowArk"><div class="sp__fill"></div><div class="sp__pulse" data-sp-pulse aria-hidden="true"><i></i><i></i></div></div>
+      <div class="sp__mark" data-sp-mark role="img" aria-label="SnowArk"><div class="sp__fill"></div></div>
       <div class="sp__foot">
         <p class="sp__ask">Ready to get your time back?</p>
         <a class="sp__cue" href="#statement" data-sp-cue data-sp-fade><span class="rail" aria-hidden="true"></span><span class="label">Scroll to find out how</span></a>
@@ -1551,10 +1573,6 @@
     <div class="sp__curtain" data-sp-curtain aria-hidden="true"></div>
   </div>
 </div>
-<script>/* opt into the dive before first paint, only when motion is welcome */
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('sp-js');
-</script>
-
 <section class="statement" id="statement">
   <div class="container">
     <p class="eyebrow">The truth</p>
@@ -2306,11 +2324,15 @@
       var tl = gsap.timeline({
         scrollTrigger: {
           trigger: '.statement',
-          start: function() { return 'top ' + (window.matchMedia('(max-width: 720px)').matches ? 136 : 88); },
+          start: function() {
+            var land = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sp-land'));
+            if (!isFinite(land)) land = window.matchMedia('(max-width: 900px)').matches ? 136 : 88;
+            return 'top ' + land;
+          },
           end: '+=140%',
           pin: true,
           scrub: 0.7,
-          anticipatePin: 1
+          invalidateOnRefresh: true
         }
       });
       tl.from('#statement-text .w', {
@@ -2632,7 +2654,6 @@
   var trust = wrap.querySelector('.sp__trust');
   var cue = wrap.querySelector('[data-sp-cue]');
   var mark = wrap.querySelector('[data-sp-mark]');
-  var pulse = wrap.querySelector('[data-sp-pulse]');
   var curtain = wrap.querySelector('[data-sp-curtain]');
   var ask = wrap.querySelector('.sp__ask');
 
@@ -2652,24 +2673,33 @@
   var clamp = gsap.utils.clamp(0, 1);
   var inOut = gsap.parseEase('sine.inOut'), out = gsap.parseEase('power2.out'), soft = gsap.parseEase('power3.out');
 
+  var navOn = false;
+  function syncNav(p) {
+    var on = navOn ? p >= 0.96 : p >= 0.995;
+    if (on === navOn) return;
+    navOn = on;
+    html.classList.toggle('sp-nav-on', on);
+  }
+
   function render(p) {
-    var c = clamp(p / 0.04);                                       // cue, ask and rings leave at the first scroll
-    gsap.set([cue, pulse, ask], { opacity: 1 - c });
+    var c = clamp(p / 0.04);                                       // cue and ask leave at the first scroll
+    gsap.set([cue, ask], { opacity: 1 - c });
     cue.style.visibility = ask.style.visibility = c >= 1 ? 'hidden' : '';
     var q = soft(clamp(p / 0.22));                                 // headline unit leaves early, as one group
     gsap.set([head, trust], { opacity: 1 - q, y: -48 * q });
     trust.style.visibility = q >= 1 ? 'hidden' : '';
 
-    var z = inOut(clamp((p - 0.04) / 0.92));
+    var z = inOut(clamp((p - 0.05) / 0.95));                       // gradual zoom over almost the whole dive
     var s = Math.exp(Math.log(m.sEnd) * z);
-    gsap.set(mark, { scale: s, opacity: 1 - clamp((p - 0.62) / 0.3) });   // the strokes thin out as you pass through
+    gsap.set(mark, { scale: s, opacity: 1 - clamp((p - 0.70) / 0.28) });   // the strokes thin out as you pass through
 
-    var k = out(clamp((p - 0.14) / 0.40));
+    var k = out(clamp((p - 0.12) / 0.50));
     curtain.style.setProperty('--cx', (m.px + (m.cx - m.px) * s).toFixed(1) + 'px');
     curtain.style.setProperty('--cy', (m.py + (m.cy - m.py) * s).toFixed(1) + 'px');
     curtain.style.setProperty('--r', (m.R * s * k).toFixed(1) + 'px');
     curtain.style.pointerEvents = k >= 1 ? 'none' : '';
-    mark.style.visibility = curtain.style.visibility = p > 0.985 ? 'hidden' : '';
+    mark.style.visibility = curtain.style.visibility = p >= 1 ? 'hidden' : '';
+    syncNav(p);
   }
 
   var st = ScrollTrigger.create({
@@ -2678,6 +2708,31 @@
     onUpdate: function (self) { render(self.progress); }
   });
   measure(); render(st.progress);
+
+  function pendingHash() { return window.__spPendingHash || location.hash; }
+  function landHash() {
+    var hash = pendingHash();
+    if (hash === '#statement') window.scrollTo(0, st.end);
+    else if (hash === '#top') window.scrollTo(0, 0);
+    if (window.__spPendingHash) {
+      history.replaceState(null, '', window.__spPendingHash);
+      window.__spPendingHash = null;
+    }
+  }
+  /* one refresh after load, always measured at the top, then honour a pending #statement / #top */
+  window.addEventListener('load', function () {
+    requestAnimationFrame(function () {
+      var hash = pendingHash();
+      window.scrollTo(0, 0);
+      ScrollTrigger.update();
+      ScrollTrigger.refresh();
+      if (hash === '#statement' || hash === '#top') landHash();
+    });
+  });
+  window.addEventListener('hashchange', function () {
+    if (location.hash === '#statement') window.scrollTo(0, st.end);
+    else if (location.hash === '#top') window.scrollTo(0, 0);
+  });
 
   cue.addEventListener('click', function (e) { e.preventDefault(); window.scrollTo({ top: st.end, behavior: 'smooth' }); });
   wrap.addEventListener('focusin', function () { if (st.progress > 0.15) window.scrollTo(0, st.start); });
