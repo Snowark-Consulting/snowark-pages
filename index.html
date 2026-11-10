@@ -1384,117 +1384,110 @@
         background: rgba(13, 143, 100, 0.12);
       }
     }
+
+    /* marquee moved into "What it is": full-bleed rows inside the 1100px container */
+    .stack-marquee--what{width:100vw; margin:72px 0 8px calc(50% - 50vw); padding:0}
+    .stack-marquee--what .eyebrow{text-align:center; max-width:none}
   </style>
 <style>:root{--mist:rgba(233,231,227,.78)}</style>
 <style>
-  .sa-hero{
-    --sa-night:#071a1b; --sa-ink:#0b2021; --sa-teal:#174445; --sa-mist:#e9e7e3;
-    --sa-green:#0d8f64; --sa-green-lift:#4cc296;
-    --sa-ease:cubic-bezier(.165,.84,.44,1);
-    position:relative; isolation:isolate; overflow:hidden;
-    display:flex; align-items:flex-end;
-    min-height:100vh; min-height:100svh;
-    padding:calc(var(--nav-h,72px) + 48px) 0 clamp(96px,16vh,156px);
-    background:linear-gradient(180deg,var(--sa-night) 0%,var(--sa-ink) 40%,#113a3b 80%,var(--sa-teal) 100%);
-    color:rgba(233,231,227,.78);
+  .sp{
+    --sp-edge:32px;                         /* = header side padding */
+    --sp-ground:#fbfaf8;
+    --sp-icon:url('assets/logos/SnowArk-Icon-Black.svg');
+    --sp-u:65%; --sp-v:68.8%;               /* centre of the mark's lower gap (largest inscribed circle) */
+    position:relative; z-index:2;
   }
-  .sa-hero__inner{
-    position:relative; z-index:2; width:100%; max-width:1240px; margin:0 auto;
-    padding:0 clamp(24px,5vw,72px);
-    display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); column-gap:24px; align-items:end;
-  }
-  .sa-hero__copy{grid-column:1 / span 8}
-  .sa-hero h1{
-    font-family:'Cambo',Georgia,serif; font-weight:400; color:#fff;
-    font-size:clamp(2.45rem,5.6vw,4.9rem); line-height:1.04; letter-spacing:-.018em;
-    max-width:13.5em; text-wrap:balance; margin:0;
-  }
-  .sa-hero__sub{
-    font-family:'Lato',sans-serif; font-size:clamp(1.05rem,1.35vw,1.2rem); line-height:1.6;
-    color:rgba(233,231,227,.8); max-width:34ch; margin:28px 0 0; text-wrap:pretty;
-  }
-  .sa-hero__actions{display:flex; flex-wrap:wrap; align-items:center; gap:14px 28px; margin-top:40px}
-  .sa-hero__actions .btn{font-size:.95rem; padding:13px 26px}
-  .sa-hero__link{
-    font:400 .95rem/1.4 'Lato',sans-serif; color:var(--sa-mist); text-decoration:none;
-    padding:6px 0;
-    background:linear-gradient(var(--sa-green-lift) 0 0) left bottom / 100% 1px no-repeat;
-    transition:background-size .4s var(--sa-ease), color .25s;
-  }
-  @media (hover:hover){ .sa-hero__link:hover{background-size:100% 3px; color:#fff} }
-  .sa-hero__link:focus-visible{background-size:100% 3px; color:#fff}
-  .sa-hero a:focus-visible{outline:2px solid var(--sa-green-lift); outline-offset:4px; border-radius:4px}
-
-  /* The ledger: one number, one rail, one line. Hours recovered while the founder is away. */
-  .sa-hero__ledger{grid-column:10 / span 3; justify-self:end; text-align:right; padding-bottom:6px}
-  .sa-hero__readout{margin:0; display:flex; flex-direction:column; align-items:flex-end; gap:6px}
-  .sa-hero__num{
-    font-family:'Cambo',Georgia,serif; font-size:clamp(4rem,7.4vw,6.6rem); line-height:.9;
-    color:#fff; letter-spacing:-.03em; font-variant-numeric:tabular-nums;
-  }
-  .sa-hero__label{font:700 .72rem/1 'Lato',sans-serif; letter-spacing:.2em; text-transform:uppercase; color:rgba(233,231,227,.66)}
-  .sa-hero__rail{
-    position:relative; width:min(220px,100%); height:1px; margin:22px 0 0 auto;
-    background:rgba(233,231,227,.18); overflow:hidden;
-  }
-  .sa-hero__rail i{position:absolute; inset:0; background:var(--sa-green-lift); transform-origin:left center}
-  .sa-hero__done{
-    margin:14px 0 0; font:400 .82rem/1.5 'JetBrains Mono',ui-monospace,monospace; letter-spacing:.06em;
-    color:#8fe3c3;
-  }
-  .sa-hero__done .cur{
-    display:inline-block; width:.55em; height:1.05em; vertical-align:-.18em; margin-left:.3em;
-    background:var(--sa-green-lift); animation:sa-blink 1.05s steps(1) 4;
-  }
-  .sa-hero__caption{
-    margin:6px 0 0; font:italic 400 .95rem/1.5 'Lato',sans-serif; color:rgba(233,231,227,.7);
-  }
-  @keyframes sa-blink{50%{opacity:0}}
-
-  /* The horizon: first light along the bottom edge, where the page turns to day. */
-  .sa-hero__horizon{position:absolute; left:0; right:0; bottom:0; height:62%; z-index:1; pointer-events:none}
-  .sa-hero__glow{
-    position:absolute; left:-10%; right:-10%; bottom:-34%; height:100%;
+  .sp__stage{position:relative; overflow:hidden}
+  .sp__curtain{
+    position:absolute; inset:0; z-index:0;
     background:
-      radial-gradient(48% 58% at 70% 100%, rgba(233,231,227,.30), rgba(233,231,227,0) 70%),
-      radial-gradient(34% 44% at 80% 100%, rgba(76,194,150,.24), rgba(76,194,150,0) 72%);
+      radial-gradient(70% 55% at 80% 108%, rgba(233,231,227,.85), rgba(233,231,227,0) 70%),
+      linear-gradient(180deg,#ffffff 0%,var(--sp-ground) 100%);
   }
-  .sa-hero__line{
-    position:absolute; left:0; right:0; bottom:0; height:1px; transform-origin:left center;
-    background:linear-gradient(90deg, rgba(233,231,227,0) 0%, rgba(233,231,227,.5) 40%, rgba(143,227,195,.95) 76%, rgba(233,231,227,.35) 100%);
-    box-shadow:0 0 14px 1px rgba(76,194,150,.35);
+  /* one frame, one grid, one left edge */
+  .sp__frame{
+    position:relative; z-index:2; box-sizing:border-box;
+    min-height:100vh; min-height:100svh;
+    padding:calc(var(--nav-h,72px) + 48px) var(--sp-edge) 48px;
+    display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); column-gap:24px;
+    grid-template-rows:1fr auto auto 1fr auto;
+    grid-template-areas:
+      ". . . . . . . . . . . ."
+      "h h h h h h h . m m m m"
+      "t t t t t t t . . . . ."
+      ". . . . . . . . . . . ."
+      "c c c c c c c . . . . .";
   }
-  .sa-hero.is-done .sa-hero__glow{animation:sa-breathe 11s ease-in-out infinite alternate}
-  .sa-hero.is-off .sa-hero__glow{animation-play-state:paused}
-  @keyframes sa-breathe{from{opacity:.82; translate:0 0} to{opacity:1; translate:0 -10px}}
+  .sp__head{grid-area:h; align-self:center}
+  .sp__head h1{color:var(--teal); max-width:11em}      /* size, leading, tracking: the site's own h1 rule */
+  .sp__head .lead{color:rgba(20,30,30,.82); max-width:42ch; text-wrap:pretty}   /* site .lead: 1.15rem/1.7, 24px top */
+  .sp__trust{grid-area:t; margin:32px 0 0; padding:0; list-style:none; display:flex; align-items:center; flex-wrap:wrap; gap:12px 20px}
+  .sp__trust .lbl{font-size:.82rem; color:#5a6766; margin-right:4px}
+  .sp__trust img{width:22px; height:22px; object-fit:contain; display:block; filter:grayscale(1); opacity:.62;
+    transition:filter .3s ease, opacity .3s ease}
+  @media (hover:hover){ .sp__trust:hover img{filter:none; opacity:1} }
+  .sp__trust a{font-size:.82rem; color:#4f5d5c; text-decoration:underline; text-underline-offset:3px; text-decoration-color:rgba(23,68,69,.35)}
+  .sp__trust a:hover{color:var(--teal)}
 
-  /* JS-on, motion-on: start from night. Everything is visible if JS or GSAP never arrives. */
-  html.sa-hero-js .sa-hero:not(.is-done) [data-in]{opacity:0; animation:sa-failsafe 0s 3s forwards}
-  @keyframes sa-failsafe{to{opacity:1}}
-  .sa-hero .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0}
+  /* ask + scroll cue: one bottom group, same 32px left edge, related teal/green */
+  .sp__foot{grid-area:c; justify-self:start; align-self:end; display:flex; flex-direction:column; align-items:flex-start; gap:12px; max-width:100%}
+  .sp__ask{margin:0; font-size:1.15rem; line-height:1.7; color:rgba(20,30,30,.82); max-width:22em; text-wrap:pretty}
+  .sp__cue{display:inline-flex; align-items:center; gap:16px; padding:8px 0;
+    font-size:.72rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--green-ink)}
+  .sp__cue .rail{position:relative; width:1px; height:40px; background:rgba(23,68,69,.18); overflow:hidden}
+  .sp__cue .rail::after{content:""; position:absolute; left:0; top:-40%; width:1px; height:40%; background:var(--green);
+    animation:sp-fall 2.4s cubic-bezier(.45,.05,.35,1) infinite}
+  @keyframes sp-fall{0%{top:-40%;opacity:0}25%{opacity:1}80%{opacity:1}100%{top:100%;opacity:0}}
+  .sp__cue .label{background:linear-gradient(currentColor 0 0) left bottom / 0% 1px no-repeat; padding-bottom:4px;
+    transition:background-size .4s cubic-bezier(.165,.84,.44,1)}
+  @media (hover:hover){ .sp__cue:hover .label{background-size:100% 1px} }
+  .sp__cue:focus-visible .label{background-size:100% 1px}
 
-  /* Phone: composed for 390, offer and CTA above the fold, ledger becomes a strip. */
+  /* the mark: on the grid, right edge = header CTA's right edge, centred on headline + sub */
+  .sp__mark{grid-area:m; justify-self:end; align-self:center; position:relative; pointer-events:none;
+    width:clamp(220px,24vw,380px); aspect-ratio:1}
+  .sp__fill{position:absolute; inset:0;
+    background:linear-gradient(100deg,var(--teal) 0%,var(--teal-lift) 34%,var(--green-lift) 58%,var(--green) 72%,var(--teal) 100%);
+    background-size:200% 100%;
+    -webkit-mask:var(--sp-icon) center / contain no-repeat; mask:var(--sp-icon) center / contain no-repeat;
+    animation:sp-shimmer 9s ease-in-out infinite alternate}
+  @keyframes sp-shimmer{from{background-position:0% 0} to{background-position:100% 0}}
+  .sp__pulse{position:absolute; left:var(--sp-u); top:var(--sp-v); width:26%; aspect-ratio:1; translate:-50% -50%}
+  .sp__pulse i{position:absolute; inset:0; border-radius:50%; border:1.5px solid var(--green); opacity:0;
+    animation:sp-in 3.2s cubic-bezier(.45,.05,.35,1) infinite}
+  .sp__pulse i + i{animation-delay:1.6s}
+  @keyframes sp-in{0%{scale:1;opacity:0}30%{opacity:.6}100%{scale:.3;opacity:0}}
+
+  /* phone: text column on the 32px edge; the mark is a corner anchor cropped off the right edge,
+     its bottom on the same 32px line as the scroll cue */
   @media (max-width:900px){
-    .sa-hero{align-items:flex-start; padding:calc(var(--nav-h,72px) + 44px) 0 64px; min-height:auto}
-    .sa-hero__copy{grid-column:1 / -1}
-    .sa-hero__sub{margin-top:20px}
-    .sa-hero__actions{margin-top:30px}
-    .sa-hero__ledger{
-      grid-column:1 / -1; justify-self:stretch; text-align:left; margin-top:52px; padding:0;
-      display:grid; grid-template-columns:auto 1fr; column-gap:18px; align-items:end;
+    .sp__frame{
+      padding-top:calc(var(--nav-h,72px) + 32px); padding-bottom:var(--sp-edge);
+      grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto 1fr auto;
+      grid-template-areas:"h" "t" "." "c";
     }
-    .sa-hero__readout{grid-row:1 / span 2; align-items:flex-start}
-    .sa-hero__num{font-size:3.6rem}
-    .sa-hero__rail{grid-column:2; width:100%; margin:0 0 10px}
-    .sa-hero__done{grid-column:2; margin:0; font-size:.76rem}
-    .sa-hero__caption{grid-column:1 / -1; margin-top:16px}
-    .sa-hero__horizon{height:44%}
+    .sp__head{align-self:start}
+    .sp__foot{max-width:calc(100% - min(58vw,230px) * 0.84 + 16px)}
+    .sp__ask{font-size:1.05rem}
+    .sp__mark{position:absolute; grid-area:auto; width:min(58vw,230px); right:calc(min(58vw,230px) * -.16); bottom:var(--sp-edge)}
   }
-  @media (max-width:380px){ .sa-hero h1{font-size:2.2rem} }
+  @media (max-width:380px){ .sp__head h1{font-size:2.3rem} }
+
+  /* dive (JS on, motion welcome): one sticky stage over ~160vh, landing on the next section */
+  html.sp-js .sp{height:160vh; height:160svh; margin-bottom:-100vh; margin-bottom:-100svh; pointer-events:none}
+  html.sp-js .sp__stage{position:sticky; top:0; height:100vh; height:100svh}
+  html.sp-js .sp__frame{height:100%; min-height:0}
+  html.sp-js .sp__frame a{pointer-events:auto}
+  html.sp-js .sp__curtain{z-index:1; pointer-events:auto; --cx:50%; --cy:50%; --r:0px;
+    -webkit-mask:radial-gradient(circle at var(--cx) var(--cy), transparent var(--r), #000 calc(var(--r) + 1px));
+            mask:radial-gradient(circle at var(--cx) var(--cy), transparent var(--r), #000 calc(var(--r) + 1px))}
+  @media (max-width:900px){ html.sp-js .sp{height:150vh; height:150svh} }
   @media (prefers-reduced-motion:reduce){
-    .sa-hero__done .cur{animation:none}
-    .sa-hero .sa-hero__glow{animation:none!important}
-    .sa-hero__link{transition:none}
+    .sp__fill,.sp__pulse i,.sp__cue .rail::after{animation:none}
+    .sp__pulse{display:none}
+    .sp__cue .rail::after{top:30%; opacity:1}
+    .sp__trust img,.sp__cue .label{transition:none}
   }
 </style>
 </head>
@@ -1504,7 +1497,7 @@
 
 
 <!-- ═══════════════ NAV ═══════════════ -->
-<header id="header">
+<header id="header" class="scrolled">
   <a class="nav-logo" href="#top" aria-label="SnowArk home">
     <img class="logo-white" src="assets/logos/SnowArk-White.png" alt="SnowArk" width="106" height="20">
     <img class="logo-dark" src="assets/logos/SnowArk-Black.png" alt="SnowArk" width="106" height="20">
@@ -1532,48 +1525,35 @@
 </nav>
 
 <main id="main">
-<section class="sa-hero" id="top" aria-labelledby="sa-hero-title">
-  <div class="sa-hero__inner">
-    <div class="sa-hero__copy">
-      <h1 id="sa-hero-title" data-in>I deploy an AI chief of staff into your business.</h1>
-      <p class="sa-hero__sub" data-in>It connects to the tools you already run, works while you sleep, and gets smarter every day.</p>
-      <div class="sa-hero__actions" data-in>
-        <a class="btn btn-primary" href="#contact">Book a chat</a>
-        <a class="sa-hero__link" href="#plan">See how I work</a>
+<div class="sp" id="top">
+  <div class="sp__stage">
+    <div class="sp__frame">
+      <div class="sp__head" data-sp-fade>
+        <h1>I deploy an AI chief of staff into your business.</h1>
+        <p class="lead">It connects to the tools you already run, works while you sleep, and gets smarter every day.</p>
+      </div>
+      <ul class="sp__trust" data-sp-fade aria-label="Works with the tools you already run">
+        <li class="lbl" aria-hidden="true">Works with</li>
+        <li><img src="assets/tools/xero.svg" alt="Xero" width="22" height="22"></li>
+        <li><img src="assets/tools/shopify.svg" alt="Shopify" width="22" height="22"></li>
+        <li><img src="assets/tools/hubspot.svg" alt="HubSpot" width="22" height="22"></li>
+        <li><img src="assets/tools/gmail.svg" alt="Gmail" width="22" height="22"></li>
+        <li><img src="assets/tools/slack.svg" alt="Slack" width="22" height="22"></li>
+        <li><img src="assets/tools/googleanalytics.svg" alt="Google Analytics" width="22" height="22"></li>
+        <li><a href="#what">+19 more</a></li>
+      </ul>
+      <div class="sp__mark" data-sp-mark role="img" aria-label="SnowArk"><div class="sp__fill"></div><div class="sp__pulse" data-sp-pulse aria-hidden="true"><i></i><i></i></div></div>
+      <div class="sp__foot">
+        <p class="sp__ask">Ready to get your time back?</p>
+        <a class="sp__cue" href="#statement" data-sp-cue data-sp-fade><span class="rail" aria-hidden="true"></span><span class="label">Scroll to find out how</span></a>
       </div>
     </div>
-    <div class="sa-hero__ledger" data-in>
-      <p class="sa-hero__readout">
-        <span class="sa-hero__num" data-hours aria-hidden="true">8h</span>
-        <span class="sa-hero__label"><span class="sr-only">8 hours </span>recovered</span>
-      </p>
-      <div class="sa-hero__rail" aria-hidden="true"><i data-rail></i></div>
-      <p class="sa-hero__done" aria-hidden="true" data-done>done.<span class="cur"></span></p>
-      <p class="sa-hero__caption">Work finishes before you arrive.</p>
-    </div>
+    <div class="sp__curtain" data-sp-curtain aria-hidden="true"></div>
   </div>
-  <div class="sa-hero__horizon" aria-hidden="true">
-    <div class="sa-hero__glow" data-glow></div>
-    <div class="sa-hero__line" data-line></div>
-  </div>
-</section>
-<script>/* runs inline, before paint of the hero: opt into the intro only when motion is welcome */
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('sa-hero-js');
+</div>
+<script>/* opt into the dive before first paint, only when motion is welcome */
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('sp-js');
 </script>
-
-<section class="stack-marquee" aria-label="Platforms your agent connects to">
-  <p class="eyebrow">Connects to the tools you already run</p>
-  <div class="m-row left">
-    <div class="m-track">
-      <span class="m-pill"><img src="assets/tools/shopify.svg" alt="" width="24" height="24">Shopify</span><span class="m-pill"><img src="assets/tools/hubspot.svg" alt="" width="24" height="24">HubSpot</span><span class="m-pill"><img src="assets/tools/klaviyo.png" alt="" width="64" height="64">Klaviyo</span><span class="m-pill"><img src="assets/tools/googleanalytics.svg" alt="" width="24" height="24">Google Analytics</span><span class="m-pill"><img src="assets/tools/googleads.svg" alt="" width="24" height="24">Google Ads</span><span class="m-pill"><img src="assets/tools/meta.svg" alt="" width="24" height="24">Meta Ads</span><span class="m-pill"><img src="assets/tools/googlesearchconsole.svg" alt="" width="24" height="24">Search Console</span><span class="m-pill"><img src="assets/tools/asana.svg" alt="" width="24" height="24">Asana</span><span class="m-pill"><img src="assets/tools/netsuite.png" alt="" width="48" height="48">NetSuite</span><span class="m-pill"><img src="assets/tools/airtable.svg" alt="" width="24" height="24">Airtable</span><span class="m-pill"><img src="assets/tools/trello.svg" alt="" width="24" height="24">Trello</span><span class="m-pill"><img src="assets/tools/googledocs.svg" alt="" width="24" height="24">Google Docs</span>
-    </div>
-  </div>
-  <div class="m-row right">
-    <div class="m-track">
-      <span class="m-pill"><img src="assets/tools/xero.svg" alt="" width="24" height="24">Xero</span><span class="m-pill"><img src="assets/tools/gmail.svg" alt="" width="24" height="24">Gmail</span><span class="m-pill"><img src="assets/tools/googlechat.svg" alt="" width="24" height="24">Google Chat</span><span class="m-pill"><img src="assets/tools/slack.svg" alt="" width="24" height="24">Slack</span><span class="m-pill"><img src="assets/tools/discord.svg" alt="" width="24" height="24">Discord</span><span class="m-pill"><img src="assets/tools/aircall.svg" alt="" width="24" height="24">Aircall</span><span class="m-pill"><img src="assets/tools/supabase.svg" alt="" width="24" height="24">Supabase</span><span class="m-pill"><img src="assets/tools/cloudflare.svg" alt="" width="24" height="24">Cloudflare</span><span class="m-pill"><img src="assets/tools/github.svg" alt="" width="24" height="24">GitHub</span><span class="m-pill"><img src="assets/tools/monday.svg" alt="" width="24" height="24">Monday.com</span><span class="m-pill"><img src="assets/tools/wordpress.svg" alt="" width="24" height="24">WordPress</span><span class="m-pill"><img src="assets/tools/googlesheets.svg" alt="" width="24" height="24">Google Sheets</span><span class="m-pill"><img src="assets/tools/googledrive.svg" alt="" width="24" height="24">Google Drive</span>
-    </div>
-  </div>
-</section>
 
 <section class="statement" id="statement">
   <div class="container">
@@ -1958,6 +1938,20 @@
       </div>
     </div>
 
+<div class="stack-marquee stack-marquee--what" aria-label="Platforms your agent connects to">
+  <p class="eyebrow">Connects to the tools you already run</p>
+  <div class="m-row left">
+    <div class="m-track">
+      <span class="m-pill"><img src="assets/tools/shopify.svg" alt="" width="24" height="24">Shopify</span><span class="m-pill"><img src="assets/tools/hubspot.svg" alt="" width="24" height="24">HubSpot</span><span class="m-pill"><img src="assets/tools/klaviyo.png" alt="" width="64" height="64">Klaviyo</span><span class="m-pill"><img src="assets/tools/googleanalytics.svg" alt="" width="24" height="24">Google Analytics</span><span class="m-pill"><img src="assets/tools/googleads.svg" alt="" width="24" height="24">Google Ads</span><span class="m-pill"><img src="assets/tools/meta.svg" alt="" width="24" height="24">Meta Ads</span><span class="m-pill"><img src="assets/tools/googlesearchconsole.svg" alt="" width="24" height="24">Search Console</span><span class="m-pill"><img src="assets/tools/asana.svg" alt="" width="24" height="24">Asana</span><span class="m-pill"><img src="assets/tools/netsuite.png" alt="" width="48" height="48">NetSuite</span><span class="m-pill"><img src="assets/tools/airtable.svg" alt="" width="24" height="24">Airtable</span><span class="m-pill"><img src="assets/tools/trello.svg" alt="" width="24" height="24">Trello</span><span class="m-pill"><img src="assets/tools/googledocs.svg" alt="" width="24" height="24">Google Docs</span>
+    </div>
+  </div>
+  <div class="m-row right">
+    <div class="m-track">
+      <span class="m-pill"><img src="assets/tools/xero.svg" alt="" width="24" height="24">Xero</span><span class="m-pill"><img src="assets/tools/gmail.svg" alt="" width="24" height="24">Gmail</span><span class="m-pill"><img src="assets/tools/googlechat.svg" alt="" width="24" height="24">Google Chat</span><span class="m-pill"><img src="assets/tools/slack.svg" alt="" width="24" height="24">Slack</span><span class="m-pill"><img src="assets/tools/discord.svg" alt="" width="24" height="24">Discord</span><span class="m-pill"><img src="assets/tools/aircall.svg" alt="" width="24" height="24">Aircall</span><span class="m-pill"><img src="assets/tools/supabase.svg" alt="" width="24" height="24">Supabase</span><span class="m-pill"><img src="assets/tools/cloudflare.svg" alt="" width="24" height="24">Cloudflare</span><span class="m-pill"><img src="assets/tools/github.svg" alt="" width="24" height="24">GitHub</span><span class="m-pill"><img src="assets/tools/monday.svg" alt="" width="24" height="24">Monday.com</span><span class="m-pill"><img src="assets/tools/wordpress.svg" alt="" width="24" height="24">WordPress</span><span class="m-pill"><img src="assets/tools/googlesheets.svg" alt="" width="24" height="24">Google Sheets</span><span class="m-pill"><img src="assets/tools/googledrive.svg" alt="" width="24" height="24">Google Drive</span>
+    </div>
+  </div>
+</div>
+
     <p class="ownership-note reveal">Everything I build stays with you. Your IP, your infrastructure, your agent. I keep it running for as long as you want me. You own it outright.</p>
   </div>
 </section>
@@ -2262,53 +2256,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
 <script>
-(function () {
-  var hero = document.querySelector('.sa-hero');
-  if (!hero) return;
-  var num  = hero.querySelector('[data-hours]');
-  var rail = hero.querySelector('[data-rail]');
-  var line = hero.querySelector('[data-line]');
-  var glow = hero.querySelector('[data-glow]');
-  var done = hero.querySelector('[data-done]');
-  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function finish() {
-    hero.classList.add('is-done');
-    num.textContent = '8h';
-    if (window.gsap) gsap.set([rail, line, glow, done], { clearProps: 'all' });
-  }
-  if (reduced || !window.gsap) { finish(); return; }
-
-  /* One driver: p goes 0 to 1 once, and every part of the ledger reads from it. */
-  var s = { p: 0 };
-  function apply() {
-    num.textContent = Math.round(s.p * 8) + 'h';
-    gsap.set(rail, { scaleX: s.p });
-    gsap.set(line, { scaleX: 0.08 + s.p * 0.92 });
-    gsap.set(glow, { opacity: s.p });
-  }
-  apply();
-  gsap.set(done, { opacity: 0 });
-
-  var items = hero.querySelectorAll('[data-in]');
-  var tl = gsap.timeline({ defaults: { ease: 'expo.out' }, onComplete: function () { hero.classList.add('is-done'); } });
-  tl.fromTo(items, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.1, stagger: 0.08, clearProps: 'transform' }, 0.1)
-    .to(s, { p: 1, duration: 1.9, ease: 'power2.inOut', onUpdate: apply }, 0.35)
-    .to(done, { opacity: 1, duration: 0.4, ease: 'power3.out' }, 2.2);
-  /* the intro never blocks: scrolling or a click before 2.6 s jumps to the end frame */
-  var skip = function () { if (tl.progress() < 1) tl.progress(1); };
-  addEventListener('wheel', skip, { once: true, passive: true });
-  addEventListener('touchstart', skip, { once: true, passive: true });
-  addEventListener('keydown', skip, { once: true });
-
-  /* the ambient glow pauses while the hero is off screen */
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (e) { hero.classList.toggle('is-off', !e[0].isIntersecting); }).observe(hero);
-  }
-})();
-</script>
-
-<script>
   gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
   var motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2327,11 +2274,6 @@
     if (track) track.innerHTML += track.innerHTML;
   })();
 
-  /* Header scroll state */
-  var header = document.getElementById('header');
-  window.addEventListener('scroll', function() {
-    header.classList.toggle('scrolled', window.scrollY > 60);
-  }, { passive: true });
 
   if (motionOK) {
 
@@ -2674,6 +2616,73 @@
       });
     });
   })();
+</script>
+
+<script>
+(function () {
+  var wrap = document.querySelector('.sp');
+  if (!wrap) return;
+  var html = document.documentElement;
+  if (!html.classList.contains('sp-js')) return;
+  if (!window.gsap || !window.ScrollTrigger) { html.classList.remove('sp-js'); return; }
+  gsap.registerPlugin(ScrollTrigger);
+
+  var stage = wrap.querySelector('.sp__stage');
+  var head = wrap.querySelector('.sp__head');
+  var trust = wrap.querySelector('.sp__trust');
+  var cue = wrap.querySelector('[data-sp-cue]');
+  var mark = wrap.querySelector('[data-sp-mark]');
+  var pulse = wrap.querySelector('[data-sp-pulse]');
+  var curtain = wrap.querySelector('[data-sp-curtain]');
+  var ask = wrap.querySelector('.sp__ask');
+
+  var U = 0.65, V = 0.688, CLEAR = 0.14;   // gap centre and its clear radius, fractions of the mark width
+  var m = {};
+  function measure() {
+    gsap.set(mark, { scale: 1 });
+    var s = stage.getBoundingClientRect(), b = mark.getBoundingClientRect(), w = b.width;
+    m.px = b.left - s.left + U * w;  m.py = b.top - s.top + V * w;
+    m.cx = b.left - s.left + w / 2;  m.cy = b.top - s.top + w / 2;
+    m.R = w * 0.5;
+    var far = Math.max(Math.hypot(m.px, m.py), Math.hypot(s.width - m.px, m.py),
+                       Math.hypot(m.px, s.height - m.py), Math.hypot(s.width - m.px, s.height - m.py));
+    m.sEnd = (far / (CLEAR * w)) * 1.08;
+    gsap.set(mark, { transformOrigin: (U * 100) + '% ' + (V * 100) + '%' });
+  }
+  var clamp = gsap.utils.clamp(0, 1);
+  var inOut = gsap.parseEase('sine.inOut'), out = gsap.parseEase('power2.out'), soft = gsap.parseEase('power3.out');
+
+  function render(p) {
+    var c = clamp(p / 0.04);                                       // cue, ask and rings leave at the first scroll
+    gsap.set([cue, pulse, ask], { opacity: 1 - c });
+    cue.style.visibility = ask.style.visibility = c >= 1 ? 'hidden' : '';
+    var q = soft(clamp(p / 0.22));                                 // headline unit leaves early, as one group
+    gsap.set([head, trust], { opacity: 1 - q, y: -48 * q });
+    trust.style.visibility = q >= 1 ? 'hidden' : '';
+
+    var z = inOut(clamp((p - 0.04) / 0.92));
+    var s = Math.exp(Math.log(m.sEnd) * z);
+    gsap.set(mark, { scale: s, opacity: 1 - clamp((p - 0.62) / 0.3) });   // the strokes thin out as you pass through
+
+    var k = out(clamp((p - 0.14) / 0.40));
+    curtain.style.setProperty('--cx', (m.px + (m.cx - m.px) * s).toFixed(1) + 'px');
+    curtain.style.setProperty('--cy', (m.py + (m.cy - m.py) * s).toFixed(1) + 'px');
+    curtain.style.setProperty('--r', (m.R * s * k).toFixed(1) + 'px');
+    curtain.style.pointerEvents = k >= 1 ? 'none' : '';
+    mark.style.visibility = curtain.style.visibility = p > 0.985 ? 'hidden' : '';
+  }
+
+  var st = ScrollTrigger.create({
+    trigger: wrap, start: 'top top', end: 'bottom bottom', invalidateOnRefresh: true,
+    onRefresh: function (self) { measure(); render(self.progress); },
+    onUpdate: function (self) { render(self.progress); }
+  });
+  measure(); render(st.progress);
+
+  cue.addEventListener('click', function (e) { e.preventDefault(); window.scrollTo({ top: st.end, behavior: 'smooth' }); });
+  wrap.addEventListener('focusin', function () { if (st.progress > 0.15) window.scrollTo(0, st.start); });
+  window.__spHero = st;
+})();
 </script>
 
 <script>
