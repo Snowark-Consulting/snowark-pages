@@ -115,10 +115,6 @@
       border: 1px solid var(--glass-line);
       box-shadow: none;
     }
-    .hero-badge {
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
 
     /* ══════════════ Nav ══════════════ */
     header {
@@ -260,62 +256,6 @@
       position: absolute; inset: 0; pointer-events: none; opacity: 0.05;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
-
-    /* ══════════════ Hero ══════════════ */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: calc(var(--nav-h) + 40px) 24px 80px;
-    }
-    .hero-net { position: absolute; inset: 0; opacity: 0.55; pointer-events: none; }
-    .hero-content { position: relative; max-width: 880px; margin: 0 auto; }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.78rem;
-      color: rgba(233, 231, 227, 0.8);
-      padding: 8px 18px;
-      border-radius: 999px;
-      margin-bottom: 36px;
-    }
-    .hero-badge .dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--green-lift);
-      box-shadow: 0 0 10px var(--green-lift);
-      animation: pulse 2.6s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
-    .hero-sub {
-      font-size: 1.2rem;
-      line-height: 1.65;
-      color: var(--text);
-      max-width: 620px;
-      margin: 28px auto 44px;
-    }
-    .hero-ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .scroll-cue {
-      position: absolute;
-      bottom: 36px; left: 50%;
-      transform: translateX(-50%);
-      width: 24px; height: 38px;
-      border: 1.5px solid rgba(233, 231, 227, 0.3);
-      border-radius: 14px;
-    }
-    .scroll-cue::after {
-      content: '';
-      position: absolute;
-      top: 7px; left: 50%;
-      width: 3px; height: 8px;
-      margin-left: -1.5px;
-      border-radius: 2px;
-      background: var(--green-lift);
-      animation: cue 2.2s ease-in-out infinite;
-    }
-    @keyframes cue { 0% { transform: translateY(0); opacity: 1; } 70% { transform: translateY(12px); opacity: 0; } 100% { opacity: 0; } }
 
     /* ══════════════ Stack marquee ══════════════ */
     .stack-marquee { padding: 56px 0 64px; overflow: hidden; }
@@ -1444,173 +1384,120 @@
         background: rgba(13, 143, 100, 0.12);
       }
     }
+
+    /* marquee moved into "What it is": full-bleed rows inside the 1100px container */
+    .stack-marquee--what{width:100vw; margin:72px 0 8px calc(50% - 50vw); padding:0}
+    .stack-marquee--what .eyebrow{text-align:center; max-width:none}
   </style>
+<style>:root{--mist:rgba(233,231,227,.78)}</style>
 <style>
-  :root{
-    --teal:#174445; --green:#0d8f64; --green-lift:#4cc296; --teal-soft:#7fb8b9;
-    --ink:#0e2929; --night:#041113; --dawn:#f4f1ea; --mist:rgba(233,231,227,.78);
-    --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  .sp{
+    --sp-edge:32px;                         /* = header side padding */
+    --sp-ground:#fbfaf8;
+    --sp-icon:url('assets/logos/SnowArk-Icon-Black.svg');
+    --sp-u:65%; --sp-v:68.8%;               /* centre of the mark's lower gap (largest inscribed circle) */
+    position:relative; z-index:2;
   }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scrollbar-width:thin;scrollbar-color:#123a3b #041113}
-  body{background:var(--night);color:var(--mist);font-family:Lato,sans-serif;overflow-x:hidden}
-  html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}
-
-  #gl{position:fixed;inset:0;width:100%;height:100vh;height:100lvh;display:block;z-index:0}
-
-  /* ---------- fixed chrome ---------- */
-  .hud{position:fixed;z-index:6;pointer-events:none}
-  .hud a{pointer-events:auto}
-  #brand{top:28px;left:32px}
-  #brand .mark{height:22px;width:auto;display:block}
-  #brand .sub{font:400 11.5px/1 Lato;letter-spacing:.14em;color:var(--teal-soft);margin-top:8px;opacity:.9}
-  #clock{top:28px;right:32px;text-align:right;font-family:var(--mono);color:var(--teal-soft)}
-  #clock .t{font-size:13px;letter-spacing:.18em;color:#e9e7e3}
-  #clock .d{font-size:10px;letter-spacing:.12em;opacity:.6;margin-top:6px}
-  #cue{bottom:calc(30px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);text-align:center;transition:opacity .6s}
-  #cue .lbl{font:700 10px/1 Lato;letter-spacing:.32em;text-transform:uppercase;
-       color:var(--teal-soft);opacity:.62;margin-bottom:12px;text-indent:.32em;
-       animation:cuebreathe 2.6s ease-in-out infinite}
-  @keyframes cuebreathe{0%,100%{opacity:.5}50%{opacity:.9}}
-  /* A single green light travelling down a hairline rail: the motion draws the eye,
-     the rail and label keep it quiet enough for a premium hero. */
-  #cue .rail{position:relative;width:1px;height:34px;margin:0 auto;overflow:hidden;
-       background:linear-gradient(180deg,rgba(233,231,227,0) 0%,rgba(233,231,227,.35) 45%,rgba(233,231,227,0) 100%)}
-  #cue .rail::after{content:"";position:absolute;left:-1px;top:-34%;width:3px;height:34%;
-       border-radius:2px;background:var(--green-lift);box-shadow:0 0 8px rgba(76,194,150,.75);
-       animation:cuefall 2.3s cubic-bezier(.45,.05,.35,1) infinite}
-  @keyframes cuefall{0%{top:-34%;opacity:0}22%{opacity:1}78%{opacity:1}100%{top:100%;opacity:0}}
-  #hours{bottom:96px;right:34px;text-align:right;font-family:var(--mono)}
-  #hours .h{font-size:11px;letter-spacing:.22em;color:var(--teal-soft);opacity:.28;margin-top:10px;transition:all .5s}
-  #hours .h.on{opacity:1;color:var(--green-lift)}
-
-  /* ---------- beats ---------- */
-  .beat{position:fixed;z-index:5;opacity:0;pointer-events:none;max-width:min(560px,80vw)}
-  .beat .eyebrow{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;
-     color:var(--green-lift);opacity:.9;margin-bottom:14px}
-  .beat h2{font:400 clamp(1.55rem,3.4vw,2.7rem)/1.14 Cambo;color:#fff;text-wrap:balance;
-     text-shadow:0 1px 3px rgba(2,10,11,.9),0 2px 26px rgba(2,10,11,.75)}
-  .beat p{font:italic 400 clamp(.88rem,1.25vw,1rem)/1.6 Lato;color:#cfe0da;margin-top:10px;max-width:30em;text-wrap:pretty;
-     text-shadow:0 1px 3px rgba(2,10,11,.9),0 2px 18px rgba(2,10,11,.7)}
-  .beat::before{content:"";position:absolute;inset:-34% -22%;z-index:-1;pointer-events:none;
-     background:radial-gradient(closest-side,rgba(3,12,14,.52),rgba(3,12,14,0) 72%)}
-  #beat0{left:8vw;bottom:14vh;max-width:min(520px,84vw)}
-  #beat0 h1{font:400 clamp(1.55rem,3.4vw,2.7rem)/1.14 Cambo;color:#fff;text-wrap:balance;
-     text-shadow:0 1px 3px rgba(2,10,11,.9),0 2px 26px rgba(2,10,11,.75)}
-  #beat0 .beat0-sub{font:italic 400 clamp(.95rem,1.5vw,1.15rem)/1.6 Lato;color:#cfe0da;margin-top:14px;max-width:30em;text-wrap:pretty;
-     text-shadow:0 1px 3px rgba(2,10,11,.9),0 2px 18px rgba(2,10,11,.7)}
-  #beat0 .eyebrow,#beat5 .eyebrow{margin-bottom:10px}
-  
-  #beat1{left:8vw;bottom:18vh}
-  #beat2{right:8vw;top:22vh;text-align:right}
-  #beat2 p{margin-left:auto}
-  #beat3{left:8vw;top:20vh}
-  #beat4{right:8vw;bottom:24vh;text-align:right}
-  #beat4 p{margin-left:auto}
-  #beat5{left:50%;top:31%;transform:translate(-50%,-50%);text-align:center;max-width:90vw}
-  #beat5 h2{font-size:clamp(2.05rem,5vw,3.7rem)}
-
-  .term{position:fixed;z-index:5;font-family:var(--mono);color:#7fe9c0;opacity:0;pointer-events:none;
-     text-shadow:0 1px 3px rgba(2,10,11,.95),0 0 22px rgba(2,10,11,.8)}
-  #counter{left:8vw;top:calc(20vh + 1em);margin-top:clamp(9rem,15vw,11.5rem);font-size:clamp(.78rem,1.1vw,.92rem);letter-spacing:.1em}
-  #counter .dim{color:var(--teal-soft);opacity:.75}
-  #doneline{right:8vw;bottom:calc(24vh - 3.1em);font-size:clamp(.8rem,1.2vw,.95rem);letter-spacing:.12em;text-align:right}
-  #doneline .cur{display:inline-block;width:.62em;height:1.15em;vertical-align:-.2em;background:var(--green-lift);margin-left:.35em;animation:blink 1.05s steps(1) infinite}
-  #doneline.still .cur{animation:none;opacity:.9}
-  @keyframes blink{50%{opacity:0}}
-
-  /* ---------- dawn + burn ---------- */
-  #dawn{position:fixed;inset:0;z-index:7;pointer-events:none;opacity:0;
-        background:linear-gradient(180deg,#f6f3ec 0%,#f4f1ea 55%,#ece8df 100%)}
-  #burn{position:fixed;z-index:8;left:50%;top:46%;transform:translate(-50%,-50%);text-align:center;opacity:0;pointer-events:none}
-
-  #burn .tag{font:italic 400 clamp(1.2rem,2.1vw,1.65rem)/1.6 Lato;color:#2e3b3a;max-width:24em;text-wrap:balance}
-
-  /* ---------- track + landing ---------- */
-  #track{height:1025vh;height:1025svh}
-  #landing{position:relative;z-index:9;background:var(--dawn);color:var(--ink);
-           min-height:92vh;display:flex;align-items:center;justify-content:center;text-align:center}
-  #landing .inner{max-width:640px;padding:96px 28px}
-  #landing h2{font:400 clamp(2rem,4.6vw,3.2rem)/1.15 Cambo;text-wrap:balance}
-  #landing p{font:400 1.05rem/1.7 Lato;color:#3d4a49;margin-top:20px;text-wrap:pretty}
-  #landing .cta{display:inline-block;margin-top:36px;padding:16px 34px;border-radius:999px;
-     background:var(--teal);color:#fff;font:700 .95rem Lato;letter-spacing:.06em;text-decoration:none;
-     transition:transform .25s,box-shadow .25s;box-shadow:0 14px 40px rgba(14,41,41,.18)}
-  #landing .cta:hover{transform:translateY(-2px);box-shadow:0 20px 50px rgba(14,41,41,.26)}
-  #landing .quiet{display:block;margin-top:22px;font-size:.85rem;color:#6b7776}
-
-  /* ---------- film finish ---------- */
-  #vignette{position:fixed;inset:0;z-index:4;pointer-events:none;
-    background:radial-gradient(ellipse at 50% 46%,transparent 52%,rgba(2,10,11,.55) 100%)}
-  #grain{position:fixed;inset:-60px;z-index:4;pointer-events:none;opacity:.055;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.8'/%3E%3C/svg%3E")}
-
-  @media (max-width:720px){
-    #beat1,#beat3{left:6vw}#beat2,#beat4{right:6vw}
-    #hours{display:none}
-    #counter{margin-top:14rem}
-    #doneline{bottom:calc(24vh - 4.2em)}
-    /* Touch screens have no mouse, so the cue leads with the travelling light on a
-       taller rail and a brighter label than desktop: legible at arm's length. */
-    #cue{bottom:calc(38px + env(safe-area-inset-bottom))}
-    #cue .lbl{font-size:11px;opacity:.75;margin-bottom:14px}
-    #cue .rail{height:46px}
-    #cue .rail::after{width:4px;left:-1.5px;height:32%}
+  .sp__stage{position:relative; overflow:hidden}
+  .sp__curtain{
+    position:absolute; inset:0; z-index:0;
+    background:
+      radial-gradient(70% 55% at 80% 108%, rgba(233,231,227,.85), rgba(233,231,227,0) 70%),
+      linear-gradient(180deg,#ffffff 0%,var(--sp-ground) 100%);
   }
+  /* one frame, one grid, one left edge */
+  .sp__frame{
+    position:relative; z-index:2; box-sizing:border-box;
+    min-height:100vh; min-height:100svh;
+    padding:calc(var(--nav-h,72px) + 48px) var(--sp-edge) 48px;
+    display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); column-gap:24px;
+    grid-template-rows:1fr auto auto 1fr auto;
+    grid-template-areas:
+      ". . . . . . . . . . . ."
+      "h h h h h h h . m m m m"
+      "t t t t t t t . . . . ."
+      ". . . . . . . . . . . ."
+      "c c c c c c c . . . . .";
+  }
+  .sp__head{grid-area:h; align-self:center}
+  .sp__head h1{color:var(--teal); max-width:11em}      /* size, leading, tracking: the site's own h1 rule */
+  .sp__head .lead{color:rgba(20,30,30,.82); max-width:42ch; text-wrap:pretty}   /* site .lead: 1.15rem/1.7, 24px top */
+  .sp__trust{grid-area:t; margin:32px 0 0; padding:0; list-style:none; display:flex; align-items:center; flex-wrap:wrap; gap:12px 20px}
+  .sp__trust .lbl{font-size:.82rem; color:#5a6766; margin-right:4px}
+  .sp__trust img{width:22px; height:22px; object-fit:contain; display:block; filter:grayscale(1); opacity:.62;
+    transition:filter .3s ease, opacity .3s ease}
+  @media (hover:hover){ .sp__trust:hover img{filter:none; opacity:1} }
+  .sp__trust a{font-size:.82rem; color:#4f5d5c; text-decoration:underline; text-underline-offset:3px; text-decoration-color:rgba(23,68,69,.35)}
+  .sp__trust a:hover{color:var(--teal)}
+
+  /* ask + scroll cue: one bottom group, same 32px left edge, related teal/green */
+  .sp__foot{grid-area:c; justify-self:start; align-self:end; display:flex; flex-direction:column; align-items:flex-start; gap:12px; max-width:100%}
+  .sp__ask{margin:0; font-size:1.15rem; line-height:1.7; color:rgba(20,30,30,.82); max-width:22em; text-wrap:pretty}
+  .sp__cue{display:inline-flex; align-items:center; gap:16px; padding:8px 0;
+    font-size:.72rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--green-ink)}
+  .sp__cue .rail{position:relative; width:1px; height:40px; background:rgba(23,68,69,.18); overflow:hidden}
+  .sp__cue .rail::after{content:""; position:absolute; left:0; top:-40%; width:1px; height:40%; background:var(--green);
+    animation:sp-fall 2.4s cubic-bezier(.45,.05,.35,1) infinite}
+  @keyframes sp-fall{0%{top:-40%;opacity:0}25%{opacity:1}80%{opacity:1}100%{top:100%;opacity:0}}
+  .sp__cue .label{background:linear-gradient(currentColor 0 0) left bottom / 0% 1px no-repeat; padding-bottom:4px;
+    transition:background-size .4s cubic-bezier(.165,.84,.44,1)}
+  @media (hover:hover){ .sp__cue:hover .label{background-size:100% 1px} }
+  .sp__cue:focus-visible .label{background-size:100% 1px}
+
+  /* the mark: on the grid, right edge = header CTA's right edge, centred on headline + sub */
+  .sp__mark{grid-area:m; justify-self:end; align-self:center; position:relative; pointer-events:none;
+    width:clamp(220px,24vw,380px); aspect-ratio:1}
+  .sp__fill{position:absolute; inset:0;
+    background:linear-gradient(100deg,var(--teal) 0%,var(--teal-lift) 34%,var(--green-lift) 58%,var(--green) 72%,var(--teal) 100%);
+    background-size:200% 100%;
+    -webkit-mask:var(--sp-icon) center / contain no-repeat; mask:var(--sp-icon) center / contain no-repeat;
+    animation:sp-shimmer 9s ease-in-out infinite alternate}
+  @keyframes sp-shimmer{from{background-position:0% 0} to{background-position:100% 0}}
+  .sp__pulse{position:absolute; left:var(--sp-u); top:var(--sp-v); width:26%; aspect-ratio:1; translate:-50% -50%}
+  .sp__pulse i{position:absolute; inset:0; border-radius:50%; border:1.5px solid var(--green); opacity:0;
+    animation:sp-in 3.2s cubic-bezier(.45,.05,.35,1) infinite}
+  .sp__pulse i + i{animation-delay:1.6s}
+  @keyframes sp-in{0%{scale:1;opacity:0}30%{opacity:.6}100%{scale:.3;opacity:0}}
+
+  /* phone: text column on the 32px edge; the mark is a corner anchor cropped off the right edge,
+     its bottom on the same 32px line as the scroll cue */
+  @media (max-width:900px){
+    .sp__frame{
+      padding-top:calc(var(--nav-h,72px) + 32px); padding-bottom:var(--sp-edge);
+      grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto 1fr auto;
+      grid-template-areas:"h" "t" "." "c";
+    }
+    .sp__head{align-self:start}
+    .sp__foot{max-width:calc(100% - min(58vw,230px) * 0.84 + 16px)}
+    .sp__ask{font-size:1.05rem}
+    .sp__mark{position:absolute; grid-area:auto; width:min(58vw,230px); right:calc(min(58vw,230px) * -.16); bottom:var(--sp-edge)}
+  }
+  @media (max-width:380px){ .sp__head h1{font-size:2.3rem} }
+
+  /* dive (JS on, motion welcome): one sticky stage over ~160vh, landing on the next section */
+  html.sp-js .sp{height:160vh; height:160svh; margin-bottom:-100vh; margin-bottom:-100svh; pointer-events:none}
+  html.sp-js .sp__stage{position:sticky; top:0; height:100vh; height:100svh}
+  html.sp-js .sp__frame{height:100%; min-height:0}
+  html.sp-js .sp__frame a{pointer-events:auto}
+  html.sp-js .sp__curtain{z-index:1; pointer-events:auto; --cx:50%; --cy:50%; --r:0px;
+    -webkit-mask:radial-gradient(circle at var(--cx) var(--cy), transparent var(--r), #000 calc(var(--r) + 1px));
+            mask:radial-gradient(circle at var(--cx) var(--cy), transparent var(--r), #000 calc(var(--r) + 1px))}
+  @media (max-width:900px){ html.sp-js .sp{height:150vh; height:150svh} }
   @media (prefers-reduced-motion:reduce){
-    #cue .lbl{animation:none;opacity:.75}
-    #cue .rail::after{animation:none;top:34%;opacity:.95}
-    #doneline .cur{animation:none}
+    .sp__fill,.sp__pulse i,.sp__cue .rail::after{animation:none}
+    .sp__pulse{display:none}
+    .sp__cue .rail::after{top:30%; opacity:1}
+    .sp__trust img,.sp__cue .label{transition:none}
   }
-
-  /* ---------- splice: the site arrives at dawn ---------- */
-  #site{position:relative;z-index:9;background:var(--white,#fff);color:rgba(20,30,30,.82)}
-  body:not(.arrived) #header, body:not(.arrived) .section-nav{opacity:0!important;pointer-events:none!important}
-  /* keyboard users get the navigation the moment they tab into it, even before the site "arrives" */
-  body:not(.arrived) #header:focus-within, body:not(.arrived) .section-nav:focus-within{
-    opacity:1!important;pointer-events:auto!important}
-  #header,.section-nav{transition:opacity .6s ease}
 </style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-<div id="top"></div>
-<canvas id="gl"></canvas>
-<div id="vignette"></div><div id="grain"></div>
-
-<div class="hud" id="brand">
-  <img class="mark" src="assets/logos/SnowArk-White.png" alt="SnowArk" width="596" height="113">
-  <div class="sub">Your AI Chief of Staff</div>
-</div>
-<div class="hud" id="clock"><div class="t">0h</div><div class="d">recovered</div></div>
-<div class="hud" id="cue" aria-hidden="true"><div class="lbl">Scroll</div><div class="rail"></div></div>
-<div class="hud" id="hours">
-  <div class="h" data-h="0">0h</div><div class="h" data-h="1">2h</div>
-  <div class="h" data-h="2">4h</div><div class="h" data-h="3">6h</div>
-  <div class="h" data-h="4">8h</div>
-</div>
-
-<div class="beat" id="beat0"><h1>I deploy an AI chief of staff into your business.</h1><p class="beat0-sub">It connects to the tools you already run, works while you sleep, and gets smarter every day.</p></div>
-<div class="beat" id="beat1"><span class="eyebrow">////// the weeds</span><h2>You built the business.</h2><p>You&rsquo;re in the weeds. Your team is buried in admin.</p></div>
-<div class="beat" id="beat2"><span class="eyebrow">////// the placement</span><h2>I place an AI chief of staff in it.</h2><p>It works alongside your team, and gets smarter with every interaction.</p></div>
-<div class="beat" id="beat3"><span class="eyebrow">////// the night shift</span><h2>It works with and without you.</h2><p>Orders, inboxes, follow-ups, reports. Even at 3am.</p></div>
-<div class="term" id="counter"><span class="dim">inbox&nbsp;</span><span id="ctr">47</span><span class="dim">&nbsp;unread</span></div>
-<div class="beat" id="beat4"><span class="eyebrow">////// the calm</span><h2>Work finishes before you arrive.</h2><p>Quietly. Reliably. Every day.</p></div>
-<div class="term" id="doneline"><span class="txt">done. 8h recovered.</span><span class="cur"></span></div>
-<div class="beat" id="beat5"><h2>You get your time back.</h2></div>
-
-<div id="dawn"></div>
-<div id="burn">
-  <div class="tag">I build an AI chief of staff, so you can get your time back.</div>
-</div>
-
-
-<div id="track"></div>
 <div id="site">
 
 
 <!-- ═══════════════ NAV ═══════════════ -->
-<header id="header">
+<header id="header" class="scrolled">
   <a class="nav-logo" href="#top" aria-label="SnowArk home">
     <img class="logo-white" src="assets/logos/SnowArk-White.png" alt="SnowArk" width="106" height="20">
     <img class="logo-dark" src="assets/logos/SnowArk-Black.png" alt="SnowArk" width="106" height="20">
@@ -1638,19 +1525,35 @@
 </nav>
 
 <main id="main">
-<section class="stack-marquee" aria-label="Platforms your agent connects to">
-  <p class="eyebrow">Connects to the tools you already run</p>
-  <div class="m-row left">
-    <div class="m-track">
-      <span class="m-pill"><img src="assets/tools/shopify.svg" alt="" width="24" height="24">Shopify</span><span class="m-pill"><img src="assets/tools/hubspot.svg" alt="" width="24" height="24">HubSpot</span><span class="m-pill"><img src="assets/tools/klaviyo.png" alt="" width="64" height="64">Klaviyo</span><span class="m-pill"><img src="assets/tools/googleanalytics.svg" alt="" width="24" height="24">Google Analytics</span><span class="m-pill"><img src="assets/tools/googleads.svg" alt="" width="24" height="24">Google Ads</span><span class="m-pill"><img src="assets/tools/meta.svg" alt="" width="24" height="24">Meta Ads</span><span class="m-pill"><img src="assets/tools/googlesearchconsole.svg" alt="" width="24" height="24">Search Console</span><span class="m-pill"><img src="assets/tools/asana.svg" alt="" width="24" height="24">Asana</span><span class="m-pill"><img src="assets/tools/netsuite.png" alt="" width="48" height="48">NetSuite</span><span class="m-pill"><img src="assets/tools/airtable.svg" alt="" width="24" height="24">Airtable</span><span class="m-pill"><img src="assets/tools/trello.svg" alt="" width="24" height="24">Trello</span><span class="m-pill"><img src="assets/tools/googledocs.svg" alt="" width="24" height="24">Google Docs</span>
+<div class="sp" id="top">
+  <div class="sp__stage">
+    <div class="sp__frame">
+      <div class="sp__head" data-sp-fade>
+        <h1>I deploy an AI chief of staff into your business.</h1>
+        <p class="lead">It connects to the tools you already run, works while you sleep, and gets smarter every day.</p>
+      </div>
+      <ul class="sp__trust" data-sp-fade aria-label="Works with the tools you already run">
+        <li class="lbl" aria-hidden="true">Works with</li>
+        <li><img src="assets/tools/xero.svg" alt="Xero" width="22" height="22"></li>
+        <li><img src="assets/tools/shopify.svg" alt="Shopify" width="22" height="22"></li>
+        <li><img src="assets/tools/hubspot.svg" alt="HubSpot" width="22" height="22"></li>
+        <li><img src="assets/tools/gmail.svg" alt="Gmail" width="22" height="22"></li>
+        <li><img src="assets/tools/slack.svg" alt="Slack" width="22" height="22"></li>
+        <li><img src="assets/tools/googleanalytics.svg" alt="Google Analytics" width="22" height="22"></li>
+        <li><a href="#what">+19 more</a></li>
+      </ul>
+      <div class="sp__mark" data-sp-mark role="img" aria-label="SnowArk"><div class="sp__fill"></div><div class="sp__pulse" data-sp-pulse aria-hidden="true"><i></i><i></i></div></div>
+      <div class="sp__foot">
+        <p class="sp__ask">Ready to get your time back?</p>
+        <a class="sp__cue" href="#statement" data-sp-cue data-sp-fade><span class="rail" aria-hidden="true"></span><span class="label">Scroll to find out how</span></a>
+      </div>
     </div>
+    <div class="sp__curtain" data-sp-curtain aria-hidden="true"></div>
   </div>
-  <div class="m-row right">
-    <div class="m-track">
-      <span class="m-pill"><img src="assets/tools/xero.svg" alt="" width="24" height="24">Xero</span><span class="m-pill"><img src="assets/tools/gmail.svg" alt="" width="24" height="24">Gmail</span><span class="m-pill"><img src="assets/tools/googlechat.svg" alt="" width="24" height="24">Google Chat</span><span class="m-pill"><img src="assets/tools/slack.svg" alt="" width="24" height="24">Slack</span><span class="m-pill"><img src="assets/tools/discord.svg" alt="" width="24" height="24">Discord</span><span class="m-pill"><img src="assets/tools/aircall.svg" alt="" width="24" height="24">Aircall</span><span class="m-pill"><img src="assets/tools/supabase.svg" alt="" width="24" height="24">Supabase</span><span class="m-pill"><img src="assets/tools/cloudflare.svg" alt="" width="24" height="24">Cloudflare</span><span class="m-pill"><img src="assets/tools/github.svg" alt="" width="24" height="24">GitHub</span><span class="m-pill"><img src="assets/tools/monday.svg" alt="" width="24" height="24">Monday.com</span><span class="m-pill"><img src="assets/tools/wordpress.svg" alt="" width="24" height="24">WordPress</span><span class="m-pill"><img src="assets/tools/googlesheets.svg" alt="" width="24" height="24">Google Sheets</span><span class="m-pill"><img src="assets/tools/googledrive.svg" alt="" width="24" height="24">Google Drive</span>
-    </div>
-  </div>
-</section>
+</div>
+<script>/* opt into the dive before first paint, only when motion is welcome */
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('sp-js');
+</script>
 
 <section class="statement" id="statement">
   <div class="container">
@@ -2035,6 +1938,20 @@
       </div>
     </div>
 
+<div class="stack-marquee stack-marquee--what" aria-label="Platforms your agent connects to">
+  <p class="eyebrow">Connects to the tools you already run</p>
+  <div class="m-row left">
+    <div class="m-track">
+      <span class="m-pill"><img src="assets/tools/shopify.svg" alt="" width="24" height="24">Shopify</span><span class="m-pill"><img src="assets/tools/hubspot.svg" alt="" width="24" height="24">HubSpot</span><span class="m-pill"><img src="assets/tools/klaviyo.png" alt="" width="64" height="64">Klaviyo</span><span class="m-pill"><img src="assets/tools/googleanalytics.svg" alt="" width="24" height="24">Google Analytics</span><span class="m-pill"><img src="assets/tools/googleads.svg" alt="" width="24" height="24">Google Ads</span><span class="m-pill"><img src="assets/tools/meta.svg" alt="" width="24" height="24">Meta Ads</span><span class="m-pill"><img src="assets/tools/googlesearchconsole.svg" alt="" width="24" height="24">Search Console</span><span class="m-pill"><img src="assets/tools/asana.svg" alt="" width="24" height="24">Asana</span><span class="m-pill"><img src="assets/tools/netsuite.png" alt="" width="48" height="48">NetSuite</span><span class="m-pill"><img src="assets/tools/airtable.svg" alt="" width="24" height="24">Airtable</span><span class="m-pill"><img src="assets/tools/trello.svg" alt="" width="24" height="24">Trello</span><span class="m-pill"><img src="assets/tools/googledocs.svg" alt="" width="24" height="24">Google Docs</span>
+    </div>
+  </div>
+  <div class="m-row right">
+    <div class="m-track">
+      <span class="m-pill"><img src="assets/tools/xero.svg" alt="" width="24" height="24">Xero</span><span class="m-pill"><img src="assets/tools/gmail.svg" alt="" width="24" height="24">Gmail</span><span class="m-pill"><img src="assets/tools/googlechat.svg" alt="" width="24" height="24">Google Chat</span><span class="m-pill"><img src="assets/tools/slack.svg" alt="" width="24" height="24">Slack</span><span class="m-pill"><img src="assets/tools/discord.svg" alt="" width="24" height="24">Discord</span><span class="m-pill"><img src="assets/tools/aircall.svg" alt="" width="24" height="24">Aircall</span><span class="m-pill"><img src="assets/tools/supabase.svg" alt="" width="24" height="24">Supabase</span><span class="m-pill"><img src="assets/tools/cloudflare.svg" alt="" width="24" height="24">Cloudflare</span><span class="m-pill"><img src="assets/tools/github.svg" alt="" width="24" height="24">GitHub</span><span class="m-pill"><img src="assets/tools/monday.svg" alt="" width="24" height="24">Monday.com</span><span class="m-pill"><img src="assets/tools/wordpress.svg" alt="" width="24" height="24">WordPress</span><span class="m-pill"><img src="assets/tools/googlesheets.svg" alt="" width="24" height="24">Google Sheets</span><span class="m-pill"><img src="assets/tools/googledrive.svg" alt="" width="24" height="24">Google Drive</span>
+    </div>
+  </div>
+</div>
+
     <p class="ownership-note reveal">Everything I build stays with you. Your IP, your infrastructure, your agent. I keep it running for as long as you want me. You own it outright.</p>
   </div>
 </section>
@@ -2357,41 +2274,9 @@
     if (track) track.innerHTML += track.innerHTML;
   })();
 
-  /* Header scroll state */
-  var header = document.getElementById('header');
-  window.addEventListener('scroll', function() {
-    header.classList.toggle('scrolled', window.scrollY > 60);
-  }, { passive: true });
 
   if (motionOK) {
 
-    /* Hero entrance */
-    gsap.from('.hero-content .anim', {
-      opacity: 0,
-      y: 34,
-      duration: 1,
-      stagger: 0.14,
-      ease: 'power3.out',
-      delay: 0.2
-    });
-
-    /* Hero parallax on scroll out */
-    gsap.to('.hero-content', {
-      y: -90,
-      opacity: 0.25,
-      ease: 'none',
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 }
-    });
-    gsap.to('.hero .aurora', {
-      y: 140,
-      ease: 'none',
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 }
-    });
-    gsap.to('.scroll-cue', {
-      opacity: 0,
-      ease: 'none',
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: '25% top', scrub: 0.6 }
-    });
 
 
 
@@ -2731,6 +2616,73 @@
       });
     });
   })();
+</script>
+
+<script>
+(function () {
+  var wrap = document.querySelector('.sp');
+  if (!wrap) return;
+  var html = document.documentElement;
+  if (!html.classList.contains('sp-js')) return;
+  if (!window.gsap || !window.ScrollTrigger) { html.classList.remove('sp-js'); return; }
+  gsap.registerPlugin(ScrollTrigger);
+
+  var stage = wrap.querySelector('.sp__stage');
+  var head = wrap.querySelector('.sp__head');
+  var trust = wrap.querySelector('.sp__trust');
+  var cue = wrap.querySelector('[data-sp-cue]');
+  var mark = wrap.querySelector('[data-sp-mark]');
+  var pulse = wrap.querySelector('[data-sp-pulse]');
+  var curtain = wrap.querySelector('[data-sp-curtain]');
+  var ask = wrap.querySelector('.sp__ask');
+
+  var U = 0.65, V = 0.688, CLEAR = 0.14;   // gap centre and its clear radius, fractions of the mark width
+  var m = {};
+  function measure() {
+    gsap.set(mark, { scale: 1 });
+    var s = stage.getBoundingClientRect(), b = mark.getBoundingClientRect(), w = b.width;
+    m.px = b.left - s.left + U * w;  m.py = b.top - s.top + V * w;
+    m.cx = b.left - s.left + w / 2;  m.cy = b.top - s.top + w / 2;
+    m.R = w * 0.5;
+    var far = Math.max(Math.hypot(m.px, m.py), Math.hypot(s.width - m.px, m.py),
+                       Math.hypot(m.px, s.height - m.py), Math.hypot(s.width - m.px, s.height - m.py));
+    m.sEnd = (far / (CLEAR * w)) * 1.08;
+    gsap.set(mark, { transformOrigin: (U * 100) + '% ' + (V * 100) + '%' });
+  }
+  var clamp = gsap.utils.clamp(0, 1);
+  var inOut = gsap.parseEase('sine.inOut'), out = gsap.parseEase('power2.out'), soft = gsap.parseEase('power3.out');
+
+  function render(p) {
+    var c = clamp(p / 0.04);                                       // cue, ask and rings leave at the first scroll
+    gsap.set([cue, pulse, ask], { opacity: 1 - c });
+    cue.style.visibility = ask.style.visibility = c >= 1 ? 'hidden' : '';
+    var q = soft(clamp(p / 0.22));                                 // headline unit leaves early, as one group
+    gsap.set([head, trust], { opacity: 1 - q, y: -48 * q });
+    trust.style.visibility = q >= 1 ? 'hidden' : '';
+
+    var z = inOut(clamp((p - 0.04) / 0.92));
+    var s = Math.exp(Math.log(m.sEnd) * z);
+    gsap.set(mark, { scale: s, opacity: 1 - clamp((p - 0.62) / 0.3) });   // the strokes thin out as you pass through
+
+    var k = out(clamp((p - 0.14) / 0.40));
+    curtain.style.setProperty('--cx', (m.px + (m.cx - m.px) * s).toFixed(1) + 'px');
+    curtain.style.setProperty('--cy', (m.py + (m.cy - m.py) * s).toFixed(1) + 'px');
+    curtain.style.setProperty('--r', (m.R * s * k).toFixed(1) + 'px');
+    curtain.style.pointerEvents = k >= 1 ? 'none' : '';
+    mark.style.visibility = curtain.style.visibility = p > 0.985 ? 'hidden' : '';
+  }
+
+  var st = ScrollTrigger.create({
+    trigger: wrap, start: 'top top', end: 'bottom bottom', invalidateOnRefresh: true,
+    onRefresh: function (self) { measure(); render(self.progress); },
+    onUpdate: function (self) { render(self.progress); }
+  });
+  measure(); render(st.progress);
+
+  cue.addEventListener('click', function (e) { e.preventDefault(); window.scrollTo({ top: st.end, behavior: 'smooth' }); });
+  wrap.addEventListener('focusin', function () { if (st.progress > 0.15) window.scrollTo(0, st.start); });
+  window.__spHero = st;
+})();
 </script>
 
 <script>
@@ -3116,771 +3068,5 @@ function toggleTestimonial() {
 </script>
 
 </div>
-<script src="assets/still-point/lenis.min.js"></script>
-<script type="importmap">{"imports":{"three":"https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.module.min.js"}}</script>
-<script type="module">
-import * as THREE from 'three';
-
-/* ============================================================
-   SnowArk ,  The Night Shift  (v2: everything is particles)
-   One substance the whole night: the lamp and the machine are
-   particle formations; they dissolve into the rivers of work,
-   reform as the closed laptop, and disperse into dawn.
-   The cursor stirs the field ,  a path of particles.
-   ============================================================ */
-
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const mobile  = matchMedia('(max-width: 720px)').matches;
-
-const canvas   = document.getElementById('gl');
-const renderer = new THREE.WebGLRenderer({canvas, antialias:false, alpha:false, powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
-function fitRenderer(){
-  const h = canvas.clientHeight || innerHeight;
-  renderer.setSize(innerWidth, h, false);
-  cam.aspect = innerWidth / h;
-  cam.updateProjectionMatrix();
-}
-renderer.setClearColor(0x041113, 1);
-
-const scene = new THREE.Scene();
-scene.fog   = new THREE.Fog(0x061a1c, 6, 46);
-const cam   = new THREE.PerspectiveCamera(56, innerWidth/innerHeight, .1, 400);
-fitRenderer();
-
-function dotTexture(){
-  const c = document.createElement('canvas'); c.width = c.height = 64;
-  const x = c.getContext('2d');
-  const g = x.createRadialGradient(32,32,0,32,32,32);
-  g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.35,'rgba(255,255,255,.55)'); g.addColorStop(1,'rgba(255,255,255,0)');
-  x.fillStyle = g; x.fillRect(0,0,64,64);
-  return new THREE.CanvasTexture(c);
-}
-const softDot = dotTexture();
-const rnd = () => Math.random()*2-1;
-
-/* the brand icon, sampled to pixels, becomes particle targets on the laptop screen */
-async function loadIconData(url){
-  const img = new Image();
-  await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = url; });
-  const c = document.createElement('canvas'); c.width = c.height = 96;
-  const x = c.getContext('2d');
-  x.drawImage(img, 0, 0, 96, 96);
-  return x.getImageData(0, 0, 96, 96);
-}
-let iconData = null;
-try { iconData = await loadIconData('assets/logos/Snowark-Icon.png'); } catch(e) {}
-function sampleIconPoint(){
-  if (!iconData) return null;
-  for (let tries = 0; tries < 24; tries++){
-    const u = Math.random(), v = Math.random();
-    const px = (iconData.width * u) | 0, py = (iconData.height * v) | 0;
-    if (iconData.data[(py * iconData.width + px) * 4 + 3] > 128){
-      return {u: u - .5, v: v - .5};
-    }
-  }
-  return null;
-}
-
-/* ---------- light sprites (glow is light, not object) ---------- */
-function glowSprite(color, sx, sy, x,y,z, o){
-  const sp = new THREE.Sprite(new THREE.SpriteMaterial({map:softDot, color, transparent:true, opacity:o, depthWrite:false, blending:THREE.AdditiveBlending}));
-  sp.scale.set(sx,sy,1); sp.position.set(x,y,z); scene.add(sp); return sp;
-}
-const glowMul  = mobile ? .68 : 1;
-const bulbGlow = glowSprite(0x2fae7e, mobile?6.5:9, mobile?6.5:9, .4,.6,-13.0, .5);   // the screen's cast
-const poolGlow = glowSprite(0x123a36, mobile?11:15, mobile?5:7, .3,-1.6,-11.9, .30);
-const seamGlow2= glowSprite(0x2fae7e, 4.2,4.2, 0,.35,-71.7, 0);
-const floorPool= glowSprite(0x123a36, 16,7, 0,-4.6,-71.4, 0);
-const glyphGlow= glowSprite(0x4cc296, mobile?7:10.5, mobile?7:10.5, 0,.35,-73.6, 0);
-
-/* ============================================================
-   particle shape sampling ,  the world is one point cloud
-   ============================================================ */
-const N = mobile ? 48000 : 84000;
-const pos0 = new Float32Array(N*3);   // 23:00 ,  lamp + open work desk
-const pos1 = new Float32Array(N*3);   // the rivers
-const tan1 = new Float32Array(N*3);
-const pha  = new Float32Array(N);
-const pos2 = new Float32Array(N*3);   // artefact shells
-const pos3 = new Float32Array(N*3);   // 05:30 ,  the closed machine
-const col  = new Float32Array(N*3);
-const siz  = new Float32Array(N);
-const hnd  = new Float32Array(N*2);   // clock hands: [type, radius]
-const ptx  = new Float32Array(N*3);   // the opening statement, as particles
-const scat = new Float32Array(N*3);   // full-viewport scatter: where they burst FROM
-
-const C = {
-  body:  new THREE.Color(0x2e6d6b),  // slab/pole points ,  readable teal
-  edge:  new THREE.Color(0x58b0a4),  // silhouette edges ,  cool mint, no burn
-  seam:  new THREE.Color(0x4cc296),
-  bulb:  new THREE.Color(0xffd9a0),
-  mist:  new THREE.Color(0x9fc4c0),
-  green: new THREE.Color(0x4cc296),
-  teal:  new THREE.Color(0x2a7f80),
-  violet:new THREE.Color(0x8b85e0),
-  peri:  new THREE.Color(0x6d8fe0),
-  cyan:  new THREE.Color(0x6fd4e8),
-};
-
-/* samplers write {p:[x,y,z], c:Color, s:size} */
-function sampleBoxSurf(cx,cy,cz, w,h,d, edgeBias){
-  const e = Math.random() < edgeBias;
-  const pick = Math.random();
-  let x=rnd()*w/2, y=rnd()*h/2, z=rnd()*d/2;
-  if (pick < .33) x = (Math.random()<.5?-1:1)*w/2;
-  else if (pick < .66) y = (Math.random()<.5?-1:1)*h/2;
-  else z = (Math.random()<.5?-1:1)*d/2;
-  if (e){ // snap a second axis to a face -> an edge
-    if (pick < .33) y = (Math.random()<.5?-1:1)*h/2;
-    else if (pick < .66) z = (Math.random()<.5?-1:1)*d/2;
-    else x = (Math.random()<.5?-1:1)*w/2;
-  }
-  return {p:[cx+x, cy+y, cz+z], c: e?C.edge:C.body, s: e?1.12:.9};
-}
-function sampleCyl(cx,cy,cz, r, h, tiltZ){
-  const th = Math.random()*Math.PI*2, y = rnd()*h/2;
-  let p = new THREE.Vector3(Math.cos(th)*r, y, Math.sin(th)*r);
-  if (tiltZ) p.applyAxisAngle(new THREE.Vector3(0,0,1), tiltZ);
-  return {p:[cx+p.x, cy+p.y, cz+p.z], c: Math.random()<.25?C.edge:C.body, s:.9};
-}
-function sampleCone(cx,cy,cz, r, h, tiltZ){
-  const th = Math.random()*Math.PI*2, t = Math.sqrt(Math.random());
-  let p = new THREE.Vector3(Math.cos(th)*r*t, h/2 - t*h, Math.sin(th)*r*t);
-  p.applyAxisAngle(new THREE.Vector3(0,0,1), tiltZ);
-  const rim = t > .92;
-  return {p:[cx+p.x, cy+p.y, cz+p.z], c: rim?C.edge:C.body, s: rim?1.3:.8};
-}
-
-/* 23:00 scene ,  desk left of centre, lamp leaning over it */
-function sceneOpen(){
-  /* one framing transform: larger, higher, optically centred */
-  const S  = mobile ? 1.2 : 1.6;
-  const OY = mobile ? .5 : .7;
-  const post = q => { q.p[0] = (q.p[0] - .35) * S;
-                      q.p[1] = q.p[1] * S + OY;
-                      q.p[2] = -12.2 + (q.p[2] + 12.2) * S;
-                      return q; };
-  const r = Math.random();
-  if (r < .36)  return post(sampleBoxSurf(0,-1.35,-12.2, 7.4,.26,4.9, .16));          // desk slab
-  else if (r < .54) return post(sampleBoxSurf(.6,-.98,-12.6, 3.4,.14,2.3, .22));      // open laptop base
-  else if (r < .62){ return post(sampleBoxSurf(.6,.0,-13.55, 3.4,2.1,.12,.30)); } // raised screen
-  else if (r < .80){ // a clock on the screen; its hands are the room's only motion
-    const cx = .6, cz = -13.47, rr = Math.random();
-    if (rr < .40){        // face ring
-      const th = Math.random()*Math.PI*2;
-      return post({p:[cx + Math.cos(th)*.64 + rnd()*.015, Math.sin(th)*.64 + rnd()*.015, cz + rnd()*.04],
-                   c: C.seam, s: 1.2});
-    } else if (rr < .56){ // hour ticks
-      const k = (Math.random()*12)|0, th = k*Math.PI/6;
-      const rad = .5 + Math.random()*.09;
-      return post({p:[cx + Math.cos(th)*rad, Math.sin(th)*rad, cz + rnd()*.04], c: C.edge, s: 1.15});
-    } else if (rr < .84){ // minute hand (rotates in shader)
-      return post({p:[cx, 0, cz], c: C.edge, s: 1.3, hand:[1, Math.random()*.5*S]});
-    } else {              // hour hand
-      return post({p:[cx, 0, cz], c: C.edge, s: 1.35, hand:[2, Math.random()*.33*S]});
-    }
-  }
-  else { // ember dust: the day's warmth, drifting around the desk
-    const gold = Math.random() < .45;
-    return post({p:[rnd()*4.6 + .4, -.6 + rnd()*2.2, -12.4 + rnd()*2.2],
-                 c: gold ? C.bulb : C.mist, s: gold ? 1.05 : .7});
-  }
-}
-/* 05:30 scene ,  the night's work resolves into the mark itself, colossal */
-function sceneClosed(){
-  const G = mobile ? 6.4 : 9.6;
-  const ip = sampleIconPoint();
-  if (ip && Math.random() > .08){
-    return {p:[ip.u*G + rnd()*.06, .35 - ip.v*G + rnd()*.06, -71.8 + rnd()*.55],
-            c: C.green, s: 1.15};
-  }
-  return {p:[rnd()*7, .3+rnd()*4.5, -71.5+rnd()*3], c:C.mist, s:.7};  // ambient air
-}
-
-/* rivers */
-const curves = [];
-for (let i=0;i<9;i++){
-  const y0 = rnd()*2.0, x0 = rnd()*3.0;
-  curves.push(new THREE.CatmullRomCurve3([
-    new THREE.Vector3(x0*.3, -.4+y0*.2, -13),
-    new THREE.Vector3(x0*2.4+rnd()*2, y0*2.2+rnd()*1.5, -26 - Math.random()*4),
-    new THREE.Vector3(x0*4.2+rnd()*4, y0*3.4+rnd()*3.2, -38 - Math.random()*6),
-    new THREE.Vector3(x0*2.2+rnd()*5, y0*2.4+rnd()*4.0, -52 - Math.random()*6),
-    new THREE.Vector3(rnd()*2.5,      y0*1.1+rnd()*1.4, -64 - Math.random()*4),
-  ]));
-}
-const artefactAnchors = [
-  {c:new THREE.Vector3(-9,2.5,-40),  s:[4,4,4]},
-  {c:new THREE.Vector3(8.5,-.2,-46), s:[5.4,2.6,3.6]},
-  {c:new THREE.Vector3(0,6.5,-54),   s:[4.6,3.4,4.6]},
-  {c:new THREE.Vector3(0,1.5,-49),   s:[14,.4,14]},
-];
-if (mobile) artefactAnchors.forEach(a => { a.c.x *= .38; a.c.y *= .72; });
-const tmpV = new THREE.Vector3();
-
-for (let i=0;i<N;i++){
-  const i3 = i*3;
-  const o = sceneOpen();
-  pos0[i3]=o.p[0]; pos0[i3+1]=o.p[1]; pos0[i3+2]=o.p[2];
-  if (o.hand){ hnd[i*2]=o.hand[0]; hnd[i*2+1]=o.hand[1]; }
-
-  const cu = curves[i % (mobile ? 3 : curves.length)];
-  const t  = Math.random();
-  cu.getPointAt(t, tmpV);
-  const sqz = mobile ? .58 : 1;   // portrait: tighter braids, not a pixel storm
-  const jj = mobile ? .26 : .5;
-  pos1[i3]=tmpV.x*sqz+rnd()*jj; pos1[i3+1]=tmpV.y*(mobile?.68:1)+rnd()*jj; pos1[i3+2]=tmpV.z+rnd()*jj;
-  cu.getTangentAt(t, tmpV);
-  tan1[i3]=tmpV.x; tan1[i3+1]=tmpV.y; tan1[i3+2]=tmpV.z;
-  pha[i]=Math.random();
-
-  const a = artefactAnchors[i % artefactAnchors.length];
-  const face=(Math.random()*3)|0, u=rnd(), v=rnd(), w=Math.random()<.5?-1:1;
-  const pp=[u,v,w]; const axes = face===0?[2,0,1]:face===1?[0,2,1]:[0,1,2];
-  pos2[i3]  =a.c.x+pp[axes[0]]*a.s[0]/2;
-  pos2[i3+1]=a.c.y+pp[axes[1]]*a.s[1]/2;
-  pos2[i3+2]=a.c.z+pp[axes[2]]*a.s[2]/2;
-
-  const cl = sceneClosed();
-  pos3[i3]=cl.p[0]; pos3[i3+1]=cl.p[1]; pos3[i3+2]=cl.p[2];
-
-  /* colour: shape role, with the river tint taking over mid-flight is
-     handled by keeping roles ,  gold bulb points become gold flecks */
-  let cc = o.c;
-  if (cc === C.body || cc === C.edge){
-    const r2 = Math.random();
-    if (r2 < .14) cc = Math.random()<.5 ? C.green : C.teal;   // some desk points are already "work"
-  }
-  col[i3]=cc.r; col[i3+1]=cc.g; col[i3+2]=cc.b;
-  siz[i] = (o.s + (cl.s||1))/2;
-}
-
-/* full-viewport scatter: each particle gets a unique burst origin
-   spanning the camera frustum so the field fills the entire screen
-   on arrival, then condenses into the desk as the user scrolls */
-{
-  const frustHalf = Math.tan(28 * Math.PI/180); // FOV 56° half-angle
-  for (let i=0;i<N;i++){
-    const i3 = i*3;
-    const depth = 5 + Math.random()*24;           // 5-29 units ahead of camera
-    const halfH = depth * frustHalf;
-    const halfW = halfH * (innerWidth / Math.max(innerHeight, 1));
-    scat[i3]   = (Math.random()*2-1) * halfW;
-    scat[i3+1] = (Math.random()*2-1) * halfH;
-    scat[i3+2] = 8 - depth;                       // camera at z=8, so world-z = 8 - depth
-  }
-}
-
-const workGeo = new THREE.BufferGeometry();
-workGeo.setAttribute('position', new THREE.BufferAttribute(pos0.slice(),3));
-workGeo.setAttribute('aP0', new THREE.BufferAttribute(pos0,3));
-workGeo.setAttribute('aP1', new THREE.BufferAttribute(pos1,3));
-workGeo.setAttribute('aT1', new THREE.BufferAttribute(tan1,3));
-workGeo.setAttribute('aPh', new THREE.BufferAttribute(pha,1));
-workGeo.setAttribute('aP2', new THREE.BufferAttribute(pos2,3));
-workGeo.setAttribute('aP3', new THREE.BufferAttribute(pos3,3));
-workGeo.setAttribute('aCol', new THREE.BufferAttribute(col,3));
-workGeo.setAttribute('aSz', new THREE.BufferAttribute(siz,1));
-workGeo.setAttribute('aHand', new THREE.BufferAttribute(hnd,2));
-const aPT = new THREE.BufferAttribute(ptx, 3);
-workGeo.setAttribute('aPT', aPT);
-const aScat = new THREE.BufferAttribute(scat, 3);
-workGeo.setAttribute('aScatter', aScat);
-/* sample the opener's own words into particle targets (after fonts load) */
-function sampleStatement(){
-  const W = 1280, H = 420, c = document.createElement('canvas');
-  c.width = W; c.height = H;
-  const x = c.getContext('2d');
-  x.fillStyle = '#fff'; x.textAlign = 'center';
-  x.font = '400 86px Cambo, serif';
-  x.fillText('An AI chief of staff', W/2, 120);
-  x.fillText('that runs the busywork.', W/2, 220);
-  x.font = 'italic 400 44px Lato, sans-serif';
-  x.fillText('You get your time back.', W/2, 330);
-  const d = x.getImageData(0,0,W,H).data, pts = [];
-  for (let py = 0; py < H; py += 2) for (let px = 0; px < W; px += 2)
-    if (d[(py*W+px)*4+3] > 128) pts.push([px/W, py/H]);
-  if (!pts.length) return;
-  const ww = mobile ? 8.6 : 12.5, hh = ww * H / W;
-  for (let i = 0; i < N; i++){
-    const [u, v] = pts[(Math.random()*pts.length)|0];
-    ptx[i*3]   = (u - .5) * ww + rnd()*.03;
-    ptx[i*3+1] = (.5 - v) * hh + .35 + rnd()*.03;
-    ptx[i*3+2] = -4.8 + rnd()*.18;
-  }
-  aPT.needsUpdate = true;
-}
-
-const workUniforms = {
-  uW:    {value: new THREE.Vector4(1,0,0,0)},   // kept for warmup only
-  uP:    {value: 0},
-  uFlow: {value: 0},
-  uTime: {value: 0},
-  uIntro:{value: 1},
-  uSize: {value: mobile ? 2.5 : 3.6},
-  uMap:  {value: softDot},
-  uFog:  {value: new THREE.Color(0x061a1c)},
-  uFogRange: {value: new THREE.Vector2(6,46)},
-  uT0: {value: new THREE.Vector4(0,0,999,0)},   // cursor wake, newest to oldest
-  uT1: {value: new THREE.Vector4(0,0,999,0)},
-  uT2: {value: new THREE.Vector4(0,0,999,0)},
-  uT3: {value: new THREE.Vector4(0,0,999,0)},
-  uT4: {value: new THREE.Vector4(0,0,999,0)},
-  uTextRect: {value: new THREE.Vector4(0,0,0,0)},   // active callout, NDC
-  uTextAmt:  {value: 0},
-  uClear:    {value: mobile ? new THREE.Vector4(.04,.05,.12,.50)
-                            : new THREE.Vector4(.07,.09,.17,.68)},
-};
-const workMat = new THREE.ShaderMaterial({
-  uniforms: workUniforms,
-  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-  vertexShader: `
-    attribute vec3 aP0,aP1,aT1,aP2,aP3,aPT,aScatter,aCol; attribute float aPh,aSz; attribute vec2 aHand;
-    uniform vec4 uW; uniform float uP,uFlow,uSize,uTime,uIntro;
-    uniform vec4 uT0,uT1,uT2,uT3,uT4;
-    uniform vec4 uTextRect; uniform float uTextAmt; uniform vec4 uClear;
-    varying vec3 vCol; varying float vFogZ,vAlpha;
-    float rng(float x, float a, float b){ return clamp((x-a)/(b-a), 0.0, 1.0); }
-    void main(){
-      /* per-particle stagger: each point leaves and arrives on its own beat */
-      float o  = (aPh - .5) * .07;
-      float p_ = uP + o;
-      float wT = 0.0;
-      float w0 = 1.0 - rng(p_,.16,.32);
-      float w1 = rng(p_,.22,.36) * (1.0 - rng(p_,.56,.68));
-      float w2 = rng(p_,.40,.54) * (1.0 - rng(p_,.56,.66));
-      float w3 = rng(p_,.58,.70) * (1.0 - rng(p_,.86,.96));
-      /* every transition flows THROUGH the river, never a straight dissolve */
-      float T = 4.0*w0*(1.0-w0)*step(.11,uP) + 4.0*w2*(1.0-w2) + 4.0*w3*(1.0-w3);
-      w1 += min(T, 1.0) * .55;
-      float tot = wT+w0+w1+w2+w3;
-      wT /= max(tot,1e-4);
-      vec4 w = vec4(w0,w1,w2,w3) / max(tot, 1e-4);
-      float textFlare = smoothstep(.004, .016, uP);
-      float run = fract(aPh + uFlow) - .5;
-      vec3 stream = aP1 + aT1 * run * 7.0;
-      vec3 p = aPT*wT + aP0*w.x + stream*w.y + aP2*w.z + aP3*w.w;
-      /* the statement detonates: outward burst between words and desk */
-      float burst = 4.0 * wT * (1.0 - wT);
-      vec3 bdir = normalize(aPT - vec3(0.0,.35,-4.8) + vec3(0.,0.,-.001));
-      p += bdir * burst * (1.6 + fract(aPh*5.7)*1.4);
-      p.z -= burst * 1.8;
-      p.x += sin(uFlow*13.0 + aPh*40.0)*.05;
-      p.y += cos(uFlow*11.0 + aPh*31.0)*.05;
-      /* the clock's hands sweep ,  the room's one motion */
-      if (aHand.x > .5){
-        float aH = aHand.x < 1.5 ? (1.2 - uTime*.55) : (2.2 - uTime*.046);
-        p.xy += vec2(cos(aH), sin(aH)) * aHand.y * w.x;
-      }
-
-      /* the path of particles: the cursor stirs the field */
-      /* the settled mark sways slowly on its axis, dissipates outward from centre */
-      float wob = w.w * sin(uTime*.32) * .12;
-      float cw = cos(wob), sw = sin(wob);
-      vec2 relzx = vec2(p.x, p.z + 71.8);
-      p.x = relzx.x*cw - relzx.y*sw;
-      p.z = relzx.x*sw + relzx.y*cw - 71.8;
-      /* outward dissipation as mark fades */
-      float fadeOut = 1.0 - w.w;
-      vec3 markCentre = vec3(0.0, 0.35, -71.8);
-      vec3 toCentre = p - markCentre;
-      float dist = length(toCentre);
-      vec3 radial = dist > 0.001 ? toCentre / dist : vec3(0.0, 1.0, 0.0);
-      p += radial * fadeOut * 1.6;
-
-      /* the wake: each particle has its own radius and curl direction,
-         and answers to the cursor's recent path, not just its position */
-      float vr  = .65 + .85*fract(aPh*13.71);
-      float sgn = fract(aPh*7.13) > .5 ? 1.0 : -1.0;
-      vec3 acc = vec3(0.0);
-      #define WAKE(T) { vec3 dw = p - T.xyz; float dwd = max(length(dw), .45);         float wf = smoothstep(4.4*vr, 0.0, dwd) * T.w;         acc += vec3(-dw.y, dw.x, 0.0) * (sgn * wf * .62 / dwd) + dw * (wf * .78 / dwd); }
-      WAKE(uT0) WAKE(uT1) WAKE(uT2) WAKE(uT3) WAKE(uT4)
-      p += acc;
-
-      /* arrival: everything condenses from full-viewport scatter into the desk */
-      vec3 scatter = aScatter;
-      p = mix(scatter, p, uIntro);
-      vec4 mv = modelViewMatrix * vec4(p,1.0);
-      gl_Position = projectionMatrix * mv;
-      /* the swarm makes way for the words */
-      if (uTextAmt > .01 && gl_Position.w > 0.0){
-        vec2 ndc = gl_Position.xy / gl_Position.w;
-        vec2 c    = (uTextRect.xy + uTextRect.zw) * .5;
-        vec2 half_ = (uTextRect.zw - uTextRect.xy) * .5 + uClear.xy;
-        vec2 dd = abs(ndc - c) / max(half_, vec2(1e-3));
-        float inside = max(dd.x, dd.y);
-        if (inside < 1.0){
-          vec2 dir = normalize(ndc - c + vec2(0.0, 1e-4));
-          float vary = .6 + .8 * fract(aPh * 9.31);
-          ndc += dir * (1.0 - inside) * uClear.z * uTextAmt * vary;
-          gl_Position.xy = ndc * gl_Position.w;
-          vAlpha *= mix(1.0, clamp(inside*inside, 0.0, 1.0), uTextAmt * uClear.w);
-        }
-      }
-      float tw = .82 + .36*sin(aPh*47.0 + uFlow*16.0);
-      gl_PointSize = min(uSize * aSz * tw * (30.0 / -mv.z), uSize > 3.0 ? 34.0 : 13.0) * mix(1.0, .5, clamp(wT,0.,1.));
-      float dormShow  = mix(1.0, step(aPh, 0.62), clamp(w.x, 0.0, 1.0));
-      float textShow  = mix(1.0, textFlare, clamp(wT, 0.0, 1.0));
-      float settleShow = mix(1.0, step(fract(aPh*7.31), 0.88)*.9, clamp(w.w, 0.0, 1.0));
-      vAlpha = mix(1.0, .78, clamp(w.x,0.,1.)) * dormShow * settleShow * textShow;
-      vCol = mix(aCol, vec3(.93,.92,.88), wT); vFogZ = -mv.z;
-    }`,
-  fragmentShader: `
-    uniform sampler2D uMap; uniform vec3 uFog; uniform vec2 uFogRange; uniform float uSize;
-    varying vec3 vCol; varying float vFogZ,vAlpha;
-    void main(){
-      float a = texture2D(uMap, gl_PointCoord).a;
-      float f = smoothstep(uFogRange.x, uFogRange.y, vFogZ);
-      float near = smoothstep(uSize > 3.0 ? 1.3 : 2.1, uSize > 3.0 ? 3.2 : 4.3, vFogZ);
-      vec3 c = mix(vCol, uFog, f*.85);
-      gl_FragColor = vec4(c * 1.05, min(1.0, a * .82) * (1.0 - f*.9) * near * vAlpha);
-    }`,
-});
-const workPts = new THREE.Points(workGeo, workMat);
-workPts.frustumCulled = false;
-scene.add(workPts);
-
-/* ---------- artefact wireframes ---------- */
-const artefacts = new THREE.Group();
-function wire(geo, x,y,z, s=1, color=0x2a7f80){
-  const m = new THREE.LineSegments(new THREE.EdgesGeometry(geo),
-      new THREE.LineBasicMaterial({color, transparent:true, opacity:0}));
-  m.position.set(x,y,z); m.scale.setScalar(s);
-  artefacts.add(m); return m;
-}
-const aParcel = wire(new THREE.BoxGeometry(4,4,4), -9, 2.5, -40);
-const aDocs   = [0,1,2].map(i => wire(new THREE.BoxGeometry(5.4,.28,3.6), 8.5, -1.2 + i*1.05, -46, 1, 0x35907a));
-const aStore  = wire(new THREE.ConeGeometry(4.4,3.2,4), 0, 6.5, -54, 1, 0x4cc296);
-aStore.rotation.y = Math.PI/4;
-const aRing   = wire(new THREE.TorusGeometry(7,.05,8,64), 0, 1.5, -49, 1, 0x1d5f60);
-aRing.rotation.x = Math.PI/2.15;
-if (mobile) artefacts.children.forEach(m => { m.position.x *= .38; m.position.y *= .72; m.scale.multiplyScalar(.78); });
-scene.add(artefacts);
-
-/* ---------- aurora ---------- */
-function auroraTexture(){
-  const c = document.createElement('canvas'); c.width=512; c.height=256;
-  const x = c.getContext('2d');
-  const g = x.createLinearGradient(0,256,0,0);
-  g.addColorStop(0,'rgba(13,143,100,0)');
-  g.addColorStop(.45,'rgba(42,127,128,.24)');
-  g.addColorStop(.75,'rgba(76,194,150,.34)');
-  g.addColorStop(1,'rgba(76,194,150,0)');
-  x.fillStyle=g; x.fillRect(0,0,512,256);
-  const m = x.createLinearGradient(0,0,512,0);
-  m.addColorStop(0,'rgba(0,0,0,0)'); m.addColorStop(.25,'rgba(0,0,0,1)');
-  m.addColorStop(.75,'rgba(0,0,0,1)'); m.addColorStop(1,'rgba(0,0,0,0)');
-  x.globalCompositeOperation='destination-in'; x.fillStyle=m; x.fillRect(0,0,512,256);
-  return new THREE.CanvasTexture(c);
-}
-const aur = new THREE.Mesh(new THREE.PlaneGeometry(90,26),
-   new THREE.MeshBasicMaterial({map:auroraTexture(), transparent:true, opacity:.16, depthWrite:false, blending:THREE.AdditiveBlending}));
-aur.position.set(0,14,-70); scene.add(aur);
-
-/* ============================================================
-   scroll + mouse orchestration
-   ============================================================ */
-gsap.registerPlugin(ScrollTrigger);
-let lenis = null, lenisVel = 0;
-if (!reduced){
-  lenis = new Lenis({duration:1.15, smoothWheel:true, touchMultiplier:1.5});
-  lenis.on('scroll', (e)=>{ lenisVel = e.velocity || 0; ScrollTrigger.update(); });
-  gsap.ticker.add((t)=> lenis.raf(t*1000));
-  gsap.ticker.lagSmoothing(0);
-}
-
-let P = 0;
-ScrollTrigger.create({
-  trigger:'#track', start:'top top', end:'bottom bottom', scrub:true,
-  onUpdate(self){ P = self.progress; }
-});
-/* magnetism: a resting thumb settles on a composed frame, never a seam */
-const SNAPS = [0, .165, .24, .445, .64, .73, .82, .95];
-let lastMove = 0, snapping = false;
-
-const win = (p,a,b,fade=.035)=>{
-  if (p < a-fade || p > b+fade) return 0;
-  if (p < a) return (p-(a-fade))/fade;
-  if (p > b) return 1-(p-b)/fade;
-  return 1;
-};
-const $ = id => document.getElementById(id);
-const beats = [
-  {el:$('beat0'), a:0,    b:.075},
-  {el:$('beat1'), a:.13,  b:.20},
-  {el:$('beat2'), a:.185, b:.295},
-  {el:$('beat3'), a:.365, b:.520},
-  {el:$('beat4'), a:.60,  b:.675},
-  {el:$('beat5'), a:.775, b:.86},
-];
-const counterEl=$('counter'), ctr=$('ctr'), doneEl=$('doneline');
-/* hours recovered: counts up from 0h to 8h as the night scrolls */
-const hoursSaved = p => Math.min(8, Math.round(p * 8)) + 'h';
-{
-  /* beat labels and HUD markers are static, no per-visitor clock calc needed */
-}
-/* terminal type-in: annotations decode as they arrive */
-const typers = [];
-document.querySelectorAll('.beat .eyebrow').forEach(el => typers.push({el, full: el.textContent, t0: 0, on: false}));
-const doneTxt = doneEl.querySelector('.txt');
-typers.push({el: doneTxt, full: doneTxt.textContent, t0: 0, on: false, watch: doneEl});
-function runTypers(now){
-  typers.forEach(ty => {
-    const host = ty.watch || ty.el.closest('.beat');
-    const vis = host && parseFloat(host.style.opacity || 0) > .02;
-    if (vis && !ty.on){ ty.on = true; ty.t0 = now; }
-    if (!vis && ty.on){ ty.on = false; ty.el.textContent = ''; }
-    if (ty.on){
-      const k = Math.min(ty.full.length, Math.ceil((now - ty.t0) / 26));
-      if (ty.el.textContent.length !== k) ty.el.textContent = ty.full.slice(0, k);
-    }
-  });
-}
-const hoursEls=[...document.querySelectorAll('#hours .h')];
-const clockT=document.querySelector('#clock .t');
-const dawn=$('dawn'), burn=$('burn'), cue=$('cue');
-
-const hoursSavedFn = hoursSaved;
-const chapterAt = p => p<.16?0 : p<.34?1 : p<.60?2 : p<.78?3 : 4;
-const camZ = p => 8 - p*94;
-const lerp=(a,b,t)=>a+(b-a)*t;
-const clamp01=v=>Math.min(1,Math.max(0,v));
-const range=(p,a,b)=>clamp01((p-a)/(b-a));
-
-/* mouse -> world point on the focus plane */
-const mouseNDC = new THREE.Vector2(0,-10);
-const mouseWorld = new THREE.Vector3(0,0,999);
-const mouseVel = new THREE.Vector2();
-let lastMX=0,lastMY=0;
-addEventListener('pointermove', (e)=>{
-  if (e.pointerType && e.pointerType !== 'mouse') return;
-  mouseNDC.set((e.clientX/innerWidth)*2-1, -(e.clientY/innerHeight)*2+1);
-  mouseVel.x = (e.clientX-lastMX)*.004; mouseVel.y = -(e.clientY-lastMY)*.004;
-  lastMX=e.clientX; lastMY=e.clientY;
-});
-/* tilt: the phone's attitude leans the night */
-const tilt = {x:0, y:0}; let tsx = 0, tsy = 0;
-if (!reduced && matchMedia('(pointer: coarse)').matches){
-  const onOri = e => {
-    if (e.gamma == null) return;
-    tilt.x = Math.max(-1, Math.min(1, (e.gamma || 0) / 26));
-    tilt.y = Math.max(-1, Math.min(1, ((e.beta || 0) - 45) / 30));
-  };
-  const arm = () => {
-    const D = window.DeviceOrientationEvent;
-    if (D && D.requestPermission) D.requestPermission().then(r => { if (r === 'granted') addEventListener('deviceorientation', onOri); }).catch(()=>{});
-    else addEventListener('deviceorientation', onOri);
-  };
-  addEventListener('touchend', arm, {once:true});
-}
-const ray = new THREE.Raycaster();
-const focusPlane = new THREE.Plane(new THREE.Vector3(0,0,1), 0); // normal fixed, constant updated per frame
-
-
-if (reduced){
-  document.getElementById('track').style.height='0';
-  [...document.querySelectorAll('.beat,.term')].forEach(el=>{
-    el.style.position='relative'; el.style.opacity='1'; el.style.inset='auto';
-    el.style.transform='none'; el.style.margin='14vh auto'; el.style.textAlign='center';
-  });
-  dawn.remove(); cue.remove();
-  burn.style.position='relative'; burn.style.opacity='1';
-  burn.style.transform='none'; burn.style.margin='10vh auto';
-  document.body.classList.add('arrived');
-  workUniforms.uW.value.set(1,0,0,0);
-  renderer.render(scene, cam);
-}
-
-/* the night's palette drifts: teal dusk, violet small hours, warming pre-dawn */
-const FOGSTOPS = [[0,0x061a1c],[.32,0x0b1420],[.5,0x0e1224],[.68,0x0a1d1e],[.85,0x14231e]];
-const fogA = new THREE.Color(), fogB = new THREE.Color();
-function nightTint(p){
-  let i = 0;
-  while (i < FOGSTOPS.length-1 && p > FOGSTOPS[i+1][0]) i++;
-  const [pa, ca] = FOGSTOPS[i], [pb, cb] = FOGSTOPS[Math.min(i+1, FOGSTOPS.length-1)];
-  const t = pb > pa ? Math.min(1, Math.max(0, (p-pa)/(pb-pa))) : 0;
-  fogA.setHex(ca); fogB.setHex(cb); return fogA.lerp(fogB, t);
-}
-let flow=0, last=performance.now();
-function frame(now){
-  const dt = Math.min(.05,(now-last)/1000); last=now;
-
-  workUniforms.uTime.value = now * .001;
-  if (Math.abs(lenisVel) > .08){ lastMove = now; snapping = false; }
-  if (lenis && !snapping && matchMedia('(pointer: coarse)').matches
-      && P > .005 && P < .97 && now - lastMove > 340){
-    let best = null, bd = 1;
-    for (const sp of SNAPS){ const d = Math.abs(sp - P); if (d < bd){ bd = d; best = sp; } }
-    if (best !== null && bd > .0015 && bd < .045){
-      snapping = true;
-      const track = document.getElementById('track');
-      const yT = track.offsetTop + best * (track.offsetHeight - innerHeight);
-      lenis.scrollTo(yT, {duration: 1.0, easing: t => 1 - Math.pow(1 - t, 3)});
-    }
-  }
-  const drive = .06 + Math.min(1.6, Math.abs(lenisVel)*.22);
-  flow += dt*drive*.045;
-  workUniforms.uFlow.value = flow;
-
-  workUniforms.uP.value = P;   // weights are computed per-particle in the shader
-
-  const rupture = range(P,.32,.42);
-  scene.fog.near = lerp(6,10,rupture);
-  scene.fog.far  = lerp(46,150,rupture)*(1-range(P,.80,.98)*.55)*(innerWidth<721?.86:1);
-  workUniforms.uFogRange.value.set(scene.fog.near, scene.fog.far);
-  const tintC = nightTint(P);
-  document.body.style.backgroundColor = '#' + tintC.getHexString();
-  scene.fog.color.copy(tintC);
-  workUniforms.uFog.value.copy(tintC);
-  renderer.setClearColor(tintC, 1);
-  cam.fov = lerp(56,68,rupture); cam.updateProjectionMatrix();
-
-  const z = camZ(P);
-  /* through the settle the camera rises and looks down at the machine */
-  const aim = range(P,.60,.70)*(1-range(P,.84,.93));
-  const lift = range(P,.10,.20)*(1-range(P,.26,.38))*1.6 + aim*.9;
-  const orbit = aim * Math.sin(range(P,.60,.86)*2.4) * 2.6;
-  const standoff = (mobile ? rupture * (1 - range(P,.56,.68)) * 6.5 : 0) + aim*11.5;
-  tsx += (tilt.x - tsx)*.06; tsy += (tilt.y - tsy)*.06;
-  cam.position.set(Math.sin(P*9.4)*.55 + orbit + tsx*.6, Math.sin(P*6.1)*.35+.1+lift + (mobile?rupture*.9:0) - tsy*.4, z + standoff);
-  const tx = lerp(cam.position.x*.6, 0,    aim);
-  const ty = lerp(cam.position.y*.6, .35, aim);
-  const tz = lerp(z-8, -71.8, aim);
-  cam.lookAt(tx, ty, tz);
-
-  /* mouse stir point on a plane just ahead of the camera */
-  ray.setFromCamera(mouseNDC, cam);
-  focusPlane.constant = -(z-11);
-  if (!ray.ray.intersectPlane(focusPlane, mouseWorld)) mouseWorld.set(0,0,999);
-  /* smooth wake: a chain of followers, each chasing the one ahead , 
-     continuous lag, no snapshots, no snapping */
-  const active = mouseWorld.z < 500 ? 1 : 0;
-  const t0 = workUniforms.uT0.value;
-  t0.x += (mouseWorld.x - t0.x)*.14; t0.y += (mouseWorld.y - t0.y)*.14; t0.z += (mouseWorld.z - t0.z)*.14;
-  t0.w += (active - t0.w)*.1;
-  const chain = [workUniforms.uT0, workUniforms.uT1, workUniforms.uT2, workUniforms.uT3, workUniforms.uT4];
-  const lag = [.10,.082,.066,.052], wgt = [.8,.55,.38,.24];
-  for (let ci = 1; ci < 5; ci++){
-    const v = chain[ci].value, pv = chain[ci-1].value;
-    v.x += (pv.x - v.x)*lag[ci-1]; v.y += (pv.y - v.y)*lag[ci-1]; v.z += (pv.z - v.z)*lag[ci-1];
-    v.w += (active*wgt[ci-1] - v.w)*.08;
-  }
-
-  /* light sprites */
-  bulbGlow.material.opacity = (.34 - range(P,.14,.30)*.34) * (.85+.15*Math.sin(now*.003)) * glowMul;
-  poolGlow.material.opacity = (.26 - range(P,.14,.30)*.26) * glowMul;
-  seamGlow2.material.opacity = (range(P,.62,.70)*.12 - range(P,.80,.90)*.12) * (.8+.2*Math.sin(now*.004));
-  floorPool.material.opacity = (range(P,.62,.72)*.5  - range(P,.82,.92)*.5);
-  glyphGlow.material.opacity = (range(P,.64,.72)*.34 - range(P,.82,.92)*.34) * (.72+.28*Math.sin(now*.0022));
-
-  const build = range(P,.40,.56)*(1-range(P,.62,.72));
-  aParcel.material.opacity=build*(mobile?1.0:.85);
-  aDocs.forEach((d,i)=> d.material.opacity=Math.max(0,build-i*.12)*.8);
-  aStore.material.opacity=Math.max(0,build-.18)*.9;
-  aRing.material.opacity=build*.5;
-  artefacts.rotation.y=flow*.9;
-
-  aur.position.z = z-56;
-  aur.material.opacity = Math.max(0,.16+rupture*.34-range(P,.8,.95)*.5);
-
-  let topBeat = null, topO = 0;
-  beats.forEach(({el,a,b})=>{
-    const o = win(P,a,b);
-    if (o > topO){ topO = o; topBeat = el; }
-    el.style.opacity=o;
-    el.style.transform = (el.id==='beat5')
-      ? `translate(-50%, calc(-50% + ${(1-o)*14}px))`
-      : `translateY(${(1-o)*22}px)`;
-  });
-  const ctrO = win(P,.375,.545);
-  const dnO  = win(P,.705,.755,.03);
-  let rect = topBeat && topO > .04 ? topBeat.getBoundingClientRect() : null;
-  let amt = topO;
-  /* the terminal lines get the same right of way as the beats */
-  for (const [el, o] of [[counterEl, ctrO], [doneEl, dnO]]){
-    if (o > .04){
-      const r2 = el.getBoundingClientRect();
-      if (!rect){ rect = r2; amt = o; }
-      else rect = {left: Math.min(rect.left, r2.left), top: Math.min(rect.top, r2.top),
-                   right: Math.max(rect.right, r2.right), bottom: Math.max(rect.bottom, r2.bottom)};
-      amt = Math.max(amt, o);
-    }
-  }
-  if (rect && P < .70){
-    const W = innerWidth, H = innerHeight;
-    workUniforms.uTextRect.value.set(rect.left/W*2-1, 1-(rect.bottom/H)*2, rect.right/W*2-1, 1-(rect.top/H)*2);
-    workUniforms.uTextAmt.value = amt;
-  } else workUniforms.uTextAmt.value = 0;
-  counterEl.style.opacity = ctrO;
-  ctr.textContent = Math.round(47*(1-range(P,.38,.545)));
-  doneEl.style.opacity = dnO;
-  doneEl.classList.toggle('still', P>.735);
-
-  clockT.textContent = hoursSavedFn(P);
-  const ch = chapterAt(P);
-  hoursEls.forEach((h,i)=> h.classList.toggle('on', i===ch));
-  cue.style.opacity = P<.02?1:0;
-
-  dawn.style.opacity = range(P,.80,.93);
-  document.body.classList.toggle('arrived', P > .88);
-  const bo = range(P,.86,.945);
-  burn.style.opacity=bo;
-  burn.style.filter=`blur(${(1-bo)*22}px)`;
-  burn.style.transform=`translate(-50%,-50%) scale(${1.22-bo*.22})`;
-
-  runTypers(now);
-  renderer.render(scene,cam);
-  requestAnimationFrame(frame);
-}
-
-let lastRW = innerWidth, lastRH = innerHeight;
-addEventListener('resize', ()=>{
-  /* mobile URL-bar show/hide fires resize with small height deltas ,  ignore
-     them, or the canvas re-layout reads as a mid-scroll kick */
-  if (innerWidth === lastRW && Math.abs(innerHeight - lastRH) < 140) return;
-  lastRW = innerWidth; lastRH = innerHeight;
-  fitRenderer();
-});
-
-async function boot(){
-  try { await document.fonts.ready; } catch(e){}
-  try { sampleStatement(); } catch(e){}
-  const savedW = workUniforms.uW.value.clone();
-  for (const w of [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]){
-    workUniforms.uW.value.set(...w);
-    [aParcel,aStore,aRing,...aDocs].forEach(m=>m.material.opacity=.5);
-    renderer.render(scene,cam);
-  }
-  [aParcel,aStore,aRing,...aDocs].forEach(m=>m.material.opacity=0);
-  workUniforms.uW.value.copy(savedW);
-  if (!reduced) requestAnimationFrame(frame);
-  /* entry ritual: skip when jumped (harness) or reduced motion */
-  const jump = new URLSearchParams(location.search).get('jump');
-  if (!reduced && !jump){
-    /* burst outward from desk to full viewport, then settle back */
-    const introTl = gsap.timeline({delay: .08});
-    introTl.fromTo(workUniforms.uIntro, {value: 1}, {value: 0, duration: .48, ease: 'power3.out'})
-           .to(workUniforms.uIntro,       {value: 1, duration: 1.7, ease: 'power4.in'});
-  }
-  if (jump){
-    const y = parseFloat(jump)||0;
-    /* hold the target until the page provably stays there ,  immune to
-       Lenis lerp, ScrollTrigger refresh, and late layout shifts */
-    let settled = 0;
-    for (let i = 0; i < 40 && settled < 4; i++){
-      if (lenis) lenis.scrollTo(y,{immediate:true,force:true});
-      window.scrollTo(0,y);
-      ScrollTrigger.update();
-      await new Promise(r=>setTimeout(r,90));
-      settled = Math.abs(scrollY - y) < 2 ? settled + 1 : 0;
-    }
-    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-  }
-  await new Promise(r=>setTimeout(r,350));
-  window.__ready = true;
-}
-boot();
-</script>
 </body>
 </html>
