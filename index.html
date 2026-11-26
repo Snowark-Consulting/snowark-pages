@@ -2109,6 +2109,14 @@
         <p>Designed and runs the full experimentation engine. ICE scoring, experiment cards, funnel-stage mapping. Tests are prioritised, tracked, and reviewed without a human PM.</p>
       </article>
       <article class="fan-card">
+        <header><span class="sil"><svg viewBox="0 0 42 42"><circle cx="21" cy="15" r="8" fill="rgba(20,30,30,0.30)"/><path d="M5 42 a16 13 0 0 1 32 0" fill="rgba(20,30,30,0.30)"/></svg></span><div><strong>Under NDA</strong><span>Trades group</span></div></header>
+        <p>Sweeps the market’s live ads for what works, writes the concepts, builds the creative, then loads the campaigns into Meta ready for review.</p>
+      </article>
+      <article class="fan-card">
+        <header><span class="sil"><svg viewBox="0 0 42 42"><circle cx="21" cy="15" r="8" fill="rgba(20,30,30,0.30)"/><path d="M5 42 a16 13 0 0 1 32 0" fill="rgba(20,30,30,0.30)"/></svg></span><div><strong>Under NDA</strong><span>Trades group</span></div></header>
+        <p>Runs Google and ProductReview end to end: reads every review, matches the customer to their job, drafts the reply in the business’s voice, and posts it once approved.</p>
+      </article>
+      <article class="fan-card">
         <header><img src="assets/profile/winston-avatar.jpg" alt="" width="1024" height="1024"><div><strong>Winston</strong><span>SnowArk</span></div></header>
         <p>Built this website from the ground up. Yes, the one you are reading.</p>
       </article>
@@ -2526,7 +2534,9 @@
         'M 40 35 A 14 14 0 1 0 68 35 A 14 14 0 1 0 40 35 M 68 35 H 152 M 152 35 A 14 14 0 1 0 180 35 A 14 14 0 1 0 152 35',
         'M 66 16 H 176 V 54 H 66 Z M 66 18 L 121 42 L 176 18 M 36 24 H 54 M 28 35 H 54 M 36 46 H 54',
         'M 110 8 A 27 27 0 1 0 110 62 A 27 27 0 1 0 110 8 M 96 36 L 107 47 L 126 24',
-        'M 18 14 H 202 V 58 H 18 Z M 18 14 H 202 V 26 H 18 Z M 30 20 A 3 3 0 1 0 30 20 M 42 20 A 3 3 0 1 0 42 20 M 54 20 A 3 3 0 1 0 54 20 M 34 36 H 150 M 34 44 H 186 M 34 52 H 104'
+        'M 18 14 H 202 V 58 H 18 Z M 18 14 H 202 V 26 H 18 Z M 30 20 A 3 3 0 1 0 30 20 M 42 20 A 3 3 0 1 0 42 20 M 54 20 A 3 3 0 1 0 54 20 M 34 36 H 150 M 34 44 H 186 M 34 52 H 104',
+        'M 24 56 L 78 34 L 122 46 L 196 14 M 168 14 H 196 V 42',
+        'M 28 14 H 128 V 42 H 60 L 40 58 V 42 H 28 Z M 140 24 H 196 V 48 H 168 L 154 60 V 48 H 140 Z'
       ];
       order.forEach(function(card, i) {
         var art = document.createElement('div');
@@ -2543,7 +2553,11 @@
         if (p === 0) return { rot: 0, x: 0, y: 0, s: 1 };
         var k = Math.ceil(p / 2);
         var side = (p % 2 === 1) ? -1 : 1;
-        return { rot: side * 7.5 * k, x: side * 96 * k, y: 9 * k * k, s: 1 - 0.05 * k };
+        /* the fan has to fit however many cards it carries: widen the step for a
+           short deck, tighten it once the stack grows past what the stage can hold */
+        var kmax = Math.max(1, Math.ceil((order.length - 1) / 2));
+        var step = Math.max(62, Math.min(96, (stage.clientWidth / 2 - 130) / kmax));
+        return { rot: side * Math.min(7.5 * k, 26), x: side * step * k, y: 9 * k * k, s: 1 - 0.05 * k };
       }
       function layout(animate) {
         order.forEach(function(card, p) {
