@@ -2089,10 +2089,6 @@
         <p>Turned 3,447 sales calls into a searchable intelligence layer. The exec team now hears what customers actually say.</p>
       </article>
       <article class="fan-card">
-        <header><img src="assets/profile/gary-avatar.jpg" alt="" width="512" height="512"><div><strong>Gary</strong><span>The AFS Group</span></div></header>
-        <p>Tagged in Asana for a finance landing page. Shipped the full Shopify build back for approval the same day.</p>
-      </article>
-      <article class="fan-card">
         <header><img src="assets/profile/atlas-avatar.jpg" alt="" width="1024" height="1024"><div><strong>Atlas</strong><span>Not Forgotten Systems</span></div></header>
         <p>Runs his own Gmail, refreshes the company dashboard hourly, and keeps the founder's inbox at zero.</p>
       </article>
@@ -2524,19 +2520,18 @@
       if (!stage) return;
       var order = gsap.utils.toArray(stage.querySelectorAll('.fan-card'));
 
-      /* Line-art motifs matched to each card's story:
-         voice waveform, page wireframe, envelope, linked systems,
-         sent campaign email, deployment check, redaction bars */
+      /* Line-art motifs matched to each card's story, in card order:
+         voice waveform, envelope, linked systems, sent campaign email,
+         deployment check, growth trend, conversation, redaction bars */
       var ARTS = [
         'M 6 35 L 30 35 L 38 18 L 48 52 L 58 10 L 68 60 L 78 24 L 88 46 L 98 35 L 126 35 L 134 26 L 142 44 L 150 35 L 214 35',
-        'M 32 8 H 188 V 62 H 32 Z M 32 21 H 188 M 44 34 H 132 M 44 46 H 162',
         'M 56 15 H 164 V 55 H 56 Z M 56 17 L 110 43 L 164 17',
         'M 40 35 A 14 14 0 1 0 68 35 A 14 14 0 1 0 40 35 M 68 35 H 152 M 152 35 A 14 14 0 1 0 180 35 A 14 14 0 1 0 152 35',
         'M 66 16 H 176 V 54 H 66 Z M 66 18 L 121 42 L 176 18 M 36 24 H 54 M 28 35 H 54 M 36 46 H 54',
         'M 110 8 A 27 27 0 1 0 110 62 A 27 27 0 1 0 110 8 M 96 36 L 107 47 L 126 24',
-        'M 18 14 H 202 V 58 H 18 Z M 18 14 H 202 V 26 H 18 Z M 30 20 A 3 3 0 1 0 30 20 M 42 20 A 3 3 0 1 0 42 20 M 54 20 A 3 3 0 1 0 54 20 M 34 36 H 150 M 34 44 H 186 M 34 52 H 104',
         'M 24 56 L 78 34 L 122 46 L 196 14 M 168 14 H 196 V 42',
-        'M 28 14 H 128 V 42 H 60 L 40 58 V 42 H 28 Z M 140 24 H 196 V 48 H 168 L 154 60 V 48 H 140 Z'
+        'M 28 14 H 128 V 42 H 60 L 40 58 V 42 H 28 Z M 140 24 H 196 V 48 H 168 L 154 60 V 48 H 140 Z',
+        'M 18 14 H 202 V 58 H 18 Z M 18 14 H 202 V 26 H 18 Z M 30 20 A 3 3 0 1 0 30 20 M 42 20 A 3 3 0 1 0 42 20 M 54 20 A 3 3 0 1 0 54 20 M 34 36 H 150 M 34 44 H 186 M 34 52 H 104'
       ];
       order.forEach(function(card, i) {
         var art = document.createElement('div');
