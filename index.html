@@ -1460,27 +1460,22 @@
   .sp__trust a{font-size:.82rem; color:#4f5d5c; text-decoration:underline; text-underline-offset:3px; text-decoration-color:rgba(23,68,69,.35)}
   .sp__trust a:hover{color:var(--teal)}
 
-  /* the ask is the scroll prompt: one link, the question plus a small bobbing chevron, same 32px left edge */
+  /* the ask is the scroll prompt: the question plus a mouse whose wheel drops, same 32px left edge.
+     Decorative and deliberately not a link, so a click can never skip the dive. */
   .sp__foot{grid-area:c; justify-self:start; align-self:end; display:flex; flex-direction:column; align-items:flex-start; gap:12px; max-width:100%}
-  .sp__cue{display:inline-flex; flex-direction:column; align-items:flex-start; gap:10px; padding:4px 0;
-    color:inherit; text-decoration:none; -webkit-tap-highlight-color:transparent}
-  .sp__ask{display:block; margin:0; font-size:1.15rem; line-height:1.7; color:rgba(20,30,30,.82); max-width:22em; text-wrap:pretty;
-    background:linear-gradient(currentColor 0 0) left bottom / 0% 1px no-repeat; padding-bottom:2px;
-    transition:background-size .4s cubic-bezier(.165,.84,.44,1)}
-  @media (hover:hover){ .sp__cue:hover .sp__ask{background-size:100% 1px} }
-  .sp__cue:focus-visible{outline:none}
-  .sp__cue:focus-visible .sp__ask{background-size:100% 1px}
-  .sp__chev{display:block; width:22px; height:22px; margin-left:2px; color:var(--green)}
-  /* a springy drop: stretch on the way down, squash on landing, one small rebound, then rest */
-  .sp__chev svg{display:block; width:100%; height:100%; transform-origin:50% 75%; animation:sp-bounce 2.3s infinite}
-  @keyframes sp-bounce{
-    0%  {transform:translateY(0) scale(1,1);       opacity:.7;  animation-timing-function:cubic-bezier(.55,0,.85,.35)}
-    16% {transform:translateY(9px) scale(.94,1.06); opacity:1;   animation-timing-function:cubic-bezier(.2,.7,.4,1)}
-    21% {transform:translateY(9px) scale(1.06,.92); opacity:1;   animation-timing-function:cubic-bezier(.15,.75,.35,1)}
-    33% {transform:translateY(-2px) scale(.98,1.03);              animation-timing-function:cubic-bezier(.55,0,.8,.4)}
-    41% {transform:translateY(3px) scale(1.03,.97);               animation-timing-function:cubic-bezier(.2,.7,.4,1)}
-    50% {transform:translateY(0) scale(1,1);       opacity:.85}
-    100%{transform:translateY(0) scale(1,1);       opacity:.7}
+  .sp__cue{display:inline-flex; flex-direction:column; align-items:flex-start; gap:12px; padding:4px 0;
+    color:inherit; pointer-events:none}
+  .sp__ask{display:block; margin:0; font-size:1.15rem; line-height:1.7; color:rgba(20,30,30,.82); max-width:22em; text-wrap:pretty}
+  .sp__mouse{display:block; width:20px; height:32px; margin-left:2px; color:var(--green)}
+  .sp__mouse svg{display:block; width:100%; height:100%; overflow:visible}
+  /* the wheel: a small bead that drops down the mouse body, fades, and starts again */
+  .sp__mouse .wheel{transform-box:fill-box; transform-origin:center; animation:sp-wheel 2s cubic-bezier(.5,.05,.5,.95) infinite}
+  @keyframes sp-wheel{
+    0%  {transform:translateY(-2px); opacity:0}
+    22% {transform:translateY(0);    opacity:1}
+    62% {transform:translateY(6px);  opacity:1}
+    82% {transform:translateY(6px);  opacity:0}
+    100%{transform:translateY(-2px); opacity:0}
   }
 
   /* the mark: on desktop and tablet, a large bottom-right corner anchor that bleeds off the edges */
@@ -1530,7 +1525,8 @@
     html:not(.sp-js) .sp__frame{padding-top:calc(var(--nav-h,72px) + 48px + 32px)}
   }
   @media (prefers-reduced-motion:reduce){
-    .sp__fill,.sp__chev svg{animation:none}
+    .sp__fill,.sp__mouse .wheel{animation:none}
+    .sp__mouse .wheel{opacity:1}
     .sp__trust img,.sp__ask{transition:none}
   }
 </style>
@@ -1600,7 +1596,10 @@
       </ul>
       <div class="sp__mark" data-sp-mark role="img" aria-label="SnowArk"><div class="sp__fill"></div></div>
       <div class="sp__foot">
-        <a class="sp__cue" href="#statement" data-sp-cue data-sp-fade aria-label="Ready to get your time back? Scroll to find out how"><span class="sp__ask">Ready to get your time back?</span><span class="sp__chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5l6 6 6-6"/></svg></span></a>
+        <div class="sp__cue" data-sp-cue data-sp-fade>
+          <span class="sp__ask">Ready to get your time back?</span>
+          <span class="sp__mouse" aria-hidden="true"><svg viewBox="0 0 20 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="1" y="1" width="18" height="30" rx="9"/><rect class="wheel" x="9" y="7.5" width="2" height="5" rx="1" fill="currentColor" stroke="none"/></svg></span>
+        </div>
       </div>
     </div>
     <div class="sp__curtain" data-sp-curtain aria-hidden="true"></div>
@@ -1834,7 +1833,7 @@
       <div class="ledger-row reveal">
         <span class="idx">03</span>
         <h3>Doing it yourself with ChatGPT</h3>
-        <p>The learning curve is steep and the output is shallow. A chatbot doesn’t have persistent memory, doesn’t connect to your tools, and doesn’t run while you sleep.</p>
+        <p>It does more than most people give it credit for: persistent memory, connections to the apps in its admin, routines that run on a schedule. But it’s built for the masses. The memory stays shallow, the connections stay generic, and it knows a little about everyone rather than enough about you.</p>
       </div>
       <div class="ledger-row reveal">
         <span class="idx">04</span>
@@ -2182,7 +2181,7 @@
       <details>
         <summary>Is this just ChatGPT with extra steps?</summary>
         <div class="faq-body">
-        <p>No. A chatbot waits for you to type. Your agent has persistent memory, connects to your actual tools, and works to a schedule whether you’re at your desk or not. The difference shows up at 6am, when the morning report is already written.</p>
+        <p>No. A stock chatbot is built for the masses, so its memory stays shallow and it works with the apps it already knows rather than how your business actually runs. Your agent is configured around you: it carries deep context, works inside your real tools, and runs to a schedule whether you’re at your desk or not. The difference shows up at 6am, when the morning report is already written.</p>
         </div>
       </details>
       <details>
@@ -2775,7 +2774,6 @@
     else if (location.hash === '#top') window.scrollTo(0, 0);
   });
 
-  cue.addEventListener('click', function (e) { e.preventDefault(); window.scrollTo({ top: st.end, behavior: 'smooth' }); });
   wrap.addEventListener('focusin', function () { if (st.progress > 0.15) window.scrollTo(0, st.start); });
   window.__spHero = st;
 })();
